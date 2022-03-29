@@ -6,17 +6,26 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "cypress": "cypress open",
     "lint": "next lint"
   },
   "dependencies": {
+    "@chakra-ui/react": "1.8.7",
+    "@emotion/react": "11.8.2",
+    "@emotion/styled": "11.8.1",
+    "axios": "0.26.1",
+    "form-urlencoded": "6.0.6",
+    "framer-motion": "6.2.8",
     "next": "12.1.1",
     "react": "17.0.2",
-    "react-dom": "17.0.2"
+    "react-dom": "17.0.2",
+    "react-icons": "4.3.1"
   },
   "devDependencies": {
     "@types/node": "17.0.23",
     "@types/react": "17.0.43",
     "@types/react-dom": "17.0.14",
+    "cypress": "9.5.2",
     "eslint": "8.12.0",
     "eslint-config-next": "12.1.1",
     "typescript": "4.6.3"
