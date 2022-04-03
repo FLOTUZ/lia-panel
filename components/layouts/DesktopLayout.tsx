@@ -4,8 +4,12 @@ import { Box, Center, Grid, GridItem } from "@chakra-ui/react";
 import { useState } from "react";
 import Navbar from "@/common/Navbar";
 
-const DesktopLayout = () => {
-  const [hide, setHide] = useState({ hide: true, col: 25, span: 24 });
+interface IDesktopLayout {
+  children?: React.ReactNode;
+}
+
+const DesktopLayout = ({ children }: IDesktopLayout) => {
+  const [hide, setHide] = useState({ hide: true, col: 6, span: 5 });
 
   const handleHide = () => {
     hide.hide === true
@@ -40,7 +44,9 @@ const DesktopLayout = () => {
           </Center>
         </Box>
       </GridItem>
-      <GridItem colSpan={hide.span} bg="#f5f5f5"></GridItem>
+      <GridItem colSpan={hide.span} bg="#f5f5f5" padding={2}>
+        {children}
+      </GridItem>
     </Grid>
   );
 };

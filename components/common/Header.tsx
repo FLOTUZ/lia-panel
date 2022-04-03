@@ -1,3 +1,4 @@
+import { Heading } from "@chakra-ui/react";
 import Head from "next/head";
 
 interface IHeader {
@@ -12,6 +13,7 @@ const Header = ({ title }: IHeader): JSX.Element => {
         <meta name="description" content="Panel de gestión GPO Lias" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Heading mb={5}>{title}</Heading>
     </>
   );
 };
