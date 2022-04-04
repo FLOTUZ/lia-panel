@@ -9,10 +9,10 @@ import {
     RadioGroup,
     HStack,
     Radio,
-    InputGroup,
-    InputRightElement,
-    Button,
-    Show,
+    Center,
+    Divider,
+    Switch,
+    Stack,
 } from "@chakra-ui/react";
 
 
@@ -20,29 +20,46 @@ function UsuarioNuevo() {
     return (
         <div>
 
+
             <DesktopLayout>
+
                 <Header title={"Nuevo Usuario"} />
 
-                <Box m={2} bgColor="white" padding={5} borderRadius={10}>
-
-                    <FormControl isRequired>
-                        <FormLabel htmlFor='nombre'>Nombre</FormLabel>
-                        <Input id='nombre' placeholder='María' />
+                <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' rounded='md' bg='white'>
+                    
+                    <FormControl display='flex' alignItems='center'>
+                        <FormLabel htmlFor='archivado' mb='0'>
+                            Archivado
+                        </FormLabel>
+                        <Switch id='archivado' size='lg'/>
                     </FormControl>
 
-                    <FormControl isRequired paddingTop={15}>
-                        <FormLabel htmlFor='apellidos'>Apellidos</FormLabel>
-                        <Input id='apellidos' placeholder='Juares Gallegos' />
-                    </FormControl>
+                    <Stack direction='row'>
+  <Switch colorScheme='red' />
+  <Switch colorScheme='teal' size='lg' />
+</Stack>
+
+                    <Center>
+                        <Divider orientation='vertical' />
+                        <FormControl isRequired>
+                            <FormLabel htmlFor='nombre'>Nombre</FormLabel>
+                            <Input variant="filled" id='nombre' placeholder='María' />
+                        </FormControl>
+
+                        <FormControl isRequired paddingLeft={5}>
+                            <FormLabel htmlFor='apellidos'>Apellidos</FormLabel>
+                            <Input variant="filled" id='apellidos' placeholder='Juarez Gallegos' />
+                        </FormControl>
+                    </Center>
 
                     <FormControl isRequired paddingTop={15}>
                         <FormLabel htmlFor='email'>Email</FormLabel>
-                        <Input id='email' placeholder='maria@gmail.com' />
+                        <Input variant="filled" id='email' placeholder='maria@gmail.com' />
                     </FormControl>
 
                     <FormControl isRequired paddingTop={15}>
                         <FormLabel htmlFor='telefono'>Teléfono</FormLabel>
-                        <Input id='telefono' placeholder='4430000000' />
+                        <Input variant="filled" id='telefono' placeholder='4430000000' />
                     </FormControl>
 
 
@@ -58,11 +75,12 @@ function UsuarioNuevo() {
 
                     <FormControl isRequired paddingTop={15}>
                         <FormLabel htmlFor='contraseña'>Contraseña</FormLabel>
-                        <Input id='contraseña' placeholder='123456789' />
+                        <Input variant="filled" id='contraseña' placeholder='123456789' />
                     </FormControl>
-                    
+
 
                 </Box>
+
             </DesktopLayout>
 
         </div>
