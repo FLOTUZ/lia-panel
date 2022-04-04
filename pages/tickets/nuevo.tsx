@@ -5,6 +5,8 @@ import DesktopLayout from "@/layouts/DesktopLayout";
 import {
   Box,
   Checkbox,
+  Divider,
+  FormControl,
   FormLabel,
   Input,
   InputGroup,
@@ -13,6 +15,8 @@ import {
   Select,
   Text,
   Textarea,
+  Center,
+  Stack,
 } from "@chakra-ui/react";
 
 function TicketNuevo() {
@@ -20,9 +24,31 @@ function TicketNuevo() {
     <DesktopLayout>
       <Header title={"Nuevo Ticket"} />
 
-      <Box m={2} bgColor="white" padding={5} borderRadius={10}>
-        <Text mb="8px">Numero de expediente: </Text>
-        <Input variant="filled" placeholder="Ej:18120215" type="number" />
+      <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' rounded='md' bg='white'>
+        <Text fontWeight="bold" fontSize='25px'>Datos Básicos </Text>
+
+        <Stack direction='row' >
+          <Divider orientation='vertical' paddingLeft={700}/>
+          <FormLabel htmlFor='nExpediente'>Numero de Expediente:</FormLabel>
+            <Input variant="filled" id='nExpediente' type="number" placeholder='GPO728' />
+        </Stack>
+
+        
+
+        <Center>
+          <Divider orientation='vertical' />
+          <FormControl isRequired paddingTop={15}>
+            <FormLabel htmlFor='horaLlamada'>Hora de la Llamada</FormLabel>
+            <Input variant="filled" id='horaLlamada' type="hour" placeholder='08:55 a.m.' />
+          </FormControl>
+
+          <FormControl isRequired paddingLeft={5}>
+            <FormLabel htmlFor='fechaLlamada'>Fecha de la Llamada</FormLabel>
+            <Input variant="filled" type="date" />
+          </FormControl>
+        </Center>
+
+
 
         <Text mb="8px">Nombre del asesor de la aseguradora: </Text>
         <Input variant="filled" placeholder="Ej. AXA" />
@@ -30,8 +56,7 @@ function TicketNuevo() {
         <Text mb="8px">Nombre del asesor Gpo Lias: </Text>
         <Input variant="filled" placeholder="Ej: Juan Vazquez" />
 
-        <Text mb="8px">Fecha llamada: </Text>
-        <Input variant="filled" type="date" />
+
 
         <Text mb="8px">Asistencia vial: </Text>
         <Checkbox defaultChecked>Es asistencia vial</Checkbox>

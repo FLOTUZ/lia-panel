@@ -27,17 +27,6 @@ function UsuarioNuevo() {
 
                 <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' rounded='md' bg='white'>
                     
-                    <FormControl display='flex' alignItems='center'>
-                        <FormLabel htmlFor='archivado' mb='0'>
-                            Archivado
-                        </FormLabel>
-                        <Switch id='archivado' size='lg'/>
-                    </FormControl>
-
-                    <Stack direction='row'>
-  <Switch colorScheme='red' />
-  <Switch colorScheme='teal' size='lg' />
-</Stack>
 
                     <Center>
                         <Divider orientation='vertical' />
