@@ -1,7 +1,9 @@
+import CrearServicioForm from "@/forms/CrearServicioForm";
+
 function ServiciosNuevo() {
     return (
         <div>
-            Crear Servicio
+            <CrearServicioForm nombre=""></CrearServicioForm>
         </div>
     );
 }
