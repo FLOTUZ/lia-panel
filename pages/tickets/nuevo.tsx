@@ -3,6 +3,7 @@ import Header from "@/common/Header";
 import DesktopLayout from "@/layouts/DesktopLayout";
 
 import {
+  AddIcon,
   CheckIcon,
   PhoneIcon,
 } from '@chakra-ui/icons'
@@ -23,6 +24,17 @@ import {
   Center,
   Stack,
   Switch,
+  Image,
+  Button,
+  TableContainer,
+  Table,
+  TableCaption,
+  Thead,
+  Tr,
+  Th,
+  Tbody,
+  Td,
+  Tfoot
 } from "@chakra-ui/react";
 
 
@@ -34,15 +46,12 @@ function TicketNuevo() {
       <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' rounded='md' bg='white'>
         <Text fontWeight="bold" fontSize='25px'>Datos Básicos </Text>
 
-
-
-
         <Stack direction='row' paddingTop={15}>
           <Divider orientation='vertical' paddingLeft={500} />
           <FormLabel htmlFor='nExpediente'>Numero de Expediente:</FormLabel>
           <Input variant="filled" id='nExpediente' type="number" placeholder='GPO728' />
 
-          <FormControl paddingTop={15} paddingLeft={2} >
+          <FormControl paddingTop={2} paddingLeft={2} >
             <Stack align='center' direction='row'>
               <Divider orientation='vertical' />
               <FormLabel htmlFor='asistenciaVial'>Asistencia Vial</FormLabel>
@@ -55,10 +64,7 @@ function TicketNuevo() {
           <Divider orientation='vertical' />
           <FormControl isRequired paddingTop={15.5}>
             <FormLabel htmlFor='horaLlamada'>Hora de la Llamada</FormLabel>
-            <InputLeftElement
-              pointerEvents='none' paddingTop={59} paddingStart={3} children={<PhoneIcon color='gray.300' />}
-            />
-            <Input variant="filled" id='horaLlamada' type="hour" placeholder='08:55 a.m.' paddingLeft={10} />
+            <Input variant="filled" id='horaLlamada' type="time" placeholder='08:55 a.m.' paddingLeft={5} />
           </FormControl>
 
           <FormControl isRequired paddingLeft={5} paddingTop={15}>
@@ -257,58 +263,163 @@ function TicketNuevo() {
 
         <FormControl isRequired paddingTop={15}>
           <FormLabel htmlFor='comentarios'>Comentarios de Grupo Lías</FormLabel>
-          <Textarea variant="filled" placeholder="Se realizara el siguiente servicio en la Avenida Tecnológico." />
+          <Textarea variant="filled" placeholder="Se realizará el siguiente servicio en la Avenida Tecnológico." />
         </FormControl>
+      </Box>
+
+      <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' rounded='md' bg='white'>
+        <Text fontWeight="bold" fontSize='25px'>Cotización del Técnico</Text>
+
+        <Center>
+          <Divider orientation='vertical' />
+          <FormControl isRequired paddingTop={15}>
+            <FormLabel htmlFor='cotizacionGpoLias'>Cotización de Grupo Lías</FormLabel>
+            <Textarea variant="filled" placeholder="Aquí va el texto..." />
+          </FormControl>
+
+          <FormControl isRequired paddingTop={15} paddingLeft={5}>
+            <FormLabel htmlFor='cotizacionTecnico'>Solución y Cotización del Técnico</FormLabel>
+            <Textarea variant="filled" placeholder="Aquí va el texto..." />
+          </FormControl>
+        </Center>
+
+        <Center>
+          <Divider orientation='vertical' />
+          <FormControl isRequired paddingTop={15}>
+            <FormLabel htmlFor='horaDeContacto'>Hora de Contacto</FormLabel>
+            <Input variant="filled" id='horaDeContacto' type="time" placeholder='08:55 a.m.' paddingLeft={5} />
+          </FormControl>
+
+          <FormControl isRequired paddingTop={15} paddingLeft={5}>
+            <FormLabel htmlFor='horaDeCierre'>Hora de Cierre</FormLabel>
+            <Input variant="filled" id='horaDeCierre' type="time" placeholder='08:55 a.m.' paddingLeft={5} />
+          </FormControl>
+
+        </Center>
+
+        <Center>
+          <Divider orientation='vertical' />
+          <FormControl isRequired paddingTop={15}>
+            <FormLabel htmlFor='costoManoDeObra'>Costo de Mano de Obra</FormLabel>
+            <InputLeftElement
+              paddingTop={55}
+              paddingStart={4}
+              color='gray.300'
+              pointerEvents='none'
+              children='$'
+            />
+            <Input variant="filled" id='costoManoDeObra' placeholder='120.00' paddingLeft={8} type="number" />
+          </FormControl>
+
+          <FormControl isRequired paddingTop={15} paddingLeft={5}>
+            <FormLabel htmlFor='costoMateriales'>Costo de Materiales</FormLabel>
+            <InputLeftElement
+              paddingTop={55}
+              paddingStart={8}
+              color='gray.300'
+              pointerEvents='none'
+              children='$'
+            />
+            <Input variant="filled" id='costoMateriales' placeholder='000.00' paddingLeft={8} type="number" />
+          </FormControl>
+        </Center>
+
+        <Center>
+          <Divider orientation='vertical' />
+          <FormControl isRequired paddingTop={15}>
+            <FormLabel htmlFor='cotizaciónTecnico'>Cotización Total del Técnico</FormLabel>
+            <InputLeftElement
+              paddingTop={55}
+              paddingStart={8}
+              color='gray.300'
+              pointerEvents='none'
+              children='$'
+            />
+            <Input variant="filled" id='cotizaciónTecnico' placeholder='120.00' paddingLeft={8} type="number" />
+          </FormControl>
+
+          <FormControl isRequired paddingLeft={5} paddingTop={15}>
+            <FormLabel htmlFor='casetas'>Número de Casetas</FormLabel>
+            <Input variant="filled" id='casetas' placeholder='5' type="number" />
+          </FormControl>
+        </Center>
+
+        <Center>
+          <Divider orientation='vertical' paddingTop={30} />
+          <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' height={200} width={200}>
+            <Image src='' alt='Evidencia 1' paddingStart={8} paddingTop={16} />
+          </Box>
+          <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' height={200} width={200} paddingLeft={10}>
+            <Image src='' alt='Evidencia 2' paddingStart={8} paddingTop={16} />
+          </Box>
+        </Center>
+      </Box>
+
+
+      <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' rounded='md' bg='white'>
+        <Text fontWeight="bold" fontSize='25px'>Citas</Text>
+
+        <Button leftIcon={<AddIcon />} colorScheme='facebook' variant='solid' marginTop={15} marginLeft={900}>
+          Nueva Cita
+        </Button>
+
+        <TableContainer marginTop={15}>
+          <Table variant='striped' colorScheme='teal'>
+            <TableCaption>Citas</TableCaption>
+            <Thead>
+              <Tr>
+                <Th>Título del Ticket</Th>
+                <Th>Estatus</Th>
+                <Th>Ultima actividad</Th>
+                <Th>Creado</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              <Tr>
+                <Td>Trabajo de Plomeria</Td>
+                <Td>Activo</Td>
+                <Td>Plomería en el Hogar</Td>
+                <Td>Juan Perez</Td>
+              </Tr>
+            </Tbody>
+          </Table>
+        </TableContainer>
+      </Box>
+
+      <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' rounded='md' bg='white'>
+        <Text fontWeight="bold" fontSize='25px'>Seguimiento</Text>
+
+        <Button leftIcon={<AddIcon />} colorScheme='facebook' variant='solid' marginTop={15} marginLeft={850}>
+          Nuevo Seguimiento
+        </Button>
+
+        <TableContainer marginTop={15}>
+          <Table variant='striped' colorScheme='teal'>
+            <TableCaption>Seguimiento</TableCaption>
+            <Thead>
+              <Tr>
+                <Th>Asesor Grupo Lías</Th>
+                <Th>Seguimiento</Th>
+                <Th>Asesor de Seguro</Th>
+                <Th>Fecha</Th>
+                <Th>Hora</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              <Tr>
+                <Td>Juan Perez</Td>
+                <Td>Alejandro Hernandez</Td>
+                <Td>Enrique Zavala</Td>
+                <Td>12/03/2022</Td>
+                <Td>11:00 a.m.</Td>
+              </Tr>
+            </Tbody>
+          </Table>
+        </TableContainer>
       </Box>
 
 
 
-      <Text mb="8px">Nombre del asesor de la aseguradora: </Text>
-      <Input variant="filled" placeholder="Ej. AXA" />
-
-      <Text mb="8px">Nombre del asesor Gpo Lias: </Text>
-      <Input variant="filled" placeholder="Ej: Juan Vazquez" />
-
-
-
-      <Text mb="8px">Asistencia vial: </Text>
-      <Checkbox defaultChecked>Es asistencia vial</Checkbox>
-
-      <Text mb="8px">Nombre del usuario final: </Text>
-      <Input variant="filled" placeholder="Ej: María Rodriguez" />
-
-      <Text mb="8px">Descripción de la Problematica: </Text>
-      <Textarea variant="filled" placeholder="Fuga de agua en la cocina" />
-
-      <FormLabel mb="8px" htmlFor="country">
-        Localidad de la problematica
-      </FormLabel>
-      <Select id="country" placeholder="Selecciona el lugar">
-        <option>Morelia</option>
-        <option>Tarimbaro</option>
-      </Select>
-
-      <Text mb="8px">Colonia: </Text>
-      <Input variant="filled" placeholder="Ej: Lomas de Santiaguito" />
-
-      <Text mb="8px">Calle: </Text>
-      <Input variant="filled" placeholder="Ej: Av. Tecnologico" />
-
-      <Text mb="8px">Numero del domicilio: </Text>
-      <Input type="number" variant="filled" placeholder="Numero" />
-
-      <InputGroup>
-        <InputLeftElement
-          pointerEvents="none"
-          color="gray.300"
-          fontSize="1.2em"
-          children="$"
-        />
-
-        <Input placeholder="Ingresa el monto" />
-
-        <InputRightElement />
-      </InputGroup>
 
     </DesktopLayout >
   );
