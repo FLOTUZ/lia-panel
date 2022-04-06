@@ -122,7 +122,7 @@ function AseguradorasListado() {
                 <Td>Modificacion</Td>
                 <Td>reportes</Td>
                 <Td>
-                <IconButton
+                   <IconButton
                   variant='outline'
 
                   aria-label='edit'
