@@ -2,16 +2,21 @@ import Header from "@/common/Header";
 import Link from "next/link";
 import DesktopLayout from "@/layouts/DesktopLayout";
 import {
-  TableContainer, Table, TableCaption, Thead, Tr, Th, Tbody, Td, Tfoot, Box, Button, FormLabel, Input, InputLeftAddon, InputGroup, IconButton,
+  TableContainer, Table, TableCaption, Thead, Tr, Th, Tbody, Td, Tfoot, Box, Button, FormLabel, Input, InputLeftAddon, InputGroup, IconButton, EditableInput, Spacer,
 
 } from "@chakra-ui/react";
 import {
-  AddIcon, PhoneIcon, SearchIcon,
+  AddIcon, AttachmentIcon, EditIcon, PhoneIcon, SearchIcon,
 } from '@chakra-ui/icons'
+import { useState } from "react";
+import { userInfo } from "os";
 
 
 
 function AseguradorasListado() {
+
+  const [query, setQuery] = useState("");
+
   return <div>Aseguradoras
 
     <DesktopLayout>
@@ -30,20 +35,20 @@ function AseguradorasListado() {
 
 
 
-        <InputGroup>
+        <InputGroup marginLeft={350} marginBlockEnd={10}>
           <InputLeftAddon>
             <IconButton
               disabled
-              colorScheme='blue'
               aria-label='Search database'
               icon={<SearchIcon />}
             />  </InputLeftAddon>
-          <Input type='search' placeholder='Buscar aseguradoras...' />
+
+          <Input htmlSize={60} width='auto' type='text' placeholder='Buscar aseguradoras...' className="search" />
         </InputGroup>
 
 
         <TableContainer>
-          <Table variant='striped' colorScheme='teal'>
+          <Table variant='simple' colorScheme='teal'>
             <TableCaption>Aseguradoras</TableCaption>
             <Thead>
               <Tr>
@@ -54,32 +59,82 @@ function AseguradorasListado() {
                 <Th>Creado</Th>
                 <Th>Ultima modificacion</Th>
                 <Th>Reportes</Th>
+                <Th></Th>
               </Tr>
             </Thead>
             <Tbody>
               <Tr>
-                <Td>inches</Td>
-                <Td>millimetres (mm)</Td>
-                <Td isNumeric>25.4</Td>
+                <Td>Nombre</Td>
+                <Td>Estatus</Td>
+                <Td>Actividad</Td>
+                <Td> 5 <IconButton
+                  variant='ghost'
+                  aria-label='add'
+                  icon={<AddIcon />}
+                /></Td>
+                <Td>creado</Td>
+                <Td>Modificacion</Td>
+                <Td>reportes</Td>
+                <Td> <IconButton
+
+                  aria-label='Search database'
+                  icon={<EditIcon />}
+                /></Td>
               </Tr>
               <Tr>
-                <Td>feet</Td>
-                <Td>centimetres (cm)</Td>
-                <Td isNumeric>30.48</Td>
+                <Td>Nombre</Td>
+                <Td>Estatus</Td>
+                <Td>Actividad</Td>
+                <Td>
+                  1 <IconButton
+                    variant='ghost'
+
+                    aria-label='add'
+                    icon={<AddIcon />}
+                  /></Td>
+                <Td>creado</Td>
+                <Td>Modificacion</Td>
+                <Td>reportes</Td>
+                <Td> <IconButton
+                  variant='outline'
+
+                  aria-label='edit'
+
+                  icon={<EditIcon />}
+
+
+                />
+                </Td>
+
               </Tr>
               <Tr>
-                <Td>yards</Td>
-                <Td>metres (m)</Td>
-                <Td isNumeric>0.91444</Td>
+                <Td>Nombre</Td>
+                <Td>Estatus</Td>
+                <Td>Actividad</Td>
+                <Td>
+                  1 <IconButton
+                    variant='ghost'
+
+                    aria-label='add'
+                    icon={<AddIcon />}
+                  /></Td>
+                <Td>creado</Td>
+                <Td>Modificacion</Td>
+                <Td>reportes</Td>
+                <Td>
+                <IconButton
+                  variant='outline'
+
+                  aria-label='edit'
+
+                  icon={<EditIcon />}
+
+
+                />
+                </Td>
+
               </Tr>
             </Tbody>
-            <Tfoot>
-              <Tr>
-                <Th>To convert</Th>
-                <Th>into</Th>
-                <Th isNumeric>multiply by</Th>
-              </Tr>
-            </Tfoot>
           </Table>
         </TableContainer>
 
