@@ -1,4 +1,5 @@
 import Header from "@/common/Header";
+import Link from "next/link";
 import DesktopLayout from "@/layouts/DesktopLayout";
 import {
   TableContainer, Table, TableCaption, Thead, Tr, Th, Tbody, Td, Tfoot, Box, Button, FormLabel, Input, InputLeftAddon, InputGroup, IconButton,
@@ -7,6 +8,7 @@ import {
 import {
   AddIcon, PhoneIcon, SearchIcon,
 } from '@chakra-ui/icons'
+
 
 
 function AseguradorasListado() {
@@ -18,9 +20,12 @@ function AseguradorasListado() {
 
 
         <Box m={2} bgColor="white" padding={5} borderRadius={10} p='6' rounded='md' bg='white'>
-          <Button leftIcon={<AddIcon />} colorScheme='facebook' variant='solid' marginLeft={'80%'}>
-            Nueva Aseguradora
-          </Button>
+          <Link href={"/aseguradoras/nuevo"}>
+
+            <a>             <Button leftIcon={<AddIcon />} colorScheme='facebook' variant='solid' marginLeft={'80%'}>Nueva aseguradora</Button >
+            </a>
+          </Link>
+
         </Box>
 
 
