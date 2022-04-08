@@ -5,7 +5,7 @@ interface IHeader {
   title: string;
 }
 
-const Header = ({ title }: IHeader): JSX.Element => {
+const Header = ({title}: IHeader): JSX.Element => {
   return (
     <>
       <Head>
