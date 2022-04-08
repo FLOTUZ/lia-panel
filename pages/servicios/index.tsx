@@ -99,7 +99,7 @@ function ServiciosListado() {
                   <Link href={""}>
                     <a>
                       <IconButton
-                        onClick={onOpen}
+                       
                         variant="outline"
                         aria-label="edit"
                         icon={<EditIcon />}
@@ -114,7 +114,7 @@ function ServiciosListado() {
                 <Td>
                   {" "}
                   <IconButton
-                    onClick={onOpen}
+                    
                     variant="outline"
                     aria-label="edit"
                     icon={<EditIcon />}
@@ -125,7 +125,7 @@ function ServiciosListado() {
                 <Td>Electricista</Td>
                 <Td>
                   <IconButton
-                    onClick={onOpen}
+                   
                     variant="outline"
                     aria-label="edit"
                     icon={<EditIcon />}
@@ -136,26 +136,6 @@ function ServiciosListado() {
           </Table>
         </TableContainer>
       </Box>
-      <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Editar servicio</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl mt={4}>
-              <FormLabel>Nombre del servicio</FormLabel>
-              <Input placeholder="Editar servicio" />
-            </FormControl>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
-              Guardar
-            </Button>
-            <Button onClick={onClose}>Cancelar</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
 
       <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
