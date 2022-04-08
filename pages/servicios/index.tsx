@@ -29,6 +29,8 @@ import {
   FormControl,
   ModalFooter,
   useDisclosure,
+  Editable,
+  EditablePreview,
 } from "@chakra-ui/react";
 import {
   AddIcon,
@@ -42,7 +44,7 @@ import { useState } from "react";
 
 function ServiciosListado() {
   const { isOpen, onOpen, onClose } = useDisclosure();
- 
+  const { isOpen: isOpenedit, onOpen: onOpenedit, onClose: onCloseedit } = useDisclosure();
   const [query, setQuery] = useState("");
 
   return <div>Listado de servicios
@@ -67,18 +69,18 @@ function ServiciosListado() {
           rounded="md"
           bg="white"
         >
-          
-              {" "}
-              <Button
-                onClick={onOpen}
-                leftIcon={<AddIcon />}
-                colorScheme="facebook"
-                variant="solid"
-                marginLeft={"80%"}
-              >
-                Nuevo servicio
-              </Button>
-          
+
+          {" "}
+          <Button
+            onClick={onOpen}
+            leftIcon={<AddIcon />}
+            colorScheme="facebook"
+            variant="solid"
+            marginLeft={"80%"}
+          >
+            Nuevo servicio
+          </Button>
+
         </Box>
 
 
@@ -88,7 +90,10 @@ function ServiciosListado() {
             <TableCaption>Servicios</TableCaption>
             <Thead>
               <Tr>
-                <Th>Nombre</Th>
+                <Th>
+
+                  Nombre
+                </Th>
                 <Th></Th>
               </Tr>
             </Thead>
@@ -96,25 +101,22 @@ function ServiciosListado() {
               <Tr>
                 <Td>Asistencia vial</Td>
                 <Td>
-                  <Link href={""}>
-                    <a>
-                      <IconButton
-                       
-                        variant="outline"
-                        aria-label="edit"
-                        icon={<EditIcon />}
-                      />
-                    </a>
-                  </Link>
+
+                  <IconButton
+                    onClick={onOpenedit}
+                    variant="outline"
+                    aria-label="edit"
+                    icon={<EditIcon />}
+                  />
+
                 </Td>
               </Tr>
               <Tr>
                 <Td>promeria</Td>
 
                 <Td>
-                  {" "}
                   <IconButton
-                    
+                    onClick={onOpenedit}
                     variant="outline"
                     aria-label="edit"
                     icon={<EditIcon />}
@@ -125,7 +127,8 @@ function ServiciosListado() {
                 <Td>Electricista</Td>
                 <Td>
                   <IconButton
-                   
+                    onClick={onOpenedit}
+
                     variant="outline"
                     aria-label="edit"
                     icon={<EditIcon />}
@@ -154,6 +157,26 @@ function ServiciosListado() {
               Guardar
             </Button>
             <Button onClick={onClose}>Cancelar</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      <Modal closeOnOverlayClick={false} isOpen={isOpenedit} onClose={onCloseedit}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Editar servicio</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl mt={4}>
+              <FormLabel>Nombre del servicio</FormLabel>
+              <Input placeholder="Nombre del servicio" />
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="blue" mr={3}>
+              Guardar
+            </Button>
+            <Button onClick={onCloseedit}>Cancelar</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
