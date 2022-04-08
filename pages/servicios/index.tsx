@@ -76,7 +76,7 @@ function ServiciosListado() {
                 variant="solid"
                 marginLeft={"80%"}
               >
-                Nueva aseguradora
+                Nueva Asistencia
               </Button>
           
         </Box>
