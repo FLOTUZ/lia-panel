@@ -35,6 +35,7 @@ import {
 import {
   AddIcon,
   AttachmentIcon,
+  DeleteIcon,
   EditIcon,
   PhoneIcon,
   SearchIcon,
@@ -85,8 +86,7 @@ function ServiciosListado() {
 
 
         <TableContainer>
-          <Table overflow={"auto"} size={
-            "sm"} variant="unstyled" colorScheme="teal">
+          <Table size={"sm"} variant="unstyled" colorScheme="teal">
             <TableCaption>Servicios</TableCaption>
             <Thead>
               <Tr>
@@ -94,17 +94,17 @@ function ServiciosListado() {
 
                   Nombre
                 </Th>
-                <Th></Th>
+
               </Tr>
             </Thead>
             <Tbody>
               <Tr>
                 <Td>Asistencia vial</Td>
-                <Td>
+                <Td >
 
                   <IconButton
                     onClick={onOpenedit}
-                    variant="outline"
+                    variant='ghost'
                     aria-label="edit"
                     icon={<EditIcon />}
                   />
@@ -117,7 +117,7 @@ function ServiciosListado() {
                 <Td>
                   <IconButton
                     onClick={onOpenedit}
-                    variant="outline"
+                    variant='ghost'
                     aria-label="edit"
                     icon={<EditIcon />}
                   />
@@ -128,16 +128,27 @@ function ServiciosListado() {
                 <Td>
                   <IconButton
                     onClick={onOpenedit}
+                    variant='ghost'
 
-                    variant="outline"
                     aria-label="edit"
                     icon={<EditIcon />}
+                  />
+
+
+                  <IconButton
+
+                    marginLeft={"25%"}
+                    variant='ghost'
+                    aria-label="delet"
+                    colorScheme={"red"}
+                    icon={<DeleteIcon color={"red"} />}
                   />
                 </Td>
               </Tr>
             </Tbody>
           </Table>
         </TableContainer>
+
       </Box>
 
       <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
