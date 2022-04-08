@@ -17,7 +17,7 @@ function UsuariosListado() {
   return (
     <DesktopLayout>
       <Box m={2} bgColor="white" padding={5} borderRadius={10}>
-        <Header title="Crear Usuario" />
+        <Header title={"Hola"} />
 
         <Stack direction="row">
           <Spacer />

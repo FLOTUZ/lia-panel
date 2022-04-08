@@ -39,11 +39,9 @@ import {
 } from "@chakra-ui/icons";
 import { useState } from "react";
 
-function AseguradorasListado() {
+export default function AseguradorasListado() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [query, setQuery] = useState("");
-
-  return (
+    return (
     <div>
       Aseguradoras
       <DesktopLayout>
@@ -228,5 +226,3 @@ function AseguradorasListado() {
     </div >
   );
 }
-
-export default AseguradorasListado;
