@@ -82,23 +82,29 @@ function AseguradorasListado() {
             </Link>
           </Box>
 
-          <InputGroup marginLeft={350} marginBlockEnd={10}>
-            <InputLeftAddon>
-              <IconButton
-                disabled
-                aria-label="Search database"
-                icon={<SearchIcon />}
-              />{" "}
-            </InputLeftAddon>
 
-            <Input
-              htmlSize={60}
-              width="auto"
-              type="text"
-              placeholder="Buscar aseguradoras..."
-              className="search"
-            />
-          </InputGroup>
+          <Box marginLeft= '25%' w='100%' p={4} >
+            <InputGroup>
+              <InputLeftAddon>
+                <IconButton
+                  disabled
+                  aria-label="Search database"
+                  icon={<SearchIcon />}
+                />{" "}
+              </InputLeftAddon>
+
+              <Input
+                htmlSize={60}
+                width="auto"
+                type="text"
+                placeholder="Buscar aseguradoras..."
+                className="search"
+              />
+            </InputGroup>
+          </Box>
+
+
+
 
           <TableContainer>
             <Table variant="simple" colorScheme="teal">
@@ -136,11 +142,11 @@ function AseguradorasListado() {
                   <Td>
                     <Link href={"/aseguradoras/1"}>
                       <a>
-                      <IconButton
-                      variant="outline"
-                      aria-label="edit"
-                      icon={<EditIcon />}
-                    />
+                        <IconButton
+                          variant="outline"
+                          aria-label="edit"
+                          icon={<EditIcon />}
+                        />
                       </a>
                     </Link>
                   </Td>
@@ -219,7 +225,7 @@ function AseguradorasListado() {
           </ModalContent>
         </Modal>
       </DesktopLayout>
-    </div>
+    </div >
   );
 }
 
