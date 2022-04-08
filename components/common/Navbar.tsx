@@ -1,5 +1,5 @@
 import { Button, Flex, Spacer, Stack } from "@chakra-ui/react";
-import { MdHomeRepairService, MdOutlineMedicalServices, MdSpaceDashboard } from "react-icons/md";
+import { MdHomeRepairService, MdOutlineMedicalServices, MdSpaceDashboard, MdVerifiedUser } from "react-icons/md";
 import { IoBook, IoReceipt } from "react-icons/io5";
 
 import Link from "next/link";
@@ -25,6 +25,11 @@ const Navbar = () => {
       name: "Servicios",
       path: "/servicios",
       icon: <IoBook size={32} />,
+    }, 
+     {
+      name: "Aseguradoras",
+      path: "/aseguradoras",
+      icon: <MdVerifiedUser color="green"  size={32} />,
     },
   ];
   return (
