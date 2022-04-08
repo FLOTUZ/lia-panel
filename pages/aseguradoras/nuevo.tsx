@@ -138,8 +138,8 @@ function AseguradoraNueva() {
                             <ModalCloseButton />
                             <ModalBody pb={6}>
                                 <FormControl mt={4}>
-                                    <FormLabel>Nombre del servicio</FormLabel>
-                                    <Input placeholder="Nombre del servicio" />
+                                    <FormLabel>Nombre de la asistencia</FormLabel>
+                                    <Input placeholder="Nombre de la asistencia" />
                                 </FormControl>
                             </ModalBody>
 
