@@ -42,13 +42,16 @@ import {
 } from "@chakra-ui/icons";
 import { useState } from "react";
 
-
 function ServiciosListado() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isOpen: isOpenedit, onOpen: onOpenedit, onClose: onCloseedit } = useDisclosure();
+  const {
+    isOpen: isOpenedit,
+    onOpen: onOpenedit,
+    onClose: onCloseedit,
+  } = useDisclosure();
   const [query, setQuery] = useState("");
 
-  return <div>Listado de servicios
+  return (
     <DesktopLayout>
       <Header title={"Lista de servicios "} />
       <Box
@@ -70,7 +73,6 @@ function ServiciosListado() {
           rounded="md"
           bg="white"
         >
-
           {" "}
           <Button
             onClick={onOpen}
@@ -81,34 +83,26 @@ function ServiciosListado() {
           >
             Nuevo servicio
           </Button>
-
         </Box>
-
 
         <TableContainer>
           <Table size={"sm"} variant="unstyled" colorScheme="teal">
             <TableCaption>Servicios</TableCaption>
             <Thead>
               <Tr>
-                <Th>
-
-                  Nombre
-                </Th>
-
+                <Th>Nombre</Th>
               </Tr>
             </Thead>
             <Tbody>
               <Tr>
                 <Td>Asistencia vial</Td>
-                <Td >
-
+                <Td>
                   <IconButton
                     onClick={onOpenedit}
-                    variant='ghost'
+                    variant="ghost"
                     aria-label="edit"
                     icon={<EditIcon />}
                   />
-
                 </Td>
               </Tr>
               <Tr>
@@ -117,7 +111,7 @@ function ServiciosListado() {
                 <Td>
                   <IconButton
                     onClick={onOpenedit}
-                    variant='ghost'
+                    variant="ghost"
                     aria-label="edit"
                     icon={<EditIcon />}
                   />
@@ -128,17 +122,14 @@ function ServiciosListado() {
                 <Td>
                   <IconButton
                     onClick={onOpenedit}
-                    variant='ghost'
-
+                    variant="ghost"
                     aria-label="edit"
                     icon={<EditIcon />}
                   />
 
-
                   <IconButton
-
                     marginLeft={"25%"}
-                    variant='ghost'
+                    variant="ghost"
                     aria-label="delet"
                     colorScheme={"red"}
                     icon={<DeleteIcon color={"red"} />}
@@ -148,7 +139,6 @@ function ServiciosListado() {
             </Tbody>
           </Table>
         </TableContainer>
-
       </Box>
 
       <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
@@ -171,7 +161,11 @@ function ServiciosListado() {
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <Modal closeOnOverlayClick={false} isOpen={isOpenedit} onClose={onCloseedit}>
+      <Modal
+        closeOnOverlayClick={false}
+        isOpen={isOpenedit}
+        onClose={onCloseedit}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Editar servicio</ModalHeader>
@@ -192,9 +186,7 @@ function ServiciosListado() {
         </ModalContent>
       </Modal>
     </DesktopLayout>
-
-
-  </div>;
+  );
 }
 
 export default ServiciosListado;
