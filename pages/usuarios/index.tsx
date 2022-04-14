@@ -1,6 +1,6 @@
 import Header from "@/common/Header";
 import DesktopLayout from "@/layouts/DesktopLayout";
-import { AddIcon, DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
+import { AddIcon, AttachmentIcon, DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -30,6 +30,7 @@ import {
   ModalCloseButton,
   ModalBody,
   ModalFooter,
+  Badge,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -89,10 +90,10 @@ function UsuariosListado() {
               <Tr>
                 <Td>Juan</Td>
                 <Td>Guzman</Td>
-                <Td>Activo</Td>
+                <Td><Badge colorScheme='green'>Activo</Badge></Td>
                 <Td>Administrador</Td>
                 <Td>
-                  <Link href={"/usuario/1"}>
+                  <Link href={"/usuarios/1"}>
                     <a>
                       <IconButton
                         variant="outline"
@@ -106,8 +107,18 @@ function UsuariosListado() {
                     variant="ghost"
                     aria-label="delet"
                     colorScheme={"red"}
+                    icon={<AttachmentIcon color={"gray"} />}
+                  />
+                  <IconButton
+
+                    variant="ghost"
+                    aria-label="delet"
+                    colorScheme={"red"}
                     icon={<DeleteIcon color={"red"} />}
                   />
+
+
+
                 </Td>
 
 
@@ -115,11 +126,11 @@ function UsuariosListado() {
               <Tr>
                 <Td>Jose</Td>
                 <Td>Guzman</Td>
-                <Td>Activo</Td>
+                <Td><Badge colorScheme='green'>Activo</Badge></Td>
                 <Td>Capturador</Td>
 
                 <Td>
-                  <Link href={"/usuario/1"}>
+                  <Link href={"/usuarios/1"}>
                     <a>
                       <IconButton
                         variant="outline"
@@ -129,6 +140,13 @@ function UsuariosListado() {
 
                     </a>
                   </Link>
+                  <IconButton
+
+                    variant="ghost"
+                    aria-label="delet"
+                    colorScheme={"red"}
+                    icon={<AttachmentIcon color={"gray"} />}
+                  />
                   <IconButton
 
                     variant="ghost"
@@ -141,7 +159,8 @@ function UsuariosListado() {
               <Tr>
                 <Td>Fernando</Td>
                 <Td>Torres</Td>
-                <Td>Desabilitado</Td>
+                <Td><Badge>Desabilitado</Badge>
+                </Td>
                 <Td>Administrador</Td>
                 <Td>
                   <IconButton
@@ -149,6 +168,13 @@ function UsuariosListado() {
                     aria-label="edit"
                     icon={<EditIcon />}
 
+                  />
+                  <IconButton
+
+                    variant="ghost"
+                    aria-label="delet"
+                    colorScheme={"red"}
+                    icon={<AttachmentIcon color={"gray"} />}
                   />
                   <IconButton
 
