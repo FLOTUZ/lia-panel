@@ -11,6 +11,7 @@ import {
   MdHomeRepairService,
   MdOutlineMedicalServices,
   MdSpaceDashboard,
+  MdSupervisedUserCircle,
   MdVerifiedUser,
 } from "react-icons/md";
 import { IoBook, IoReceipt } from "react-icons/io5";
@@ -37,6 +38,11 @@ const Navbar = () => {
       icon: <MdHomeRepairService size={32} />,
     },
     {
+      name: "Usuarios",
+      path: "/usuarios",
+      icon: <MdSupervisedUserCircle size={32} />,
+    },
+    {
       name: "Servicios",
       path: "/servicios",
       icon: <IoBook size={32} />,
@@ -46,9 +52,10 @@ const Navbar = () => {
       path: "/aseguradoras",
       icon: <MdVerifiedUser size={32} />,
     },
+   
   ];
   return (
-    <Stack width="10vw" h="100vh" pos="fixed">
+    <Stack width="12vw" h="100vh" pos="fixed">
       <Flex
         h="8rem"
         w="8rem"
@@ -66,7 +73,7 @@ const Navbar = () => {
           <Link key={key} href={route.path}>
             <a>
               <Button
-                h="3rem"
+                h="3.5rem"
                 w="full"
                 bgColor="white"
                 color="black"
