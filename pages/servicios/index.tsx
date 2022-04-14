@@ -83,28 +83,40 @@ function ServiciosListado() {
           >
             Nuevo servicio
           </Button>
-        </Box>
-
-        <TableContainer>
+        </Box >
+        <Box marginLeft={"25%"}>
+          
+        <TableContainer  >
           <Table size={"sm"} variant="unstyled" colorScheme="teal">
             <TableCaption>Servicios</TableCaption>
             <Thead>
               <Tr>
                 <Th>Nombre</Th>
+                <Th>Opciones</Th>              
               </Tr>
             </Thead>
             <Tbody>
               <Tr>
-                <Td>Asistencia vial</Td>
+                <Td>Asistencia Vial</Td>
+
                 <Td>
                   <IconButton
                     onClick={onOpenedit}
+                  
                     variant="ghost"
                     aria-label="edit"
                     icon={<EditIcon />}
+                  /> <IconButton
+            
+                    variant="ghost"
+                    aria-label="delet"
+                    colorScheme={"red"}
+                    icon={<DeleteIcon color={"red"} />}
                   />
+
                 </Td>
               </Tr>
+
               <Tr>
                 <Td>promeria</Td>
 
@@ -114,7 +126,14 @@ function ServiciosListado() {
                     variant="ghost"
                     aria-label="edit"
                     icon={<EditIcon />}
+                  /> <IconButton
+          
+                    variant="ghost"
+                    aria-label="delet"
+                    colorScheme={"red"}
+                    icon={<DeleteIcon color={"red"} />}
                   />
+
                 </Td>
               </Tr>
               <Tr>
@@ -128,7 +147,7 @@ function ServiciosListado() {
                   />
 
                   <IconButton
-                    marginLeft={"25%"}
+
                     variant="ghost"
                     aria-label="delet"
                     colorScheme={"red"}
@@ -139,6 +158,7 @@ function ServiciosListado() {
             </Tbody>
           </Table>
         </TableContainer>
+        </Box>
       </Box>
 
       <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
