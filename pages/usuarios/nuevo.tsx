@@ -13,7 +13,9 @@ import {
     Divider,
     Switch,
     Stack,
+    Button,
 } from "@chakra-ui/react";
+import Link from "next/link";
 
 
 function UsuarioNuevo() {
@@ -57,7 +59,7 @@ function UsuarioNuevo() {
                         <HStack spacing='24px'>
                             <Radio value='Capturista'>Capturista</Radio>
                             <Radio value='Administrador'>Administrador</Radio>
-                            <Radio value='Técnico'>Técnico</Radio>
+                        
                         </HStack>
                     </RadioGroup>
 
@@ -66,7 +68,20 @@ function UsuarioNuevo() {
                         <FormLabel htmlFor='contraseña'>Contraseña</FormLabel>
                         <Input variant="filled" id='contraseña' placeholder='123456789' />
                     </FormControl>
+                    <Stack marginTop={50} direction="row" spacing={4} align="center">
+            <Button colorScheme="twitter" variant="solid">
+              Agregar
+            </Button>
 
+            <Link href={"/usuarios"}>
+              <a>
+                {" "}
+                <Button colorScheme="red" variant="outline">
+                  Cancelar
+                </Button>
+              </a>
+            </Link>
+          </Stack>
 
                 </Box>
 
