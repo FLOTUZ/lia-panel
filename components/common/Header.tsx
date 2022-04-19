@@ -13,7 +13,7 @@ const Header = ({title}: IHeader): JSX.Element => {
         <meta name="description" content="Panel de gestión GPO Lias" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Heading mb={5}>{title}</Heading>
+      <Heading ml={1}>{title}</Heading>
     </>
   );
 };

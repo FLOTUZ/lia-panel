@@ -1,15 +1,6 @@
-import {
-  Button,
-  Center,
-  Container,
-  Flex,
-  Spacer,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
+import { Button, Flex, Spacer, Stack } from "@chakra-ui/react";
 import {
   MdHomeRepairService,
-  MdOutlineMedicalServices,
   MdSpaceDashboard,
   MdSupervisedUserCircle,
   MdVerifiedUser,
@@ -52,21 +43,21 @@ const Navbar = () => {
       path: "/aseguradoras",
       icon: <MdVerifiedUser size={32} />,
     },
-   
   ];
   return (
-    <Stack width="12vw" h="100vh" pos="fixed">
+    <Stack width="20vh" h="100vh" pos="fixed" p={2}>
       <Flex
-        h="8rem"
-        w="8rem"
+        h="5rem"
+        w="5rem"
         bgColor="gray.100"
         borderRadius={"full"}
         my="5"
         padding={2}
-        overflow="hidden"
+        alignSelf={"center"}
       >
         {/*TODO: Poner Imagen de GPO LIAS*/}
-        <Image height={100} src={Logo} alt="" />
+
+        <Image src={Logo} alt="" />
       </Flex>
       {routes.map((route, key) => {
         return (
@@ -74,7 +65,7 @@ const Navbar = () => {
             <a>
               <Button
                 h="3.5rem"
-                w="full"
+                w="100%"
                 bgColor="white"
                 color="black"
                 borderColor="gray.200"

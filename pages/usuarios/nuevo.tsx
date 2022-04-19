@@ -1,94 +1,160 @@
 import Header from "@/common/Header";
 import DesktopLayout from "@/layouts/DesktopLayout";
+import Router from "next/router";
 
 import {
-    Box,
-    FormLabel,
-    Input,
-    FormControl,
-    RadioGroup,
-    HStack,
-    Radio,
-    Center,
-    Divider,
-    Switch,
-    Stack,
-    Button,
+  FormLabel,
+  Input,
+  FormControl,
+  RadioGroup,
+  HStack,
+  VStack,
+  Radio,
+  Button,
+  Spacer,
+  useToast,
 } from "@chakra-ui/react";
-import Link from "next/link";
 
+import { useState } from "react";
+import { IUsuario } from "@/services/api.models";
+import { UsuariosService } from "@/services/usuarios.service";
 
 function UsuarioNuevo() {
-    return (
-        <div>
+  const [usuario, setUsuario] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [rol, setRol] = useState("USUARIO");
 
+  const [cargando, setCargando] = useState(false);
+  const toast = useToast();
 
-            <DesktopLayout>
+  const altaUsuario = async () => {
+    setCargando(true);
+    const alta: IUsuario = {
+      usuario,
+      email,
+      password,
+      rol,
+      createdAt: new Date(),
+    };
 
-                <Header title={"Nuevo Usuario"} />
+    const service = new UsuariosService();
+    const respuesta = await service.nuevo(alta);
+    console.log(respuesta);
 
-                <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' rounded='md' bg='white'>
-                    
+    if (respuesta.id === undefined) {
+      toast({
+        title: "Error",
+        status: "error",
+        description: `Error al dar de alta, verifique sus campos`,
+      });
+      setCargando(false);
+    } else {
+      toast({
+        title: "Guardado",
+        status: "success",
+        description: `${respuesta.usuario} con ID ${respuesta.id}`,
+      });
 
-                    <Center>
-                        <Divider orientation='vertical' />
-                        <FormControl isRequired>
-                            <FormLabel htmlFor='nombre'>Nombre</FormLabel>
-                            <Input variant="filled" id='nombre' placeholder='María' />
-                        </FormControl>
+      Router.back();
+    }
+  };
 
-                        <FormControl isRequired paddingLeft={5}>
-                            <FormLabel htmlFor='apellidos'>Apellidos</FormLabel>
-                            <Input variant="filled" id='apellidos' placeholder='Juarez Gallegos' />
-                        </FormControl>
-                    </Center>
+  return (
+    <DesktopLayout>
+      <Header title={"Nuevo Usuario"} />
+      <FormControl isRequired>
+        <VStack
+          m={2}
+          padding={5}
+          borderRadius={10}
+          boxShadow="2xl"
+          p="6"
+          rounded="md"
+          bg="white"
+          spacing={2}
+          alignItems={"start"}
+        >
+          <FormLabel htmlFor="usuario">Nombre de usuario</FormLabel>
+          <Input
+            isRequired
+            variant="filled"
+            id="usuario"
+            placeholder="María"
+            value={usuario}
+            onChange={(e) => setUsuario(e.target.value.toLowerCase())}
+          />
 
-                    <FormControl isRequired paddingTop={15}>
-                        <FormLabel htmlFor='email'>Email</FormLabel>
-                        <Input variant="filled" id='email' placeholder='maria@gmail.com' />
-                    </FormControl>
+          <FormLabel htmlFor="email">Email</FormLabel>
+          <Input
+            isRequired
+            variant="filled"
+            id="email"
+            type={"email"}
+            placeholder="maria@gmail.com"
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-                    <FormControl isRequired paddingTop={15}>
-                        <FormLabel htmlFor='telefono'>Teléfono</FormLabel>
-                        <Input variant="filled" id='telefono' placeholder='4430000000' />
-                    </FormControl>
+          <FormLabel htmlFor="contraseña">Contraseña</FormLabel>
+          <Input
+            variant="filled"
+            id="password"
+            type={"password"}
+            isRequired={true}
+            onChange={(e) => setPassword(e.target.value)}
+          />
 
+          <FormLabel htmlFor="rol">Seleccione Rol</FormLabel>
 
-                    <FormLabel as='legend' paddingTop={15}>Tipo de Usuario</FormLabel>
-                    <RadioGroup defaultValue='Itachi'>
-                        <HStack spacing='24px'>
-                            <Radio value='Capturista'>Capturista</Radio>
-                            <Radio value='Administrador'>Administrador</Radio>
-                        
-                        </HStack>
-                    </RadioGroup>
+          <RadioGroup
+            id="rol"
+            aria-required={true}
+            defaultValue="USUARIO"
+            onChange={(e) => setRol(e)}
+          >
+            <HStack spacing="1rem">
+              <Radio size={"lg"} value="USUARIO">
+                Usuario Comun
+              </Radio>
 
+              <Radio size={"lg"} value="TECNICO">
+                Es Tecnico
+              </Radio>
 
-                    <FormControl isRequired paddingTop={15}>
-                        <FormLabel htmlFor='contraseña'>Contraseña</FormLabel>
-                        <Input variant="filled" id='contraseña' placeholder='123456789' />
-                    </FormControl>
-                    <Stack marginTop={50} direction="row" spacing={4} align="center">
-            <Button colorScheme="twitter" variant="solid">
+              <Radio size={"lg"} value="CAPTURISTA">
+                Capturista
+              </Radio>
+
+              <Radio size={"lg"} value="ADMIN">
+                Administrador
+              </Radio>
+            </HStack>
+          </RadioGroup>
+
+          <HStack marginTop={50} spacing={4} w={"100%"}>
+            <Spacer />
+            <Button
+              id="guardar"
+              colorScheme="blue"
+              variant="solid"
+              onClick={altaUsuario}
+              isLoading={cargando}
+            >
               Agregar
             </Button>
 
-            <Link href={"/usuarios"}>
-              <a>
-                {" "}
-                <Button colorScheme="red" variant="outline">
-                  Cancelar
-                </Button>
-              </a>
-            </Link>
-          </Stack>
-
-                </Box>
-
-            </DesktopLayout>
-
-        </div>
-    );
+            <Button
+              colorScheme="red"
+              variant="outline"
+              onClick={() => Router.back()}
+            >
+              Cancelar
+            </Button>
+          </HStack>
+        </VStack>
+      </FormControl>
+    </DesktopLayout>
+  );
 }
 
 export default UsuarioNuevo;

@@ -1,7 +1,5 @@
-import { BsFilterLeft } from "react-icons/bs";
-import { Box, Center, Grid, GridItem } from "@chakra-ui/react";
+import { Grid, GridItem } from "@chakra-ui/react";
 
-import { useState } from "react";
 import Navbar from "@/common/Navbar";
 
 interface IDesktopLayout {
@@ -15,17 +13,11 @@ const DesktopLayout = ({ children }: IDesktopLayout) => {
       templateRows="repeat(1, 1fr)"
       templateColumns={"repeat( 9, 1fr)"}
       gap={0}
-      
     >
-      <GridItem
-        
-        width={"fit-content"}
-        colSpan={1}
-        shadow="sm"
-      >
+      <GridItem width={"20vh"} colSpan={1} shadow="sm">
         <Navbar />
       </GridItem>
-      <GridItem colSpan={8} bg="#f5f5f5" padding={2}>
+      <GridItem colSpan={8} bg="#f5f5f5">
         {children}
       </GridItem>
     </Grid>

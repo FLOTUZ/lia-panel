@@ -1,18 +1,17 @@
 import Header from "@/common/Header";
 import DesktopLayout from "@/layouts/DesktopLayout";
-import { AddIcon, AttachmentIcon, DeleteIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
+import { IUsuario } from "@/services/api.models";
+import { UsuariosService } from "@/services/usuarios.service";
+import {
+  AddIcon,
+  AttachmentIcon,
+  DeleteIcon,
+  EditIcon,
+  SearchIcon,
+} from "@chakra-ui/icons";
 import {
   Box,
   Button,
-  FormControl,
-  Input,
-  Spacer,
-  Stack,
-  Switch,
-  FormLabel,
-  Text,
-  InputGroup,
-  InputLeftAddon,
   IconButton,
   TableContainer,
   Table,
@@ -23,20 +22,24 @@ import {
   Tbody,
   Td,
   useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   Badge,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 function UsuariosListado() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
+
+  const consultaUsuarios = async () => {
+    const servicio = new UsuariosService();
+    const respuesta = await servicio.listado();
+    setUsuarios(respuesta);
+  };
+
+  useEffect(() => {
+    consultaUsuarios();
+  }, []);
+
   return (
     <DesktopLayout>
       <Header title={"Usuarios"} />
@@ -76,139 +79,57 @@ function UsuariosListado() {
 
         <TableContainer>
           <Table variant="simple" colorScheme="teal">
-            <TableCaption>Aseguradoras</TableCaption>
             <Thead>
               <Tr>
-                <Th>Nombre</Th>
-                <Th>Apellido</Th>
+                <Th>Usuario</Th>
                 <Th>Estatus</Th>
                 <Th>Rol</Th>
                 <Th>Opciones</Th>
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td>Juan</Td>
-                <Td>Guzman</Td>
-                <Td><Badge colorScheme='green'>Activo</Badge></Td>
-                <Td>Administrador</Td>
-                <Td>
-                  <Link href={"/usuarios/1"}>
-                    <a>
+              {usuarios.map((usuario, index) => {
+                return (
+                  <Tr key={index}>
+                    <Td>{usuario.usuario}</Td>
+                    <Td>
+                      {usuario.inactivo ? (
+                        <Badge colorScheme="yellow">Archivado</Badge>
+                      ) : (
+                        <Badge colorScheme="green">Activo</Badge>
+                      )}
+                    </Td>
+                    <Td>{usuario.rol}</Td>
+                    <Td>
+                      <Link href={`/usuarios/${usuario.id}`}>
+                        <a>
+                          <IconButton
+                            variant="outline"
+                            aria-label="edit"
+                            icon={<EditIcon />}
+                          />
+                        </a>
+                      </Link>
                       <IconButton
-                        variant="outline"
-                        aria-label="edit"
-                        icon={<EditIcon />}
+                        variant="ghost"
+                        aria-label="delet"
+                        colorScheme={"red"}
+                        icon={<AttachmentIcon color={"gray"} />}
                       />
-                    </a>
-                  </Link>
-                  <IconButton
-
-                    variant="ghost"
-                    aria-label="delet"
-                    colorScheme={"red"}
-                    icon={<AttachmentIcon color={"gray"} />}
-                  />
-                  <IconButton
-
-                    variant="ghost"
-                    aria-label="delet"
-                    colorScheme={"red"}
-                    icon={<DeleteIcon color={"red"} />}
-                  />
-
-
-
-                </Td>
-
-
-              </Tr>
-              <Tr>
-                <Td>Jose</Td>
-                <Td>Guzman</Td>
-                <Td><Badge colorScheme='green'>Activo</Badge></Td>
-                <Td>Capturador</Td>
-
-                <Td>
-                  <Link href={"/usuarios/1"}>
-                    <a>
                       <IconButton
-                        variant="outline"
-                        aria-label="edit"
-                        icon={<EditIcon />}
+                        variant="ghost"
+                        aria-label="delet"
+                        colorScheme={"red"}
+                        icon={<DeleteIcon color={"red"} />}
                       />
-
-                    </a>
-                  </Link>
-                  <IconButton
-
-                    variant="ghost"
-                    aria-label="delet"
-                    colorScheme={"red"}
-                    icon={<AttachmentIcon color={"gray"} />}
-                  />
-                  <IconButton
-
-                    variant="ghost"
-                    aria-label="delet"
-                    colorScheme={"red"}
-                    icon={<DeleteIcon color={"red"} />}
-                  />
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>Fernando</Td>
-                <Td>Torres</Td>
-                <Td><Badge>Desabilitado</Badge>
-                </Td>
-                <Td>Administrador</Td>
-                <Td>
-                  <IconButton
-                    variant="outline"
-                    aria-label="edit"
-                    icon={<EditIcon />}
-
-                  />
-                  <IconButton
-
-                    variant="ghost"
-                    aria-label="delet"
-                    colorScheme={"red"}
-                    icon={<AttachmentIcon color={"gray"} />}
-                  />
-                  <IconButton
-
-                    variant="ghost"
-                    aria-label="delet"
-                    colorScheme={"red"}
-                    icon={<DeleteIcon color={"red"} />}
-                  />
-                </Td>
-              </Tr>
+                    </Td>
+                  </Tr>
+                );
+              })}
             </Tbody>
           </Table>
         </TableContainer>
       </Box>
-      <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Crea una nueva asistencia</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl mt={4}>
-              <FormLabel>Nombre de la asistencia</FormLabel>
-              <Input placeholder="Nombre de la asistencia" />
-            </FormControl>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
-              Guardar
-            </Button>
-            <Button onClick={onClose}>Cancelar</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
     </DesktopLayout>
   );
 }

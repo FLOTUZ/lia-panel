@@ -1,8 +1,6 @@
-import Navbar from "@/common/Navbar";
+import Kanban from "@/layouts/Kanban";
 import DesktopLayout from "@/layouts/DesktopLayout";
-import { StarIcon } from "@chakra-ui/icons";
-import { Badge, Box, Container, Text } from "@chakra-ui/react";
-import Image from "next/image";
+import Header from "@/common/Header";
 
 function TicketsListado() {
  
@@ -10,7 +8,8 @@ function TicketsListado() {
   return (
     <>
       <DesktopLayout>
-     
+        <Header title="Tickets" />
+        <Kanban />
       </DesktopLayout>
     </>
   );
