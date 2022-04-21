@@ -237,7 +237,7 @@ function TicketNuevo() {
             <Input
               variant="filled"
               id="banderazo"
-              placeholder="120.00"
+              placeholder="0.00"
               paddingLeft={8}
               type="number"
             />
@@ -255,7 +255,7 @@ function TicketNuevo() {
             <Input
               variant="filled"
               id="bandetotalSalidarazo"
-              placeholder="120.00"
+              placeholder="0.00"
               paddingLeft={8}
               type="number"
             />
@@ -278,7 +278,7 @@ function TicketNuevo() {
             <Input
               variant="filled"
               id="montoSeguro"
-              placeholder="000.00"
+              placeholder="0.00"
               paddingLeft={8}
               type="number"
             />
@@ -296,7 +296,7 @@ function TicketNuevo() {
             <Input
               variant="filled"
               id="costoGpoLias"
-              placeholder="000.00"
+              placeholder="0.00"
               paddingLeft={8}
               type="number"
             />
@@ -317,7 +317,7 @@ function TicketNuevo() {
             <Input
               variant="filled"
               id="deducible"
-              placeholder="000.00"
+              placeholder="0.00"
               paddingLeft={8}
               type="number"
             />
@@ -328,7 +328,19 @@ function TicketNuevo() {
             <Input
               variant="filled"
               id="kilometros"
-              placeholder="200"
+              placeholder="0"
+              type="number"
+              min={0}
+            />
+          </FormControl>
+
+          <FormControl paddingLeft={5} paddingTop={15}>
+            <FormLabel htmlFor="kilometros">Numero de casetas</FormLabel>
+            <Input
+              variant="filled"
+              id="kilometros"
+              placeholder="0"
+              min={0}
               type="number"
             />
           </FormControl>
@@ -348,7 +360,7 @@ function TicketNuevo() {
             <Input
               variant="filled"
               id="total"
-              placeholder="000.00"
+              placeholder="0.00"
               paddingLeft={8}
               type="number"
             />
@@ -366,7 +378,7 @@ function TicketNuevo() {
             <Input
               variant="filled"
               id="anticipo"
-              placeholder="000.00"
+              placeholder="0.00"
               paddingLeft={8}
               type="number"
             />
@@ -399,7 +411,7 @@ function TicketNuevo() {
         <Center>
           <Divider orientation="vertical" />
 
-          <FormControl isRequired paddingTop={15} >
+          <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="cotizacionTecnico">
               Solución y Cotización del Técnico
             </FormLabel>
