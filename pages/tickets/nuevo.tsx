@@ -420,8 +420,7 @@ function TicketNuevo() {
         </Center>
 
         <Center>
-          <Divider orientation="vertical" />
-          <FormControl isRequired paddingTop={15}>
+          <FormControl isRequired paddingTop={15} paddingRight={15}>
             <FormLabel htmlFor="horaDeContacto">Hora de Contacto</FormLabel>
             <Input
               variant="filled"
@@ -431,20 +430,6 @@ function TicketNuevo() {
               paddingLeft={5}
             />
           </FormControl>
-
-          <FormControl isRequired paddingTop={15} paddingLeft={5}>
-            <FormLabel htmlFor="horaDeCierre">Hora de Cierre</FormLabel>
-            <Input
-              variant="filled"
-              id="horaDeCierre"
-              type="time"
-              placeholder="08:55 a.m."
-              paddingLeft={5}
-            />
-          </FormControl>
-        </Center>
-
-        <Center>
           <Divider orientation="vertical" />
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="costoManoDeObra">
@@ -520,7 +505,12 @@ function TicketNuevo() {
             height={200}
             width={200}
           >
-            <Image src="" alt="Evidencia 1" paddingStart={8} paddingTop={16} />
+            <Image
+              src=""
+              alt="Evidencia justificacion del problema 1"
+              paddingStart={8}
+              paddingTop={16}
+            />
           </Box>
           <Box
             m={2}
@@ -533,7 +523,12 @@ function TicketNuevo() {
             width={200}
             paddingLeft={10}
           >
-            <Image src="" alt="Evidencia 2" paddingStart={8} paddingTop={16} />
+            <Image
+              src=""
+              alt="Evidencia justificacion del problema 2"
+              paddingStart={8}
+              paddingTop={16}
+            />
           </Box>
         </Center>
       </Box>
