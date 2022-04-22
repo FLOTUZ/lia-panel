@@ -63,6 +63,8 @@ export default function AseguradorasListado() {
           rounded="md"
           bg="white"
         >
+          <FormControl>
+        
           <Link href={"/aseguradoras/nuevo"}>
             <a>
               {" "}
@@ -76,6 +78,7 @@ export default function AseguradorasListado() {
               </Button>
             </a>
           </Link>
+          </FormControl>
         </Box>
 
         <Box marginLeft="25%" p={4}>
