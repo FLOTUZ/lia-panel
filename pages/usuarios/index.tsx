@@ -26,6 +26,7 @@ import {
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { MdPersonAdd } from "react-icons/md";
 
 function UsuariosListado() {
   const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
@@ -66,7 +67,7 @@ function UsuariosListado() {
             <a>
               {" "}
               <Button
-                leftIcon={<AddIcon />}
+                leftIcon={<MdPersonAdd/>}
                 colorScheme="facebook"
                 variant="solid"
                 marginLeft={"80%"}

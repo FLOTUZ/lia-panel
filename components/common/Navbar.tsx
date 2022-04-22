@@ -5,7 +5,7 @@ import {
   MdSupervisedUserCircle,
   MdVerifiedUser,
 } from "react-icons/md";
-import { IoBook, IoReceipt } from "react-icons/io5";
+import { IoBook, IoExit, IoReceipt } from "react-icons/io5";
 
 import Link from "next/link";
 import Image from "next/image";
@@ -43,6 +43,12 @@ const Navbar = () => {
       path: "/aseguradoras",
       icon: <MdVerifiedUser size={32} />,
     },
+    {
+      name: "Salir",
+      path: "/",
+      icon: <IoExit size={32} />,
+    },
+
   ];
   return (
     <Stack width="20vh" h="100vh" pos="fixed" p={2}>
