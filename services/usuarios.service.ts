@@ -2,17 +2,18 @@ import { IUsuario } from "./api.models";
 import { Actualizar, Consultar, Crear, Eliminar } from "./ApiCall";
 
 export class UsuariosService {
-  private url = "/usuarios";
+  private url = "/users";
 
   public async nuevo(data: IUsuario) {
     const respuesta: any = await Crear(this.url, data);
-
-    return respuesta.data as IUsuario;
+    console.log(respuesta.message);
+    
+    return respuesta;
   }
 
   public async update(data: IUsuario, id: number) {
     const respuesta: any = await Actualizar(`${this.url}/${id}`, data);
-    return respuesta.data as IUsuario;
+    return respuesta;
   }
 
   public async listado() {
@@ -22,7 +23,7 @@ export class UsuariosService {
 
   public async userById(id: number) {
     const respuesta: any = await Consultar(`${this.url}/${id}`);
-    return respuesta.data as IUsuario;
+    return respuesta;
   }
 
   public async eliminar(id: number) {

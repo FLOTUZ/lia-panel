@@ -7,7 +7,6 @@ import {
   AttachmentIcon,
   DeleteIcon,
   EditIcon,
-  SearchIcon,
 } from "@chakra-ui/icons";
 import {
   Box,
@@ -21,8 +20,8 @@ import {
   Th,
   Tbody,
   Td,
-  useDisclosure,
   Badge,
+  useToast,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -30,16 +29,21 @@ import { MdPersonAdd } from "react-icons/md";
 
 function UsuariosListado() {
   const [usuarios, setUsuarios] = useState<IUsuario[]>([]);
-
-  const consultaUsuarios = async () => {
-    const servicio = new UsuariosService();
-    const respuesta = await servicio.listado();
-    setUsuarios(respuesta);
-  };
+  const toast = useToast();
 
   useEffect(() => {
+    const consultaUsuarios = async () => {
+      const servicio = new UsuariosService();
+      const respuesta = await servicio.listado();
+      respuesta == undefined
+        ? toast({
+            title: "Error de servidor",
+            status: "error",
+          })
+        : setUsuarios(respuesta);
+    };
     consultaUsuarios();
-  }, []);
+  }, [toast]);
 
   return (
     <DesktopLayout>
@@ -89,44 +93,50 @@ function UsuariosListado() {
               </Tr>
             </Thead>
             <Tbody>
-              {usuarios.map((usuario, index) => {
-                return (
-                  <Tr key={index}>
-                    <Td>{usuario.usuario}</Td>
-                    <Td>
-                      {usuario.inactivo ? (
-                        <Badge colorScheme="yellow">Archivado</Badge>
-                      ) : (
-                        <Badge colorScheme="green">Activo</Badge>
-                      )}
-                    </Td>
-                    <Td>{usuario.rol}</Td>
-                    <Td>
-                      <Link href={`/usuarios/${usuario.id}`}>
-                        <a>
-                          <IconButton
-                            variant="outline"
-                            aria-label="edit"
-                            icon={<EditIcon />}
-                          />
-                        </a>
-                      </Link>
-                      <IconButton
-                        variant="ghost"
-                        aria-label="delet"
-                        colorScheme={"red"}
-                        icon={<AttachmentIcon color={"gray"} />}
-                      />
-                      <IconButton
-                        variant="ghost"
-                        aria-label="delet"
-                        colorScheme={"red"}
-                        icon={<DeleteIcon color={"red"} />}
-                      />
-                    </Td>
-                  </Tr>
-                );
-              })}
+              {usuarios.length == 0 ? (
+                <Tr>
+                  <Td>No hay data</Td>
+                </Tr>
+              ) : (
+                usuarios.map((usuario, index) => {
+                  return (
+                    <Tr key={index}>
+                      <Td>{usuario.usuario}</Td>
+                      <Td>
+                        {usuario.inactivo ? (
+                          <Badge colorScheme="yellow">Archivado</Badge>
+                        ) : (
+                          <Badge colorScheme="green">Activo</Badge>
+                        )}
+                      </Td>
+                      <Td>{usuario.rol}</Td>
+                      <Td>
+                        <Link href={`/usuarios/${usuario.id}`}>
+                          <a>
+                            <IconButton
+                              variant="outline"
+                              aria-label="edit"
+                              icon={<EditIcon />}
+                            />
+                          </a>
+                        </Link>
+                        <IconButton
+                          variant="ghost"
+                          aria-label="delet"
+                          colorScheme={"red"}
+                          icon={<AttachmentIcon color={"gray"} />}
+                        />
+                        <IconButton
+                          variant="ghost"
+                          aria-label="delet"
+                          colorScheme={"red"}
+                          icon={<DeleteIcon color={"red"} />}
+                        />
+                      </Td>
+                    </Tr>
+                  );
+                })
+              )}
             </Tbody>
           </Table>
         </TableContainer>

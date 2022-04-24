@@ -14,6 +14,8 @@ import {
   VStack,
   Text,
   useToast,
+  Switch,
+  Flex,
 } from "@chakra-ui/react";
 
 import { useRouter } from "next/router";
@@ -23,6 +25,7 @@ function UsuarioVer() {
   const [usuario, setUsuario] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [inactivo, setInactivo] = useState(false);
   const [rol, setRol] = useState("");
 
   const [data, setData] = useState<IUsuario>();
@@ -37,24 +40,26 @@ function UsuarioVer() {
   useEffect(() => {
     const getUser = async () => {
       const servicio = new UsuariosService();
-      const respuesta: IUsuario = await servicio.userById(Number(idUsuario));
-      setData(respuesta);
+      const respuesta = await servicio.userById(Number(idUsuario));
+      if (respuesta.status == 200) {
+        setData(respuesta.data as IUsuario);
+      }
     };
     getUser();
   }, [idUsuario]);
 
   const actualizaUsuario = async () => {
     setCargando(true);
-    const actualizar: IUsuario = {
+    const data: IUsuario = {
       usuario,
       email,
       password,
+      inactivo,
       rol,
-      updatedAt: new Date(),
     };
 
     const service = new UsuariosService();
-    const respuesta = await service.update(actualizar, Number(idUsuario));
+    const respuesta = await service.update(data, Number(idUsuario));
 
     if (respuesta === undefined) {
       toast({
@@ -93,6 +98,26 @@ function UsuarioVer() {
             spacing={2}
             alignItems={"start"}
           >
+            {inactivo ? (
+              <Flex
+                w={"100%"}
+                bgColor={"red"}
+                justifyContent="center"
+                borderRadius={"2xl"}
+              >
+                <Text color={"white"} fontWeight="bold">
+                  Este usuario está inactivo
+                </Text>
+              </Flex>
+            ) : null}
+            <Switch
+              onChange={() => {
+                setInactivo(!inactivo);
+              }}
+              isChecked={inactivo}
+            >
+              Activo
+            </Switch>
             <FormLabel htmlFor="usuario">Nombre de usuario</FormLabel>
             <Input
               isRequired

@@ -18,6 +18,7 @@ import {
 import { useState } from "react";
 import { IUsuario } from "@/services/api.models";
 import { UsuariosService } from "@/services/usuarios.service";
+import axios from "axios";
 
 function UsuarioNuevo() {
   const [usuario, setUsuario] = useState("");
@@ -29,31 +30,31 @@ function UsuarioNuevo() {
   const toast = useToast();
 
   const altaUsuario = async () => {
-    setCargando(true);
-    const alta: IUsuario = {
+    //setCargando(true);
+    const data: IUsuario = {
       usuario,
       email,
       password,
       rol,
-      createdAt: new Date(),
     };
 
     const service = new UsuariosService();
-    const respuesta = await service.nuevo(alta);
-    console.log(respuesta);
+    const respuesta = await service.nuevo(data);
+    console.log(data);
 
-    if (respuesta.id === undefined) {
+    if (respuesta.status != 201) {
+      setCargando(false);
       toast({
         title: "Error",
         status: "error",
         description: `Error al dar de alta, verifique sus campos`,
       });
-      setCargando(false);
-    } else {
+    }
+    if (respuesta.status == 201) {
       toast({
         title: "Guardado",
         status: "success",
-        description: `${respuesta.usuario} con ID ${respuesta.id}`,
+        description: `Se guardo el usuario`,
       });
 
       Router.back();
