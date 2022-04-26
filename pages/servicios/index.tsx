@@ -41,6 +41,8 @@ import {
   SearchIcon,
 } from "@chakra-ui/icons";
 import { useState } from "react";
+import { ServiciosService } from "@/services/servicios.service";
+import { IServicio } from "@/services/api.models";
 
 function ServiciosListado() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -50,6 +52,20 @@ function ServiciosListado() {
     onClose: onCloseedit,
   } = useDisclosure();
   const [query, setQuery] = useState("");
+
+  const [nombreServicio, setNombreServicio] = useState("");
+
+  const guardarServicio = async () => {
+    const data: IServicio = {
+      nombre: nombreServicio,
+      tipo: "DOMESTICO",
+    };
+
+    const service = new ServiciosService()
+    const response = await service.create(data)
+    console.log(response);
+
+  };
 
   return (
     <DesktopLayout>
@@ -83,81 +99,76 @@ function ServiciosListado() {
           >
             Nuevo servicio
           </Button>
-        </Box >
+        </Box>
         <Box marginLeft={"25%"}>
-          
-        <TableContainer  >
-          <Table size={"sm"} variant="unstyled" colorScheme="teal">
-            <TableCaption>Servicios</TableCaption>
-            <Thead>
-              <Tr>
-                <Th>Nombre</Th>
-                <Th>Opciones</Th>              
-              </Tr>
-            </Thead>
-            <Tbody>
-              <Tr>
-                <Td>Asistencia Vial</Td>
+          <TableContainer>
+            <Table size={"sm"} variant="unstyled" colorScheme="teal">
+              <TableCaption>Servicios</TableCaption>
+              <Thead>
+                <Tr>
+                  <Th>Nombre</Th>
+                  <Th>Opciones</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                <Tr>
+                  <Td>Asistencia Vial</Td>
 
-                <Td>
-                  <IconButton
-                    onClick={onOpenedit}
-                  
-                    variant="ghost"
-                    aria-label="edit"
-                    icon={<EditIcon />}
-                  /> <IconButton
-            
-                    variant="ghost"
-                    aria-label="delet"
-                    colorScheme={"red"}
-                    icon={<DeleteIcon color={"red"} />}
-                  />
+                  <Td>
+                    <IconButton
+                      onClick={onOpenedit}
+                      variant="ghost"
+                      aria-label="edit"
+                      icon={<EditIcon />}
+                    />{" "}
+                    <IconButton
+                      variant="ghost"
+                      aria-label="delet"
+                      colorScheme={"red"}
+                      icon={<DeleteIcon color={"red"} />}
+                    />
+                  </Td>
+                </Tr>
 
-                </Td>
-              </Tr>
+                <Tr>
+                  <Td>promeria</Td>
 
-              <Tr>
-                <Td>promeria</Td>
+                  <Td>
+                    <IconButton
+                      onClick={onOpenedit}
+                      variant="ghost"
+                      aria-label="edit"
+                      icon={<EditIcon />}
+                    />{" "}
+                    <IconButton
+                      variant="ghost"
+                      aria-label="delet"
+                      colorScheme={"red"}
+                      icon={<DeleteIcon color={"red"} />}
+                    />
+                  </Td>
+                </Tr>
+                <Tr>
+                  <Td>Electricista</Td>
+                  <Td>
+                    <IconButton
+                      onClick={onOpenedit}
+                      variant="ghost"
+                      aria-label="edit"
+                      icon={<EditIcon />}
+                    />
 
-                <Td>
-                  <IconButton
-                    onClick={onOpenedit}
-                    variant="ghost"
-                    aria-label="edit"
-                    icon={<EditIcon />}
-                  /> <IconButton
-          
-                    variant="ghost"
-                    aria-label="delet"
-                    colorScheme={"red"}
-                    icon={<DeleteIcon color={"red"} />}
-                  />
-
-                </Td>
-              </Tr>
-              <Tr>
-                <Td>Electricista</Td>
-                <Td>
-                  <IconButton
-                    onClick={onOpenedit}
-                    variant="ghost"
-                    aria-label="edit"
-                    icon={<EditIcon />}
-                  />
-
-                  <IconButton
-
-                    variant="ghost"
-                    aria-label="delet"
-                    colorScheme={"red"}
-                    icon={<DeleteIcon color={"red"} />}
-                  />
-                </Td>
-              </Tr>
-            </Tbody>
-          </Table>
-        </TableContainer>
+                    <IconButton
+                      variant="ghost"
+                      aria-label="delet"
+                      colorScheme={"red"}
+                      icon={<DeleteIcon color={"red"} />}
+                    />
+                  </Td>
+                </Tr>
+              </Tbody>
+            </Table>
+          </TableContainer>
         </Box>
       </Box>
 
@@ -169,12 +180,17 @@ function ServiciosListado() {
           <ModalBody pb={6}>
             <FormControl mt={4}>
               <FormLabel>Nombre del servicio</FormLabel>
-              <Input placeholder="Nombre del servicio" />
+              <Input
+                placeholder="Nombre del servicio"
+                onChange={(e) => {
+                  setNombreServicio(e.target.value);
+                }}
+              />
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
+            <Button colorScheme="blue" mr={3} onClick={guardarServicio}>
               Guardar
             </Button>
             <Button onClick={onClose}>Cancelar</Button>
@@ -188,12 +204,19 @@ function ServiciosListado() {
       >
         <ModalOverlay />
         <ModalContent>
+          {/* MODAL PARA EDITAR SERVICIO */}
           <ModalHeader>Editar servicio</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl mt={4}>
               <FormLabel>Nombre del servicio</FormLabel>
-              <Input placeholder="Nombre del servicio" />
+              <Input
+                placeholder="Nombre del servicio"
+                onChange={(e) => {
+                  //setNombreServicio(e.target.value)
+                  alert("Hola");
+                }}
+              />
             </FormControl>
           </ModalBody>
 

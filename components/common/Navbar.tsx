@@ -45,7 +45,7 @@ const Navbar = () => {
     },
     {
       name: "Salir",
-      path: "/",
+      path: "/login",
       icon: <IoExit size={32} />,
     },
 

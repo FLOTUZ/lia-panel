@@ -32,3 +32,11 @@ export interface ITecnico {
   createdAt?: Date | null;
   updatedAt?: Date | null;
 }
+
+export interface IServicio {
+  id?: number;
+  nombre: string;
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
+  tipo: string;
+}
