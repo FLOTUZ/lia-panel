@@ -19,3 +19,16 @@ export interface ITicket {
   aseguradora: string;
   tecnico?: string;
 }
+
+export interface ITecnico {
+  id?: number;
+  nombre: string;
+  apellido_paterno: string;
+  apellido_materno: string;
+  calificacion?: number;
+  telefono: string;
+  usuarioId: number;
+  ciudadId: number;
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
+}

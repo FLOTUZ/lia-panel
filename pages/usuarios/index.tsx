@@ -34,16 +34,20 @@ function UsuariosListado() {
   useEffect(() => {
     const consultaUsuarios = async () => {
       const servicio = new UsuariosService();
-      const respuesta = await servicio.listado();
-      respuesta == undefined
-        ? toast({
-            title: "Error de servidor",
-            status: "error",
-          })
-        : setUsuarios(respuesta);
+      const respuesta = await servicio.getAll();
+      const data = respuesta.data as IUsuario[];
+
+      if (respuesta.status != 200) {
+        // toast({
+        //   title: "Error de servidor",
+        //   status: "error",
+        // });
+      } else {
+        setUsuarios(data);
+      }
     };
     consultaUsuarios();
-  }, [toast]);
+  }, []);
 
   return (
     <DesktopLayout>
@@ -71,7 +75,7 @@ function UsuariosListado() {
             <a>
               {" "}
               <Button
-                leftIcon={<MdPersonAdd/>}
+                leftIcon={<MdPersonAdd />}
                 colorScheme="facebook"
                 variant="solid"
                 marginLeft={"80%"}

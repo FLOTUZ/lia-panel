@@ -18,10 +18,32 @@ import {
   InputLeftAddon,
   InputGroup,
   IconButton,
+  useToast,
 } from "@chakra-ui/react";
 import { AddIcon, PhoneIcon, SearchIcon } from "@chakra-ui/icons";
+import { useEffect, useState } from "react";
+import { ITecnico } from "@/services/api.models";
+import { TecnicoService } from "@/services/tecnicos.service";
 
 function TenicosListado() {
+  const toast = useToast();
+
+  const [listadoTecnicos, setListadoTenicos] = useState<ITecnico[]>([]);
+
+  useEffect(() => {
+    const consultarTecnicos = async () => {
+      const service = new TecnicoService();
+      const respuesta = await service.getAll();
+
+      if (respuesta.status != 200) {
+      } else {
+        const data = respuesta.data as ITecnico[];
+        setListadoTenicos(data);
+      }
+    };
+
+    consultarTecnicos();
+  }, []);
   return (
     <DesktopLayout>
       <Header title={"Técnicos "} />
@@ -44,7 +66,7 @@ function TenicosListado() {
           rounded="md"
           bg="white"
         >
-          <Link href={"/tecnicos/nuevo"}>
+          <Link href={"/usuarios/nuevo"}>
             <a>
               {" "}
               <Button
@@ -73,46 +95,31 @@ function TenicosListado() {
 
         <TableContainer>
           <Table variant="striped" colorScheme="teal">
-            <TableCaption>Técnicos</TableCaption>
             <Thead>
               <Tr>
                 <Th>Nombre</Th>
-                <Th>Servicios</Th>
-                <Th>Estatus</Th>
-                <Th>Ultima actividad</Th>
+                <Th>Apellido Paterno</Th>
                 <Th>Ciudad</Th>
                 <Th>Telefono</Th>
                 <Th>Opciones</Th>
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td>Pedro</Td>
-                <Td>plomeria</Td>
-                <Td>Disponible</Td>
-                <Td>2022/04/06 11:09</Td>
-                <Td>Morelia</Td>
-                <Td>4433666666</Td>
-                <Td>edit</Td>
-              </Tr>
-              <Tr>
-                <Td>Juan</Td>
-                <Td>Electricista</Td>
-                <Td>Disponible</Td>
-                <Td>2022/04/06 11:09</Td>
-                <Td>Monterrey</Td>
-                <Td>4433777777</Td>
-                <Td>edit</Td>
-              </Tr>
-              <Tr>
-                <Td>Esteban</Td>
-                <Td>Asistencia Vial</Td>
-                <Td>Disponible</Td>
-                <Td>2022/04/06 11:09</Td>
-                <Td>Guadalajara</Td>
-                <Td>4433888888</Td>
-                <Td>edit</Td>
-              </Tr>
+              {listadoTecnicos.length != 0 ? (
+                listadoTecnicos.map((t, index) => {
+                  <Tr key={index}>
+                    <Td>{t.nombre}</Td>
+                    <Td>{t.apellido_paterno}</Td>
+                    <Td>{t.ciudadId}</Td>
+                    <Td>{t.telefono}</Td>
+                    <Td>edit</Td>
+                  </Tr>;
+                })
+              ) : (
+                <Tr>
+                  <Td>No hay data</Td>
+                </Tr>
+              )}{" "}
             </Tbody>
           </Table>
         </TableContainer>

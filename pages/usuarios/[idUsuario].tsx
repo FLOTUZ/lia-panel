@@ -40,7 +40,7 @@ function UsuarioVer() {
   useEffect(() => {
     const getUser = async () => {
       const servicio = new UsuariosService();
-      const respuesta = await servicio.userById(Number(idUsuario));
+      const respuesta = await servicio.getById(Number(idUsuario));
       if (respuesta.status == 200) {
         setData(respuesta.data as IUsuario);
       }
