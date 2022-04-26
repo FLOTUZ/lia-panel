@@ -1,5 +1,18 @@
+import Kanban from "@/layouts/Kanban";
+import DesktopLayout from "@/layouts/DesktopLayout";
+import Header from "@/common/Header";
+
 function TicketsListado() {
-  return <div>Listado de tickets</div>;
+ 
+
+  return (
+    <>
+      <DesktopLayout>
+        <Header title="Tickets" />
+        <Kanban />
+      </DesktopLayout>
+    </>
+  );
 }
 
 export default TicketsListado;

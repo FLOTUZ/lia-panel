@@ -6,7 +6,7 @@ async function Consultar(url = "", params = {}) {
   try {
     let respuesta = await Axios({
       method: "GET",
-      url: process.env.NEXT_PUBLIC_API_URL + url + filtros,
+      url: process.env.NEXT_PUBLIC_APIURL + url + filtros,
     });
     return respuesta;
   } catch (error) {
@@ -21,7 +21,7 @@ async function Crear(url = "", data = {}) {
   try {
     let respuesta = await Axios({
       method: "POST",
-      url: process.env.NEXT_PUBLIC_API_URL + url,
+      url: process.env.NEXT_PUBLIC_APIURL + url,
       data: data,
     });
     return respuesta;
@@ -37,7 +37,7 @@ async function Actualizar(url = "", data = {}) {
   try {
     let respuesta = await Axios({
       method: "PATCH",
-      url: process.env.NEXT_PUBLIC_API_URL + url,
+      url: process.env.NEXT_PUBLIC_APIURL + url,
       data: data,
     });
     return respuesta;
@@ -53,7 +53,7 @@ async function Eliminar(url = "") {
   try {
     let respuesta = await Axios({
       method: "DELETE",
-      url: process.env.NEXT_PUBLIC_API_URL + url,
+      url: process.env.NEXT_PUBLIC_APIURL + url,
     });
     return respuesta;
   } catch (error) {
