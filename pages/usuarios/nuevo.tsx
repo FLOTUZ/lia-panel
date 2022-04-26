@@ -1,7 +1,7 @@
 import Header from "@/common/Header";
 import DesktopLayout from "@/layouts/DesktopLayout";
 import Router from "next/router";
-
+import React from "react";
 import {
   FormLabel,
   Input,
@@ -22,13 +22,15 @@ import {
   Switch,
   Text,
   Checkbox,
+
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 
-import { FormEvent, useState } from "react";
-import { ITecnico, IUsuario } from "@/services/api.models";
+import { FormEvent, useState, useEffect } from "react";
+import { ITecnico, IUsuario, IServicio } from "@/services/api.models";
 import { UsuariosService } from "@/services/usuarios.service";
 import { TecnicoService } from "@/services/tecnicos.service";
+import { ServiciosService } from "@/services/servicios.service";
 
 function UsuarioNuevo() {
   //------------------------ DATA USUARIO -------------------------------------
@@ -46,6 +48,10 @@ function UsuarioNuevo() {
   const [ciudadId, setciudadId] = useState(0);
 
   const [cargando, setCargando] = useState(false);
+  const [checkedItems, setCheckedItems] = React.useState([false, false])
+
+  const allChecked = checkedItems.every(Boolean)
+  const isIndeterminate = checkedItems.some(Boolean) && !allChecked
 
   const toast = useToast();
 
@@ -116,6 +122,27 @@ function UsuarioNuevo() {
 
     Router.back();
   };
+
+  // consulta de la tabla de servicios
+
+  const [listadoServicios, setListadoServicios] = useState<IServicio[]>([]);
+
+  useEffect(() => {
+    const consultarTecnicos = async () => {
+      const service = new ServiciosService();
+      const respuesta = await service.getAll();
+
+      if (respuesta.status != 200) {
+      } else {
+        const data = respuesta.data as IServicio[];
+        setListadoServicios(data);
+      }
+    };
+
+    consultarTecnicos();
+  }, []);
+
+
 
   return (
     <DesktopLayout>
@@ -271,6 +298,25 @@ function UsuarioNuevo() {
                         id="ciudad"
                         placeholder="Morelia"
                       />
+                    </FormControl>
+                  </Center>
+                  <Center>
+                    <Divider orientation="vertical" />
+                    <FormControl isRequired paddingTop={15}></FormControl>
+                    <FormControl>
+                      <FormLabel htmlFor="ciudad">Servicios</FormLabel>
+                      <Stack pl={6} mt={1} spacing={1}>
+                        {listadoServicios.length != 0 ? (
+                          listadoServicios.map((t, index) => {
+                            <Checkbox>
+                              {t.nombre}
+                            </Checkbox>
+                          })
+                        ) : (
+                          <></>
+                        )}{" "}
+
+                      </Stack>
                     </FormControl>
                   </Center>
                 </Box>

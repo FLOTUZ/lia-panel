@@ -4,29 +4,35 @@ import DesktopLayout from "@/layouts/DesktopLayout";
 import {
   TableContainer,
   Table,
-  TableCaption,
   Thead,
   Tr,
   Th,
   Tbody,
   Td,
-  Tfoot,
   Box,
   Button,
-  FormLabel,
   Input,
   InputLeftAddon,
   InputGroup,
   IconButton,
   useToast,
+  useDisclosure,
 } from "@chakra-ui/react";
-import { AddIcon, PhoneIcon, SearchIcon } from "@chakra-ui/icons";
+import { AddIcon, SearchIcon,DeleteIcon,EditIcon, } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { ITecnico } from "@/services/api.models";
 import { TecnicoService } from "@/services/tecnicos.service";
 
 function TenicosListado() {
   const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    isOpen: isOpenedit,
+    onOpen: onOpenedit,
+    onClose: onCloseedit,
+  } = useDisclosure();
+  const [query, setQuery] = useState("");
+
 
   const [listadoTecnicos, setListadoTenicos] = useState<ITecnico[]>([]);
 
@@ -112,7 +118,20 @@ function TenicosListado() {
                     <Td>{t.apellido_paterno}</Td>
                     <Td>{t.ciudadId}</Td>
                     <Td>{t.telefono}</Td>
-                    <Td>edit</Td>
+                    <Td>
+                    <IconButton
+                    onClick={onOpenedit}
+                    variant="ghost"
+                    aria-label="edit"
+                    icon={<EditIcon />}
+                  /> <IconButton
+          
+                    variant="ghost"
+                    aria-label="delet"
+                    colorScheme={"red"}
+                    icon={<DeleteIcon color={"red"} />}
+                  />
+                    </Td>
                   </Tr>;
                 })
               ) : (
