@@ -31,6 +31,9 @@ import {
   useDisclosure,
   Editable,
   EditablePreview,
+  CheckboxGroup,
+  Stack,
+  Checkbox,
 } from "@chakra-ui/react";
 import {
   AddIcon,
@@ -54,11 +57,12 @@ function ServiciosListado() {
   const [query, setQuery] = useState("");
 
   const [nombreServicio, setNombreServicio] = useState("");
+  const [tipoServicio, setTipoServicio] = useState("");
 
   const guardarServicio = async () => {
     const data: IServicio = {
       nombre: nombreServicio,
-      tipo: "DOMESTICO",
+      tipo: tipoServicio,
     };
 
     const service = new ServiciosService()
@@ -179,13 +183,28 @@ function ServiciosListado() {
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl mt={4}>
-              <FormLabel>Nombre del servicio</FormLabel>
-              <Input
+              <FormLabel padding={1}>Nombre del servicio</FormLabel>
+              <Input paddingBottom={2}
                 placeholder="Nombre del servicio"
                 onChange={(e) => {
                   setNombreServicio(e.target.value);
                 }}
               />
+              <FormLabel padding={1} >Tipo del servicio</FormLabel>
+              <CheckboxGroup colorScheme='green' >
+                <Stack padding={2} spacing={[1, 5]} direction={['column', 'row']}>
+                  <Checkbox onChange={(e) => {
+                    setTipoServicio(e.target.value)
+                  }} value='Domestico'>Domestico</Checkbox>
+                  <Checkbox
+                    onChange={(e) => {
+                      setTipoServicio(e.target.value)
+                    }}
+                    value='Automovilistico'>Automovilistico</Checkbox>
+
+                </Stack>
+              </CheckboxGroup>
+
             </FormControl>
           </ModalBody>
 
