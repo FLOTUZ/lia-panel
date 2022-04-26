@@ -10,14 +10,11 @@ import {
 
 import {
   Box,
-  Checkbox,
   Divider,
   FormControl,
   FormLabel,
   Input,
-  InputGroup,
   InputLeftElement,
-  InputRightElement,
   Select,
   Text,
   Textarea,
@@ -34,13 +31,24 @@ import {
   Th,
   Tbody,
   Td,
-  Tfoot
-} from "@chakra-ui/react";
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalCloseButton,
+  ModalFooter,
+  ModalHeader,
+  ModalBody,
 
+} from "@chakra-ui/react";
+import React from "react";
 
 function TicketNuevo() {
+  const { isOpen, onOpen, onClose } = useDisclosure()
+  
   return (
     <DesktopLayout>
+
       <Header title={"Nuevo Ticket"} />
 
       <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' rounded='md' bg='white'>
@@ -389,7 +397,9 @@ function TicketNuevo() {
       <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' rounded='md' bg='white'>
         <Text fontWeight="bold" fontSize='25px'>Seguimiento</Text>
 
-        <Button leftIcon={<AddIcon />} colorScheme='facebook' variant='solid' marginTop={15} marginLeft={850}>
+
+
+        <Button leftIcon={<AddIcon />} colorScheme='facebook' variant='solid' marginTop={15} marginLeft={850} onClick={onOpen}>
           Nuevo Seguimiento
         </Button>
 
@@ -416,8 +426,95 @@ function TicketNuevo() {
             </Tbody>
           </Table>
         </TableContainer>
+
+        <Button colorScheme="red" variant="outline" marginLeft={830}>
+          Descartar
+        </Button>
+        <Button colorScheme="blue" marginLeft={3}>Guardar</Button>
       </Box>
 
+
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Creación de Nuevo Seguimiento</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl isRequired>
+              <FormLabel>Asesor de Grupo Lías</FormLabel>
+              <Input placeholder='Asesor de Grupo Lías' />
+            </FormControl>
+
+            <FormControl isRequired mt={4}>
+              <FormLabel>Seguimiento</FormLabel>
+              <Input placeholder='Seguimiento' />
+            </FormControl>
+
+            <FormControl isRequired mt={4}>
+              <FormLabel>Asesor de Seguro</FormLabel>
+              <Input placeholder='Asesor de Seguro' />
+            </FormControl>
+
+            <FormControl isRequired mt={4}>
+              <FormLabel>Fecha</FormLabel>
+              <Input variant="filled" type="date" />
+            </FormControl>
+
+            <FormControl isRequired mt={4}>
+              <FormLabel >Hora</FormLabel>
+              <Input variant="filled" id='horaLlamada' type="time" />
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme='blue' mr={3}>
+              Guardar
+            </Button>
+            <Button onClick={onClose}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Creación de Cita</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl isRequired>
+              <FormLabel>Título del Ticket</FormLabel>
+              <Input placeholder='Título del Ticket' />
+            </FormControl>
+
+            <FormControl isRequired mt={4}>
+              <FormLabel>Estatus</FormLabel>
+              <Input placeholder='Estatus' />
+            </FormControl>
+
+            <FormControl isRequired mt={4}>
+              <FormLabel>Ultima Actividad</FormLabel>
+              <Input placeholder='Ultima Actividad' />
+            </FormControl>
+
+            <FormControl isRequired mt={4}>
+              <FormLabel>Creado por</FormLabel>
+              <Input placeholder='Creado por' />
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme='blue' mr={3}>
+              Guardar
+            </Button>
+            <Button onClick={onClose}>Cancel</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
 
 
 
