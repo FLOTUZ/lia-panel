@@ -40,3 +40,11 @@ export interface IServicio {
   updatedAt?: Date | null;
   tipo: string;
 }
+export interface IAseguradoras {
+  id?: number;
+  nombre: string;
+  telefono: string;
+  expediente: string;
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
+}

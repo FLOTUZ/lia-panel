@@ -47,7 +47,7 @@ import {
 import { useEffect, useState } from "react";
 import { ServiciosService } from "@/services/servicios.service";
 import { IServicio } from "@/services/api.models";
-import { create } from "domain";
+
 
 function ServiciosListado() {
   const toast = useToast()
@@ -62,8 +62,7 @@ function ServiciosListado() {
 
   const [nombreServicio, setNombreServicio] = useState("");
   const [tipoServicio, setTipoServicio] = useState("");
-  const [tablaServicio, setTablaServicio] = useState(false)
-  const [servicios, setServicios] = useState([]);
+
 
   const guardarServicio = async () => {
     const data: IServicio = {

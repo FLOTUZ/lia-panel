@@ -29,6 +29,7 @@ import {
   FormControl,
   ModalFooter,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import {
   AddIcon,
@@ -38,9 +39,52 @@ import {
   SearchIcon,
 } from "@chakra-ui/icons";
 import { useState } from "react";
+import { IAseguradoras } from "@/services/api.models";
+import { AseguradoraService } from "@/services/aseguradoras.service";
 
 export default function AseguradorasListado() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast()
+
+  const [nombreAseguradora, setNombreAseguradora] = useState("")
+  const [telefonoAseguradora, setTelefonoAseguradora] = useState("")
+
+  const guardarAseguradora = async () => {
+    const data: IAseguradoras ={
+      nombre: "",
+      telefono: "",
+      expediente: "",
+    };
+
+    const service = new AseguradoraService()
+    const response = await service.create(data)
+    console.log(response)
+
+
+    if (response.status === 201) {
+      onClose()
+      setNombreAseguradora("")
+      setTelefonoAseguradora("")
+      toast({
+        title: "Aseguradora nueva agregado con exito",
+        description: 'La Aseguradora de agrego con exito',
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Oops.. Algo salio mal",
+        description: response.message,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+
+  }
+
+
   return (
     <DesktopLayout>
       <Header title={"Aseguradoras "} />
@@ -64,20 +108,20 @@ export default function AseguradorasListado() {
           bg="white"
         >
           <FormControl>
-        
-          <Link href={"/aseguradoras/nuevo"}>
-            <a>
-              {" "}
-              <Button
-                leftIcon={<AddIcon />}
-                colorScheme="facebook"
-                variant="solid"
-                marginLeft={"80%"}
-              >
-                Nueva aseguradora
-              </Button>
-            </a>
-          </Link>
+
+            <Link href={"/aseguradoras/nuevo"}>
+              <a>
+                {" "}
+                <Button
+                  leftIcon={<AddIcon />}
+                  colorScheme="facebook"
+                  variant="solid"
+                  marginLeft={"80%"}
+                >
+                  Nueva aseguradora
+                </Button>
+              </a>
+            </Link>
           </FormControl>
         </Box>
 
