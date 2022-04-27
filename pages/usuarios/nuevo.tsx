@@ -22,15 +22,15 @@ import {
   Switch,
   Text,
   Checkbox,
-
 } from "@chakra-ui/react";
-import { useFormik } from "formik";
+//import { useFormik } from "formik";
 
 import { FormEvent, useState, useEffect } from "react";
 import { ITecnico, IUsuario, IServicio } from "@/services/api.models";
 import { UsuariosService } from "@/services/usuarios.service";
 import { TecnicoService } from "@/services/tecnicos.service";
 import { ServiciosService } from "@/services/servicios.service";
+import { ServiciosToTecnicos } from "@/services/serviciosToTecnicos.service";
 
 function UsuarioNuevo() {
   //------------------------ DATA USUARIO -------------------------------------
@@ -46,14 +46,36 @@ function UsuarioNuevo() {
   const [telefono, setTelefono] = useState("");
   const [usuarioId, setUsuarioId] = useState(0);
   const [ciudadId, setciudadId] = useState(0);
+  const [servicios, setServicios] = useState<string[]>([]);
 
   const [cargando, setCargando] = useState(false);
-  const [checkedItems, setCheckedItems] = React.useState([false, false])
+  const [checkedItems, setCheckedItems] = React.useState([false, false]);
 
-  const allChecked = checkedItems.every(Boolean)
-  const isIndeterminate = checkedItems.some(Boolean) && !allChecked
+  const allChecked = checkedItems.every(Boolean);
+  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
 
   const toast = useToast();
+
+  const filtradoServicios = (t: IServicio) => {
+    const id = t.id || 0;
+    const arr = servicios;
+    const found = arr.find((e) => e == String(id));
+
+    if (!found) {
+      arr.push(String(id));
+      setServicios(arr);
+      console.log(servicios);
+    } else {
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i] == String(id)) {
+          arr.splice(i, 1);
+
+          console.log(arr);
+          setServicios(arr);
+        }
+      }
+    }
+  };
 
   const altaUsuario = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -117,6 +139,13 @@ function UsuarioNuevo() {
           status: "success",
           description: `Se guardo el tecnico ${tecnicoGuardado.nombre} con el usuario ${usuarioGuardado.usuario}`,
         });
+
+        const servicioToTecnicos = new ServiciosToTecnicos();
+        const respuesta = servicioToTecnicos.create(
+          tecnicoGuardado.id || 0,
+          servicios
+        );
+        console.log(respuesta);
       }
     }
 
@@ -141,8 +170,6 @@ function UsuarioNuevo() {
 
     consultarTecnicos();
   }, []);
-
-
 
   return (
     <DesktopLayout>
@@ -300,25 +327,30 @@ function UsuarioNuevo() {
                       />
                     </FormControl>
                   </Center>
-                  <Center>
-                    <Divider orientation="vertical" />
-                    <FormControl isRequired paddingTop={15}></FormControl>
-                    <FormControl>
-                      <FormLabel htmlFor="ciudad">Servicios</FormLabel>
-                      <Stack pl={6} mt={1} spacing={1}>
-                        {listadoServicios.length != 0 ? (
-                          listadoServicios.map((t, index) => {
-                            <Checkbox>
+
+                  <Divider orientation="vertical" />
+                  <FormControl isRequired paddingTop={15}></FormControl>
+                  <FormControl>
+                    <FormLabel htmlFor="ciudad">Servicios</FormLabel>
+                    <Stack pl={6} mt={1} spacing={1}>
+                      {listadoServicios.length != 0 ? (
+                        listadoServicios.map((t, index) => {
+                          return (
+                            <Checkbox
+                              key={index}
+                              onChange={() => {
+                                filtradoServicios(t);
+                              }}
+                            >
                               {t.nombre}
                             </Checkbox>
-                          })
-                        ) : (
-                          <></>
-                        )}{" "}
-
-                      </Stack>
-                    </FormControl>
-                  </Center>
+                          );
+                        })
+                      ) : (
+                        <></>
+                      )}{" "}
+                    </Stack>
+                  </FormControl>
                 </Box>
               </>
             ) : null}

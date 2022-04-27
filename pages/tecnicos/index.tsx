@@ -50,6 +50,7 @@ function TenicosListado() {
 
     consultarTecnicos();
   }, []);
+  
   return (
     <DesktopLayout>
       <Header title={"Técnicos "} />
