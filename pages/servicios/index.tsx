@@ -34,6 +34,7 @@ import {
   CheckboxGroup,
   Stack,
   Checkbox,
+  useToast,
 } from "@chakra-ui/react";
 import {
   AddIcon,
@@ -43,11 +44,14 @@ import {
   PhoneIcon,
   SearchIcon,
 } from "@chakra-ui/icons";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ServiciosService } from "@/services/servicios.service";
 import { IServicio } from "@/services/api.models";
+import { create } from "domain";
 
 function ServiciosListado() {
+  const toast = useToast()
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isOpenedit,
@@ -58,6 +62,8 @@ function ServiciosListado() {
 
   const [nombreServicio, setNombreServicio] = useState("");
   const [tipoServicio, setTipoServicio] = useState("");
+  const [tablaServicio, setTablaServicio] = useState(false)
+  const [servicios, setServicios] = useState([]);
 
   const guardarServicio = async () => {
     const data: IServicio = {
@@ -69,7 +75,54 @@ function ServiciosListado() {
     const response = await service.create(data)
     console.log(response);
 
+
+    if (response.status === 201) {
+      onClose()
+      setNombreServicio("")
+      setTipoServicio("")
+      toast({
+        title: "Servicio nuevo agregado con exito",
+        description: 'El servicio de agrego con exito',
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Oops.. Algo salio mal",
+        description: response.message,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+
+
   };
+
+  /*CONSULTA EN TABLA DE SERVICIOS*/
+
+  const [listadoServicios, setListadoServicios] = useState<IServicio[]>([]);
+
+  useEffect(() => {
+    const consultarServicios = async () => {
+      const service = new ServiciosService();
+      const respuesta = await service.getAll();
+      const data = respuesta.data as IServicio[];
+
+      if (respuesta.status == 200) {
+
+        setListadoServicios(data);
+
+      } else {
+        console.log(respuesta);
+
+      }
+    };
+
+    consultarServicios();
+  }, []);
+
 
   return (
     <DesktopLayout>
@@ -104,72 +157,49 @@ function ServiciosListado() {
             Nuevo servicio
           </Button>
         </Box>
-        <Box marginLeft={"25%"}>
+        <Box marginLeft={"5%"}>
           <TableContainer>
             <Table size={"sm"} variant="unstyled" colorScheme="teal">
               <TableCaption>Servicios</TableCaption>
               <Thead>
                 <Tr>
                   <Th>Nombre</Th>
+                  <Th>Tipo de servicio</Th>
                   <Th>Opciones</Th>
                 </Tr>
               </Thead>
               <Tbody>
-                <Tr>
-                  <Td>Asistencia Vial</Td>
+                {listadoServicios.length != 0 ? (
+                  listadoServicios.map((t, index) => {
+                    return (<Tr key={index}>
+                      <Td>
+                        {t.nombre}
+                      </Td>
+                      <Td>
+                        {t.tipo}
+                      </Td>
+                      <Td>
+                        <IconButton
+                          onClick={onOpenedit}
+                          variant="ghost"
+                          aria-label="edit"
+                          icon={<EditIcon />}
+                        />{" "}
+                        <IconButton
+                          variant="ghost"
+                          aria-label="delet"
+                          colorScheme={"red"}
+                          icon={<DeleteIcon color={"red"} />}
+                        />
+                      </Td>
+                    </Tr>)
+                  })
+                ) : (
+                  <Tr>
+                    <Td>No hay data</Td>
+                  </Tr>
+                )}
 
-                  <Td>
-                    <IconButton
-                      onClick={onOpenedit}
-                      variant="ghost"
-                      aria-label="edit"
-                      icon={<EditIcon />}
-                    />{" "}
-                    <IconButton
-                      variant="ghost"
-                      aria-label="delet"
-                      colorScheme={"red"}
-                      icon={<DeleteIcon color={"red"} />}
-                    />
-                  </Td>
-                </Tr>
-
-                <Tr>
-                  <Td>promeria</Td>
-
-                  <Td>
-                    <IconButton
-                      onClick={onOpenedit}
-                      variant="ghost"
-                      aria-label="edit"
-                      icon={<EditIcon />}
-                    />{" "}
-                    <IconButton
-                      variant="ghost"
-                      aria-label="delet"
-                      colorScheme={"red"}
-                      icon={<DeleteIcon color={"red"} />}
-                    />
-                  </Td>
-                </Tr>
-                <Tr>
-                  <Td>Electricista</Td>
-                  <Td>
-                    <IconButton
-                      onClick={onOpenedit}
-                      variant="ghost"
-                      aria-label="edit"
-                      icon={<EditIcon />}
-                    />
-
-                    <IconButton
-                      variant="ghost"
-                      aria-label="delet"
-                      colorScheme={"red"}
-                      icon={<DeleteIcon color={"red"} />}
-                    />
-                  </Td>
-                </Tr>
               </Tbody>
             </Table>
           </TableContainer>
@@ -209,9 +239,15 @@ function ServiciosListado() {
           </ModalBody>
 
           <ModalFooter>
+
+
+
+
             <Button colorScheme="blue" mr={3} onClick={guardarServicio}>
               Guardar
             </Button>
+
+
             <Button onClick={onClose}>Cancelar</Button>
           </ModalFooter>
         </ModalContent>
