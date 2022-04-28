@@ -44,7 +44,15 @@ export interface IAseguradoras {
   id?: number;
   nombre: string;
   telefono: string;
-  expediente: string;
+  expediente?: string;
   createdAt?: Date | null;
   updatedAt?: Date | null;
+}
+
+export interface IAsistencias{
+  id?: number
+  nombre: string
+  aseguradoraId?: number | null
+  createdAt?: Date | null
+  updatedAt?: Date | null
 }
