@@ -18,7 +18,7 @@ import {
   useToast,
   useDisclosure,
 } from "@chakra-ui/react";
-import { AddIcon, SearchIcon,DeleteIcon,EditIcon, } from "@chakra-ui/icons";
+import { AddIcon, SearchIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { ITecnico } from "@/services/api.models";
 import { TecnicoService } from "@/services/tecnicos.service";
@@ -33,13 +33,13 @@ function TenicosListado() {
   } = useDisclosure();
   const [query, setQuery] = useState("");
 
-
   const [listadoTecnicos, setListadoTenicos] = useState<ITecnico[]>([]);
 
   useEffect(() => {
     const consultarTecnicos = async () => {
       const service = new TecnicoService();
       const respuesta = await service.getAll();
+      console.log({ respuesta });
 
       if (respuesta.status == 200) {
         const data = respuesta.data as ITecnico[];
@@ -49,7 +49,7 @@ function TenicosListado() {
 
     consultarTecnicos();
   }, []);
-  
+
   return (
     <DesktopLayout>
       <Header title={"Técnicos "} />
@@ -113,26 +113,28 @@ function TenicosListado() {
             <Tbody>
               {listadoTecnicos.length != 0 ? (
                 listadoTecnicos.map((t, index) => {
-                  <Tr key={index}>
-                    <Td>{t.nombre}</Td>
-                    <Td>{t.apellido_paterno}</Td>
-                    <Td>{t.ciudadId}</Td>
-                    <Td>{t.telefono}</Td>
-                    <Td>
-                    <IconButton
-                    onClick={onOpenedit}
-                    variant="ghost"
-                    aria-label="edit"
-                    icon={<EditIcon />}
-                  /> <IconButton
-          
-                    variant="ghost"
-                    aria-label="delet"
-                    colorScheme={"red"}
-                    icon={<DeleteIcon color={"red"} />}
-                  />
-                    </Td>
-                  </Tr>;
+                  return (
+                    <Tr key={index}>
+                      <Td>{t.nombre}</Td>
+                      <Td>{t.apellido_paterno}</Td>
+                      <Td>{t.ciudadId}</Td>
+                      <Td>{t.telefono}</Td>
+                      <Td>
+                        <IconButton
+                          onClick={onOpenedit}
+                          variant="ghost"
+                          aria-label="edit"
+                          icon={<EditIcon />}
+                        />{" "}
+                        <IconButton
+                          variant="ghost"
+                          aria-label="delet"
+                          colorScheme={"red"}
+                          icon={<DeleteIcon color={"red"} />}
+                        />
+                      </Td>
+                    </Tr>
+                  );
                 })
               ) : (
                 <Tr>
