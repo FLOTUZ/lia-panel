@@ -35,12 +35,13 @@ import {
   ModalFooter,
   ModalHeader,
   ModalBody,
-
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import React from "react";
 
 function TicketNuevo() {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
   const formik = useFormik({
     initialValues: {
       //--------------------DATOS BASICOS
@@ -75,11 +76,9 @@ function TicketNuevo() {
       alert(JSON.stringify(values, null, 2));
     },
   });
-  const { isOpen, onOpen, onClose } = useDisclosure()
-  
+
   return (
     <DesktopLayout>
-
       <Header title={"Nuevo Ticket"} />
 
       <form onSubmit={formik.handleSubmit}>
@@ -111,7 +110,7 @@ function TicketNuevo() {
               <Stack align="center" direction="row">
                 <Divider orientation="vertical" />
                 <FormLabel htmlFor="asistenciaVial">Asistencia Vial</FormLabel>
-                <Switch size="lg" />
+                <Switch id="isAsistenciaVial" size="lg" />
               </Stack>
             </FormControl>
           </Stack>
@@ -131,7 +130,7 @@ function TicketNuevo() {
 
             <FormControl isRequired paddingLeft={5} paddingTop={15}>
               <FormLabel htmlFor="fechaLlamada">Fecha de la Llamada</FormLabel>
-              <Input variant="filled" type="date" />
+              <Input id="fechaLlamada" variant="filled" type="date" />
             </FormControl>
           </Center>
 
@@ -184,9 +183,9 @@ function TicketNuevo() {
           <Center>
             <Divider orientation="vertical" />
             <FormControl isRequired paddingTop={15}>
-              <FormLabel htmlFor="seguro">Seguro</FormLabel>
+              <FormLabel htmlFor="aseguradora">Seguro</FormLabel>
               <Select
-                id="country"
+                id="aseguradora"
                 placeholder="Selecciona el Tipo de Seguro"
                 variant="filled"
               >
@@ -211,10 +210,11 @@ function TicketNuevo() {
           </Center>
 
           <FormControl isRequired paddingTop={15}>
-            <FormLabel htmlFor="descripcion">
+            <FormLabel htmlFor="descripcionProblematica">
               Descripción de la Problematica
             </FormLabel>
             <Textarea
+              id="descripcionProblematica"
               variant="filled"
               placeholder="Fuga de agua en la cocina"
             />
@@ -682,13 +682,10 @@ function TicketNuevo() {
               </Tr>
             </Tbody>
           </Table>
-        </TableContainer>
+        </TableContainer> */}
       </Box>
 
-
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Creación de Nuevo Seguimiento</ModalHeader>
@@ -696,17 +693,17 @@ function TicketNuevo() {
           <ModalBody pb={6}>
             <FormControl isRequired>
               <FormLabel>Asesor de Grupo Lías</FormLabel>
-              <Input placeholder='Asesor de Grupo Lías' />
+              <Input placeholder="Asesor de Grupo Lías" />
             </FormControl>
 
             <FormControl isRequired mt={4}>
               <FormLabel>Seguimiento</FormLabel>
-              <Input placeholder='Seguimiento' />
+              <Input placeholder="Seguimiento" />
             </FormControl>
 
             <FormControl isRequired mt={4}>
               <FormLabel>Asesor de Seguro</FormLabel>
-              <Input placeholder='Asesor de Seguro' />
+              <Input placeholder="Asesor de Seguro" />
             </FormControl>
 
             <FormControl isRequired mt={4}>
@@ -715,13 +712,13 @@ function TicketNuevo() {
             </FormControl>
 
             <FormControl isRequired mt={4}>
-              <FormLabel >Hora</FormLabel>
-              <Input variant="filled" id='horaLlamada' type="time" />
+              <FormLabel>Hora</FormLabel>
+              <Input variant="filled" id="horaLlamada" type="time" />
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='blue' mr={3}>
+            <Button colorScheme="blue" mr={3}>
               Guardar
             </Button>
             <Button onClick={onClose}>Cancel</Button>
@@ -729,10 +726,7 @@ function TicketNuevo() {
         </ModalContent>
       </Modal>
 
-
-      <Modal
-        isOpen={isOpen}
-        onClose={onClose}>
+      <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Creación de Cita</ModalHeader>
@@ -740,37 +734,34 @@ function TicketNuevo() {
           <ModalBody pb={6}>
             <FormControl isRequired>
               <FormLabel>Título del Ticket</FormLabel>
-              <Input placeholder='Título del Ticket' />
+              <Input placeholder="Título del Ticket" />
             </FormControl>
 
             <FormControl isRequired mt={4}>
               <FormLabel>Estatus</FormLabel>
-              <Input placeholder='Estatus' />
+              <Input placeholder="Estatus" />
             </FormControl>
 
             <FormControl isRequired mt={4}>
               <FormLabel>Ultima Actividad</FormLabel>
-              <Input placeholder='Ultima Actividad' />
+              <Input placeholder="Ultima Actividad" />
             </FormControl>
 
             <FormControl isRequired mt={4}>
               <FormLabel>Creado por</FormLabel>
-              <Input placeholder='Creado por' />
+              <Input placeholder="Creado por" />
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='blue' mr={3}>
+            <Button colorScheme="blue" mr={3}>
               Guardar
             </Button>
             <Button onClick={onClose}>Cancel</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
-
-
-
-    </DesktopLayout >
+    </DesktopLayout>
   );
 }
 
