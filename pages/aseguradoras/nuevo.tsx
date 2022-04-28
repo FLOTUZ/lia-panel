@@ -46,55 +46,40 @@ function AseguradoraNueva() {
   const [nombreAseguradora, setNombreAseguradora] = useState("")
   const [telefonoAseguradora, setTelefonoAseguradora] = useState("")
   const [nombreAsistencia, setNombreAsistencia] = useState("")
+  const [aseguradoraGuardada, setAseguradoraGuardada] = useState<IAseguradoras>()
 
-
-  /*CONSULTA EN TABLA DE LAS ASEGURADORAS CON ASISTENCIAS */
-  const [listadoAseguradoras, setListadoAseguradoras] = useState<IAseguradoras[]>([])
-  useEffect(() => {
-    const consultaAseguradoras = async () => {
-      const services = new AseguradoraService();
-      const respuesta = await services.getAll();
-      const data = respuesta.data as IAseguradoras[];
-
-      if (respuesta.status == 200) {
-        setListadoAseguradoras(data);
-      } else {
-        console.log(respuesta)
-      }
-    };
-    consultaAseguradoras();
-  }, []);
 
   /*CONSULTA de asistencias  */
   const [listadoAsistencias, setListadoAsistencias] = useState<IAsistencias[]>([])
-  useEffect(() => {
-    const consultaAsistencias = async () => {
-      const services = new AsistenciasService();
-      const respuesta = await services.getAll();
-      const data = respuesta.data as IAsistencias[];
 
-      if (respuesta.status == 200) {
-        setListadoAsistencias(data);
-      } else {
-        console.log(respuesta)
-      }
-    };
-    consultaAsistencias();
-  }, []);
+
+  const consultaAsistencias = async () => {
+    const services = new AseguradoraService();
+    const respuesta = await services.getById(aseguradoraGuardada?.id || 0);
+    const data = respuesta.data as IAseguradoras;
+
+
+    if (respuesta.status == 200) {
+      setListadoAsistencias(data.Asistencia || []);
+    } else {
+      console.log(respuesta)
+    }
+  };
+
 
   /*AGREGAR ASISTENCIA */
   const guardarAsistencia = async () => {
     const data: IAsistencias = {
-      nombre: nombreAsistencia
+      nombre: nombreAsistencia,
+      aseguradoraId: aseguradoraGuardada?.id
     };
 
     const service = new AsistenciasService()
     const response = await service.create(data)
-    console.log(response)
 
+    consultaAsistencias()
     if (response.status === 201) {
       onClose()
-      setNombreAsistencia("")
       toast({
         title: "Asistencia nueva agregado con exito",
         description: 'La Asistencia se agrego con exito',
@@ -119,18 +104,16 @@ function AseguradoraNueva() {
     const data: IAseguradoras = {
       nombre: nombreAseguradora,
       telefono: telefonoAseguradora,
-      expediente: "",
+      expediente: "00000",
     };
 
     const service = new AseguradoraService()
     const response = await service.create(data)
-    console.log(response)
-
+    const aseguradora = response.data as IAseguradoras
+    setAseguradoraGuardada(aseguradora)
 
     if (response.status === 201) {
       onClose()
-      setNombreAseguradora("")
-      setTelefonoAseguradora("")
       toast({
         title: "Aseguradora nueva agregado con exito",
         description: 'La Aseguradora se agrego con exito',
@@ -174,7 +157,7 @@ function AseguradoraNueva() {
                     pointerEvents="none"
                     children={<MdVerifiedUser color="green" />}
                   />
-                  <Input type="Nombre" placeholder="Qualitas"
+                  <Input type="Nombre" placeholder="Aseguradora"
                     onChange={(e) => {
                       setNombreAseguradora(e.target.value);
                     }}
@@ -195,7 +178,7 @@ function AseguradoraNueva() {
                     onChange={(e) => {
                       setTelefonoAseguradora(e.target.value);
                     }}
-                    type="tel" placeholder="Phone number" />
+                    type="tel" placeholder="Numero de telefono" />
                 </InputGroup>
               </FormControl>
             </InputGroup>
@@ -275,7 +258,8 @@ function AseguradoraNueva() {
                 </Tr>
               </Thead>
               <Tbody>
-                {listadoAsistencias.length != 0 ? (
+                {listadoAsistencias.length !== 0 ? (
+
                   listadoAsistencias.map((t, index) => {
                     return (
                       <Tr key={index}>

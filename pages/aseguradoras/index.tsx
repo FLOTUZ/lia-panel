@@ -30,6 +30,7 @@ import {
   ModalFooter,
   useDisclosure,
   useToast,
+  toast,
 } from "@chakra-ui/react";
 import {
   AddIcon,
@@ -45,6 +46,12 @@ import { AsistenciasService } from "@/services/asistencias.service";
 
 export default function AseguradorasListado() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast()
+
+
+  const [nombreAsistencia, setNombreAsistencia] = useState("")
+  const [aseguradoraGuardada, setAseguradoraGuardada] = useState<IAseguradoras>()
+
 
   /*CONSULTA EN TABLA DE LAS ASEGURADORAS CON ASISTENCIAS */
   const [listadoAseguradoras, setListadoAseguradoras] = useState<IAseguradoras[]>([])
@@ -62,7 +69,51 @@ export default function AseguradorasListado() {
     };
     consultaAseguradoras();
   }, []);
+  /*AGREGAR ASISTENCIA */
+  const guardarAsistencia = async () => {
+    const data: IAsistencias = {
+      nombre: nombreAsistencia,
+      aseguradoraId: aseguradoraGuardada?.id
+    };
 
+    const service = new AsistenciasService()
+    const response = await service.create(data)
+
+    const consultaAsistencias = async () => {
+      const services = new AseguradoraService();
+      const respuesta = await services.getById(aseguradoraGuardada?.id || 0);
+      const data = respuesta.data as IAseguradoras;
+
+
+      if (respuesta.status == 200) {
+        setListadoAsistencias(data.Asistencia || []);
+      } else {
+        console.log(respuesta)
+      }
+    };
+
+
+    consultaAsistencias()
+    if (response.status === 201) {
+      onClose()
+      toast({
+        title: "Asistencia nueva agregado con exito",
+        description: 'La Asistencia se agrego con exito',
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Oops.. Algo salio mal",
+        description: response.message,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+
+  }
   /*CONSULTA de asistencias  */
   const [listadoAsistencias, setListadoAsistencias] = useState<IAsistencias[]>([])
   useEffect(() => {
@@ -166,14 +217,8 @@ export default function AseguradorasListado() {
                       <Td>{t.nombre}</Td>
                       <Td>{t.telefono}</Td>
 
-
-
-
-
-
                       <Td>
-                        {" "}
-                        5{" "}
+
                         <IconButton
                           onClick={onOpen}
                           variant="ghost"
@@ -188,6 +233,7 @@ export default function AseguradorasListado() {
                         <Link href={"/aseguradoras/1"}>
                           <a>
                             <IconButton
+
                               variant="outline"
                               aria-label="edit"
                               icon={<EditIcon />}
@@ -200,7 +246,7 @@ export default function AseguradorasListado() {
                 })
               ) : (
                 <Tr>
-                  <Td>Nombre</Td>
+                  <Td>NO DATA</Td>
                 </Tr>
               )
               }
@@ -217,12 +263,15 @@ export default function AseguradorasListado() {
           <ModalBody pb={6}>
             <FormControl mt={4}>
               <FormLabel>Nombre de la asistencia</FormLabel>
-              <Input placeholder="Nombre de la asistencia" />
+              <Input onChange={(e) => {
+                setNombreAsistencia(e.target.value)
+              }} placeholder="Nombre de la asistencia" />
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
+            <Button colorScheme="blue" mr={3}
+              onClick={guardarAsistencia}>
               Guardar
             </Button>
             <Button onClick={onClose}>Cancelar</Button>
