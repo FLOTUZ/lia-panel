@@ -123,7 +123,7 @@ function UsuarioNuevo() {
       const respuestaTecnico = await serviceTecnico.create(dataTecnico);
       const tecnicoGuardado = respuestaTecnico.data as ITecnico;
 
-      console.log({ datatecnico: dataTecnico });
+      console.log(dataTecnico);
 
       if (respuestaTecnico.status != 201) {
         setCargando(false);

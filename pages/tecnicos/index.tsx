@@ -41,8 +41,7 @@ function TenicosListado() {
       const service = new TecnicoService();
       const respuesta = await service.getAll();
 
-      if (respuesta.status != 200) {
-      } else {
+      if (respuesta.status == 200) {
         const data = respuesta.data as ITecnico[];
         setListadoTenicos(data);
       }
@@ -87,7 +86,7 @@ function TenicosListado() {
             </a>
           </Link>
         </Box>
-
+        {/* 
         <InputGroup>
           <InputLeftAddon>
             <IconButton
@@ -98,7 +97,7 @@ function TenicosListado() {
             />{" "}
           </InputLeftAddon>
           <Input type="search" placeholder="Buscar aseguradoras..." />
-        </InputGroup>
+        </InputGroup> */}
 
         <TableContainer>
           <Table variant="striped" colorScheme="teal">
