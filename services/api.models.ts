@@ -45,14 +45,15 @@ export interface IAseguradoras {
   nombre: string;
   telefono: string;
   expediente?: string;
+  Asistencia?: [IAsistencias] | null;
   createdAt?: Date | null;
   updatedAt?: Date | null;
 }
 
-export interface IAsistencias{
-  id?: number
-  nombre: string
-  aseguradoraId?: number | null
-  createdAt?: Date | null
-  updatedAt?: Date | null
+export interface IAsistencias {
+  id?: number;
+  nombre: string;
+  aseguradoraId?: number | null;
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
 }
