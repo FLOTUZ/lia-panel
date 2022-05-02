@@ -14,7 +14,7 @@ const Kanban = ({}: IKanban) => {
       const servicio = new TicketsService();
       const respuesta = await servicio.getAll();
       const data = respuesta.data as ITicket[];
-      setTicketsList(data);
+      setTicketsList(data || []);
     };
     consultarTickets();
   }, []);

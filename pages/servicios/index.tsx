@@ -48,9 +48,8 @@ import { useEffect, useState } from "react";
 import { ServiciosService } from "@/services/servicios.service";
 import { IServicio } from "@/services/api.models";
 
-
 function ServiciosListado() {
-  const toast = useToast()
+  const toast = useToast();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -63,6 +62,10 @@ function ServiciosListado() {
   const [nombreServicio, setNombreServicio] = useState("");
   const [tipoServicio, setTipoServicio] = useState("");
 
+  const [nombreServicioEdit, setNombreServicioEdit] = useState("");
+  const [servicioEdit, setServicioEdit] = useState<IServicio>();
+
+  const [cargando, setCargando] = useState(false);
 
   const guardarServicio = async () => {
     const data: IServicio = {
@@ -70,18 +73,17 @@ function ServiciosListado() {
       tipo: tipoServicio,
     };
 
-    const service = new ServiciosService()
-    const response = await service.create(data)
+    const service = new ServiciosService();
+    const response = await service.create(data);
     console.log(response);
 
-
     if (response.status === 201) {
-      onClose()
-      setNombreServicio("")
-      setTipoServicio("")
+      onClose();
+      setNombreServicio("");
+      setTipoServicio("");
       toast({
         title: "Servicio nuevo agregado con exito",
-        description: 'El servicio de agrego con exito',
+        description: "El servicio de agrego con exito",
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -95,8 +97,6 @@ function ServiciosListado() {
         isClosable: true,
       });
     }
-
-
   };
 
   /*CONSULTA EN TABLA DE SERVICIOS*/
@@ -110,18 +110,14 @@ function ServiciosListado() {
       const data = respuesta.data as IServicio[];
 
       if (respuesta.status == 200) {
-
         setListadoServicios(data);
-
       } else {
         console.log(respuesta);
-
       }
     };
 
     consultarServicios();
   }, []);
-
 
   return (
     <DesktopLayout>
@@ -169,36 +165,36 @@ function ServiciosListado() {
               </Thead>
               <Tbody>
                 {listadoServicios.length != 0 ? (
-                  listadoServicios.map((t, index) => {
-                    return (<Tr key={index}>
-                      <Td>
-                        {t.nombre}
-                      </Td>
-                      <Td>
-                        {t.tipo}
-                      </Td>
-                      <Td>
-                        <IconButton
-                          onClick={onOpenedit}
-                          variant="ghost"
-                          aria-label="edit"
-                          icon={<EditIcon />}
-                        />{" "}
-                        <IconButton
-                          variant="ghost"
-                          aria-label="delet"
-                          colorScheme={"red"}
-                          icon={<DeleteIcon color={"red"} />}
-                        />
-                      </Td>
-                    </Tr>)
+                  listadoServicios.map((serv, index) => {
+                    return (
+                      <Tr key={index}>
+                        <Td>{serv.nombre}</Td>
+                        <Td>{serv.tipo}</Td>
+                        <Td>
+                          <IconButton
+                            onClick={() => {
+                              onOpenedit();
+                              setServicioEdit(serv);
+                            }}
+                            variant="ghost"
+                            aria-label="edit"
+                            icon={<EditIcon />}
+                          />{" "}
+                          <IconButton
+                            variant="ghost"
+                            aria-label="delet"
+                            colorScheme={"red"}
+                            icon={<DeleteIcon color={"red"} />}
+                          />
+                        </Td>
+                      </Tr>
+                    );
                   })
                 ) : (
                   <Tr>
                     <Td>No hay data</Td>
                   </Tr>
                 )}
-
               </Tbody>
             </Table>
           </TableContainer>
@@ -213,39 +209,45 @@ function ServiciosListado() {
           <ModalBody pb={6}>
             <FormControl mt={4}>
               <FormLabel padding={1}>Nombre del servicio</FormLabel>
-              <Input paddingBottom={2}
+              <Input
+                paddingBottom={2}
                 placeholder="Nombre del servicio"
                 onChange={(e) => {
                   setNombreServicio(e.target.value);
                 }}
               />
-              <FormLabel padding={1} >Tipo del servicio</FormLabel>
-              <CheckboxGroup colorScheme='green' >
-                <Stack padding={2} spacing={[1, 5]} direction={['column', 'row']}>
-                  <Checkbox onChange={(e) => {
-                    setTipoServicio(e.target.value)
-                  }} value='Domestico'>Domestico</Checkbox>
+              <FormLabel padding={1}>Tipo del servicio</FormLabel>
+              <CheckboxGroup colorScheme="green">
+                <Stack
+                  padding={2}
+                  spacing={[1, 5]}
+                  direction={["column", "row"]}
+                >
                   <Checkbox
                     onChange={(e) => {
-                      setTipoServicio(e.target.value)
+                      setTipoServicio(e.target.value);
                     }}
-                    value='Automovilistico'>Automovilistico</Checkbox>
-
+                    value="Domestico"
+                  >
+                    Domestico
+                  </Checkbox>
+                  <Checkbox
+                    onChange={(e) => {
+                      setTipoServicio(e.target.value);
+                    }}
+                    value="Automovilistico"
+                  >
+                    Automovilistico
+                  </Checkbox>
                 </Stack>
               </CheckboxGroup>
-
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-
-
-
-
             <Button colorScheme="blue" mr={3} onClick={guardarServicio}>
               Guardar
             </Button>
-
 
             <Button onClick={onClose}>Cancelar</Button>
           </ModalFooter>
@@ -267,15 +269,33 @@ function ServiciosListado() {
               <Input
                 placeholder="Nombre del servicio"
                 onChange={(e) => {
-                  //setNombreServicio(e.target.value)
-                  alert("Hola");
+                  setNombreServicioEdit(e.target.value);
+                  console.log(e.target.value);
                 }}
               />
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
+            <Button
+              isLoading={cargando}
+              colorScheme="blue"
+              mr={3}
+              onClick={() => {
+                setCargando(true);
+                const data: IServicio = {
+                  nombre: nombreServicioEdit,
+                  tipo: "DOMESTICO",
+                };
+
+                const servicio = new ServiciosService();
+                const respuesta = servicio.update(data, servicioEdit?.id || 0);
+
+                console.log(data);
+                setCargando(false);
+                onCloseedit();
+              }}
+            >
               Guardar
             </Button>
             <Button onClick={onCloseedit}>Cancelar</Button>
