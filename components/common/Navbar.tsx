@@ -13,11 +13,11 @@ import Logo from "../../public/vercel.svg";
 
 const Navbar = () => {
   const routes = [
-    {
-      name: "Dashboard",
-      path: "/",
-      icon: <MdSpaceDashboard size={32} />,
-    },
+    // {
+    //   name: "Dashboard",
+    //   path: "/",
+    //   icon: <MdSpaceDashboard size={32} />,
+    // },
     {
       name: "Tickets",
       path: "/tickets",
@@ -43,11 +43,11 @@ const Navbar = () => {
       path: "/aseguradoras",
       icon: <MdVerifiedUser size={32} />,
     },
-    {
-      name: "Salir",
-      path: "/login",
-      icon: <IoExit size={32} />,
-    },
+    // {
+    //   name: "Salir",
+    //   path: "/login",
+    //   icon: <IoExit size={32} />,
+    // },
 
   ];
   return (

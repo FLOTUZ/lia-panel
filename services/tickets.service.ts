@@ -1,15 +1,15 @@
-import { IAsistencias } from "./api.models";
+import { ITicket } from "./api.models";
 import { Actualizar, Consultar, Crear, Eliminar } from "./ApiCall";
 
-export class AsistenciasService {
-  private url = "/asistencias";
-
-  public async create(data: IAsistencias) {
+export class TicketsService {
+  private url = "/tickets";
+  constructor() {}
+  public async create(data: ITicket) {
     const respuesta: any = await Crear(this.url, data);
     return respuesta;
   }
 
-  public async update(data: IAsistencias, id: number) {
+  public async update(data: ITicket, id: number) {
     const respuesta: any = await Actualizar(`${this.url}/${id}`, data);
     return respuesta;
   }
@@ -29,13 +29,11 @@ export class AsistenciasService {
     return respuesta;
   }
 
-  async count(usuario: IAsistencias) {
-    const respuesta = await Consultar(`${this.url}/count`, usuario);
-    return respuesta;
-  }
-
-  async getAsistenciasByIdAseguradora(id: number) {
-    const respuesta = await Consultar(`${this.url}/aseguradora/${id}`);
+  public async addServiciosForTicket(idTicket: number, servicios: string[]) {
+    const respuesta = await Crear(
+      `${this.url}/${idTicket}/servicios`,
+      servicios
+    );
     return respuesta;
   }
 }

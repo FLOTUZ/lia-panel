@@ -1,9 +1,18 @@
 /* eslint-disable react/no-children-prop */
 import Header from "@/common/Header";
 import DesktopLayout from "@/layouts/DesktopLayout";
+import {
+  IAseguradoras,
+  IAsistencias,
+  ICiudad,
+  IServicio,
+} from "@/services/api.models";
+import { AseguradoraService } from "@/services/aseguradoras.service";
+import { AsistenciasService } from "@/services/asistencias.service";
+import { CiudadesService } from "@/services/ciudades.service";
 
-import { AddIcon, CheckIcon, PhoneIcon } from "@chakra-ui/icons";
-
+import { useFormik } from "formik";
+import { useEffect, useState } from "react";
 import {
   Box,
   Divider,
@@ -17,16 +26,7 @@ import {
   Center,
   Stack,
   Switch,
-  Image,
   Button,
-  TableContainer,
-  Table,
-  TableCaption,
-  Thead,
-  Tr,
-  Th,
-  Tbody,
-  Td,
   useDisclosure,
   Modal,
   ModalOverlay,
@@ -35,45 +35,140 @@ import {
   ModalFooter,
   ModalHeader,
   ModalBody,
+  Spacer,
+  Checkbox,
+  CheckboxGroup,
+  Flex,
+  SimpleGrid,
+  useToast,
 } from "@chakra-ui/react";
-import { useFormik } from "formik";
-import React from "react";
+import { ITicket } from "@/services/api.models";
+import { ServiciosService } from "@/services/servicios.service";
+import { TicketsService } from "@/services/tickets.service";
 
 function TicketNuevo() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const toast = useToast();
+  const [publicarTicketLoader, setPublicarTicketLoader] = useState(false);
 
-  const formik = useFormik({
+  const [aseguradorasList, setAseguradorasList] = useState<IAseguradoras[]>([]);
+  const [asistenciasList, setAsistenciasList] = useState<IAsistencias[]>([]);
+  const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
+  const [serviciosList, setServiciosList] = useState<IServicio[]>([]);
+
+  const [fecha, setFecha] = useState("");
+  const [serviciosSeleccionados, setServiciosSeleccionados] = useState<
+    string[]
+  >([]);
+
+  useEffect(() => {
+    const consultarAseguradoras = async () => {
+      const servicio = new AseguradoraService();
+      const respuesta = await servicio.getAll();
+      const data = respuesta.data as IAseguradoras[];
+
+      setAseguradorasList(data);
+    };
+
+    const consultarCiudades = async () => {
+      const servicio = new CiudadesService();
+      const respuesta = await servicio.getAll();
+      const data = respuesta.data as ICiudad[];
+
+      setCiudadesList(data);
+    };
+
+    const consultarServicios = async () => {
+      const servicio = new ServiciosService();
+      const respuesta = await servicio.getAll();
+      const data = respuesta.data as IServicio[];
+
+      setServiciosList(data);
+    };
+
+    consultarAseguradoras();
+    consultarCiudades();
+    consultarServicios();
+  }, []);
+
+  const asistenciaById = async () => {
+    if (Number(formTicket.values.aseguradoraId) !== 0) {
+      const servicio = new AsistenciasService();
+      const respuesta: any = await servicio.getAsistenciasByIdAseguradora(
+        Number(formTicket.values.aseguradoraId)
+      );
+
+      const data = respuesta.data as IAsistencias[];
+
+      setAsistenciasList(data || []);
+    }
+  };
+
+  const formTicket = useFormik({
     initialValues: {
       //--------------------DATOS BASICOS
-      nExpediente: "",
-      isAsistenciaVial: false,
-      horaLlamada: "--:-- --",
-      fechaLlamada: "dd/mm/yyyy",
-      asesorGpoLias: "",
-      asesorAseguradora: "",
-      nombreUsuarioFinal: "",
-      tituloTicket: "",
-      aseguradora: "",
-      asistencia: "",
-      descripcionProblematica: "",
+      num_expediente: "",
+      asistencia_vial: false,
+      fecha_llamada: "",
+      nombre_asesor_aseguradora: "",
+      nombre_asesor_gpo_lias: "",
+      nombre_usuario_final: "",
+      titulo_ticket: "",
+      aseguradoraId: "",
+      asistenciaId: "", //TODO: cambiar por el id de la asistencia
+      problematica: "",
       //---------------------COTIZACION GPO LIAS
       ciudad: "",
       colonia: "",
       calle: "",
-      numDomicilio: "",
-      banderazo: "",
-      totalSalida: "",
-      montoCobertura: "",
-      costoGpiLias: "",
+      numero_domicilio: "",
+      banderazo: 0,
+      total_salida: "",
+      costo_gpo_lias: "",
+      cobertura: "",
+      cotizacion_gpo_lias: "",
       deducible: "",
-      kilometrosARecorrer: "",
-      numeroCasetas: 0,
-      montoTotal: "",
-      anticipo: 0,
-      comentariosGpoLias: "",
+      kilometraje: "",
+      casetas: "",
+      total: "",
+      anticipo: "",
+      estado: "NUEVO",
     },
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
+    onSubmit: async (values) => {
+      setPublicarTicketLoader(true);
+      const ticket: any = { ...values };
+
+      const servicio = new TicketsService();
+      const respuestaTicketPost: any = await servicio.create(ticket);
+      const dataTicketGuardado = respuestaTicketPost.data as ITicket;
+
+      console.log(respuestaTicketPost);
+
+      if (respuestaTicketPost.status === 201) {
+        const servicio = new TicketsService();
+        const respuestaServiciosTicket: any =
+          await servicio.addServiciosForTicket(
+            dataTicketGuardado.id || 0,
+            serviciosSeleccionados
+          );
+
+        if (respuestaServiciosTicket.status === 201) {
+          toast({
+            id: "altaExitosa",
+            title: "Ticket creado",
+            description: "El ticket se ha creado correctamente",
+            status: "success",
+          });
+        }
+      } else {
+        toast({
+          id: "altaError",
+          title: "Error: ticket no se ha podido guardar",
+          description: `El ticket no se ha podido guardar: ${respuestaTicketPost.message}`,
+          status: "error",
+        });
+      }
+      setPublicarTicketLoader(false);
     },
   });
 
@@ -81,7 +176,7 @@ function TicketNuevo() {
     <DesktopLayout>
       <Header title={"Nuevo Ticket"} />
 
-      <form onSubmit={formik.handleSubmit}>
+      <form onSubmit={formTicket.handleSubmit}>
         <Box
           m={2}
           bgColor="white"
@@ -96,63 +191,65 @@ function TicketNuevo() {
             Datos Básicos{" "}
           </Text>
 
-          <Stack direction="row" paddingTop={15}>
-            <Divider orientation="vertical" paddingLeft={500} />
-            <FormLabel htmlFor="nExpediente">Numero de Expediente:</FormLabel>
+          <Stack direction="row">
+            <Spacer />
+            <Divider orientation="vertical" />
+            <FormLabel htmlFor="num_expediente">
+              Numero de Expediente:
+            </FormLabel>
             <Input
               variant="filled"
-              id="nExpediente"
-              type="number"
+              id="num_expediente"
+              type="text"
               placeholder="GPO728"
+              onChange={formTicket.handleChange}
+              value={formTicket.values.num_expediente}
             />
-
-            <FormControl paddingTop={2} paddingLeft={2}>
-              <Stack align="center" direction="row">
-                <Divider orientation="vertical" />
-                <FormLabel htmlFor="asistenciaVial">Asistencia Vial</FormLabel>
-                <Switch id="isAsistenciaVial" size="lg" />
-              </Stack>
-            </FormControl>
           </Stack>
 
-          <Center>
-            <Divider orientation="vertical" />
-            <FormControl isRequired paddingTop={15.5}>
-              <FormLabel htmlFor="horaLlamada">Hora de la Llamada</FormLabel>
-              <Input
-                variant="filled"
-                id="horaLlamada"
-                type="time"
-                placeholder="08:55 a.m."
-                paddingLeft={5}
-              />
-            </FormControl>
-
-            <FormControl isRequired paddingLeft={5} paddingTop={15}>
-              <FormLabel htmlFor="fechaLlamada">Fecha de la Llamada</FormLabel>
-              <Input id="fechaLlamada" variant="filled" type="date" />
-            </FormControl>
-          </Center>
+          <FormControl isRequired paddingTop={15}>
+            <FormLabel htmlFor="fecha_llamada">Fecha de la Llamada</FormLabel>
+            <Input
+              w={"fit-content"}
+              id="fecha_llamada"
+              variant="filled"
+              type="datetime-local"
+              value={fecha}
+              onChange={(e) => {
+                setFecha(e.target.value);
+                formTicket.setFieldValue(
+                  "fecha_llamada",
+                  new Date(e.target.value).toISOString()
+                );
+              }}
+            />
+          </FormControl>
 
           <Center>
             <Divider orientation="vertical" />
             <FormControl isRequired paddingTop={15}>
-              <FormLabel htmlFor="asesorGpoLias">Asesor de Gpo. Lías</FormLabel>
+              <FormLabel htmlFor="nombre_asesor_gpo_lias">
+                Asesor de Gpo. Lías
+              </FormLabel>
               <Input
                 variant="filled"
-                id="asesorGpoLias"
+                id="nombre_asesor_gpo_lias"
                 placeholder="Marí Gallegos"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.nombre_asesor_gpo_lias}
               />
             </FormControl>
 
             <FormControl isRequired paddingLeft={5} paddingTop={15}>
-              <FormLabel htmlFor="asesorAseguradora">
+              <FormLabel htmlFor="nombre_asesor_aseguradora">
                 Asesor de Aseguradora
               </FormLabel>
               <Input
                 variant="filled"
-                id="asesorAseguradora"
+                id="nombre_asesor_aseguradora"
                 placeholder="Juan Perez"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.nombre_asesor_aseguradora}
               />
             </FormControl>
           </Center>
@@ -160,22 +257,26 @@ function TicketNuevo() {
           <Center>
             <Divider orientation="vertical" />
             <FormControl isRequired paddingTop={15}>
-              <FormLabel htmlFor="nombreUsuarioFinal">
+              <FormLabel htmlFor="nombre_usuario_final">
                 Nombre del Usuario Final
               </FormLabel>
               <Input
                 variant="filled"
-                id="nombreUsuarioFinal"
+                id="nombre_usuario_final"
                 placeholder="Andres Franco"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.nombre_usuario_final}
               />
             </FormControl>
 
             <FormControl isRequired paddingLeft={5} paddingTop={15}>
-              <FormLabel htmlFor="tituloTicket">Título del Ticket</FormLabel>
+              <FormLabel htmlFor="titulo_ticket">Título del Ticket</FormLabel>
               <Input
                 variant="filled"
-                id="tituloTicket"
+                id="titulo_ticket"
                 placeholder="Servicio que se dara en el hogar."
+                onChange={formTicket.handleChange}
+                value={formTicket.values.titulo_ticket}
               />
             </FormControl>
           </Center>
@@ -183,41 +284,101 @@ function TicketNuevo() {
           <Center>
             <Divider orientation="vertical" />
             <FormControl isRequired paddingTop={15}>
-              <FormLabel htmlFor="aseguradora">Seguro</FormLabel>
+              <FormLabel htmlFor="aseguradoraId">Aseguradora</FormLabel>
               <Select
-                id="aseguradora"
-                placeholder="Selecciona el Tipo de Seguro"
+                id="aseguradoraId"
+                placeholder="Selecciona la aseguradora"
                 variant="filled"
+                value={formTicket.values.aseguradoraId}
+                onChange={(e) => {
+                  formTicket.setFieldValue(
+                    "aseguradoraId",
+                    parseInt(e.target.value)
+                  );
+                }}
               >
-                <option>IKE</option>
-                <option>AXA</option>
-                <option>IGS</option>
+                {aseguradorasList?.length !== 0
+                  ? aseguradorasList?.map((aseguradora, index) => {
+                      return (
+                        <option key={index} value={Number(aseguradora.id)}>
+                          {aseguradora.nombre}
+                        </option>
+                      );
+                    })
+                  : null}
               </Select>
             </FormControl>
 
             <FormControl isRequired paddingLeft={5} paddingTop={15}>
-              <FormLabel htmlFor="asistencia">Asistencia</FormLabel>
+              <FormLabel htmlFor="asistenciaId">Asistencia</FormLabel>
               <Select
-                id="asistencia"
+                id="asistenciaId"
                 placeholder="Selecciona el Tipo de Asistencia"
                 variant="filled"
+                value={formTicket.values.asistenciaId}
+                onChange={(e) => {
+                  formTicket.setFieldValue(
+                    "asistenciaId",
+                    parseInt(e.target.value)
+                  );
+                }}
+                onFocus={() => {
+                  asistenciaById();
+                }}
               >
-                <option>FORD</option>
-                <option>COPPEL</option>
-                <option>CASA</option>
+                {asistenciasList.length !== 0
+                  ? asistenciasList.map((asistencia, index) => {
+                      return (
+                        <option key={index} value={Number(asistencia.id)}>
+                          {asistencia.nombre}
+                        </option>
+                      );
+                    })
+                  : null}
               </Select>
             </FormControl>
           </Center>
 
           <FormControl isRequired paddingTop={15}>
-            <FormLabel htmlFor="descripcionProblematica">
+            <FormLabel htmlFor="problematica">
               Descripción de la Problematica
             </FormLabel>
             <Textarea
-              id="descripcionProblematica"
+              id="problematica"
               variant="filled"
               placeholder="Fuga de agua en la cocina"
+              onChange={formTicket.handleChange}
+              value={formTicket.values.problematica}
             />
+          </FormControl>
+
+          <FormControl paddingTop={15}>
+            <FormLabel htmlFor="servicioId">
+              Seleccione Servicios relacionados
+            </FormLabel>
+            <CheckboxGroup
+              variant="filled"
+              size={"lg"}
+              onChange={(e) => {
+                setServiciosSeleccionados(e as string[]);
+              }}
+            >
+              <SimpleGrid minChildWidth="3rem" spacing="4rem">
+                {serviciosList?.length !== 0
+                  ? serviciosList.map((servicio, index) => {
+                      return (
+                        <Checkbox
+                          key={index}
+                          id={servicio.nombre}
+                          value={servicio.id?.toString()}
+                        >
+                          {servicio.nombre}
+                        </Checkbox>
+                      );
+                    })
+                  : null}
+              </SimpleGrid>
+            </CheckboxGroup>
           </FormControl>
         </Box>
 
@@ -231,9 +392,19 @@ function TicketNuevo() {
           rounded="md"
           bg="white"
         >
-          <Text fontWeight="bold" fontSize="25px">
-            Cotización de Grupo Lías{" "}
+          <Text fontWeight="bold" fontSize="25px" w={"100%"}>
+            Cotización de Grupo Lías
           </Text>
+          <Divider orientation="vertical" />
+          <FormControl paddingTop={2} paddingLeft={2}>
+            <FormLabel htmlFor="asistencia_vial">Asistencia Vial</FormLabel>
+            <Switch
+              id="asistencia_vial"
+              size="lg"
+              onChange={formTicket.handleChange}
+              isChecked={formTicket.values.asistencia_vial}
+            />
+          </FormControl>
 
           <Center>
             <Divider orientation="vertical" />
@@ -243,10 +414,18 @@ function TicketNuevo() {
                 id="ciudad"
                 placeholder="Selecciona la Ciudad"
                 variant="filled"
+                value={formTicket.values.ciudad}
+                onChange={formTicket.handleChange}
               >
-                <option>Guadalajara</option>
-                <option>Puebla</option>
-                <option>Morelia</option>
+                {ciudadesList?.length !== 0
+                  ? ciudadesList?.map((ciudad, index) => {
+                      return (
+                        <option key={index} value={ciudad.nombre}>
+                          {ciudad.nombre}
+                        </option>
+                      );
+                    })
+                  : null}
               </Select>
             </FormControl>
 
@@ -256,6 +435,8 @@ function TicketNuevo() {
                 variant="filled"
                 id="colonia"
                 placeholder="La Torrecilla"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.colonia}
               />
             </FormControl>
           </Center>
@@ -268,64 +449,78 @@ function TicketNuevo() {
                 variant="filled"
                 id="calle"
                 placeholder="Av. Tecnológico"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.calle}
               />
             </FormControl>
 
             <FormControl isRequired paddingLeft={5} paddingTop={15}>
-              <FormLabel htmlFor="numeroDomicilio">
+              <FormLabel htmlFor="numero_domicilio">
                 Número del Domicilio
               </FormLabel>
-              <Input variant="filled" id="numeroDomicilio" placeholder="F404" />
-            </FormControl>
-          </Center>
-
-          <Center>
-            <Divider orientation="vertical" />
-            <FormControl paddingTop={15}>
-              <FormLabel htmlFor="banderazo">Banderazo</FormLabel>
-              <InputLeftElement
-                paddingTop={55}
-                paddingStart={4}
-                color="gray.300"
-                pointerEvents="none"
-                children="$"
-              />
               <Input
                 variant="filled"
-                id="banderazo"
-                placeholder="0.00"
-                paddingLeft={8}
-                type="number"
-              />
-            </FormControl>
-
-            <FormControl isRequired paddingTop={15} paddingLeft={5}>
-              <FormLabel htmlFor="totalSalida">Total de Salida</FormLabel>
-              <InputLeftElement
-                paddingTop={55}
-                paddingStart={8}
-                color="gray.300"
-                pointerEvents="none"
-                children="$"
-              />
-              <Input
-                variant="filled"
-                id="bandetotalSalidarazo"
-                placeholder="0.00"
-                paddingLeft={8}
-                type="number"
+                id="numero_domicilio"
+                placeholder="F404"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.numero_domicilio}
               />
             </FormControl>
           </Center>
 
-          <Center>
-            <Divider orientation="vertical" />
+          <SimpleGrid columns={[1, 1, 2]} spacing={4}>
+            {formTicket.values.asistencia_vial === true ? (
+              <FormControl paddingTop={15}>
+                <FormLabel htmlFor="banderazo">Banderazo</FormLabel>
+                <InputLeftElement
+                  paddingTop={55}
+                  paddingStart={5}
+                  color="gray.300"
+                  pointerEvents="none"
+                  children="$"
+                />
+                <Input
+                  paddingLeft={8}
+                  variant="filled"
+                  id="banderazo"
+                  placeholder="0.00"
+                  type="number"
+                  min={10}
+                  onChange={formTicket.handleChange}
+                  value={formTicket.values.banderazo}
+                />
+              </FormControl>
+            ) : null}
             <FormControl isRequired paddingTop={15}>
-              <FormLabel htmlFor="montoSeguro">
+              <FormLabel htmlFor="cobertura">
                 Monto de Cobertura del Seguro
               </FormLabel>
               <InputLeftElement
                 paddingTop={55}
+                paddingStart={5}
+                color="gray.300"
+                pointerEvents="none"
+                children="$"
+              />
+              <Input
+                variant="filled"
+                id="cobertura"
+                placeholder="0.00"
+                paddingLeft={8}
+                type="number"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.cobertura}
+              />
+            </FormControl>
+          </SimpleGrid>
+
+          <Center>
+            <Divider orientation="vertical" />
+
+            <FormControl isRequired paddingTop={15}>
+              <FormLabel htmlFor="total_salida">Total de Salida</FormLabel>
+              <InputLeftElement
+                paddingTop={55}
                 paddingStart={4}
                 color="gray.300"
                 pointerEvents="none"
@@ -333,15 +528,16 @@ function TicketNuevo() {
               />
               <Input
                 variant="filled"
-                id="montoSeguro"
+                id="total_salida"
                 placeholder="0.00"
                 paddingLeft={8}
                 type="number"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.total_salida}
               />
             </FormControl>
-
             <FormControl isRequired paddingTop={15} paddingLeft={5}>
-              <FormLabel htmlFor="costoGpoLias">Costo Grupo Lías</FormLabel>
+              <FormLabel htmlFor="costo_gpo_lias">Costo Grupo Lías</FormLabel>
               <InputLeftElement
                 paddingTop={55}
                 paddingStart={8}
@@ -351,10 +547,12 @@ function TicketNuevo() {
               />
               <Input
                 variant="filled"
-                id="costoGpoLias"
+                id="costo_gpo_lias"
                 placeholder="0.00"
                 paddingLeft={8}
                 type="number"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.costo_gpo_lias}
               />
             </FormControl>
           </Center>
@@ -376,28 +574,34 @@ function TicketNuevo() {
                 placeholder="0.00"
                 paddingLeft={8}
                 type="number"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.deducible}
               />
             </FormControl>
 
             <FormControl paddingLeft={5} paddingTop={15}>
-              <FormLabel htmlFor="kilometros">Kilometros a Recorrer</FormLabel>
+              <FormLabel htmlFor="kilometraje">Kilometros a Recorrer</FormLabel>
               <Input
                 variant="filled"
-                id="kilometros"
+                id="kilometraje"
                 placeholder="0"
                 type="number"
                 min={0}
+                onChange={formTicket.handleChange}
+                value={formTicket.values.kilometraje}
               />
             </FormControl>
 
             <FormControl paddingLeft={5} paddingTop={15}>
-              <FormLabel htmlFor="kilometros">Numero de casetas</FormLabel>
+              <FormLabel htmlFor="casetas">Numero de casetas</FormLabel>
               <Input
                 variant="filled"
-                id="kilometros"
+                id="casetas"
                 placeholder="0"
                 min={0}
                 type="number"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.casetas}
               />
             </FormControl>
           </Center>
@@ -419,6 +623,8 @@ function TicketNuevo() {
                 placeholder="0.00"
                 paddingLeft={8}
                 type="number"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.total}
               />
             </FormControl>
 
@@ -437,19 +643,34 @@ function TicketNuevo() {
                 placeholder="0.00"
                 paddingLeft={8}
                 type="number"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.anticipo}
               />
             </FormControl>
           </Center>
 
-          <FormControl isRequired paddingTop={15}>
-            <FormLabel htmlFor="comentarios">
-              Comentarios de Grupo Lías
+          <FormControl paddingTop={15}>
+            <FormLabel htmlFor="cotizacion_gpo_lias">
+              Cotizacion de Grupo Lías (Informacion adicional)
             </FormLabel>
             <Textarea
+              id="cotizacion_gpo_lias"
               variant="filled"
               placeholder="Se realizará el siguiente servicio en la Avenida Tecnológico."
+              onChange={formTicket.handleChange}
+              value={formTicket.values.cotizacion_gpo_lias}
             />
           </FormControl>
+
+          <Button
+            isLoading={formTicket.isSubmitting}
+            id="publicarTicket"
+            type="submit"
+            colorScheme="teal"
+            size="lg"
+          >
+            Publicar Ticket
+          </Button>
         </Box>
       </form>
       {/* //------------------------------COTIZACION TECNICO------------------------------------- */}
