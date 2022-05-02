@@ -47,9 +47,12 @@ import {
 import { useEffect, useState } from "react";
 import { ServiciosService } from "@/services/servicios.service";
 import { IServicio } from "@/services/api.models";
+import { Form, Formik, useFormik } from "formik";
 
+import { useRouter } from "next/router";
 function ServiciosListado() {
   const toast = useToast();
+  const router = useRouter();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -119,6 +122,58 @@ function ServiciosListado() {
 
     consultarServicios();
   }, []);
+
+
+  /* PA EDITAR  */
+  const [data, setData] = useState<IServicio>();
+  const { idServicio } = router.query;
+
+  useEffect(() => {
+    const getServicio = async () => {
+      const servicio = new ServiciosService();
+      const response = await servicio.getById(Number(idServicio))
+      if (response.status == 200) {
+        setData(response.data as IServicio);
+      }
+    };
+    getServicio();
+  });
+
+  const formServicio = useFormik({
+    initialValues: {
+      nombre: data?.nombre || "",
+      tipo: data?.tipo || "",
+    },
+
+    onSubmit: async (values: IServicio) => {
+      const actualizaServicio = async () => {
+        const data = {
+          ...values,
+        };
+
+        const service = new ServiciosService();
+        const respuesta = await service.getById(Number(idServicio));
+        const dataUpdate = respuesta.data as IServicio;
+        setData(dataUpdate);
+
+        if (respuesta === undefined) {
+          toast({
+            title: "Error",
+            status: "error",
+            description: `Error al dar de alta, verifique sus campos`,
+          });
+          setCargando(false);
+        } else {
+          toast({
+            title: "Guardado",
+            status: "success",
+            description: `${respuesta.usuario} guardado`,
+          });
+        }
+      };
+      actualizaServicio()
+    },
+  });
 
   return (
     <DesktopLayout>
@@ -228,7 +283,7 @@ function ServiciosListado() {
                     onChange={(e) => {
                       setTipoServicio(e.target.value);
                     }}
-                    value="Domestico"
+                    value="DOMESTICO"
                   >
                     Domestico
                   </Checkbox>
@@ -236,7 +291,7 @@ function ServiciosListado() {
                     onChange={(e) => {
                       setTipoServicio(e.target.value);
                     }}
-                    value="Automovilistico"
+                    value="VIAL"
                   >
                     Automovilistico
                   </Checkbox>
@@ -246,85 +301,70 @@ function ServiciosListado() {
           </ModalBody>
 
           <ModalFooter>
-
-
-
-
             <Button colorScheme="blue" mr={3} onClick={guardarServicio}>
               Guardar
             </Button>
-
-
             <Button onClick={onClose}>Cancelar</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <Modal
-        closeOnOverlayClick={false}
-        isOpen={isOpenedit}
-        onClose={onCloseedit}
-      >
-        <ModalOverlay />
-        <ModalContent>
-          {/* MODAL PARA EDITAR SERVICIO */}
-          <ModalHeader>Editar servicio</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl mt={4}>
-              <FormLabel>Nombre del servicio</FormLabel>
-              <Input
-                placeholder="Nombre del servicio"
-                onChange={(e) => {
-                  //setNombreServicio(e.target.value)
-                  alert("Hola");
-                }}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel padding={1} >Tipo del servicio</FormLabel>
-              <CheckboxGroup colorScheme='green' >
-                <Stack padding={2} spacing={[1, 5]} direction={['column', 'row']}>
-                  <Checkbox onChange={(e) => {
-                    setTipoServicio(e.target.value)
-                  }} value='Domestico'>Domestico</Checkbox>
-                  <Checkbox
-                    onChange={(e) => {
-                      setTipoServicio(e.target.value)
-                    }}
-                    value='Automovilistico'>Automovilistico</Checkbox>
+      <form onSubmit={formServicio.handleSubmit} >
+        <Modal
 
-                </Stack>
-              </CheckboxGroup>
-            </FormControl>
-          </ModalBody>
+          isOpen={isOpenedit}
+          onClose={onCloseedit}
+        >
+          <ModalOverlay />
+          <ModalContent>
+            {/* MODAL PARA EDITAR SERVICIO */}
+            <ModalHeader>Editar servicio</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+              <FormControl mt={4}>
+                <FormLabel>Nombre del servicio</FormLabel>
+                <Input
+                  placeholder="Nombre del servicio"
+                  id="nombre"
+                  value={formServicio.values.nombre}
+                  onChange={formServicio.handleChange}
+                />
+              </FormControl>
 
-          <ModalFooter>
-            <Button
-              isLoading={cargando}
-              colorScheme="blue"
-              mr={3}
-              onClick={() => {
-                setCargando(true);
-                const data: IServicio = {
-                  nombre: nombreServicioEdit,
-                  tipo: "DOMESTICO",
-                };
+              <FormControl >
+                <FormLabel padding={1} >Tipo del servicio</FormLabel>
+                <CheckboxGroup colorScheme='green'
+                  onChange={formServicio.handleChange}
+                >
+                  <Stack padding={2} spacing={[1, 5]} direction={['column', 'row']}>
+                    <Checkbox value={"DOMESTICO"}
+                    >Domestico</Checkbox>
+                    <Checkbox
+                      value={"VIAL"}
+                    >Automovilistico</Checkbox>
 
-                const servicio = new ServiciosService();
-                const respuesta = servicio.update(data, servicioEdit?.id || 0);
+                  </Stack>
+                </CheckboxGroup>
+              </FormControl>
+            </ModalBody>
 
-                console.log(data);
-                setCargando(false);
-                onCloseedit();
-              }}
-            >
-              Guardar
-            </Button>
-            <Button onClick={onCloseedit}>Cancelar</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </DesktopLayout>
+            <ModalFooter>
+              <Button
+                id="guardar"
+                type="submit"
+                colorScheme="blue"
+                variant="solid"
+                isLoading={cargando}
+                mr={3}
+
+              >
+                Guardar
+              </Button>
+              <Button onClick={onCloseedit}>Cancelar</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </form>
+    </DesktopLayout >
   );
 }
 
