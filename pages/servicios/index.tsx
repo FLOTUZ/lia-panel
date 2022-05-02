@@ -57,7 +57,7 @@ function ServiciosListado() {
     onOpen: onOpenedit,
     onClose: onCloseedit,
   } = useDisclosure();
-  const [query, setQuery] = useState("");
+
 
   const [nombreServicio, setNombreServicio] = useState("");
   const [tipoServicio, setTipoServicio] = useState("");
@@ -73,9 +73,10 @@ function ServiciosListado() {
       tipo: tipoServicio,
     };
 
-    const service = new ServiciosService();
-    const response = await service.create(data);
-    console.log(response);
+    const service = new ServiciosService()
+    const response = await service.create(data)
+
+
 
     if (response.status === 201) {
       onClose();
@@ -245,9 +246,14 @@ function ServiciosListado() {
           </ModalBody>
 
           <ModalFooter>
+
+
+
+
             <Button colorScheme="blue" mr={3} onClick={guardarServicio}>
               Guardar
             </Button>
+
 
             <Button onClick={onClose}>Cancelar</Button>
           </ModalFooter>
@@ -269,10 +275,26 @@ function ServiciosListado() {
               <Input
                 placeholder="Nombre del servicio"
                 onChange={(e) => {
-                  setNombreServicioEdit(e.target.value);
-                  console.log(e.target.value);
+                  //setNombreServicio(e.target.value)
+                  alert("Hola");
                 }}
               />
+            </FormControl>
+            <FormControl>
+              <FormLabel padding={1} >Tipo del servicio</FormLabel>
+              <CheckboxGroup colorScheme='green' >
+                <Stack padding={2} spacing={[1, 5]} direction={['column', 'row']}>
+                  <Checkbox onChange={(e) => {
+                    setTipoServicio(e.target.value)
+                  }} value='Domestico'>Domestico</Checkbox>
+                  <Checkbox
+                    onChange={(e) => {
+                      setTipoServicio(e.target.value)
+                    }}
+                    value='Automovilistico'>Automovilistico</Checkbox>
+
+                </Stack>
+              </CheckboxGroup>
             </FormControl>
           </ModalBody>
 

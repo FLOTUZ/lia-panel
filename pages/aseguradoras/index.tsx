@@ -50,7 +50,6 @@ export default function AseguradorasListado() {
 
 
   const [nombreAsistencia, setNombreAsistencia] = useState("")
-  const [aseguradoraGuardada, setAseguradoraGuardada] = useState<IAseguradoras>()
 
 
   /*CONSULTA EN TABLA DE LAS ASEGURADORAS CON ASISTENCIAS */
@@ -69,68 +68,10 @@ export default function AseguradorasListado() {
     };
     consultaAseguradoras();
   }, []);
-  /*AGREGAR ASISTENCIA */
-  const guardarAsistencia = async () => {
-    const data: IAsistencias = {
-      nombre: nombreAsistencia,
-      aseguradoraId: aseguradoraGuardada?.id
-    };
-
-    const service = new AsistenciasService()
-    const response = await service.create(data)
-
-    const consultaAsistencias = async () => {
-      const services = new AseguradoraService();
-      const respuesta = await services.getById(aseguradoraGuardada?.id || 0);
-      const data = respuesta.data as IAseguradoras;
+  
 
 
-      if (respuesta.status == 200) {
-        setListadoAsistencias(data.Asistencia || []);
-      } else {
-        console.log(respuesta)
-      }
-    };
-
-
-    consultaAsistencias()
-    if (response.status === 201) {
-      onClose()
-      toast({
-        title: "Asistencia nueva agregado con exito",
-        description: 'La Asistencia se agrego con exito',
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-      });
-    } else {
-      toast({
-        title: "Oops.. Algo salio mal",
-        description: response.message,
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-    }
-
-  }
-  /*CONSULTA de asistencias  */
-  const [listadoAsistencias, setListadoAsistencias] = useState<IAsistencias[]>([])
-  useEffect(() => {
-    const consultaAsistencias = async () => {
-      const services = new AsistenciasService();
-      const respuesta = await services.getAll();
-      const data = respuesta.data as IAsistencias[];
-
-      if (respuesta.status == 200) {
-        setListadoAsistencias(data);
-      } else {
-        console.log(respuesta)
-      }
-    };
-    consultaAsistencias();
-  }, []);
-
+  
 
   return (
     <DesktopLayout>
@@ -209,13 +150,13 @@ export default function AseguradorasListado() {
             </Thead>
             <Tbody>
               {listadoAseguradoras.length != 0 ? (
-                listadoAseguradoras.map((t, index) => {
+                listadoAseguradoras.map((aseguradoras, index) => {
 
                   return (
                     <Tr key={index} >
-                      <Td>{t.expediente}</Td>
-                      <Td>{t.nombre}</Td>
-                      <Td>{t.telefono}</Td>
+                      <Td>{aseguradoras.expediente}</Td>
+                      <Td>{aseguradoras.nombre}</Td>
+                      <Td>{aseguradoras.telefono}</Td>
 
                       <Td>
 
@@ -226,11 +167,11 @@ export default function AseguradorasListado() {
                           icon={<AddIcon />}
                         />
                       </Td>
-                      <Td>{t.createdAt}</Td>
-                      <Td>{t.updatedAt}</Td>
+                      <Td>{aseguradoras.createdAt}</Td>
+                      <Td>{aseguradoras.updatedAt}</Td>
                       <Td>reportes</Td>
                       <Td>
-                        <Link href={"/aseguradoras/1"}>
+                      <Link href={`/aseguradoras/${aseguradoras.id}`}>
                           <a>
                             <IconButton
 
@@ -270,8 +211,7 @@ export default function AseguradorasListado() {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3}
-              onClick={guardarAsistencia}>
+            <Button colorScheme="blue" mr={3}>
               Guardar
             </Button>
             <Button onClick={onClose}>Cancelar</Button>
