@@ -24,27 +24,27 @@ const KanbanColumnCard = ({
             color: "white",
           }}
         >
-          <Heading size={"sm"}>{ticket.titulo}</Heading>
+          <Heading size={"sm"}>{ticket.titulo_ticket}</Heading>
           <Tooltip
             placement="right"
             hasArrow
             bg={"gray.300"}
             color={"black"}
-            label={ticket.descripcion}
+            label={ticket.problematica}
           >
-            <Text isTruncated={true}>{ticket.descripcion}</Text>
+            <Text isTruncated={true}>{ticket.problematica}</Text>
           </Tooltip>
 
           <HStack>
             <Text fontWeight={"bold"}>Aseguradora:</Text>
-            <Text>{ticket.aseguradora}</Text>
+            <Text>{ticket.aseguradoraId}</Text>
           </HStack>
-          {ticket.tecnico ? (
+          {/* {ticket.tecnico ? (
             <HStack>
               <Text fontWeight={"bold"}>Tecnico:</Text>
               <Text>{ticket.tecnico}</Text>
             </HStack>
-          ) : null}
+          ) : null} */}
         </Container>
       </a>
     </Link>
