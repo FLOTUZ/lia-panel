@@ -2,6 +2,7 @@ import Header from "@/common/Header";
 import DesktopLayout from "@/layouts/DesktopLayout";
 import Router from "next/router";
 import React from "react";
+import { CiudadesService } from "@/services/ciudades.service";
 import {
   FormLabel,
   Input,
@@ -26,7 +27,7 @@ import {
 //import { useFormik } from "formik";
 
 import { FormEvent, useState, useEffect } from "react";
-import { ITecnico, IUsuario, IServicio } from "@/services/api.models";
+import { ITecnico, IUsuario, IServicio, ICiudad } from "@/services/api.models";
 import { UsuariosService } from "@/services/usuarios.service";
 import { TecnicoService } from "@/services/tecnicos.service";
 import { ServiciosService } from "@/services/servicios.service";
@@ -45,8 +46,9 @@ function UsuarioNuevo() {
   const [apellidoMaterno, setApellidoMaterno] = useState("");
   const [telefono, setTelefono] = useState("");
   const [usuarioId, setUsuarioId] = useState(0);
-  const [ciudadId, setciudadId] = useState(0);
+  const [ciudadId, setciudadId] = useState<number>();
   const [servicios, setServicios] = useState<string[]>([]);
+  const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
 
   const [cargando, setCargando] = useState(false);
   const [checkedItems, setCheckedItems] = React.useState([false, false]);
@@ -168,6 +170,15 @@ function UsuarioNuevo() {
       }
     };
 
+    const consultarCiudades = async () => {
+      const servicio = new CiudadesService();
+      const respuesta = await servicio.getAll();
+      const data = respuesta.data as ICiudad[];
+
+      setCiudadesList(data);
+    };
+
+    consultarCiudades();
     consultarTecnicos();
   }, []);
 
@@ -320,11 +331,24 @@ function UsuarioNuevo() {
 
                     <FormControl isRequired paddingLeft={5} paddingTop={15}>
                       <FormLabel htmlFor="ciudad">Ciudad</FormLabel>
-                      <Input
-                        variant="filled"
+                      <Select
                         id="ciudad"
-                        placeholder="Morelia"
-                      />
+                        placeholder="Selecciona la Ciudad"
+                        variant="filled"
+                        onChange={(e) => {
+                           setciudadId(Number(e.target.value));
+                        }}
+                      >
+                        {ciudadesList?.length !== 0
+                          ? ciudadesList?.map((ciudad, index) => {
+                              return (
+                                <option key={index} value={ciudad.id}>
+                                  {ciudad.nombre}
+                                </option>
+                              );
+                            })
+                          : null}
+                      </Select>
                     </FormControl>
                   </Center>
 

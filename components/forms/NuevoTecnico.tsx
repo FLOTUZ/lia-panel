@@ -32,3 +32,5 @@ const NuevoTecnico = () => {
 };
 
 export default NuevoTecnico;
+
+
