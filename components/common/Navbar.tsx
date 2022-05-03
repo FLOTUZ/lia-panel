@@ -10,7 +10,7 @@ import { IoMdMap, } from "react-icons/io";
 
 import Link from "next/link";
 import Image from "next/image";
-import Logo from "../../public/vercel.svg";
+import Logo from "../../public/logo.jpeg";
 
 const Navbar = () => {
   const routes = [
@@ -59,13 +59,13 @@ const Navbar = () => {
   return (
     <Stack width="20vh" h="100vh" pos="fixed" p={2}>
       <Flex
-        h="5rem"
-        w="5rem"
+        h="6rem"
+        w="6rem"
         bgColor="gray.100"
         borderRadius={"full"}
         my="5"
-        padding={2}
-        alignSelf={"center"}
+        padding={1}
+        alignSelf={"normal"}
       >
         {/*TODO: Poner Imagen de GPO LIAS*/}
 
