@@ -108,7 +108,7 @@ function CiudadesListado() {
 
   return (
     <DesktopLayout>
-      <Header title={"Lista de servicios "} />
+      <Header title={"Lista de ciudades "} />
       <Box
         m={2}
         bgColor="white"
@@ -142,11 +142,10 @@ function CiudadesListado() {
         <Box marginLeft={"5%"}>
           <TableContainer>
             <Table size={"sm"} variant="unstyled" colorScheme="teal">
-              <TableCaption>Servicios</TableCaption>
+              <TableCaption>Ciudades</TableCaption>
               <Thead>
                 <Tr>
                   <Th>Nombre</Th>
-                  <Th>Tipo de servicio</Th>
                   <Th>Opciones</Th>
                 </Tr>
               </Thead>
@@ -226,25 +225,21 @@ function CiudadesListado() {
       >
         <ModalOverlay />
         <ModalContent>
-          {/* MODAL PARA EDITAR SERVICIO */}
+          {/* MODAL PARA EDITAR CIUDAD */}
           <ModalHeader>Editar servicio</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl mt={4}>
-              <FormLabel>Nombre del servicio</FormLabel>
+              <FormLabel>Nombre del la ciudad</FormLabel>
               <Input
-                placeholder="Nombre del servicio"
+                placeholder="Nombre de la ciudad"
                 onChange={(e) => {
                   //setNombreServicio(e.target.value)
                   alert("Hola");
                 }}
               />
             </FormControl>
-            <FormControl>
-              <FormLabel padding={1} >Tipo del servicio</FormLabel>
-              <CheckboxGroup colorScheme='green' >
-              </CheckboxGroup>
-            </FormControl>
+          
           </ModalBody>
 
           <ModalFooter>
