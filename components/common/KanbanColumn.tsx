@@ -1,4 +1,8 @@
-import { GridItem, Heading } from "@chakra-ui/react";
+import {
+  GridItem,
+  Heading,
+  Box,
+} from "@chakra-ui/react";
 
 interface IKanbanColumn {
   columnName: string; //Heading de estado de la columna
@@ -12,26 +16,30 @@ const KanbanColumn = ({
   children,
 }: IKanbanColumn): React.ReactElement => {
   return (
-    <GridItem
-      p={1}
-      width={"18rem"}
-      h={"fit-content"}
-      colSpan={1}
-      shadow="sm"
-      borderRadius={"lg"}
-      bgColor={colorGridBg}
-    >
-      <Heading
+  
+      <GridItem
+        p={0.5}
+        width={"18rem"}
         h={"fit-content"}
-        p={2}
+        colSpan={1}
+        shadow="sm"
         borderRadius={"lg"}
-        size="lg"
-        bgColor={"white"}
+        bgColor={colorGridBg}
+
       >
-        {columnName}
-      </Heading>
-      {children}
-    </GridItem>
+
+        <Heading
+          h={"fit-content"}
+          p={2}
+          borderRadius={"lg"}
+          size="lg"
+          bgColor={"white"}
+        >
+          {columnName}
+        </Heading>
+        {children}
+      </GridItem>
+    
   );
 };
 

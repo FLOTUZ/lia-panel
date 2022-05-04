@@ -15,8 +15,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
-  Textarea,
   useDisclosure,
   InputLeftElement,
   Stack,
@@ -31,7 +29,7 @@ import {
   Heading,
   useToast,
 } from "@chakra-ui/react";
-import { AddIcon, EmailIcon, PhoneIcon } from "@chakra-ui/icons";
+import { AddIcon, CheckIcon, EmailIcon, PhoneIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { MdVerifiedUser } from "react-icons/md";
 import Link from "next/link";
@@ -43,6 +41,7 @@ function AseguradoraNueva() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast()
 
+  const [folioAseguradora, setFolioAseguradora] = useState("")
   const [nombreAseguradora, setNombreAseguradora] = useState("")
   const [telefonoAseguradora, setTelefonoAseguradora] = useState("")
   const [nombreAsistencia, setNombreAsistencia] = useState("")
@@ -81,8 +80,8 @@ function AseguradoraNueva() {
     if (response.status === 201) {
       onClose()
       toast({
-        title: "Asistencia nueva agregado con exito",
-        description: 'La Asistencia se agrego con exito',
+        title: "Asistencia Nueva Agregado con Exito.",
+        description: 'La Asistencia se Agrego con Exito.',
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -104,7 +103,7 @@ function AseguradoraNueva() {
     const data: IAseguradoras = {
       nombre: nombreAseguradora,
       telefono: telefonoAseguradora,
-      expediente: "00000",
+      expediente: folioAseguradora,
     };
 
     const service = new AseguradoraService()
@@ -149,6 +148,23 @@ function AseguradoraNueva() {
           bg="white"
         >
           <Stack spacing={4}>
+
+            <InputGroup>
+              <FormControl isRequired>
+                <FormLabel htmlFor="expediente">Folio de la Aseguradora</FormLabel>
+                <InputGroup>
+                  <InputLeftElement
+                    pointerEvents="none"
+                    children={<CheckIcon color="gray.300" />} />
+                  <Input type="nombre" placeholder="Folio de la Aseguradora"
+                    onChange={(e) => {
+                      setFolioAseguradora(e.target.value);
+                    }}
+                  />
+                </InputGroup>
+              </FormControl>
+            </InputGroup>
+
             <InputGroup>
               <FormControl isRequired>
                 <FormLabel htmlFor="nombre">Nombre de la aseguradora</FormLabel>
@@ -178,13 +194,14 @@ function AseguradoraNueva() {
                     onChange={(e) => {
                       setTelefonoAseguradora(e.target.value);
                     }}
-                    type="tel" placeholder="Numero de telefono" />
+                    type="tel" placeholder="Numero de Teléfono" />
                 </InputGroup>
               </FormControl>
             </InputGroup>
           </Stack>
-          <Stack marginTop={50} direction="row" spacing={4} align="center">
-            <Button colorScheme="twitter" variant="solid"
+          <Stack marginTop={50} direction="row" spacing={4} align="center" paddingLeft={930}>
+            <Button colorScheme="facebook"
+              variant="solid"
               onClick={guardarAseguradora}
             >
               Agregar
@@ -209,29 +226,37 @@ function AseguradoraNueva() {
           boxShadow="2xl"
           p="6"
           rounded="md"
-          bg="white"
-        >
-          <Button
-            leftIcon={<AddIcon />}
-            colorScheme="teal"
-            variant="solid"
-            onClick={onOpen}
-          >
-            Nueva Asistencia
-          </Button>
-          <Heading marginTop={50} as="h5" size="md">
-            Asistencia de aseguradora
+          bg="white">
+
+          <Heading marginTop={5} as="h5" size="md">
+            Asistencia de Aseguradora
           </Heading>
+
+          <Stack marginTop={2}
+            direction="row"
+            spacing={2}
+            align="center"
+            paddingLeft={930}>
+            <Button
+              leftIcon={<AddIcon />}
+              colorScheme="facebook"
+              variant="solid"
+              onClick={onOpen}>
+              Nueva Asistencia
+            </Button>
+          </Stack>
+
+
 
           <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
             <ModalContent>
-              <ModalHeader>Crea una nueva asistencia</ModalHeader>
+              <ModalHeader>Crea una Nueva Asistencia</ModalHeader>
               <ModalCloseButton />
               <ModalBody pb={6}>
                 <FormControl mt={4}>
-                  <FormLabel>Nombre de la asistencia</FormLabel>
-                  <Input placeholder="Nombre de la asistencia"
+                  <FormLabel>Nombre de la Asistencia</FormLabel>
+                  <Input placeholder="Nombre de la Asistencia"
                     onChange={(e) => {
                       setNombreAsistencia(e.target.value)
                     }}
@@ -251,7 +276,7 @@ function AseguradoraNueva() {
           </Modal>
 
           <TableContainer>
-            <Table marginTop={50} size="sm">
+            <Table marginTop={8} size="md" colorScheme="teal" variant="simple">
               <Thead>
                 <Tr>
                   <Th>Nombre</Th>

@@ -23,9 +23,6 @@ import {
   FormControl,
   ModalFooter,
   useDisclosure,
-  CheckboxGroup,
-  Stack,
-  Checkbox,
   useToast,
 } from "@chakra-ui/react";
 import {
@@ -69,8 +66,8 @@ function CiudadesListado() {
       onClose();
       setNombreServicio("");
       toast({
-        title: "Ciudad Nueva agregada con exito",
-        description: "La ciudad0 se agrego con exito",
+        title: "Ciudad Nueva Agregada con Exito.",
+        description: "La ciudad se Agrego con Exito.",
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -136,12 +133,12 @@ function CiudadesListado() {
             variant="solid"
             marginLeft={"80%"}
           >
-            Nuevo servicio
+            Agregar Nueva Ciudad
           </Button>
         </Box>
-        <Box marginLeft={"5%"}>
+        <Box marginLeft={"1%"}>
           <TableContainer>
-            <Table size={"sm"} variant="unstyled" colorScheme="teal">
+            <Table size={"md"} variant="simple" colorScheme="teal">
               <TableCaption>Ciudades</TableCaption>
               <Thead>
                 <Tr>
@@ -189,14 +186,14 @@ function CiudadesListado() {
       <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Crea una nuevo servicio</ModalHeader>
+          <ModalHeader>Agregar una Nueva Ciudad</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl mt={4}>
-              <FormLabel padding={1}>Nombre del servicio</FormLabel>
+              <FormLabel padding={1}>Nombre de la Ciudad</FormLabel>
               <Input
                 paddingBottom={2}
-                placeholder="Nombre del servicio"
+                placeholder="Nombre"
                 onChange={(e) => {
                   setNombreServicio(e.target.value);
                 }}
@@ -226,13 +223,13 @@ function CiudadesListado() {
         <ModalOverlay />
         <ModalContent>
           {/* MODAL PARA EDITAR CIUDAD */}
-          <ModalHeader>Editar servicio</ModalHeader>
+          <ModalHeader>Editar Ciudad</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl mt={4}>
-              <FormLabel>Nombre del la ciudad</FormLabel>
+              <FormLabel>Nombre del la Ciudad</FormLabel>
               <Input
-                placeholder="Nombre de la ciudad"
+                placeholder="Nombre"
                 onChange={(e) => {
                   //setNombreServicio(e.target.value)
                   alert("Hola");

@@ -208,9 +208,9 @@ function ServiciosListado() {
             Nuevo servicio
           </Button>
         </Box>
-        <Box marginLeft={"5%"}>
+        <Box marginLeft={"1%"}>
           <TableContainer>
-            <Table size={"sm"} variant="unstyled" colorScheme="teal">
+            <Table size={"md"} variant="simple" colorScheme="teal">
               <TableCaption>Servicios</TableCaption>
               <Thead>
                 <Tr>

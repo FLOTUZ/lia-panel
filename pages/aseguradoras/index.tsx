@@ -10,7 +10,6 @@ import {
   Th,
   Tbody,
   Td,
-  Tfoot,
   Box,
   Button,
   FormLabel,
@@ -18,8 +17,6 @@ import {
   InputLeftAddon,
   InputGroup,
   IconButton,
-  EditableInput,
-  Spacer,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -68,9 +65,6 @@ export default function AseguradorasListado() {
     };
     consultaAseguradoras();
   }, []);
-  
-
-
   
 
   return (
@@ -141,7 +135,6 @@ export default function AseguradorasListado() {
                 <Th>Nº Expediente</Th>
                 <Th>Nombre</Th>
                 <Th>Telefono</Th>
-                <Th>Asistencias</Th>
                 <Th>Creado</Th>
                 <Th>Ultima modificacion</Th>
                 <Th>Reportes</Th>
@@ -157,16 +150,6 @@ export default function AseguradorasListado() {
                       <Td>{aseguradoras.expediente}</Td>
                       <Td>{aseguradoras.nombre}</Td>
                       <Td>{aseguradoras.telefono}</Td>
-
-                      <Td>
-
-                        <IconButton
-                          onClick={onOpen}
-                          variant="ghost"
-                          aria-label="add"
-                          icon={<AddIcon />}
-                        />
-                      </Td>
                       <Td>{aseguradoras.createdAt}</Td>
                       <Td>{aseguradoras.updatedAt}</Td>
                       <Td>reportes</Td>

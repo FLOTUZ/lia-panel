@@ -87,7 +87,7 @@ function UsuariosListado() {
         </Box>
 
         <TableContainer>
-          <Table variant="simple" colorScheme="teal">
+          <Table size={"md"} variant="simple" colorScheme="teal">
             <Thead>
               <Tr>
                 <Th>Usuario</Th>

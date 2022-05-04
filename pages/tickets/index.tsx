@@ -1,24 +1,36 @@
 import Kanban from "@/layouts/Kanban";
 import DesktopLayout from "@/layouts/DesktopLayout";
 import Header from "@/common/Header";
-import { Button, HStack } from "@chakra-ui/react";
+import {
+  Button,
+  HStack,
+  Box,
+} from "@chakra-ui/react";
 import { useRouter } from "next/router";
+import { AddIcon } from "@chakra-ui/icons";
 
 function TicketsListado() {
   const router = useRouter();
   return (
     <>
       <DesktopLayout>
+        <Header title="Tickets" />
         <HStack>
-          <Header title="Tickets" />
-          <Button
-            colorScheme={"blue"}
-            onClick={() => {
-              router.push("/tickets/nuevo");
-            }}
-          >
-            Nuevo
-          </Button>
+
+          <Box
+            paddingTop={5}
+            paddingLeft={1020}>
+            <Button
+              leftIcon={<AddIcon />}
+              colorScheme="facebook"
+              variant="solid"
+              onClick={() => {
+                router.push("/tickets/nuevo");
+              }}>
+              Nuevo Ticket
+            </Button>
+          </Box>
+
         </HStack>
         <Kanban />
       </DesktopLayout>

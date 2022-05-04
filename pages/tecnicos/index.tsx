@@ -39,7 +39,7 @@ function TenicosListado() {
     const consultarTecnicos = async () => {
       const service = new TecnicoService();
       const respuesta = await service.getAll();
-      console.log({ respuesta });
+      console.log(respuesta);
 
       if (respuesta.status == 200) {
         const data = respuesta.data as ITecnico[];

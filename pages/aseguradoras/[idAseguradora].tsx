@@ -108,7 +108,7 @@ function AseguradoraVer() {
       onClose()
       toast({
         title: "Asistencia nueva agregado con exito",
-        description: 'La Asistencia se agrego con exito',
+        description: 'La asistencia se agrego con exito',
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -127,7 +127,7 @@ function AseguradoraVer() {
 
 
   /*ACTUALIZAR LA ASEGURADORA SELECCIONADA */
-  
+
   const actualizarAseguradora = async () => {
     setCargando(true);
     const data: IAseguradoras = {
@@ -138,11 +138,11 @@ function AseguradoraVer() {
 
     const service = new AseguradoraService();
     const response = await service.update(data, Number(idAseguradora));
-     
+
     const aseguradora = response.data as IAseguradoras
     setAseguradoraGuardada(aseguradora.id)
-    
-    
+
+
     if (response === undefined) {
       toast({
         title: "Error",
@@ -168,10 +168,10 @@ function AseguradoraVer() {
   return (
     <div>
       <DesktopLayout>
+
         <Header title={"Editar aseguradora"} />
+
         <FormControl isRequired>
-
-
           <Box
             m={2}
             bgColor="white"
@@ -182,7 +182,7 @@ function AseguradoraVer() {
             rounded="md"
             bg="white"
           >
-            <Stack spacing={4}>
+            <Stack spacing={1}>
               <FormControl display="flex" alignItems="center">
                 <FormLabel
                   display="flex"
@@ -236,10 +236,25 @@ function AseguradoraVer() {
                 </FormControl>
               </InputGroup>
             </Stack>
-            <Stack marginTop={50} direction="row" spacing={4} align="center">
+          </Box>
+          <Box
+            m={2}
+            bgColor="white"
+            padding={5}
+            borderRadius={10}
+            boxShadow="2xl"
+            p="6"
+            rounded="md"
+            bg="white"
+          >
+            <Heading marginTop={30} as="h5" size="md">
+              Asistencia de Aseguradora
+            </Heading>
+            
+            <Stack marginTop={5} paddingLeft={960} direction="row" spacing={4} align="center">
               <Button
                 leftIcon={<AddIcon />}
-                colorScheme="teal"
+                colorScheme="facebook"
                 variant="solid"
                 onClick={onOpen}
               >
@@ -249,12 +264,12 @@ function AseguradoraVer() {
             <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
               <ModalOverlay />
               <ModalContent>
-                <ModalHeader>Crea una nueva asistencia</ModalHeader>
+                <ModalHeader>Crea una Nueva Asistencia</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody pb={6}>
                   <FormControl mt={4}>
-                    <FormLabel>Nombre del servicio</FormLabel>
-                    <Input placeholder="Nombre del servicio"
+                    <FormLabel>Nombre del Servicio</FormLabel>
+                    <Input placeholder="Nombre del Servicio"
                       onChange={(e) => {
                         setNombreAsistencia(e.target.value)
                       }} />
@@ -270,16 +285,13 @@ function AseguradoraVer() {
                 </ModalFooter>
               </ModalContent>
             </Modal>
-            <Heading marginTop={30} as="h5" size="md">
-              Asistencia de aseguradora
-            </Heading>
 
 
-
+            
 
 
             <TableContainer>
-              <Table marginTop={50} size="sm">
+              <Table marginTop={50} size="md" variant="simple" colorScheme="teal">
                 <Thead>
                   <Tr>
                     <Th>Nombre</Th>
@@ -316,7 +328,7 @@ function AseguradoraVer() {
                 </Tbody>
               </Table>
             </TableContainer>
-            <Stack marginTop={50} direction="row" spacing={4} align="center">
+            <Stack marginTop={50} direction="row" spacing={4} align="center" paddingLeft="930">
 
               <Link href={"/aseguradoras"} >
                 <a>
@@ -324,7 +336,7 @@ function AseguradoraVer() {
                     id="guardar"
                     onClick={actualizarAseguradora}
                     isLoading={cargando}
-                    colorScheme="twitter" variant="solid">
+                    colorScheme="facebook" variant="solid">
                     Guardar
                   </Button>
                 </a>

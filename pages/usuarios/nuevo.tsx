@@ -203,7 +203,7 @@ function UsuarioNuevo() {
               isRequired
               variant="filled"
               id="usuario"
-              placeholder="María"
+              placeholder="Nombre de Usuario"
               value={usuario}
               onChange={(e) => setUsuario(e.target.value.toLowerCase())}
             />
@@ -214,7 +214,7 @@ function UsuarioNuevo() {
               variant="filled"
               id="email"
               type={"email"}
-              placeholder="maria@gmail.com"
+              placeholder="email@gmail.com"
               onChange={(e) => setEmail(e.target.value)}
             />
 
