@@ -12,11 +12,7 @@ import {
     Divider,
     FormControl,
     FormLabel,
-    Input,
-    InputLeftElement,
-    Select,
     Text,
-    Textarea,
     Center,
     Stack,
     Switch,
@@ -31,13 +27,6 @@ import {
     Tbody,
     Td,
     useDisclosure,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalCloseButton,
-    ModalFooter,
-    ModalHeader,
-    ModalBody,
 
 } from "@chakra-ui/react";
 import React from "react";
@@ -49,7 +38,7 @@ function VerTicket() {
     return (
         <DesktopLayout>
 
-            <Header title={"Nuevo Ticket"} />
+            <Header title={"Ver Ticket"} />
 
             <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' rounded='md' bg='white'>
                 <Text fontWeight="bold" fontSize='25px'>Datos Básicos </Text>

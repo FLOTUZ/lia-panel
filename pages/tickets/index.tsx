@@ -7,7 +7,7 @@ import {
   Box,
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, ViewIcon } from "@chakra-ui/icons";
 
 function TicketsListado() {
   const router = useRouter();
@@ -15,11 +15,24 @@ function TicketsListado() {
     <>
       <DesktopLayout>
         <Header title="Tickets" />
-        <HStack>
 
+        <HStack>
+        <Box
+            paddingTop={5}
+            paddingLeft={2}>
+            <Button
+              leftIcon={<ViewIcon/>}
+              colorScheme="facebook"
+              variant="solid"
+              onClick={() => {
+                router.push("/tickets/listadoTickets");
+              }}>
+              Ver Tickets
+            </Button>
+          </Box>
           <Box
             paddingTop={5}
-            paddingLeft={1020}>
+            paddingLeft={15}>
             <Button
               leftIcon={<AddIcon />}
               colorScheme="facebook"
@@ -30,6 +43,8 @@ function TicketsListado() {
               Nuevo Ticket
             </Button>
           </Box>
+
+         
 
         </HStack>
         <Kanban />

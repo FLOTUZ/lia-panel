@@ -177,7 +177,7 @@ const NuevoTicket = () => {
             variant="filled"
             id="num_expediente"
             type="text"
-            placeholder="GPO728"
+            placeholder="N° Expediente"
             onChange={formTicket.handleChange}
             value={formTicket.values.num_expediente}
           />
@@ -210,7 +210,7 @@ const NuevoTicket = () => {
             <Input
               variant="filled"
               id="nombre_asesor_gpo_lias"
-              placeholder="Marí Gallegos"
+              placeholder="Asesor de Grupo Lías"
               onChange={formTicket.handleChange}
               value={formTicket.values.nombre_asesor_gpo_lias}
             />
@@ -223,7 +223,7 @@ const NuevoTicket = () => {
             <Input
               variant="filled"
               id="nombre_asesor_aseguradora"
-              placeholder="Juan Perez"
+              placeholder="Asesor de la Aseguradora"
               onChange={formTicket.handleChange}
               value={formTicket.values.nombre_asesor_aseguradora}
             />
@@ -239,7 +239,7 @@ const NuevoTicket = () => {
             <Input
               variant="filled"
               id="nombre_usuario_final"
-              placeholder="Andres Franco"
+              placeholder="Usuario del Técnico"
               onChange={formTicket.handleChange}
               value={formTicket.values.nombre_usuario_final}
             />
@@ -250,7 +250,7 @@ const NuevoTicket = () => {
             <Input
               variant="filled"
               id="titulo_ticket"
-              placeholder="Servicio que se dara en el hogar."
+              placeholder="Título del Ticket"
               onChange={formTicket.handleChange}
               value={formTicket.values.titulo_ticket}
             />
@@ -322,7 +322,7 @@ const NuevoTicket = () => {
           <Textarea
             id="problematica"
             variant="filled"
-            placeholder="Fuga de agua en la cocina"
+            placeholder="Problemática"
             onChange={formTicket.handleChange}
             value={formTicket.values.problematica}
           />
@@ -410,7 +410,7 @@ const NuevoTicket = () => {
             <Input
               variant="filled"
               id="colonia"
-              placeholder="La Torrecilla"
+              placeholder="Colonia"
               onChange={formTicket.handleChange}
               value={formTicket.values.colonia}
             />
@@ -424,7 +424,7 @@ const NuevoTicket = () => {
             <Input
               variant="filled"
               id="calle"
-              placeholder="Av. Tecnológico"
+              placeholder="Calle"
               onChange={formTicket.handleChange}
               value={formTicket.values.calle}
             />
@@ -437,7 +437,7 @@ const NuevoTicket = () => {
             <Input
               variant="filled"
               id="numero_domicilio"
-              placeholder="F404"
+              placeholder="N° de Domicilio"
               onChange={formTicket.handleChange}
               value={formTicket.values.numero_domicilio}
             />
@@ -632,7 +632,7 @@ const NuevoTicket = () => {
           <Textarea
             id="cotizacion_gpo_lias"
             variant="filled"
-            placeholder="Se realizará el siguiente servicio en la Avenida Tecnológico."
+            placeholder="Cotización"
             onChange={formTicket.handleChange}
             value={formTicket.values.cotizacion_gpo_lias}
           />
