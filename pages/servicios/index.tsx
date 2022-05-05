@@ -52,7 +52,6 @@ import { Form, Formik, useFormik } from "formik";
 import { useRouter } from "next/router";
 function ServiciosListado() {
   const toast = useToast();
-  const router = useRouter();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -69,6 +68,10 @@ function ServiciosListado() {
   const [servicioEdit, setServicioEdit] = useState<IServicio>();
 
   const [cargando, setCargando] = useState(false);
+
+  
+  const router = useRouter();
+  
 
   const guardarServicio = async () => {
     const data: IServicio = {
@@ -175,6 +178,40 @@ function ServiciosListado() {
     },
   });
 
+  /**DELET SERVICIO */
+ /* const deleteServicio = async () => {
+    const data: IServicio = {
+      nombre: nombreServicio,
+      tipo: tipoServicio,
+    };
+
+    const service = new ServiciosService()
+    const response = await service.remove(Number(idServicio))
+
+
+
+    if (response.status === 201) {
+      onClose();
+      setNombreServicio("");
+      setTipoServicio("");
+      toast({
+        title: "Servicio eliminado con exito",
+        description: "El servicio de agrego con exito",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Oops.. Algo salio mal",
+        description: response.message,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  };
+*/
   return (
     <DesktopLayout>
       <Header title={"Lista de servicios "} />
