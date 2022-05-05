@@ -146,6 +146,7 @@ function UsuarioVer() {
                 isRequired
                 variant="filled"
                 id="usuario"
+                defaultValue={data?.usuario}
                 onChange={formUsuario.handleChange}
                 value={formUsuario.values.usuario}
               />

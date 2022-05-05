@@ -37,7 +37,7 @@ import {
   EditablePreview,
   useToast,
 } from "@chakra-ui/react";
-import { AddIcon, EditIcon, EmailIcon, PhoneIcon } from "@chakra-ui/icons";
+import { AddIcon, CheckIcon, EditIcon, EmailIcon, PhoneIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { MdVerifiedUser } from "react-icons/md";
 import Link from "next/link";
@@ -45,13 +45,14 @@ import { IAseguradoras, IAsistencias } from "@/services/api.models";
 import { useRouter } from "next/router";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";
+import ServicioVer from "pages/servicios/[idServicio]";
+import { useFormik } from "formik";
 
 function AseguradoraVer() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
-  const [nombreAseguradora, setNombreAseguradora] = useState("")
-  const [telefonoAseguradora, setTelefonoAseguradora] = useState("")
+
   const [nombreAsistencia, setNombreAsistencia] = useState("")
   const [aseguradoraGuardada, setAseguradoraGuardada] = useState<IAseguradoras>()
 
@@ -62,53 +63,42 @@ function AseguradoraVer() {
   const [cargando, setCargando] = useState(false);
 
   const { idAseguradora } = router.query;
+  /**CONSULTA DE ASISTENCIA DE LA ASEGURADORA */
 
-  useEffect(() => {
-    const getAseguradora = async () => {
-      const service = new AseguradoraService();
-      const response = await service.getById(Number(idAseguradora));
-      if (response.status == 200) {
-        setData(response.data as IAseguradoras);
-      }
-    };
-    getAseguradora();
-
-  }, [idAseguradora]);
+  const [listaAsistencias, setListaAsistencias] = useState<IAsistencias[]>([])
 
 
-  /*CONSULTA de asistencias  */
-  const [listadoAsistencias, setListadoAsistencias] = useState<IAsistencias[]>([])
-
+  /**AGREGAR ASISTENCIA A LA ASEGURADORA */
 
   const consultaAsistencias = async () => {
-    const services = new AseguradoraService();
-    const respuesta = await services.getById(aseguradoraGuardada?.id || 0);
-    const data = respuesta.data as IAseguradoras;
+    const services = new AsistenciasService();
+    const response: any = await services.getAsistenciasByIdAseguradora(Number(idAseguradora));
+    const data = response.data as IAsistencias[];
 
-
-    if (respuesta.status == 200) {
-      setListadoAsistencias(data.Asistencia || []);
+    if (response.status == 200) {
+      setListaAsistencias(data || []);
     } else {
-      console.log(respuesta)
+      console.log(response)
     }
   };
 
-  /*AGREGAR ASISTENCIA */
+  
   const guardarAsistencia = async () => {
     const data: IAsistencias = {
       nombre: nombreAsistencia,
-      aseguradoraId: aseguradoraGuardada?.id
+      aseguradoraId: Number(idAseguradora),
     };
 
     const service = new AsistenciasService()
     const response = await service.create(data)
 
+    
     consultaAsistencias()
     if (response.status === 201) {
       onClose()
       toast({
-        title: "Asistencia nueva agregado con exito",
-        description: 'La asistencia se agrego con exito',
+        title: "Asistencia Nueva Agregado con Exito.",
+        description: 'La Asistencia se Agrego con Exito.',
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -121,240 +111,260 @@ function AseguradoraVer() {
         duration: 9000,
         isClosable: true,
       });
-    }
 
+    }
   }
 
 
-  /*ACTUALIZAR LA ASEGURADORA SELECCIONADA */
+  /**ID ASEGURADORA  */
 
-  const actualizarAseguradora = async () => {
-    setCargando(true);
-    const data: IAseguradoras = {
-      nombre: nombreAseguradora,
-      telefono: telefonoAseguradora,
-      expediente: "00000",
+
+  useEffect(() => {
+    const getAseguradora = async () => {
+      const service = new AseguradoraService();
+      const respuesta = await service.getById(Number(idAseguradora));
+      if (respuesta.status == 200) {
+        setData(respuesta.data as IAseguradoras);
+      }
+
+    };
+    const consultaAsistencias = async () => {
+      const services = new AsistenciasService();
+      const response: any = await services.getAsistenciasByIdAseguradora(Number(idAseguradora));
+      const data = response.data as IAsistencias[];
+
+      if (response.status == 200) {
+        setListaAsistencias(data || []);
+      } else {
+        console.log(response)
+      }
     };
 
-    const service = new AseguradoraService();
-    const response = await service.update(data, Number(idAseguradora));
 
-    const aseguradora = response.data as IAseguradoras
-    setAseguradoraGuardada(aseguradora.id)
+    getAseguradora();
+    consultaAsistencias();
 
-
-    if (response === undefined) {
-      toast({
-        title: "Error",
-        status: "error",
-        description: `Error al dar de alta, verifique sus campos`,
-      });
-      setCargando(false);
-    } else {
-      toast({
-        title: "Guardado",
-        status: "success",
-        description: `${response.aseguradora} guardado`,
-      });
-      setData(response);
-      console.log(data);
-
-      setCargando(false);
-    }
+  }, [idAseguradora]);
 
 
-  }
+  /*ACTUALIZAR LA ASEGURADORA SELECCIONADA FORMIK */
+
+  const formAseguradora = useFormik({
+    initialValues: {
+      nombre: data?.nombre || "",
+      telefono: data?.telefono || "",
+      expediente: data?.expediente || "",
+    },
+    enableReinitialize: true,
+
+    onSubmit: async (values: IAseguradoras) => {
+
+      const data = {
+        ...values,
+      };
+
+      const service = new AseguradoraService();
+      const respuesta = await service.update(data, Number(idAseguradora));
+
+      const dataUpdate = respuesta.data as IAseguradoras;
+      setData(dataUpdate);
+
+      if (respuesta.status !== 200) {
+        toast({
+          title: "Error",
+          status: "error",
+          description: `Error al actualizar, verifique sus campos`,
+        });
+        setCargando(false);
+      } else {
+        toast({
+          title: "Guardado",
+          status: "success",
+          description: `${respuesta.Aseguradora} guardado`,
+
+        });
+      }
+    },
+  });
+
 
   return (
     <div>
       <DesktopLayout>
 
         <Header title={"Editar aseguradora"} />
+        <form onSubmit={formAseguradora.handleSubmit}>
 
-        <FormControl isRequired>
-          <Box
-            m={2}
-            bgColor="white"
-            padding={5}
-            borderRadius={10}
-            boxShadow="2xl"
-            p="6"
-            rounded="md"
-            bg="white"
-          >
-            <Stack spacing={1}>
-              <FormControl display="flex" alignItems="center">
-                <FormLabel
-                  display="flex"
-                  alignItems="center"
-                  marginLeft={1280}
-                  htmlFor="isRequired"
-                >
-                  {" "}
-                  Archivar:
-                </FormLabel>
-                <Switch id="isRequired" isRequired />
-              </FormControl>
-              <FormControl>
-                <FormLabel htmlFor="nombre">Nombre de la aseguradora</FormLabel>
+          <FormControl isRequired>
+            <Box
+              m={2}
+              bgColor="white"
+              padding={5}
+              borderRadius={10}
+              boxShadow="2xl"
+              p="6"
+              rounded="md"
+              bg="white"
+            >
+              <Stack spacing={1}>
+
                 <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<MdVerifiedUser color="green" />}
-                  />
-
-                  <Input id="aseguradora"
-                    defaultValue={data?.nombre}
-                    onChange={(e) => setNombreAseguradora(e.target.value)}
-                    type="Nombre" placeholder="Aseguradora" />
-                  <InputRightAddon
-                    pointerEvents="none"
-                    children={<EditIcon color="green" />}
-                  />
+                  <FormControl >
+                    <FormLabel htmlFor="expediente">Folio de la Aseguradora</FormLabel>
+                    <InputGroup>
+                      <InputLeftElement
+                        pointerEvents="none"
+                        children={<CheckIcon color="gray.300" />} />
+                      <Input disabled type="number"
+                        id="expediente"
+                        variant="filled"
+                        onChange={formAseguradora.handleChange}
+                        defaultValue={data?.expediente}
+                      />
+                    </InputGroup>
+                  </FormControl>
                 </InputGroup>
-              </FormControl>
-
-              <InputGroup>
                 <FormControl>
-                  <FormLabel htmlFor="telefono">Teléfono</FormLabel>
+                  <FormLabel htmlFor="nombre">Nombre de la aseguradora</FormLabel>
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents="none"
-                      children={<PhoneIcon color="gray.300" />}
+                      children={<MdVerifiedUser color="green" />}
                     />
-                    <Input
-                      isRequired
-                      id="phone"
-                      defaultValue={data?.telefono}
-                      onChange={(e) => setTelefonoAseguradora(e.target.value)}
-                      type="tel" placeholder="Phone number" />
+                    <Input id="nombre"
+                      variant="filled"
+                      defaultValue={data?.nombre}
+                      onChange={formAseguradora.handleChange}
+                      type="Nombre" placeholder="Aseguradora" />
                     <InputRightAddon
                       pointerEvents="none"
                       children={<EditIcon color="green" />}
                     />
                   </InputGroup>
                 </FormControl>
-              </InputGroup>
-            </Stack>
-          </Box>
-          <Box
-            m={2}
-            bgColor="white"
-            padding={5}
-            borderRadius={10}
-            boxShadow="2xl"
-            p="6"
-            rounded="md"
-            bg="white"
-          >
-            <Heading marginTop={30} as="h5" size="md">
-              Asistencia de Aseguradora
-            </Heading>
-            
-            <Stack marginTop={5} paddingLeft={960} direction="row" spacing={4} align="center">
-              <Button
-                leftIcon={<AddIcon />}
-                colorScheme="facebook"
-                variant="solid"
-                onClick={onOpen}
-              >
-                Nueva Asistencia
-              </Button>
-            </Stack>
-            <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
-              <ModalOverlay />
-              <ModalContent>
-                <ModalHeader>Crea una Nueva Asistencia</ModalHeader>
-                <ModalCloseButton />
-                <ModalBody pb={6}>
-                  <FormControl mt={4}>
-                    <FormLabel>Nombre del Servicio</FormLabel>
-                    <Input placeholder="Nombre del Servicio"
+
+                <InputGroup>
+                  <FormControl>
+                    <FormLabel htmlFor="telefono">Teléfono</FormLabel>
+                    <InputGroup>
+                      <InputLeftElement
+                        pointerEvents="none"
+                        children={<PhoneIcon color="blue.300" />}
+                      />
+                      <Input
+                        isRequired
+                        id="phone"
+                        variant="filled"
+                        defaultValue={data?.telefono}
+                        onChange={formAseguradora.handleChange}
+
+                        type="tel" placeholder="Phone number" />
+                      <InputRightAddon
+                        pointerEvents="none"
+                        children={<EditIcon color="green" />}
+                      />
+                    </InputGroup>
+                  </FormControl>
+                </InputGroup>
+              </Stack>
+              <Stack marginTop={50} direction="row" spacing={4} align="center" paddingLeft="930">
+
+                <Button
+                  id="guardar"
+                  type="submit"
+                  isLoading={cargando}
+                  colorScheme="facebook" variant="solid">
+                  Actualizar
+                </Button>
+
+                <Button
+                  onClick={() => router.back()}
+                  colorScheme="red" variant="outline">
+                  Cancelar
+                </Button>
+
+              </Stack>
+            </Box>
+            <Box
+              m={2}
+              bgColor="white"
+              padding={5}
+              borderRadius={10}
+              boxShadow="2xl"
+              p="6"
+              rounded="md"
+              bg="white"
+            >
+              <Heading marginTop={30} as="h5" size="md">
+                Asistencia de Aseguradora
+              </Heading>
+
+              <Stack marginTop={5} paddingLeft={960} direction="row" spacing={4} align="center">
+                <Button
+                  leftIcon={<AddIcon />}
+                  colorScheme="facebook"
+                  variant="solid"
+                  onClick={onOpen}
+                >
+                  Nueva Asistencia
+                </Button>
+              </Stack>
+              <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
+                <ModalOverlay />
+                <ModalContent>
+                  <ModalHeader>Crea una Nueva Asistencia</ModalHeader>
+                  <ModalCloseButton />
+                  <ModalBody pb={6}>
+                    <FormControl mt={4}>
+                      <FormLabel>Nombre del Servicio</FormLabel>
+                      <Input 
                       onChange={(e) => {
                         setNombreAsistencia(e.target.value)
-                      }} />
-                  </FormControl>
-                </ModalBody>
+                      }}
+                      placeholder="Nombre del Servicio"
+                      />
+                    </FormControl>
+                  </ModalBody>
 
-                <ModalFooter>
-                  <Button colorScheme="blue" mr={3}
-                    onClick={guardarAsistencia}>
-                    Guardar
-                  </Button>
-                  <Button onClick={onClose}>Cancelar</Button>
-                </ModalFooter>
-              </ModalContent>
-            </Modal>
-
-
-            
-
-
-            <TableContainer>
-              <Table marginTop={50} size="md" variant="simple" colorScheme="teal">
-                <Thead>
-                  <Tr>
-                    <Th>Nombre</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {listadoAsistencias.length !== 0 ? (
-
-                    listadoAsistencias.map((t, index) => {
-                      return (
-                        <Tr key={index}>
-
-                          <Td>{t.nombre}</Td>
-                          <Td>
-                            <IconButton
-                              onClick={onOpen}
-                              variant="outline"
-                              aria-label="edit"
-                              icon={<EditIcon />}
-                            />
-                          </Td>
-
-                        </Tr>
-                      )
-                    })
-                  ) : (
+                  <ModalFooter>
+                    <Button colorScheme="blue" mr={3}
+                      onClick={guardarAsistencia}
+                    >
+                      Guardar
+                    </Button>
+                    <Button onClick={onClose}>Cancelar</Button>
+                  </ModalFooter>
+                </ModalContent>
+              </Modal>
+              <TableContainer>
+                <Table marginTop={50} size="md" variant="simple" colorScheme="teal">
+                  <Thead>
                     <Tr>
-                      <Td>NO DATA</Td>
-
+                      <Th>Nombre</Th>
                     </Tr>
-                  )}
+                  </Thead>
+                  <Tbody>
+                    {listaAsistencias.length == 0 ? (
+                      <Tr>
+                        <Td>NO DATA</Td>
+                      </Tr>
+                    ) : (
+                      listaAsistencias.map((asistencias, index) => {
+                        return (
+                          <Tr key={index}>
+                            <Td> {asistencias.nombre}  </Td>
+                          </Tr>
+                        )
+                      })
+                    )}
 
 
-                </Tbody>
-              </Table>
-            </TableContainer>
-            <Stack marginTop={50} direction="row" spacing={4} align="center" paddingLeft="930">
-
-              <Link href={"/aseguradoras"} >
-                <a>
-                  <Button
-                    id="guardar"
-                    onClick={actualizarAseguradora}
-                    isLoading={cargando}
-                    colorScheme="facebook" variant="solid">
-                    Guardar
-                  </Button>
-                </a>
-
-              </Link>
-
-
-              <Button
-                onClick={() => router.back()}
-                colorScheme="red" variant="outline">
-                Cancelar
-              </Button>
-
-            </Stack>
-
-          </Box>
-        </FormControl>
-
+                  </Tbody>
+                </Table>
+              </TableContainer>
+            </Box>
+          </FormControl>
+        </form>
       </DesktopLayout>
     </div >
   );

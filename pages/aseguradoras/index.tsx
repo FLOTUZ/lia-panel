@@ -136,8 +136,7 @@ export default function AseguradorasListado() {
                 <Th>Nombre</Th>
                 <Th>Telefono</Th>
                 <Th>Creado</Th>
-                <Th>Ultima modificacion</Th>
-                <Th>Reportes</Th>
+ 
                 <Th></Th>
               </Tr>
             </Thead>
@@ -152,7 +151,7 @@ export default function AseguradorasListado() {
                       <Td>{aseguradoras.telefono}</Td>
                       <Td>{aseguradoras.createdAt}</Td>
                       <Td>{aseguradoras.updatedAt}</Td>
-                      <Td>reportes</Td>
+                      
                       <Td>
                       <Link href={`/aseguradoras/${aseguradoras.id}`}>
                           <a>
