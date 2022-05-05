@@ -31,6 +31,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 
 const NuevoTicket = () => {
@@ -274,12 +275,12 @@ const NuevoTicket = () => {
             >
               {aseguradorasList?.length !== 0
                 ? aseguradorasList?.map((aseguradora, index) => {
-                    return (
-                      <option key={index} value={Number(aseguradora.id)}>
-                        {aseguradora.nombre}
-                      </option>
-                    );
-                  })
+                  return (
+                    <option key={index} value={Number(aseguradora.id)}>
+                      {aseguradora.nombre}
+                    </option>
+                  );
+                })
                 : null}
             </Select>
           </FormControl>
@@ -303,12 +304,12 @@ const NuevoTicket = () => {
             >
               {asistenciasList.length !== 0
                 ? asistenciasList.map((asistencia, index) => {
-                    return (
-                      <option key={index} value={Number(asistencia.id)}>
-                        {asistencia.nombre}
-                      </option>
-                    );
-                  })
+                  return (
+                    <option key={index} value={Number(asistencia.id)}>
+                      {asistencia.nombre}
+                    </option>
+                  );
+                })
                 : null}
             </Select>
           </FormControl>
@@ -341,16 +342,16 @@ const NuevoTicket = () => {
             <SimpleGrid minChildWidth="3rem" spacing="4rem">
               {serviciosList?.length !== 0
                 ? serviciosList.map((servicio, index) => {
-                    return (
-                      <Checkbox
-                        key={index}
-                        id={servicio.nombre}
-                        value={servicio.id?.toString()}
-                      >
-                        {servicio.nombre}
-                      </Checkbox>
-                    );
-                  })
+                  return (
+                    <Checkbox
+                      key={index}
+                      id={servicio.nombre}
+                      value={servicio.id?.toString()}
+                    >
+                      {servicio.nombre}
+                    </Checkbox>
+                  );
+                })
                 : null}
             </SimpleGrid>
           </CheckboxGroup>
@@ -394,12 +395,12 @@ const NuevoTicket = () => {
             >
               {ciudadesList?.length !== 0
                 ? ciudadesList?.map((ciudad, index) => {
-                    return (
-                      <option key={index} value={ciudad.nombre}>
-                        {ciudad.nombre}
-                      </option>
-                    );
-                  })
+                  return (
+                    <option key={index} value={ciudad.nombre}>
+                      {ciudad.nombre}
+                    </option>
+                  );
+                })
                 : null}
             </Select>
           </FormControl>
@@ -637,17 +638,20 @@ const NuevoTicket = () => {
           />
         </FormControl>
 
-        <Button
-          marginTop={15}
-          justifySelf="end"
-          isLoading={formTicket.isSubmitting}
-          id="publicarTicket"
-          type="submit"
-          colorScheme="blue"
-          size="lg"
-        >
-          Publicar Ticket
-        </Button>
+        <Link href={`/tickets/`}>
+          <a>
+            <Button
+              marginTop={15}
+              justifySelf="end"
+              isLoading={formTicket.isSubmitting}
+              id="publicarTicket"
+              type="submit"
+              colorScheme="blue"
+              size="lg">
+              Publicar Ticket
+            </Button>
+          </a>
+        </Link>
       </Box>
     </form>
   );
