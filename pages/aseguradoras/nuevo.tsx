@@ -41,9 +41,10 @@ function AseguradoraNueva() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast()
 
-  const [folioAseguradora, setFolioAseguradora] = useState("")
   const [nombreAseguradora, setNombreAseguradora] = useState("")
   const [telefonoAseguradora, setTelefonoAseguradora] = useState("")
+  const [expedienteAseguradora, setExpedienteAseguradora] = useState("")
+
   const [nombreAsistencia, setNombreAsistencia] = useState("")
   const [aseguradoraGuardada, setAseguradoraGuardada] = useState<IAseguradoras>()
 
@@ -70,7 +71,7 @@ function AseguradoraNueva() {
   const guardarAsistencia = async () => {
     const data: IAsistencias = {
       nombre: nombreAsistencia,
-      aseguradoraId: aseguradoraGuardada?.id
+      aseguradoraId: aseguradoraGuardada?.id,
     };
 
     const service = new AsistenciasService()
@@ -103,7 +104,7 @@ function AseguradoraNueva() {
     const data: IAseguradoras = {
       nombre: nombreAseguradora,
       telefono: telefonoAseguradora,
-      expediente: folioAseguradora,
+      expediente: expedienteAseguradora,
     };
 
     const service = new AseguradoraService()
@@ -158,7 +159,7 @@ function AseguradoraNueva() {
                     children={<CheckIcon color="gray.300" />} />
                   <Input type="nombre" placeholder="Folio de la Aseguradora"
                     onChange={(e) => {
-                      setFolioAseguradora(e.target.value);
+                      setExpedienteAseguradora(e.target.value);
                     }}
                   />
                 </InputGroup>
@@ -197,6 +198,10 @@ function AseguradoraNueva() {
                     type="tel" placeholder="Numero de Teléfono" />
                 </InputGroup>
               </FormControl>
+            </InputGroup>
+            <InputGroup>
+                  
+ 
             </InputGroup>
           </Stack>
           <Stack marginTop={50} direction="row" spacing={4} align="center" paddingLeft={930}>

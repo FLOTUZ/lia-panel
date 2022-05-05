@@ -235,12 +235,9 @@ function UsuarioNuevo() {
               defaultValue="USUARIO"
               onChange={(e) => setRol(e)}
             >
+              
               <HStack spacing="1rem">
-                <Radio size={"lg"} value="USUARIO">
-                  Usuario Comun
-                </Radio>
-
-                <Radio size={"lg"} value="TECNICO">
+              <Radio size={"lg"} value="TECNICO">
                   Es Tecnico
                 </Radio>
 
@@ -251,6 +248,11 @@ function UsuarioNuevo() {
                 <Radio size={"lg"} value="ADMIN">
                   Administrador
                 </Radio>
+                <Radio size={"lg"} value="USUARIO">
+                  Usuario Comun
+                </Radio>
+
+               
               </HStack>
             </RadioGroup>
             {/* //----------------------------FORMULARIO NUEVO TECNICO------------------------------------ */}
