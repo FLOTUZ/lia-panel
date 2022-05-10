@@ -19,14 +19,16 @@ const Kanban = ({}: IKanban) => {
     consultarTickets();
   }, []);
 
-
-
   const nuevosTickets: ITicket[] = ticketsList.filter((e: any) => {
     return e.estado === "NUEVO";
   });
 
-  const aAprobar: ITicket[] = ticketsList.filter((e: any) => {
-    return e.estado === "APROBAR";
+  const tomadoPorTecnico: ITicket[] = ticketsList.filter((e: any) => {
+    return e.estado === "TOMADO";
+  });
+
+  const cotizado: ITicket[] = ticketsList.filter((e: any) => {
+    return e.estado === "COTIZADO";
   });
 
   const enProceso: ITicket[] = ticketsList.filter((e: any) => {
@@ -44,9 +46,9 @@ const Kanban = ({}: IKanban) => {
   return (
     <>
       <Grid
-        h="94vh"
+        h="90%"
         templateRows="repeat(10, 1fr)"
-        templateColumns={"repeat( 5, 1fr)"}
+        templateColumns={"repeat( 8, 1fr)"}
         overflow="overlay"
         p={2}
         columnGap={2}
@@ -56,8 +58,13 @@ const Kanban = ({}: IKanban) => {
             return <KanbanColumnCard key={index} ticket={ticket} />;
           })}
         </KanbanColumn>
-        <KanbanColumn colorGridBg={"purple"} columnName={"A aprobar"}>
-          {aAprobar.map((ticket, index) => {
+        <KanbanColumn colorGridBg={"purple"} columnName={"Tomados"}>
+          {tomadoPorTecnico.map((ticket, index) => {
+            return <KanbanColumnCard key={index} ticket={ticket} />;
+          })}
+        </KanbanColumn>
+        <KanbanColumn colorGridBg={"gray"} columnName={"Cotizados"}>
+          {cotizado.map((ticket, index) => {
             return <KanbanColumnCard key={index} ticket={ticket} />;
           })}
         </KanbanColumn>
