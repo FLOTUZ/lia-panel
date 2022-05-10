@@ -248,9 +248,7 @@ function UsuarioNuevo() {
                 <Radio size={"lg"} value="ADMIN">
                   Administrador
                 </Radio>
-                <Radio size={"lg"} value="USUARIO">
-                  Usuario Comun
-                </Radio>
+                
 
                
               </HStack>

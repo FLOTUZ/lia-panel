@@ -269,6 +269,7 @@ function AseguradoraVer() {
               </Stack>
               <Stack marginTop={50} direction="row" spacing={4} align="center" paddingLeft="930">
 
+              
                 <Button
                   id="guardar"
                   type="submit"
@@ -276,6 +277,8 @@ function AseguradoraVer() {
                   colorScheme="facebook" variant="solid">
                   Actualizar
                 </Button>
+                
+                
 
                 <Button
                   onClick={() => router.back()}
