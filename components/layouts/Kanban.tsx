@@ -9,14 +9,21 @@ interface IKanban {}
 
 const Kanban = ({}: IKanban) => {
   const [ticketsList, setTicketsList] = useState<ITicket[]>([]);
+
+  const consultarTickets = async () => {
+    const servicio = new TicketsService();
+    const respuesta = await servicio.getAll();
+    const data = respuesta.data as ITicket[];
+    setTicketsList(data || []);
+  };
+
   useEffect(() => {
-    const consultarTickets = async () => {
-      const servicio = new TicketsService();
-      const respuesta = await servicio.getAll();
-      const data = respuesta.data as ITicket[];
-      setTicketsList(data || []);
-    };
     consultarTickets();
+    const interval = setInterval(() => {
+      consultarTickets();
+    }, 10000);
+
+    return () => clearInterval(interval);
   }, []);
 
   const nuevosTickets: ITicket[] = ticketsList.filter((e: any) => {
