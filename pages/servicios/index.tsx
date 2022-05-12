@@ -131,16 +131,13 @@ function ServiciosListado() {
   const [data, setData] = useState<IServicio>();
   const { idServicio } = router.query;
 
-  useEffect(() => {
-    const getServicio = async () => {
-      const servicio = new ServiciosService();
-      const response = await servicio.getById(Number(idServicio))
-      if (response.status == 200) {
-        setData(response.data as IServicio);
-      }
-    };
-    getServicio();
-  });
+  const getServicio = async () => {
+    const servicio = new ServiciosService();
+    const response = await servicio.getById(Number(idServicio))
+    if (response.status == 200) {
+      setData(response.data as IServicio);
+    }
+  };
 
   const formServicio = useFormik({
     initialValues: {
