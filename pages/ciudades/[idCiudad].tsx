@@ -28,41 +28,46 @@ function CiudadVer() {
 
   const { idCiudad } = router.query;
 
+  //el error esta aqui no se que sea
+
   useEffect(() => {
-    const getUser = async () => {
+    const getCiudad = async () => {
       const ciudad = new CiudadesService();
       const respuesta = await ciudad.getById(Number(idCiudad));
       if (respuesta.status == 200) {
         setData(respuesta.data as ICiudad);
-        console.log(data);
       }
     };
 
-    getUser();
+    getCiudad();
+
   }, [idCiudad]);
 
   const formCiudad = useFormik({
     initialValues: {
       nombre: data?.nombre || "",
+      longitud: data?.longitud || 0,
+      latitud: data?.latitud || 0,
     },
-
     enableReinitialize: true,
 
     onSubmit: async (values: ICiudad) => {
+
       const data = {
         ...values,
       };
 
       const service = new CiudadesService();
       const respuesta = await service.update(data, Number(idCiudad));
+      
       const dataUpdate = respuesta.data as ICiudad;
       setData(dataUpdate);
 
-      if (respuesta === undefined) {
+      if (respuesta.status !== 200) {
         toast({
           title: "Error",
           status: "error",
-          description: `Error al dar de alta, verifique sus campos`,
+          description: `Error al actualizar, verifique sus campos`,
         });
         setCargando(false);
       } else {
@@ -74,14 +79,6 @@ function CiudadVer() {
       }
     },
   });
-
-  const [nombreCiudad, setNombreCiudad] = useState("");
-
-  const guardarCiudad = async () => {
-    const data: ICiudad = {
-      nombre: nombreCiudad,
-    };
-  };
 
   return (
     <div>
@@ -100,50 +97,52 @@ function CiudadVer() {
               bg="white"
             >
               <Stack spacing={1}>
-                <InputGroup>
-                  <FormControl>
-                    <FormLabel>Nombre del la Ciudad</FormLabel>
+                <FormControl>
+                  <FormLabel>Nombre del la Ciudad</FormLabel>
+                  <InputGroup>
                     <Input
+                      isRequired
+                      variant="filled"
                       placeholder="Nombre"
                       defaultValue={data?.nombre}
+                      type="Nombre"
                       onChange={(e) => {
                         formCiudad.handleChange;
                       }}
                     />
-                    <footer>
-                      <Box
-                        m={2}
-                        bgColor="white"
-                        padding={5}
-                        borderRadius={10}
-                        boxShadow="2xl"
-                        p="6"
-                        rounded="md"
-                        bg="white"
-                      >
-                        <Link href={`/ciudades/`}>
-                          <Button
-                            id="guardar"
-                            type="submit"
-                            isLoading={cargando}
-                            colorScheme="facebook"
-                            variant="solid"
-                            //onClick={guardarCiudad}
-                          >
-                            Guardar
-                          </Button>
-                        </Link>
-                        <Button
-                          onClick={() => router.back()}
-                          colorScheme="red"
-                          variant="outline"
-                        >
-                          Cancelar
-                        </Button>
-                      </Box>
-                    </footer>
-                  </FormControl>
-                </InputGroup>
+                  </InputGroup>
+                </FormControl>
+                <footer>
+                  <Box
+                    m={2}
+                    bgColor="white"
+                    padding={5}
+                    borderRadius={10}
+                    boxShadow="2xl"
+                    p="6"
+                    rounded="md"
+                    bg="white"
+                  >
+                    {/*  <Link href={`/ciudades/`}> */}
+                    <Button
+                      id="guardar"
+                      type="submit"
+                      isLoading={cargando}
+                      colorScheme="facebook"
+                      variant="solid"
+                    >
+                      Guardar
+                    </Button>
+                    {/* </Link> */}
+                    <Button
+                      onClick={() => router.back()}
+                      colorScheme="red"
+                      variant="outline"
+                    >
+                      Cancelar
+                    </Button>
+                  </Box>
+                </footer>
               </Stack>
             </Box>
           </FormControl>
