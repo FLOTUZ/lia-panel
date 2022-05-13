@@ -40,12 +40,10 @@ import {
 import { AddIcon, CheckIcon, EditIcon, EmailIcon, PhoneIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import { MdVerifiedUser } from "react-icons/md";
-import Link from "next/link";
 import { IAseguradoras, IAsistencias } from "@/services/api.models";
 import { useRouter } from "next/router";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";
-import ServicioVer from "pages/servicios/[idServicio]";
 import { useFormik } from "formik";
 
 function AseguradoraVer() {

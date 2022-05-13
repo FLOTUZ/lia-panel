@@ -28,14 +28,17 @@ import {
   Spacer,
   Heading,
   useToast,
+  Divider,
+  SimpleGrid,
 } from "@chakra-ui/react";
 import { AddIcon, CheckIcon, EmailIcon, PhoneIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
-import { MdVerifiedUser } from "react-icons/md";
+import { MdAttachMoney, MdCarRepair, MdHomeFilled, MdHomeRepairService, MdMapsHomeWork, MdOutlineAttachMoney, MdOutlineHomeMax, MdOutlineHomeMini, MdOutlineMapsHomeWork, MdVerifiedUser } from "react-icons/md";
 import Link from "next/link";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { IAseguradoras, IAsistencias } from "@/services/api.models";
 import { AsistenciasService } from "@/services/asistencias.service";
+import { IoLogoWhatsapp, IoSpeedometer, IoSpeedometerOutline } from "react-icons/io5";
 
 function AseguradoraNueva() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -150,21 +153,7 @@ function AseguradoraNueva() {
         >
           <Stack spacing={4}>
 
-            <InputGroup>
-              <FormControl isRequired>
-                <FormLabel htmlFor="expediente">Folio de la Aseguradora</FormLabel>
-                <InputGroup>
-                  <InputLeftElement
-                    pointerEvents="none"
-                    children={<CheckIcon color="gray.300" />} />
-                  <Input type="nombre" placeholder="Folio de la Aseguradora"
-                    onChange={(e) => {
-                      setExpedienteAseguradora(e.target.value);
-                    }}
-                  />
-                </InputGroup>
-              </FormControl>
-            </InputGroup>
+
 
             <InputGroup>
               <FormControl isRequired>
@@ -185,24 +174,116 @@ function AseguradoraNueva() {
 
             <InputGroup>
               <FormControl isRequired>
-                <FormLabel htmlFor="telefono">Teléfono</FormLabel>
+                <FormLabel htmlFor="telefono">Teléfono General</FormLabel>
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
-                    children={<PhoneIcon color="gray.300" />}
+                    children={<MdOutlineMapsHomeWork color="gray.300" />}
                   />
                   <Input
                     onChange={(e) => {
                       setTelefonoAseguradora(e.target.value);
                     }}
-                    type="tel" placeholder="Numero de Teléfono" />
+                    type="phone" placeholder="Numero de Teléfono" />
                 </InputGroup>
               </FormControl>
             </InputGroup>
-            <InputGroup>
-                  
- 
-            </InputGroup>
+
+            <SimpleGrid columns={2} spacing={5} >
+
+              <InputGroup>
+                <FormControl isRequired>
+                  <FormLabel htmlFor="kilometraje">Kilometraje</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      children={<IoSpeedometerOutline color="gray.300" />}
+                    />
+                    <Input
+                      onChange={(e) => {
+                        setTelefonoAseguradora(e.target.value);
+                      }}
+                      type="number" placeholder="Kilometraje" />
+                  </InputGroup>
+                </FormControl>
+              </InputGroup>
+
+              <InputGroup>
+                <FormControl isRequired>
+                  <FormLabel htmlFor="costo por kilometraje">Costo por Kilometraje</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      children={<MdOutlineAttachMoney color="gray.300" />}
+                    />
+                    <Input
+                      onChange={(e) => {
+                        setTelefonoAseguradora(e.target.value);
+                      }}
+                      type="number" placeholder="Kilometraje" />
+                  </InputGroup>
+                </FormControl>
+              </InputGroup>
+            </SimpleGrid>
+
+            <Divider paddingTop={5} orientation='horizontal' />
+            <Heading paddingLeft={2} paddingBottom={5} as='h4' size='md'>
+              Información adicional
+            </Heading>
+            <SimpleGrid columns={3} spacing={5}>
+
+              <InputGroup>
+                <FormControl >
+                  <FormLabel htmlFor="telefono">Teléfono Servicio Domestico</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      children={<MdOutlineHomeMax color="gray.300" />}
+                    />
+                    <Input
+                      onChange={(e) => {
+                        setTelefonoAseguradora(e.target.value);
+                      }}
+                      type="phone" placeholder="Numero de Teléfono de servicio domestico" />
+                  </InputGroup>
+                </FormControl>
+              </InputGroup>
+
+              <InputGroup>
+                <FormControl >
+                  <FormLabel htmlFor="telefono">Teléfono Servicio Vial</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      children={<MdCarRepair color="gray.300" />}
+                    />
+                    <Input
+                      onChange={(e) => {
+                        setTelefonoAseguradora(e.target.value);
+                      }}
+                      type="phone" placeholder="Numero de Teléfono de servicio vial" />
+                  </InputGroup>
+                </FormControl>
+              </InputGroup>
+
+              <InputGroup>
+                <FormControl >
+                  <FormLabel htmlFor="telefono">Teléfono solo para whatsapp</FormLabel>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      children={<IoLogoWhatsapp color="green" />}
+                    />
+                    <Input
+                      onChange={(e) => {
+                        setTelefonoAseguradora(e.target.value);
+                      }}
+                      type="phone" placeholder="Numero de whatsapp" />
+                  </InputGroup>
+                </FormControl>
+              </InputGroup>
+
+            </SimpleGrid>
           </Stack>
           <Stack marginTop={50} direction="row" spacing={4} align="center" paddingLeft={930}>
             <Button colorScheme="facebook"
