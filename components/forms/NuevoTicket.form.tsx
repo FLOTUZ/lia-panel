@@ -115,13 +115,25 @@ const NuevoTicket = () => {
       cotizacion_gpo_lias: "",
       deducible: "",
       kilometraje: "",
+      costo_de_kilometraje: "",
+      costo_por_caseta: "",
       casetas: "",
       total: "",
       anticipo: "",
       estado: "NUEVO",
+      num_interior: "",
+      modelo_carro: "",
+      placas_carro: "",
+      color_carro: "",
+      marca_carro: "",
+      is_servicio_domestico: false,
+      is_servicio_foraneo: false,
+
     },
     onSubmit: async (values) => {
       const ticket: any = { ...values };
+
+      console.log(ticket)
 
       const servicio = new TicketsService();
       const respuestaTicketPost: any = await servicio.create(ticket);
@@ -190,7 +202,8 @@ const NuevoTicket = () => {
             id="fecha_llamada"
             variant="filled"
             type="datetime-local"
-            value={fecha}
+            //value={fecha}
+            value={formTicket.values.fecha_llamada}
             onChange={(e) => {
               setFecha(e.target.value);
               formTicket.setFieldValue(
@@ -275,12 +288,12 @@ const NuevoTicket = () => {
             >
               {aseguradorasList?.length !== 0
                 ? aseguradorasList?.map((aseguradora, index) => {
-                    return (
-                      <option key={index} value={Number(aseguradora.id)}>
-                        {aseguradora.nombre}
-                      </option>
-                    );
-                  })
+                  return (
+                    <option key={index} value={Number(aseguradora.id)}>
+                      {aseguradora.nombre}
+                    </option>
+                  );
+                })
                 : null}
             </Select>
           </FormControl>
@@ -304,12 +317,12 @@ const NuevoTicket = () => {
             >
               {asistenciasList.length !== 0
                 ? asistenciasList.map((asistencia, index) => {
-                    return (
-                      <option key={index} value={Number(asistencia.id)}>
-                        {asistencia.nombre}
-                      </option>
-                    );
-                  })
+                  return (
+                    <option key={index} value={Number(asistencia.id)}>
+                      {asistencia.nombre}
+                    </option>
+                  );
+                })
                 : null}
             </Select>
           </FormControl>
@@ -330,7 +343,7 @@ const NuevoTicket = () => {
 
         <FormControl paddingTop={15}>
           <FormLabel htmlFor="servicioId">
-            Seleccione Servicios relacionados
+            Seleccione Servicios relacionados:
           </FormLabel>
           <CheckboxGroup
             variant="filled"
@@ -342,16 +355,16 @@ const NuevoTicket = () => {
             <SimpleGrid minChildWidth="3rem" spacing="4rem">
               {serviciosList?.length !== 0
                 ? serviciosList.map((servicio, index) => {
-                    return (
-                      <Checkbox
-                        key={index}
-                        id={servicio.nombre}
-                        value={servicio.id?.toString()}
-                      >
-                        {servicio.nombre}
-                      </Checkbox>
-                    );
-                  })
+                  return (
+                    <Checkbox
+                      key={index}
+                      id={servicio.nombre}
+                      value={servicio.id?.toString()}
+                    >
+                      {servicio.nombre}
+                    </Checkbox>
+                  );
+                })
                 : null}
             </SimpleGrid>
           </CheckboxGroup>
@@ -372,18 +385,42 @@ const NuevoTicket = () => {
           Cotización de Grupo Lías
         </Text>
         <Divider orientation="vertical" />
-        <FormControl paddingTop={2} paddingLeft={2}>
-          <FormLabel htmlFor="asistencia_vial">Asistencia Víal</FormLabel>
-          <Switch
-            id="asistencia_vial"
-            size="lg"
-            onChange={formTicket.handleChange}
-            isChecked={formTicket.values.asistencia_vial}
-          />
-        </FormControl>
 
-        <Center>
-          <Divider orientation="vertical" />
+        <SimpleGrid columns={[1, 1, 3]} spacing={4}>
+          <FormControl paddingTop={2} paddingLeft={2}>
+            <FormLabel htmlFor="servicio_domestico">Servicio Doméstico</FormLabel>
+            <Switch
+              id="is_servicio_domestico"
+              size="lg"
+              onChange={formTicket.handleChange}
+              isChecked={formTicket.values.is_servicio_domestico}
+            />
+          </FormControl>
+          <FormControl paddingTop={2} paddingLeft={2}>
+            <FormLabel htmlFor="asistencia_vial">Servicio Víal</FormLabel>
+            <Switch
+              id="asistencia_vial"
+              size="lg"
+              onChange={formTicket.handleChange}
+              isChecked={formTicket.values.asistencia_vial}
+            />
+          </FormControl>
+
+          <FormControl paddingTop={2} paddingLeft={2}>
+            <FormLabel htmlFor="servicio_foraneo">Servicio Foráneo</FormLabel>
+            <Switch
+              id="is_servicio_foraneo"
+              size="lg"
+              onChange={formTicket.handleChange}
+              isChecked={formTicket.values.is_servicio_foraneo}
+            />
+          </FormControl>
+        </SimpleGrid>
+
+
+
+        <SimpleGrid columns={[1, 1, 5]} spacing={4}>
+
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="ciudad">Ciudad</FormLabel>
             <Select
@@ -395,12 +432,12 @@ const NuevoTicket = () => {
             >
               {ciudadesList?.length !== 0
                 ? ciudadesList?.map((ciudad, index) => {
-                    return (
-                      <option key={index} value={ciudad.nombre}>
-                        {ciudad.nombre}
-                      </option>
-                    );
-                  })
+                  return (
+                    <option key={index} value={ciudad.nombre}>
+                      {ciudad.nombre}
+                    </option>
+                  );
+                })
                 : null}
             </Select>
           </FormControl>
@@ -415,10 +452,9 @@ const NuevoTicket = () => {
               value={formTicket.values.colonia}
             />
           </FormControl>
-        </Center>
 
-        <Center>
-          <Divider orientation="vertical" />
+
+
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="calle">Calle</FormLabel>
             <Input
@@ -430,22 +466,36 @@ const NuevoTicket = () => {
             />
           </FormControl>
 
+
+
           <FormControl isRequired paddingLeft={5} paddingTop={15}>
-            <FormLabel htmlFor="numero_domicilio">
-              Número del Domicilio
+            <FormLabel htmlFor="numero_domicilio_interior">
+              Número Interior
+            </FormLabel>
+            <Input
+              variant="filled"
+              id="num_interior"
+              placeholder="N° de Domicilio Interior"
+              onChange={formTicket.handleChange}
+              value={formTicket.values.num_interior}
+            />
+          </FormControl>
+
+          <FormControl isRequired paddingLeft={5} paddingTop={15}>
+            <FormLabel htmlFor="numero_domicilio_exterior">
+              Número Exterior
             </FormLabel>
             <Input
               variant="filled"
               id="numero_domicilio"
-              placeholder="N° de Domicilio"
+              placeholder="N° de Domicilio Exterior"
               onChange={formTicket.handleChange}
               value={formTicket.values.numero_domicilio}
             />
           </FormControl>
-        </Center>
+        </SimpleGrid>
 
         <Center>
-          <Divider orientation="vertical" />
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="cobertura">
               Monto de Cobertura del Seguro
@@ -460,6 +510,7 @@ const NuevoTicket = () => {
             <Input
               variant="filled"
               id="cobertura"
+              min={0}
               placeholder="0.00"
               paddingLeft={8}
               type="number"
@@ -467,7 +518,7 @@ const NuevoTicket = () => {
               value={formTicket.values.cobertura}
             />
           </FormControl>
-          
+
           <FormControl isRequired paddingTop={15} paddingLeft={5}>
             <FormLabel htmlFor="costo_gpo_lias">Costo Grupo Lías</FormLabel>
             <InputLeftElement
@@ -482,6 +533,7 @@ const NuevoTicket = () => {
               id="costo_gpo_lias"
               placeholder="0.00"
               paddingLeft={8}
+              min={0}
               type="number"
               onChange={formTicket.handleChange}
               value={formTicket.values.costo_gpo_lias}
@@ -490,80 +542,141 @@ const NuevoTicket = () => {
         </Center>
 
         <Center>
-          <Divider orientation="vertical" />
-          <FormControl isRequired paddingTop={15}>
-            <FormLabel htmlFor="kilometraje">Kilómetros a Recorrer</FormLabel>
-            <Input
-              variant="filled"
-              id="kilometraje"
-              placeholder="0"
-              type="number"
-              min={0}
-              onChange={formTicket.handleChange}
-              value={formTicket.values.kilometraje}
-            />
-          </FormControl>
-          
-          <FormControl isRequired paddingTop={15} paddingLeft={5}>
-            <FormLabel htmlFor="costoPorKilometro">Costo por Kilometro</FormLabel>
-            <InputLeftElement
-              paddingTop={55}
-              paddingStart={8}
-              color="gray.300"
-              pointerEvents="none"
-              children="$"
-            />
-            <Input
-              variant="filled"
-              id="costoPorKilometro"
-              placeholder="0.00"
-              paddingLeft={8}
-              type="number"
-             // onChange={}
-              //value={}
-            />
-          </FormControl>
+          {formTicket.values.is_servicio_foraneo === true ? (
+            <FormControl isRequired paddingTop={15}>
+              <FormLabel htmlFor="kilometraje">Kilómetros a Recorrer</FormLabel>
+              <Input
+                variant="filled"
+                id="kilometraje"
+                min={0}
+                placeholder="0"
+                type="number"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.kilometraje}
+              />
+            </FormControl>
+          ) : null}
+
+          {formTicket.values.is_servicio_foraneo === true ? (
+            <FormControl isRequired paddingTop={15} paddingLeft={5}>
+              <FormLabel htmlFor="costoPorKilometro">Costo por Kilómetro</FormLabel>
+              <InputLeftElement
+                paddingTop={55}
+                paddingStart={8}
+                color="gray.300"
+                pointerEvents="none"
+                children="$"
+              />
+              <Input
+                variant="filled"
+                id="costo_de_kilometraje"
+                min={0}
+                placeholder="0.00"
+                paddingLeft={8}
+                type="number"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.costo_de_kilometraje}
+              />
+            </FormControl>
+          ) : null}
         </Center>
 
-        <Center>
-          <Divider orientation="vertical" />
-          <FormControl paddingTop={15}>
-            <FormLabel htmlFor="casetas">Numero de casetas</FormLabel>
-            <Input
-              variant="filled"
-              id="casetas"
-              placeholder="0"
-              min={0}
-              type="number"
-              onChange={formTicket.handleChange}
-              value={formTicket.values.casetas}
-            />
-          </FormControl>
-          
-          <FormControl  paddingTop={15} paddingLeft={5}>
-            <FormLabel htmlFor="costoPorCaseta">Costo por Caseta</FormLabel>
-            <InputLeftElement
-              paddingTop={55}
-              paddingStart={8}
-              color="gray.300"
-              pointerEvents="none"
-              children="$"
-            />
-            <Input
-              variant="filled"
-              id="costoPorCaseta"
-              placeholder="0.00"
-              paddingLeft={8}
-              type="number"
-             // onChange={}
-              //value={}
-            />
-          </FormControl>
-        </Center>
+        {/* PARA SERVICIOS VIALES*/}
+        <SimpleGrid columns={[1, 1, 4]} spacing={4}>
+          {formTicket.values.asistencia_vial === true ? (
+            <FormControl isRequired paddingTop={15}>
+              <FormLabel htmlFor="modelo_del_carro">Módelo del Carro</FormLabel>
+              <Input
+                variant="filled"
+                id="modelo_carro"
+                placeholder="Modelo del Carro"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.modelo_carro}
+              />
+            </FormControl>
+          ) : null}
 
-        
+          {formTicket.values.asistencia_vial === true ? (
+            <FormControl isRequired paddingTop={15}>
+              <FormLabel htmlFor="placas">Placas</FormLabel>
+              <Input
+                variant="filled"
+                id="placas_carro"
+                placeholder="Placas"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.placas_carro}
+              />
+            </FormControl>
+          ) : null}
 
-        <SimpleGrid columns={[1, 1, 2]} spacing={4}>
+          {formTicket.values.asistencia_vial === true ? (
+            <FormControl isRequired paddingTop={15}>
+              <FormLabel htmlFor="color">Color</FormLabel>
+              <Input
+                variant="filled"
+                id="color_carro"
+                placeholder="Color"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.color_carro}
+              />
+            </FormControl>
+          ) : null}
+
+          {formTicket.values.asistencia_vial === true ? (
+            <FormControl isRequired paddingTop={15}>
+              <FormLabel htmlFor="marca">Marca</FormLabel>
+              <Input //isDisabled
+                variant="filled"
+                id="marca_carro"
+                placeholder="Marca"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.marca_carro}
+              />
+            </FormControl>
+          ) : null}
+
+        </SimpleGrid>
+
+        {/*SERVICIOS FORANEOS */}
+        <SimpleGrid columns={[1, 1, 3]} spacing={4}>
+          {formTicket.values.is_servicio_foraneo === true ? (
+            <FormControl paddingTop={15}>
+              <FormLabel htmlFor="casetas">Numero de casetas</FormLabel>
+              <Input
+                variant="filled"
+                id="casetas"
+                placeholder="0"
+                min={0}
+                type="number"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.casetas}
+              />
+            </FormControl>
+          ) : null}
+
+          {formTicket.values.is_servicio_foraneo === true ? (
+            <FormControl paddingTop={15} paddingLeft={5}>
+              <FormLabel htmlFor="costoPorCaseta">Costo por Caseta</FormLabel>
+              <InputLeftElement
+                paddingTop={55}
+                paddingStart={8}
+                color="gray.300"
+                pointerEvents="none"
+                children="$"
+              />
+              <Input
+                variant="filled"
+                id="costo_por_caseta"
+                min={0}
+                placeholder="0.00"
+                paddingLeft={8}
+                type="number"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.costo_por_caseta}
+              />
+            </FormControl>
+          ) : null}
+
           {formTicket.values.asistencia_vial === true ? (
             <FormControl paddingTop={15}>
               <FormLabel htmlFor="banderazo">Banderazo</FormLabel>
@@ -586,7 +699,10 @@ const NuevoTicket = () => {
               />
             </FormControl>
           ) : null}
-           <FormControl isRequired paddingTop={15}>
+        </SimpleGrid>
+
+        <SimpleGrid columns={[1, 1, 4]} spacing={4}>
+          <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="deducible">Deducible</FormLabel>
             <InputLeftElement
               paddingTop={55}
@@ -598,6 +714,7 @@ const NuevoTicket = () => {
             <Input
               variant="filled"
               id="deducible"
+              min={0}
               placeholder="0.00"
               paddingLeft={8}
               type="number"
@@ -605,10 +722,6 @@ const NuevoTicket = () => {
               value={formTicket.values.deducible}
             />
           </FormControl>
-        </SimpleGrid>
-
-        <Center>
-          <Divider orientation="vertical" />
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="anticipo">Anticipo 60%</FormLabel>
             <InputLeftElement
@@ -621,6 +734,7 @@ const NuevoTicket = () => {
             <Input
               variant="filled"
               id="anticipo"
+              min={0}
               placeholder="0.00"
               paddingLeft={8}
               type="number"
@@ -641,6 +755,7 @@ const NuevoTicket = () => {
             <Input
               variant="filled"
               id="total_salida"
+              min={0}
               placeholder="0.00"
               paddingLeft={8}
               type="number"
@@ -648,12 +763,8 @@ const NuevoTicket = () => {
               value={formTicket.values.total_salida}
             />
           </FormControl>
-        </Center>
 
 
-
-        <Center>
-          <Divider orientation="vertical" />
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="total">Monto Total</FormLabel>
             <InputLeftElement
@@ -666,6 +777,7 @@ const NuevoTicket = () => {
             <Input
               variant="filled"
               id="total"
+              min={0}
               placeholder="0.00"
               paddingLeft={8}
               type="number"
@@ -673,8 +785,7 @@ const NuevoTicket = () => {
               value={formTicket.values.total}
             />
           </FormControl>
-
-        </Center>
+        </SimpleGrid>
 
         <FormControl paddingTop={15}>
           <FormLabel htmlFor="cotizacion_gpo_lias">
@@ -701,7 +812,7 @@ const NuevoTicket = () => {
           Publicar Ticket
         </Button>
       </Box>
-    </form>
+    </form >
   );
 };
 

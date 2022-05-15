@@ -1,12 +1,14 @@
-import { ITicket } from "@/services/api.models";
+import { IAseguradoras, ITicket } from "@/services/api.models";
 import { Text, Container, Heading, HStack, Tooltip } from "@chakra-ui/react";
 import Link from "next/link";
 
+
 interface IKanbanColumnCard {
   ticket: ITicket;
+  aseguradoras: IAseguradoras;
 }
 const KanbanColumnCard = ({
-  ticket,
+  ticket, aseguradoras,
 }: IKanbanColumnCard): React.ReactElement => {
   return (
     <Link href={`/tickets/${ticket.id}`}>

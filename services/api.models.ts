@@ -33,12 +33,21 @@ export interface ITicket {
   cotizacion_gpo_lias: string | null
   deducible: string
   kilometraje: number
+  costo_de_kilometraje: number
+  costo_por_caseta: number
   total: string
   anticipo: string
   hora_cierre?: string | null
   casetas: number
   costo_gpo_lias: string
   estado: string
+  num_interior?: string | null
+  modelo_carro?: string | null
+  placas_carro?: string | null
+  color_carro?: string | null
+  marca_carro?: string | null
+  is_servicio_domestico?: boolean | null
+  is_servicio_foraneo?: boolean | null
   createdAt?: string | null
   updatedAt?: string | null
 }

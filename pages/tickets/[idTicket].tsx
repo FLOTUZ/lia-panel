@@ -30,6 +30,7 @@ import {
     Tbody,
     Td,
     useDisclosure,
+    Input,
 
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
@@ -53,55 +54,44 @@ function TicketVer() {
             const service = new TicketsService();
             const respuesta = await service.getById(Number(idTicket));
             const data = respuesta.data as ITicket;
-            
+
             setTicket(data);
         }
         getTicket();
     }, [])
-        
-       
 
-        useEffect(() => {
-         /*Obtener aseguradora*/
-         const getAseguradora = async () => {
+
+
+    useEffect(() => {
+        /*Obtener aseguradora*/
+        const getAseguradora = async () => {
             const service = new AseguradoraService();
             const respuesta = await service.getById(Number(ticket?.aseguradoraId));
-            
-            
+
+
             const data = respuesta.data as IAseguradoras;
 
 
             setAseguradora(data);
-         }
+        }
 
-            /*Obtener asistencias*/
-          const getAsistencias = async () => {
+        /*Obtener asistencias*/
+        const getAsistencias = async () => {
             const service = new AsistenciasService();
             const respuesta = await service.getById(Number(ticket?.asistenciaId));
-            
-            
+
+
             const data = respuesta.data as IAsistencias;
 
 
             setAsistencias(data);
 
-          }
-          getAsistencias();
+        }
+        getAsistencias();
 
-          getAseguradora();
-          
-        }, [ticket])
+        getAseguradora();
 
-        
-
-          
-
-        
-
-     
-
-       
-
+    }, [ticket])
 
 
 
@@ -119,32 +109,37 @@ function TicketVer() {
                     <Divider orientation='vertical' paddingLeft={700} />
                     <FormLabel htmlFor='nExpediente'>Numero de Expediente:</FormLabel>
                     <Text marginLeft={20}>{ticket?.num_expediente}</Text>
-
-
-                    <FormControl paddingTop={2} paddingLeft={2} >
-                        <Stack align='center' direction='row'>
-                            <Divider orientation='vertical' />
-                            <FormLabel htmlFor='asistenciaVial'>Asistencia Vial</FormLabel>
-                            <Switch size='md' />
-                        </Stack>
-                    </FormControl>
                 </Stack>
 
                 <Center>
                     <Divider orientation='vertical' />
-                    <FormControl paddingTop={15.5}>
-                        <FormLabel htmlFor='horaLlamada'>Hora y Fecha de la Llamada</FormLabel>
-                        <Text marginLeft={5}>{ticket?.fecha_llamada}</Text>
+                    <FormControl paddingTop={15}>
+                        <FormLabel htmlFor="fecha_llamada">Fecha de la Llamada</FormLabel>
+                        <Text
+                            w={"fit-content"}
+                            id="fecha_llamada"
+                            variant="filled">
+                            {ticket?.fecha_llamada}
+                        </Text>
                     </FormControl>
                 </Center>
 
                 <Center>
                     <Divider orientation='vertical' />
-
                     <FormControl paddingTop={15}>
-                        <FormLabel htmlFor='asesorGpoLias'>Asesor de Gpo. Lías</FormLabel>
-                        <Text marginLeft={5}>{ticket?.nombre_asesor_gpo_lias}</Text>
+                        <FormLabel htmlFor="nombre_asesor_gpo_lias">
+                            Asesor de Gpo. Lías
+                        </FormLabel>
+                        <Input isReadOnly
+                            variant="filled"
+                            
+                            id="nombre_asesor_gpo_lias"
+                            placeholder="Asesor de Grupo Lías"
+                            value = {ticket?.nombre_asesor_gpo_lias}/>
+                            
+                        
                     </FormControl>
+                   
 
                     <FormControl paddingLeft={5} paddingTop={15}>
                         <FormLabel htmlFor='asesorAseguradora'>Asesor de Aseguradora</FormLabel>
@@ -160,7 +155,7 @@ function TicketVer() {
                     </FormControl>
 
                     <FormControl paddingLeft={5} paddingTop={15}>
-                        <FormLabel htmlFor='tituloTicket'>Título del Ticket</FormLabel>
+                        <FormLabel htmlFor='tituloTicket'>Descripción corta del Ticket</FormLabel>
                         <Text marginLeft={5}>{ticket?.titulo_ticket}</Text>
                     </FormControl>
                 </Center>
@@ -174,7 +169,7 @@ function TicketVer() {
 
                     <FormControl paddingLeft={5} paddingTop={15}>
                         <FormLabel htmlFor='asistencia'>Asistencia</FormLabel>
-                        <Text marginLeft={5}>{asistencias?.nombre }</Text>
+                        <Text marginLeft={5}>{asistencias?.nombre}</Text>
                     </FormControl>
                 </Center>
 
@@ -217,19 +212,6 @@ function TicketVer() {
                 <Center>
                     <Divider orientation='vertical' />
                     <FormControl paddingTop={15}>
-                        <FormLabel htmlFor='banderazo'>Banderazo</FormLabel>
-                        <Text marginLeft={5}>{ticket?.banderazo}</Text>
-                    </FormControl>
-
-                    <FormControl paddingTop={15} paddingLeft={5}>
-                        <FormLabel htmlFor='totalSalida'>Total de Salida</FormLabel>
-                        <Text marginLeft={5}>{ticket?.total_salida}0</Text>
-                    </FormControl>
-                </Center>
-
-                <Center>
-                    <Divider orientation='vertical' />
-                    <FormControl paddingTop={15}>
                         <FormLabel htmlFor='montoSeguro'>Monto de Cobertura del Seguro</FormLabel>
                         <Text marginLeft={5}>{ticket?.cobertura}</Text>
                     </FormControl>
@@ -243,15 +225,57 @@ function TicketVer() {
                 <Center>
                     <Divider orientation='vertical' />
                     <FormControl paddingTop={15}>
+                        <FormLabel htmlFor='kilometros'>Kilometros a Recorrer</FormLabel>
+                        <Text marginLeft={5}>{ticket?.kilometraje}</Text>
+                    </FormControl>
+
+                    <FormControl paddingLeft={5} paddingTop={15}>
+                        <FormLabel htmlFor='costoPorkilometros'>Costo Por Kilometros</FormLabel>
+                        <Text marginLeft={5}>{ticket?.costo_de_kilometraje}</Text>
+                    </FormControl>
+                </Center>
+
+                <Center>
+                    <Divider orientation='vertical' />
+                    <FormControl paddingTop={15}>
+                        <FormLabel htmlFor='casetas'>Número de Casetas</FormLabel>
+                        <Text marginLeft={5}>{ticket?.casetas}</Text>
+                    </FormControl>
+
+                    <FormControl paddingLeft={5} paddingTop={15}>
+                        <FormLabel htmlFor='costoPorCasetas'>Costo Por Casetas</FormLabel>
+                        <Text marginLeft={5}>{ticket?.costo_por_caseta}</Text>
+                    </FormControl>
+                </Center>
+
+                <Center>
+                    <Divider orientation='vertical' />
+                    <FormControl paddingTop={15}>
+                        <FormLabel htmlFor='banderazo'>Banderazo</FormLabel>
+                        <Text marginLeft={5}>{ticket?.banderazo}</Text>
+                    </FormControl>
+
+                    <FormControl paddingTop={15} paddingLeft={5}>
                         <FormLabel htmlFor='deducible'>Deducible</FormLabel>
                         <Text marginLeft={5}>{ticket?.deducible}</Text>
                     </FormControl>
 
-                    <FormControl paddingLeft={5} paddingTop={15}>
-                        <FormLabel htmlFor='kilometros'>Kilometros a Recorrer</FormLabel>
-                        <Text marginLeft={5}>{ticket?.kilometraje}</Text>
+                </Center>
+
+                <Center>
+                    <Divider orientation='vertical' />
+                    <FormControl isRequired paddingTop={15}>
+                        <FormLabel htmlFor='anticipo'>Anticipo 60%</FormLabel>
+                        <Text marginLeft={5}>{ticket?.anticipo}</Text>
+                    </FormControl>
+
+                    <FormControl paddingTop={15} paddingLeft={5}>
+                        <FormLabel htmlFor='totalSalida'>Total de Salida</FormLabel>
+                        <Text marginLeft={5}>{ticket?.total_salida}0</Text>
                     </FormControl>
                 </Center>
+
+
 
                 <Center>
                     <Divider orientation='vertical' />
@@ -259,12 +283,8 @@ function TicketVer() {
                         <FormLabel htmlFor='total'>Total</FormLabel>
                         <Text marginLeft={5}>{ticket?.total}</Text>
                     </FormControl>
-
-                    <FormControl isRequired paddingTop={15} paddingLeft={5}>
-                        <FormLabel htmlFor='anticipo'>Anticipo 60%</FormLabel>
-                        <Text marginLeft={5}>{ticket?.anticipo}</Text>
-                    </FormControl>
                 </Center>
+
             </Box>
 
             <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' rounded='md' bg='white'>
@@ -279,7 +299,7 @@ function TicketVer() {
 
                     <FormControl paddingTop={15} paddingLeft={5}>
                         <FormLabel htmlFor='cotizacionTecnico'>Solución y Cotización del Técnico</FormLabel>
-                        <Text marginLeft={5}>{}</Text>
+                        <Text marginLeft={5}>{ }</Text>
                     </FormControl>
                 </Center>
 
@@ -287,7 +307,7 @@ function TicketVer() {
                     <Divider orientation='vertical' />
                     <FormControl paddingTop={15}>
                         <FormLabel htmlFor='horaDeContacto'>Hora de Contacto</FormLabel>
-                        <Text marginLeft={5}>{}</Text>
+                        <Text marginLeft={5}>{ }</Text>
                     </FormControl>
 
                     <FormControl paddingTop={15} paddingLeft={5}>
@@ -301,23 +321,16 @@ function TicketVer() {
                     <Divider orientation='vertical' />
                     <FormControl paddingTop={15}>
                         <FormLabel htmlFor='costoManoDeObra'>Costo de Mano de Obra</FormLabel>
-                        <Text marginLeft={5}>{}</Text>
+                        <Text marginLeft={5}>{ }</Text>
                     </FormControl>
 
                     <FormControl paddingTop={15} paddingLeft={5}>
                         <FormLabel htmlFor='costoMateriales'>Costo de Materiales</FormLabel>
-                        <Text marginLeft={5}>{}</Text>
+                        <Text marginLeft={5}>{ }</Text>
                     </FormControl>
                 </Center>
 
-                <Center>
-                    <Divider orientation='vertical' />
-                    <FormControl paddingTop={15}>
-                    <FormLabel htmlFor='casetas'>Número de Casetas</FormLabel>
-                        <Text marginLeft={5}>{ticket?.casetas}</Text>
-                    </FormControl>
 
-                </Center>
 
                 <Center>
                     <Divider orientation='vertical' paddingTop={30} />
