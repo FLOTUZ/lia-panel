@@ -1,8 +1,10 @@
 import Header from "@/common/Header";
+import ViewText from "@/common/ViewText";
 import DesktopLayout from "@/layouts/DesktopLayout";
-import { IAseguradoras, IAsistencias, ITicket } from "@/services/api.models";
+import { IAseguradoras, IAsistencias, IServicio, ITicket } from "@/services/api.models";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";
+import { ServiciosService } from "@/services/servicios.service";
 import { TicketsService } from "@/services/tickets.service";
 
 import {
@@ -31,6 +33,7 @@ import {
     Td,
     useDisclosure,
     Input,
+    SimpleGrid,
 
 } from "@chakra-ui/react";
 import { useRouter } from "next/router";
@@ -44,10 +47,10 @@ function TicketVer() {
     const [aseguradora, setAseguradora] = useState<IAseguradoras>();
     const [asistencias, setAsistencias] = useState<IAsistencias>();
 
+
+
     /*Obtener ticket*/
     const { idTicket } = router.query;
-
-
 
     useEffect(() => {
         const getTicket = async () => {
@@ -56,7 +59,8 @@ function TicketVer() {
             const data = respuesta.data as ITicket;
 
             setTicket(data);
-        }
+        };
+
         getTicket();
     }, [])
 
@@ -105,232 +109,279 @@ function TicketVer() {
             <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' rounded='md' bg='white'>
                 <Text fontWeight="bold" fontSize='25px'>Datos Básicos </Text>
 
-                <Stack direction='row' paddingTop={15}>
-                    <Divider orientation='vertical' paddingLeft={700} />
-                    <FormLabel htmlFor='nExpediente'>Numero de Expediente:</FormLabel>
-                    <Text marginLeft={20}>{ticket?.num_expediente}</Text>
+                {/*Datos básicos*/}
+                <Stack
+                    direction='row'
+                    paddingTop={15}
+                    marginLeft="1300px">
+                    <ViewText
+                        id_form="num_expediente"
+                        form_label="Numero de Expediente:">
+                        {ticket?.num_expediente}
+                    </ViewText>
                 </Stack>
 
-                <Center>
-                    <Divider orientation='vertical' />
-                    <FormControl paddingTop={15}>
-                        <FormLabel htmlFor="fecha_llamada">Fecha de la Llamada</FormLabel>
-                        <Text
-                            w={"fit-content"}
-                            id="fecha_llamada"
-                            variant="filled">
-                            {ticket?.fecha_llamada}
-                        </Text>
-                    </FormControl>
-                </Center>
 
-                <Center>
-                    <Divider orientation='vertical' />
-                    <FormControl paddingTop={15}>
-                        <FormLabel htmlFor="nombre_asesor_gpo_lias">
-                            Asesor de Gpo. Lías
-                        </FormLabel>
-                        <Input isReadOnly
-                            variant="filled"
-                            
-                            id="nombre_asesor_gpo_lias"
-                            placeholder="Asesor de Grupo Lías"
-                            value = {ticket?.nombre_asesor_gpo_lias}/>
-                            
-                        
-                    </FormControl>
-                   
+                <Box marginRight={780}>
+                    <ViewText
+                        form_label="Fecha de la Llamada"
+                        id_form="fecha_llamada">
+                        {ticket?.fecha_llamada}
+                    </ViewText>
+                </Box>
 
-                    <FormControl paddingLeft={5} paddingTop={15}>
-                        <FormLabel htmlFor='asesorAseguradora'>Asesor de Aseguradora</FormLabel>
-                        <Text marginLeft={5}>{ticket?.nombre_asesor_aseguradora}</Text>
-                    </FormControl>
-                </Center>
+                <SimpleGrid columns={[1, 1, 2]} spacing={5}>
+                    <ViewText
+                        id_form="nombre_asesor_gpo_lias"
+                        form_label="Asesor de Grupo Lías">
+                        {ticket?.nombre_asesor_gpo_lias}
+                    </ViewText>
 
-                <Center>
-                    <Divider orientation='vertical' />
-                    <FormControl paddingTop={15}>
-                        <FormLabel htmlFor='nombreUsuarioFinal'>Nombre del Usuario Final</FormLabel>
-                        <Text marginLeft={5}>{ticket?.nombre_usuario_final}</Text>
-                    </FormControl>
+                    <ViewText
+                        id_form="nombre_asesor_aseguradora"
+                        form_label="Asesor de Aseguradora">
+                        {ticket?.nombre_asesor_aseguradora}
+                    </ViewText>
+                </SimpleGrid>
 
-                    <FormControl paddingLeft={5} paddingTop={15}>
-                        <FormLabel htmlFor='tituloTicket'>Descripción corta del Ticket</FormLabel>
-                        <Text marginLeft={5}>{ticket?.titulo_ticket}</Text>
-                    </FormControl>
-                </Center>
+                <SimpleGrid columns={[1, 1, 2]} spacing={5}>
+                    <ViewText
+                        id_form="nombre_usuario_final"
+                        form_label="Nombre del Usuario Final">
+                        {ticket?.nombre_usuario_final}
+                    </ViewText>
 
-                <Center>
-                    <Divider orientation='vertical' />
-                    <FormControl paddingTop={15} >
-                        <FormLabel htmlFor='seguro'>Seguro</FormLabel>
-                        <Text marginLeft={5}>{aseguradora?.nombre}</Text>
-                    </FormControl>
+                    <ViewText
+                        id_form="nombre_usuario_final"
+                        form_label="Descripción corta del Ticket">
+                        {ticket?.titulo_ticket}
+                    </ViewText>
+                </SimpleGrid>
 
-                    <FormControl paddingLeft={5} paddingTop={15}>
-                        <FormLabel htmlFor='asistencia'>Asistencia</FormLabel>
-                        <Text marginLeft={5}>{asistencias?.nombre}</Text>
-                    </FormControl>
-                </Center>
+                <SimpleGrid columns={[1, 1, 2]} spacing={5}>
+                    <ViewText
+                        id_form="aseguradora"
+                        form_label="Aseguradora">
+                        {aseguradora?.nombre}
+                    </ViewText>
 
-                <FormControl paddingTop={15}>
-                    <FormLabel htmlFor='descripcion'>Descripción de la Problematica</FormLabel>
-                    <Text marginLeft={5}>{ticket?.problematica}</Text>
-                </FormControl>
+                    <ViewText
+                        id_form="asistencia"
+                        form_label="Asistencia">
+                        {asistencias?.nombre}
+                    </ViewText>
+                </SimpleGrid>
+
+                <ViewText
+                    id_form="problematica"
+                    form_label="Descripción de la Problemática">
+                    {ticket?.problematica}
+                </ViewText>
             </Box>
 
-
+            {/* Cotización de grupo Lías */}
             <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' rounded='md' bg='white'>
                 <Text fontWeight="bold" fontSize='25px'>Cotización de Grupo Lías </Text>
 
-                <Center>
-                    <Divider orientation='vertical' />
-                    <FormControl paddingTop={15}>
-                        <FormLabel htmlFor='ciudad'>Ciudad</FormLabel>
-                        <Text marginLeft={5}>{ticket?.ciudad}</Text>
-                    </FormControl>
+                <SimpleGrid columns={[1, 1, 3]} spacing={5}>
+                    <ViewText
+                        id_form="is_servicio_domestico"
+                        form_label="Servicio Doméstico">
+                        {ticket?.is_servicio_domestico}
+                    </ViewText>
 
-                    <FormControl paddingTop={15} paddingLeft={5}>
-                        <FormLabel htmlFor='colonia'>Colonia</FormLabel>
-                        <Text marginLeft={5}>{ticket?.colonia}</Text>
-                    </FormControl>
-                </Center>
+                    <ViewText
+                        id_form="asistencia_vial"
+                        form_label="Servicio Víal">
+                        {ticket?.asistencia_vial}
+                    </ViewText>
 
-                <Center>
-                    <Divider orientation='vertical' />
-                    <FormControl paddingTop={15}>
-                        <FormLabel htmlFor='calle'>Calle</FormLabel>
-                        <Text marginLeft={5}>{ticket?.calle}</Text>
-                    </FormControl>
+                    <ViewText
+                        id_form="is_servicio_foraneo"
+                        form_label="Servicio Foráneo">
+                        {ticket?.is_servicio_foraneo}
+                    </ViewText>
+                </SimpleGrid>
 
-                    <FormControl paddingLeft={5} paddingTop={15}>
-                        <FormLabel htmlFor='numeroDomicilio'>Número del Domicilio</FormLabel>
-                        <Text marginLeft={5}>{ticket?.numero_domicilio}</Text>
-                    </FormControl>
-                </Center>
+                <SimpleGrid columns={[1, 1, 5]} spacing={4}>
+                    <ViewText
+                        id_form="ciudad"
+                        form_label="Ciudad">
+                        {ticket?.ciudad}
+                    </ViewText>
 
-                <Center>
-                    <Divider orientation='vertical' />
-                    <FormControl paddingTop={15}>
-                        <FormLabel htmlFor='montoSeguro'>Monto de Cobertura del Seguro</FormLabel>
-                        <Text marginLeft={5}>{ticket?.cobertura}</Text>
-                    </FormControl>
+                    <ViewText
+                        id_form="colonia"
+                        form_label="Colonia">
+                        {ticket?.colonia}
+                    </ViewText>
 
-                    <FormControl paddingTop={15} paddingLeft={5}>
-                        <FormLabel htmlFor='costoGpoLias'>Costo Grupo Lías</FormLabel>
-                        <Text marginLeft={5}>{ticket?.costo_gpo_lias}</Text>
-                    </FormControl>
-                </Center>
+                    <ViewText
+                        id_form="calle"
+                        form_label="Calle">
+                        {ticket?.calle}
+                    </ViewText>
 
-                <Center>
-                    <Divider orientation='vertical' />
-                    <FormControl paddingTop={15}>
-                        <FormLabel htmlFor='kilometros'>Kilometros a Recorrer</FormLabel>
-                        <Text marginLeft={5}>{ticket?.kilometraje}</Text>
-                    </FormControl>
+                    <ViewText
+                        id_form="num_interior"
+                        form_label="N° de Domicilio Interior">
+                        {ticket?.num_interior}
+                    </ViewText>
 
-                    <FormControl paddingLeft={5} paddingTop={15}>
-                        <FormLabel htmlFor='costoPorkilometros'>Costo Por Kilometros</FormLabel>
-                        <Text marginLeft={5}>{ticket?.costo_de_kilometraje}</Text>
-                    </FormControl>
-                </Center>
-
-                <Center>
-                    <Divider orientation='vertical' />
-                    <FormControl paddingTop={15}>
-                        <FormLabel htmlFor='casetas'>Número de Casetas</FormLabel>
-                        <Text marginLeft={5}>{ticket?.casetas}</Text>
-                    </FormControl>
-
-                    <FormControl paddingLeft={5} paddingTop={15}>
-                        <FormLabel htmlFor='costoPorCasetas'>Costo Por Casetas</FormLabel>
-                        <Text marginLeft={5}>{ticket?.costo_por_caseta}</Text>
-                    </FormControl>
-                </Center>
-
-                <Center>
-                    <Divider orientation='vertical' />
-                    <FormControl paddingTop={15}>
-                        <FormLabel htmlFor='banderazo'>Banderazo</FormLabel>
-                        <Text marginLeft={5}>{ticket?.banderazo}</Text>
-                    </FormControl>
-
-                    <FormControl paddingTop={15} paddingLeft={5}>
-                        <FormLabel htmlFor='deducible'>Deducible</FormLabel>
-                        <Text marginLeft={5}>{ticket?.deducible}</Text>
-                    </FormControl>
-
-                </Center>
-
-                <Center>
-                    <Divider orientation='vertical' />
-                    <FormControl isRequired paddingTop={15}>
-                        <FormLabel htmlFor='anticipo'>Anticipo 60%</FormLabel>
-                        <Text marginLeft={5}>{ticket?.anticipo}</Text>
-                    </FormControl>
-
-                    <FormControl paddingTop={15} paddingLeft={5}>
-                        <FormLabel htmlFor='totalSalida'>Total de Salida</FormLabel>
-                        <Text marginLeft={5}>{ticket?.total_salida}0</Text>
-                    </FormControl>
-                </Center>
+                    <ViewText
+                        id_form="numero_domicilio"
+                        form_label="N° de Domicilio Exterior">
+                        {ticket?.numero_domicilio}
+                    </ViewText>
+                </SimpleGrid>
 
 
+                <SimpleGrid columns={[1, 1, 2]} spacing={4}>
+                    <ViewText
+                        id_form="cobertura"
+                        form_label="Monto de Cobertura del Seguro">
+                        {ticket?.cobertura}
+                    </ViewText>
 
-                <Center>
-                    <Divider orientation='vertical' />
-                    <FormControl isRequired paddingTop={15}>
-                        <FormLabel htmlFor='total'>Total</FormLabel>
-                        <Text marginLeft={5}>{ticket?.total}</Text>
-                    </FormControl>
-                </Center>
+                    <ViewText
+                        id_form="costo_gpo_lias"
+                        form_label="Costo Grupo Lías">
+                        {ticket?.costo_gpo_lias}
+                    </ViewText>
+                </SimpleGrid>
 
+                {/* SOLO SI ES SERVICIO FORANEO*/}
+                <SimpleGrid columns={[1, 1, 2]} spacing={4}>
+                    <ViewText
+                        id_form="kilometraje"
+                        form_label="Kilómetros a Recorrer">
+                        {ticket?.kilometraje}
+                    </ViewText>
+
+                    <ViewText
+                        id_form="costo_de_kilometraje"
+                        form_label="Costo por Kilómetro">
+                        {ticket?.costo_de_kilometraje}
+                    </ViewText>
+                </SimpleGrid>
+
+                {/* SÓLO SI ES SERVICIO VÍAL */}
+                <SimpleGrid columns={[1, 1, 4]} spacing={4}>
+                    <ViewText
+                        id_form="modelo_carro"
+                        form_label="Módelo del Carro">
+                        {ticket?.modelo_carro}
+                    </ViewText>
+
+                    <ViewText
+                        id_form="placas_carro"
+                        form_label="Placas">
+                        {ticket?.placas_carro}
+                    </ViewText>
+
+                    <ViewText
+                        id_form="color_carro"
+                        form_label="Color">
+                        {ticket?.color_carro}
+                    </ViewText>
+
+                    <ViewText
+                        id_form="marca_carro"
+                        form_label="Marca">
+                        {ticket?.marca_carro}
+                    </ViewText>
+                </SimpleGrid>
+
+                {/* SOLO SI ES SERVICIO FORANEO */}
+                <SimpleGrid columns={[1, 1, 3]} spacing={4}>
+                    <ViewText
+                        id_form="casetas"
+                        form_label="Número de casetas">
+                        {ticket?.casetas}
+                    </ViewText>
+
+                    <ViewText
+                        id_form="costo_por_caseta"
+                        form_label="Costo por Caseta">
+                        {ticket?.costo_por_caseta}
+                    </ViewText>
+
+                    <ViewText
+                        id_form="banderazo"
+                        form_label="Banderazo">
+                        {ticket?.banderazo}
+                    </ViewText>
+                </SimpleGrid>
+
+                <SimpleGrid columns={[1, 1, 4]} spacing={4}>
+                    <ViewText
+                        id_form="deducible"
+                        form_label="Deducible">
+                        {ticket?.deducible}
+                    </ViewText>
+
+                    <ViewText
+                        id_form="anticipo"
+                        form_label="Anticipo 60%">
+                        {ticket?.anticipo}
+                    </ViewText>
+
+                    <ViewText
+                        id_form="total_salida"
+                        form_label="Total de Salida">
+                        {ticket?.total_salida}
+                    </ViewText>
+
+                    <ViewText
+                        id_form="total"
+                        form_label="Monto Total">
+                        {ticket?.total}
+                    </ViewText>
+                </SimpleGrid>
+
+                <ViewText
+                    id_form="cotizacion_gpo_lias"
+                    form_label="Cotización de Grupo Lías (Información Adicional)">
+                    {ticket?.cotizacion_gpo_lias}
+                </ViewText>
             </Box>
 
             <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' rounded='md' bg='white'>
                 <Text fontWeight="bold" fontSize='25px'>Cotización del Técnico</Text>
 
-                <Center>
-                    <Divider orientation='vertical' />
-                    <FormControl paddingTop={15}>
-                        <FormLabel htmlFor='cotizacionGpoLias'>Cotización de Grupo Lías</FormLabel>
-                        <Text marginLeft={5}>{ticket?.cotizacion_gpo_lias}</Text>
-                    </FormControl>
+                <ViewText
+                    id_form="solucion_cotizacion_del_tecnico"
+                    form_label="Solución y Cotización del Técnico">
+                    { }
+                </ViewText>
 
-                    <FormControl paddingTop={15} paddingLeft={5}>
-                        <FormLabel htmlFor='cotizacionTecnico'>Solución y Cotización del Técnico</FormLabel>
-                        <Text marginLeft={5}>{ }</Text>
-                    </FormControl>
-                </Center>
+                <SimpleGrid columns={[1, 1, 2]} spacing={5}>
+                    <ViewText
+                        id_form="hora_de_contacto"
+                        form_label=">Fecha y Hora de Contacto">
+                        {ticket?.fecha_llamada}
+                    </ViewText>
 
-                <Center>
-                    <Divider orientation='vertical' />
-                    <FormControl paddingTop={15}>
-                        <FormLabel htmlFor='horaDeContacto'>Hora de Contacto</FormLabel>
-                        <Text marginLeft={5}>{ }</Text>
-                    </FormControl>
+                    <ViewText
+                        id_form="hora_de_cierre"
+                        form_label=">Hora de Cierre">
+                        {ticket?.hora_cierre}
+                    </ViewText>
+                </SimpleGrid>
 
-                    <FormControl paddingTop={15} paddingLeft={5}>
-                        <FormLabel htmlFor='horaDeCierre'>Hora de Cierre</FormLabel>
-                        <Text marginLeft={5}>{ticket?.hora_cierre}</Text>
-                    </FormControl>
+                <SimpleGrid columns={[1, 1, 2]} spacing={5}>
+                    <ViewText
+                        id_form="costo_de_mano_de_obra"
+                        form_label="Costo de Mano de Obra">
+                        { }
+                    </ViewText>
 
-                </Center>
-
-                <Center>
-                    <Divider orientation='vertical' />
-                    <FormControl paddingTop={15}>
-                        <FormLabel htmlFor='costoManoDeObra'>Costo de Mano de Obra</FormLabel>
-                        <Text marginLeft={5}>{ }</Text>
-                    </FormControl>
-
-                    <FormControl paddingTop={15} paddingLeft={5}>
-                        <FormLabel htmlFor='costoMateriales'>Costo de Materiales</FormLabel>
-                        <Text marginLeft={5}>{ }</Text>
-                    </FormControl>
-                </Center>
-
-
+                    <ViewText
+                        id_form="costo_de_materiales"
+                        form_label="Costo de Materiales">
+                        { }
+                    </ViewText>
+                </SimpleGrid>
 
                 <Center>
                     <Divider orientation='vertical' paddingTop={30} />
@@ -397,13 +448,10 @@ function TicketVer() {
                         </Tbody>
                     </Table>
                 </TableContainer>
-                <Button colorScheme="blue" marginLeft={1050}>Editar</Button>
+                {/*<Button colorScheme="blue" marginLeft={1050}>Editar</Button>*/}
             </Box>
 
-
-
-
-        </DesktopLayout >
+        </DesktopLayout>
     );
 }
 

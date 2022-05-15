@@ -17,14 +17,16 @@ const ViewText = (props: IViewText) => {
       <Text
         id={props.id_form}
         border={"1px"}
-        borderColor={"twitter.900"}
+        borderColor={"twitter.100"}
         borderStyle={"solid"}
         borderRadius={"5px"}
         height={10}
         bgColor={"gray.100"}
+        px="4"
+        paddingTop="4px"
         transitionDuration={"1s"}
         _hover={{
-          bgColor: "facebook.900",
+          fontVariant: "filled",
           transitionDuration: "1s",
         }}
       >

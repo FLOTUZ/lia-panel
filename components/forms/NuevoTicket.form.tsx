@@ -184,12 +184,15 @@ const NuevoTicket = () => {
         <Stack direction="row">
           <Spacer />
           <Divider orientation="vertical" />
-          <FormLabel htmlFor="num_expediente">Numero de Expediente:</FormLabel>
+          <FormLabel htmlFor="num_expediente">
+            Numero de Expediente:
+          </FormLabel>
           <Input
             variant="filled"
             id="num_expediente"
             type="text"
             placeholder="N° Expediente"
+            borderColor="twitter.100"
             onChange={formTicket.handleChange}
             value={formTicket.values.num_expediente}
           />
@@ -202,6 +205,7 @@ const NuevoTicket = () => {
             id="fecha_llamada"
             variant="filled"
             type="datetime-local"
+            borderColor="twitter.100"
             //value={fecha}
             value={formTicket.values.fecha_llamada}
             onChange={(e) => {
@@ -224,6 +228,7 @@ const NuevoTicket = () => {
               variant="filled"
               id="nombre_asesor_gpo_lias"
               placeholder="Asesor de Grupo Lías"
+              borderColor="twitter.100"
               onChange={formTicket.handleChange}
               value={formTicket.values.nombre_asesor_gpo_lias}
             />
@@ -237,6 +242,7 @@ const NuevoTicket = () => {
               variant="filled"
               id="nombre_asesor_aseguradora"
               placeholder="Asesor de la Aseguradora"
+              borderColor="twitter.100"
               onChange={formTicket.handleChange}
               value={formTicket.values.nombre_asesor_aseguradora}
             />
@@ -253,6 +259,7 @@ const NuevoTicket = () => {
               variant="filled"
               id="nombre_usuario_final"
               placeholder="Usuario del Técnico"
+              borderColor="twitter.100"
               onChange={formTicket.handleChange}
               value={formTicket.values.nombre_usuario_final}
             />
@@ -264,6 +271,7 @@ const NuevoTicket = () => {
               variant="filled"
               id="titulo_ticket"
               placeholder="Descripción Corta"
+              borderColor="twitter.100"
               onChange={formTicket.handleChange}
               value={formTicket.values.titulo_ticket}
             />
@@ -278,6 +286,7 @@ const NuevoTicket = () => {
               id="aseguradoraId"
               placeholder="Selecciona la aseguradora"
               variant="filled"
+              borderColor="twitter.100"
               value={formTicket.values.aseguradoraId}
               onChange={(e) => {
                 formTicket.setFieldValue(
@@ -304,6 +313,7 @@ const NuevoTicket = () => {
               id="asistenciaId"
               placeholder="Selecciona el Tipo de Asistencia"
               variant="filled"
+              borderColor="twitter.100"
               value={formTicket.values.asistenciaId}
               onChange={(e) => {
                 formTicket.setFieldValue(
@@ -336,9 +346,9 @@ const NuevoTicket = () => {
             id="problematica"
             variant="filled"
             placeholder="Problemática"
+            borderColor="twitter.100"
             onChange={formTicket.handleChange}
-            value={formTicket.values.problematica}
-          />
+            value={formTicket.values.problematica} />
         </FormControl>
 
         <FormControl paddingTop={15}>
@@ -427,6 +437,7 @@ const NuevoTicket = () => {
               id="ciudad"
               placeholder="Selecciona la Ciudad"
               variant="filled"
+              borderColor="twitter.100"
               value={formTicket.values.ciudad}
               onChange={formTicket.handleChange}
             >
@@ -448,12 +459,11 @@ const NuevoTicket = () => {
               variant="filled"
               id="colonia"
               placeholder="Colonia"
+              borderColor="twitter.100"
               onChange={formTicket.handleChange}
               value={formTicket.values.colonia}
             />
           </FormControl>
-
-
 
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="calle">Calle</FormLabel>
@@ -461,6 +471,7 @@ const NuevoTicket = () => {
               variant="filled"
               id="calle"
               placeholder="Calle"
+              borderColor="twitter.100"
               onChange={formTicket.handleChange}
               value={formTicket.values.calle}
             />
@@ -476,6 +487,7 @@ const NuevoTicket = () => {
               variant="filled"
               id="num_interior"
               placeholder="N° de Domicilio Interior"
+              borderColor="twitter.100"
               onChange={formTicket.handleChange}
               value={formTicket.values.num_interior}
             />
@@ -489,6 +501,7 @@ const NuevoTicket = () => {
               variant="filled"
               id="numero_domicilio"
               placeholder="N° de Domicilio Exterior"
+              borderColor="twitter.100"
               onChange={formTicket.handleChange}
               value={formTicket.values.numero_domicilio}
             />
@@ -514,6 +527,7 @@ const NuevoTicket = () => {
               placeholder="0.00"
               paddingLeft={8}
               type="number"
+              borderColor="twitter.100"
               onChange={formTicket.handleChange}
               value={formTicket.values.cobertura}
             />
@@ -535,6 +549,7 @@ const NuevoTicket = () => {
               paddingLeft={8}
               min={0}
               type="number"
+              borderColor="twitter.100"
               onChange={formTicket.handleChange}
               value={formTicket.values.costo_gpo_lias}
             />
@@ -551,6 +566,7 @@ const NuevoTicket = () => {
                 min={0}
                 placeholder="0"
                 type="number"
+                borderColor="twitter.100"
                 onChange={formTicket.handleChange}
                 value={formTicket.values.kilometraje}
               />
@@ -574,6 +590,7 @@ const NuevoTicket = () => {
                 placeholder="0.00"
                 paddingLeft={8}
                 type="number"
+                borderColor="twitter.100"
                 onChange={formTicket.handleChange}
                 value={formTicket.values.costo_de_kilometraje}
               />
@@ -590,6 +607,7 @@ const NuevoTicket = () => {
                 variant="filled"
                 id="modelo_carro"
                 placeholder="Modelo del Carro"
+                borderColor="twitter.100"
                 onChange={formTicket.handleChange}
                 value={formTicket.values.modelo_carro}
               />
@@ -603,6 +621,7 @@ const NuevoTicket = () => {
                 variant="filled"
                 id="placas_carro"
                 placeholder="Placas"
+                borderColor="twitter.100"
                 onChange={formTicket.handleChange}
                 value={formTicket.values.placas_carro}
               />
@@ -616,6 +635,7 @@ const NuevoTicket = () => {
                 variant="filled"
                 id="color_carro"
                 placeholder="Color"
+                borderColor="twitter.100"
                 onChange={formTicket.handleChange}
                 value={formTicket.values.color_carro}
               />
@@ -629,6 +649,7 @@ const NuevoTicket = () => {
                 variant="filled"
                 id="marca_carro"
                 placeholder="Marca"
+                borderColor="twitter.100"
                 onChange={formTicket.handleChange}
                 value={formTicket.values.marca_carro}
               />
@@ -641,13 +662,14 @@ const NuevoTicket = () => {
         <SimpleGrid columns={[1, 1, 3]} spacing={4}>
           {formTicket.values.is_servicio_foraneo === true ? (
             <FormControl paddingTop={15}>
-              <FormLabel htmlFor="casetas">Numero de casetas</FormLabel>
+              <FormLabel htmlFor="casetas">Número de casetas</FormLabel>
               <Input
                 variant="filled"
                 id="casetas"
                 placeholder="0"
                 min={0}
                 type="number"
+                borderColor="twitter.100"
                 onChange={formTicket.handleChange}
                 value={formTicket.values.casetas}
               />
@@ -671,6 +693,7 @@ const NuevoTicket = () => {
                 placeholder="0.00"
                 paddingLeft={8}
                 type="number"
+                borderColor="twitter.100"
                 onChange={formTicket.handleChange}
                 value={formTicket.values.costo_por_caseta}
               />
@@ -693,7 +716,8 @@ const NuevoTicket = () => {
                 id="banderazo"
                 placeholder="0.00"
                 type="number"
-                min={10}
+                min={0}
+                borderColor="twitter.100"
                 onChange={formTicket.handleChange}
                 value={formTicket.values.banderazo}
               />
@@ -718,6 +742,7 @@ const NuevoTicket = () => {
               placeholder="0.00"
               paddingLeft={8}
               type="number"
+              borderColor="twitter.100"
               onChange={formTicket.handleChange}
               value={formTicket.values.deducible}
             />
@@ -738,6 +763,7 @@ const NuevoTicket = () => {
               placeholder="0.00"
               paddingLeft={8}
               type="number"
+              borderColor="twitter.100"
               onChange={formTicket.handleChange}
               value={formTicket.values.anticipo}
             />
@@ -759,6 +785,7 @@ const NuevoTicket = () => {
               placeholder="0.00"
               paddingLeft={8}
               type="number"
+              borderColor="twitter.100"
               onChange={formTicket.handleChange}
               value={formTicket.values.total_salida}
             />
@@ -781,6 +808,7 @@ const NuevoTicket = () => {
               placeholder="0.00"
               paddingLeft={8}
               type="number"
+              borderColor="twitter.100"
               onChange={formTicket.handleChange}
               value={formTicket.values.total}
             />
@@ -789,12 +817,13 @@ const NuevoTicket = () => {
 
         <FormControl paddingTop={15}>
           <FormLabel htmlFor="cotizacion_gpo_lias">
-            Cotizacion de Grupo Lías (Informacion adicional)
+            Cotización de Grupo Lías (Información Adicional)
           </FormLabel>
           <Textarea
             id="cotizacion_gpo_lias"
             variant="filled"
             placeholder="Cotización"
+            borderColor="twitter.100"
             onChange={formTicket.handleChange}
             value={formTicket.values.cotizacion_gpo_lias}
           />
@@ -807,6 +836,7 @@ const NuevoTicket = () => {
           id="publicarTicket"
           type="submit"
           colorScheme="blue"
+          borderColor="twitter.100"
           size="lg"
         >
           Publicar Ticket
