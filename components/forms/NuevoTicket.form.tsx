@@ -214,7 +214,6 @@ const NuevoTicket = () => {
             type="datetime-local"
             borderColor="twitter.100"
             value={fecha}
-            //value={formTicket.values.fecha_llamada}
             onChange={(e) => {
               setFecha(e.target.value);
               formTicket.setFieldValue(
