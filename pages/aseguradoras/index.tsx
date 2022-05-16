@@ -132,9 +132,11 @@ export default function AseguradorasListado() {
             <TableCaption>Aseguradoras</TableCaption>
             <Thead>
               <Tr>
-                <Th>Nº Expediente</Th>
+                <Th>Nº</Th>
                 <Th>Nombre</Th>
                 <Th>Telefono</Th>
+                <Th>Km Max</Th>
+                <Th>Costo Km</Th>
                 <Th>Creado</Th>
  
                 <Th></Th>
@@ -146,9 +148,12 @@ export default function AseguradorasListado() {
 
                   return (
                     <Tr key={index} >
-    
+                      
+                      <Td>{aseguradoras.id}</Td>
                       <Td>{aseguradoras.nombre}</Td>
                       <Td>{aseguradoras.telefono}</Td>
+                      <Td>{aseguradoras.kilometraje_permitido}</Td>
+                      <Td>{aseguradoras.costo_por_kilometro}</Td>
                       <Td>{aseguradoras.createdAt}</Td>
                       <Td>{aseguradoras.updatedAt}</Td>
                       
