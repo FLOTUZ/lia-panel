@@ -23,6 +23,7 @@ import {
   Switch,
   Text,
   Checkbox,
+  FormHelperText,
 } from "@chakra-ui/react";
 //import { useFormik } from "formik";
 
@@ -218,7 +219,8 @@ function UsuarioNuevo() {
               onChange={(e) => setEmail(e.target.value)}
             />
 
-            <FormLabel htmlFor="contraseña">Contraseña</FormLabel>
+            <FormControl isRequired>
+            <FormLabel htmlFor="password">Contraseña</FormLabel>
             <Input
               variant="filled"
               id="password"
@@ -226,7 +228,8 @@ function UsuarioNuevo() {
               isRequired={true}
               onChange={(e) => setPassword(e.target.value)}
             />
-
+            <FormHelperText>minimo 8 caracteres</FormHelperText>
+            </FormControl>
             <FormLabel htmlFor="rol">Seleccione Rol</FormLabel>
 
             <RadioGroup

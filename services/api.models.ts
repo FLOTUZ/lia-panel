@@ -12,6 +12,7 @@ export interface IUsuario {
 }
 
 export interface ITicket {
+<<<<<<< Updated upstream
   id?: number
   num_expediente: string
   asistencia_vial: boolean
@@ -50,6 +51,37 @@ export interface ITicket {
   is_servicio_foraneo?: boolean | null
   createdAt?: string | null
   updatedAt?: string | null
+=======
+  id?: number;
+  num_expediente: string;
+  asistencia_vial: boolean;
+  fecha_llamada: string;
+  nombre_asesor_aseguradora: string;
+  nombre_asesor_gpo_lias: string;
+  nombre_usuario_final: string;
+  titulo_ticket: string;
+  asistenciaId: number;
+  aseguradoraId: number;
+  problematica: string;
+  ciudad: string;
+  colonia: string;
+  calle: string;
+  numero_domicilio: string;
+  banderazo: string | null;
+  total_salida: string;
+  cobertura: string;
+  cotizacion_gpo_lias: string | null;
+  deducible: string;
+  kilometraje: number;
+  total: string;
+  anticipo: string;
+  hora_cierre?: string | null;
+  casetas: number;
+  costo_gpo_lias: string;
+  estado: string;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+>>>>>>> Stashed changes
 }
 
 export interface ITecnico {
@@ -76,7 +108,11 @@ export interface IAseguradoras {
   id?: number;
   nombre: string;
   telefono: string;
-  expediente?: string;
+  telefono_domestico?: string;
+  telefono_vial?: string;
+  telefono_whats?: string;
+  kilometraje_permitido?: number;
+  costo_por_kilometro?: number;
   Asistencia?: IAsistencias[] | null;
   createdAt?: string | null;
   updatedAt?: string | null;
@@ -90,10 +126,10 @@ export interface IAsistencias {
   updatedAt?: string | null;
 }
 export interface ICiudad {
-  id?: number
-  nombre: string
-  latitud?: number | null
-  longitud?: number | null
-  createdAt?: string | null
-  updatedAt?: string | null
+  id?: number;
+  nombre: string;
+  latitud?: number | null;
+  longitud?: number | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
 }

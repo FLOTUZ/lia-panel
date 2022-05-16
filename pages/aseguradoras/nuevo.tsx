@@ -33,42 +33,63 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon, CheckIcon, EmailIcon, PhoneIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
-import { MdAttachMoney, MdCarRepair, MdHomeFilled, MdHomeRepairService, MdMapsHomeWork, MdOutlineAttachMoney, MdOutlineHomeMax, MdOutlineHomeMini, MdOutlineMapsHomeWork, MdVerifiedUser } from "react-icons/md";
+import {
+  MdAttachMoney,
+  MdCarRepair,
+  MdHomeFilled,
+  MdHomeRepairService,
+  MdMapsHomeWork,
+  MdOutlineAttachMoney,
+  MdOutlineHomeMax,
+  MdOutlineHomeMini,
+  MdOutlineMapsHomeWork,
+  MdVerifiedUser,
+  MdVideoLabel,
+} from "react-icons/md";
 import Link from "next/link";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { IAseguradoras, IAsistencias } from "@/services/api.models";
 import { AsistenciasService } from "@/services/asistencias.service";
-import { IoLogoWhatsapp, IoSpeedometer, IoSpeedometerOutline } from "react-icons/io5";
+import {
+  IoLogoWhatsapp,
+  IoSpeedometer,
+  IoSpeedometerOutline,
+} from "react-icons/io5";
 
 function AseguradoraNueva() {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const toast = useToast()
+  const toast = useToast();
 
-  const [nombreAseguradora, setNombreAseguradora] = useState("")
-  const [telefonoAseguradora, setTelefonoAseguradora] = useState("")
-  const [expedienteAseguradora, setExpedienteAseguradora] = useState("")
+  const [nombreAseguradora, setNombreAseguradora] = useState("");
+  const [telefonoAseguradora, setTelefonoAseguradora] = useState("");
+  const [telefonoDomesticoAseguradora, setTelefonoDomesticoAseguradora] =
+    useState("");
+  const [telefonoVialAseguradora, setTelefonoVialAseguradora] = useState("");
+  const [telefonoWhatsAseguradora, setTelefonoWhatsAseguradora] = useState("");
 
-  const [nombreAsistencia, setNombreAsistencia] = useState("")
-  const [aseguradoraGuardada, setAseguradoraGuardada] = useState<IAseguradoras>()
+  const [kilometrajeAseguradora, setKilometrajeAseguradora] = useState<number>(0);
+  const [costoKilometroAseguradora, setCostoKilometroAseguradora] = useState<number>(0);
 
+  const [nombreAsistencia, setNombreAsistencia] = useState("");
+  const [aseguradoraGuardada, setAseguradoraGuardada] =
+    useState<IAseguradoras>();
 
   /*CONSULTA de asistencias  */
-  const [listadoAsistencias, setListadoAsistencias] = useState<IAsistencias[]>([])
-
+  const [listadoAsistencias, setListadoAsistencias] = useState<IAsistencias[]>(
+    []
+  );
 
   const consultaAsistencias = async () => {
     const services = new AseguradoraService();
     const respuesta = await services.getById(aseguradoraGuardada?.id || 0);
     const data = respuesta.data as IAseguradoras;
 
-
     if (respuesta.status == 200) {
       setListadoAsistencias(data.Asistencia || []);
     } else {
-      console.log(respuesta)
+      console.log(respuesta);
     }
   };
-
 
   /*AGREGAR ASISTENCIA */
   const guardarAsistencia = async () => {
@@ -77,15 +98,15 @@ function AseguradoraNueva() {
       aseguradoraId: aseguradoraGuardada?.id,
     };
 
-    const service = new AsistenciasService()
-    const response = await service.create(data)
+    const service = new AsistenciasService();
+    const response = await service.create(data);
 
-    consultaAsistencias()
+    consultaAsistencias();
     if (response.status === 201) {
-      onClose()
+      onClose();
       toast({
         title: "Asistencia Nueva Agregado con Exito.",
-        description: 'La Asistencia se Agrego con Exito.',
+        description: "La Asistencia se Agrego con Exito.",
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -99,27 +120,30 @@ function AseguradoraNueva() {
         isClosable: true,
       });
     }
-
-  }
+  };
 
   /*AGREGAR ASEGURADORA*/
   const guardarAseguradora = async () => {
     const data: IAseguradoras = {
       nombre: nombreAseguradora,
       telefono: telefonoAseguradora,
-      expediente: expedienteAseguradora,
+      kilometraje_permitido: kilometrajeAseguradora,
+      costo_por_kilometro: costoKilometroAseguradora,
+      telefono_domestico: telefonoDomesticoAseguradora,
+      telefono_vial: telefonoVialAseguradora,
+      telefono_whats: telefonoWhatsAseguradora,
     };
 
-    const service = new AseguradoraService()
-    const response = await service.create(data)
-    const aseguradora = response.data as IAseguradoras
-    setAseguradoraGuardada(aseguradora)
+    const service = new AseguradoraService();
+    const response = await service.create(data);
+    const aseguradora = response.data as IAseguradoras;
+    setAseguradoraGuardada(aseguradora);
 
     if (response.status === 201) {
-      onClose()
+      onClose();
       toast({
         title: "Aseguradora nueva agregado con exito",
-        description: 'La Aseguradora se agrego con exito',
+        description: "La Aseguradora se agrego con exito",
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -133,9 +157,7 @@ function AseguradoraNueva() {
         isClosable: true,
       });
     }
-
-
-  }
+  };
   return (
     <div>
       <DesktopLayout>
@@ -152,9 +174,6 @@ function AseguradoraNueva() {
           bg="white"
         >
           <Stack spacing={4}>
-
-
-
             <InputGroup>
               <FormControl isRequired>
                 <FormLabel htmlFor="nombre">Nombre de la aseguradora</FormLabel>
@@ -163,7 +182,9 @@ function AseguradoraNueva() {
                     pointerEvents="none"
                     children={<MdVerifiedUser color="green" />}
                   />
-                  <Input type="Nombre" placeholder="Aseguradora"
+                  <Input
+                    type="Nombre"
+                    placeholder="Aseguradora"
                     onChange={(e) => {
                       setNombreAseguradora(e.target.value);
                     }}
@@ -181,60 +202,76 @@ function AseguradoraNueva() {
                     children={<MdOutlineMapsHomeWork color="gray.300" />}
                   />
                   <Input
+                     minLength={8}
+                     maxLength={12}
                     onChange={(e) => {
                       setTelefonoAseguradora(e.target.value);
                     }}
-                    type="phone" placeholder="Numero de Teléfono" />
+                    type="phone"
+                    placeholder="Numero de Teléfono"
+                  />
                 </InputGroup>
               </FormControl>
             </InputGroup>
 
-            <SimpleGrid columns={2} spacing={5} >
-
+            <SimpleGrid columns={2} spacing={5}>
               <InputGroup>
                 <FormControl isRequired>
-                  <FormLabel htmlFor="kilometraje">Kilometraje</FormLabel>
+                  <FormLabel htmlFor="kilometraje">Kilometraje maximo</FormLabel>
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents="none"
                       children={<IoSpeedometerOutline color="gray.300" />}
                     />
                     <Input
+                    minLength={1}
+                    maxLength={3}
+                    min={0}
+                    max={100}
                       onChange={(e) => {
-                        setTelefonoAseguradora(e.target.value);
+                        setKilometrajeAseguradora(Number(e.target.value));
                       }}
-                      type="number" placeholder="Kilometraje" />
+                      type="number"
+                      placeholder="Kilometraje"
+                    />
                   </InputGroup>
                 </FormControl>
               </InputGroup>
 
               <InputGroup>
                 <FormControl isRequired>
-                  <FormLabel htmlFor="costo por kilometraje">Costo por Kilometraje</FormLabel>
+                  <FormLabel htmlFor="costo por kilometraje">
+                    Costo por Kilometraje
+                  </FormLabel>
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents="none"
                       children={<MdOutlineAttachMoney color="gray.300" />}
                     />
                     <Input
+                      min={0}
+                      max={50}
                       onChange={(e) => {
-                        setTelefonoAseguradora(e.target.value);
+                        setCostoKilometroAseguradora(Number(e.target.value));
                       }}
-                      type="number" placeholder="Kilometraje" />
+                      type="number"
+                      placeholder="Kilometraje"
+                    />
                   </InputGroup>
                 </FormControl>
               </InputGroup>
             </SimpleGrid>
 
-            <Divider paddingTop={5} orientation='horizontal' />
-            <Heading paddingLeft={2} paddingBottom={5} as='h4' size='md'>
+            <Divider paddingTop={5} orientation="horizontal" />
+            <Heading paddingLeft={2} paddingBottom={5} as="h4" size="md">
               Información adicional
             </Heading>
             <SimpleGrid columns={3} spacing={5}>
-
               <InputGroup>
-                <FormControl >
-                  <FormLabel htmlFor="telefono">Teléfono Servicio Domestico</FormLabel>
+                <FormControl>
+                  <FormLabel htmlFor="telefono">
+                    Teléfono Servicio Domestico
+                  </FormLabel>
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents="none"
@@ -242,51 +279,73 @@ function AseguradoraNueva() {
                     />
                     <Input
                       onChange={(e) => {
-                        setTelefonoAseguradora(e.target.value);
+                        setTelefonoDomesticoAseguradora(e.target.value);
                       }}
-                      type="phone" placeholder="Numero de Teléfono de servicio domestico" />
+                      minLength={8}
+                      maxLength={12}
+                      type="phone"
+                      placeholder="Numero de Teléfono de servicio domestico"
+                    />
                   </InputGroup>
                 </FormControl>
               </InputGroup>
 
               <InputGroup>
-                <FormControl >
-                  <FormLabel htmlFor="telefono">Teléfono Servicio Vial</FormLabel>
+                <FormControl>
+                  <FormLabel htmlFor="telefono">
+                    Teléfono Servicio Vial
+                  </FormLabel>
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents="none"
                       children={<MdCarRepair color="gray.300" />}
                     />
                     <Input
+                        minLength={8}
+                        maxLength={12}
                       onChange={(e) => {
-                        setTelefonoAseguradora(e.target.value);
+                        setTelefonoVialAseguradora(e.target.value);
                       }}
-                      type="phone" placeholder="Numero de Teléfono de servicio vial" />
+                      type="phone"
+                      placeholder="Numero de Teléfono de servicio vial"
+                    />
                   </InputGroup>
                 </FormControl>
               </InputGroup>
 
               <InputGroup>
-                <FormControl >
-                  <FormLabel htmlFor="telefono">Teléfono solo para whatsapp</FormLabel>
+                <FormControl>
+                  <FormLabel htmlFor="telefono">
+                    Teléfono solo para whatsapp
+                  </FormLabel>
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents="none"
                       children={<IoLogoWhatsapp color="green" />}
                     />
                     <Input
+                      minLength={8}
+                      maxLength={12}
                       onChange={(e) => {
-                        setTelefonoAseguradora(e.target.value);
+                        setTelefonoWhatsAseguradora(e.target.value);
                       }}
-                      type="phone" placeholder="Numero de whatsapp" />
+                      type="phone"
+                      placeholder="Numero de whatsapp"
+                    />
                   </InputGroup>
                 </FormControl>
               </InputGroup>
-
             </SimpleGrid>
           </Stack>
-          <Stack marginTop={50} direction="row" spacing={4} align="center" paddingLeft={930}>
-            <Button colorScheme="facebook"
+          <Stack
+            marginTop={50}
+            direction="row"
+            spacing={4}
+            align="center"
+            paddingLeft={930}
+          >
+            <Button
+              colorScheme="facebook"
               variant="solid"
               onClick={guardarAseguradora}
             >
@@ -312,27 +371,28 @@ function AseguradoraNueva() {
           boxShadow="2xl"
           p="6"
           rounded="md"
-          bg="white">
-
+          bg="white"
+        >
           <Heading marginTop={5} as="h5" size="md">
             Asistencia de Aseguradora
           </Heading>
 
-          <Stack marginTop={2}
+          <Stack
+            marginTop={2}
             direction="row"
             spacing={2}
             align="center"
-            paddingLeft={930}>
+            paddingLeft={930}
+          >
             <Button
               leftIcon={<AddIcon />}
               colorScheme="facebook"
               variant="solid"
-              onClick={onOpen}>
+              onClick={onOpen}
+            >
               Nueva Asistencia
             </Button>
           </Stack>
-
-
 
           <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
@@ -342,18 +402,17 @@ function AseguradoraNueva() {
               <ModalBody pb={6}>
                 <FormControl mt={4}>
                   <FormLabel>Nombre de la Asistencia</FormLabel>
-                  <Input placeholder="Nombre de la Asistencia"
+                  <Input
+                    placeholder="Nombre de la Asistencia"
                     onChange={(e) => {
-                      setNombreAsistencia(e.target.value)
+                      setNombreAsistencia(e.target.value);
                     }}
                   />
                 </FormControl>
               </ModalBody>
 
               <ModalFooter>
-                <Button colorScheme="blue" mr={3}
-                  onClick={guardarAsistencia}
-                >
+                <Button colorScheme="blue" mr={3} onClick={guardarAsistencia}>
                   Guardar
                 </Button>
                 <Button onClick={onClose}>Cancelar</Button>
@@ -370,24 +429,18 @@ function AseguradoraNueva() {
               </Thead>
               <Tbody>
                 {listadoAsistencias.length !== 0 ? (
-
                   listadoAsistencias.map((t, index) => {
                     return (
                       <Tr key={index}>
-
                         <Td>{t.nombre}</Td>
-
                       </Tr>
-                    )
+                    );
                   })
                 ) : (
                   <Tr>
                     <Td>NO DATA</Td>
-
                   </Tr>
                 )}
-
-
               </Tbody>
             </Table>
           </TableContainer>

@@ -146,7 +146,7 @@ export default function AseguradorasListado() {
 
                   return (
                     <Tr key={index} >
-                      <Td>{aseguradoras.expediente}</Td>
+    
                       <Td>{aseguradoras.nombre}</Td>
                       <Td>{aseguradoras.telefono}</Td>
                       <Td>{aseguradoras.createdAt}</Td>
