@@ -29,6 +29,7 @@ import {
   InputLeftElement,
   Button,
   useToast,
+  Flex,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import Link from "next/link";
@@ -41,6 +42,12 @@ const NuevoTicket = () => {
   const [asistenciasList, setAsistenciasList] = useState<IAsistencias[]>([]);
   const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
   const [serviciosList, setServiciosList] = useState<IServicio[]>([]);
+
+  const [selectedvial, setSelectedVial] = useState(false)
+  const [selecteddomestico, setSelectedDomestico] = useState(false)
+
+
+
 
   const [fecha, setFecha] = useState("");
   const [serviciosSeleccionados, setServiciosSeleccionados] = useState<
@@ -396,36 +403,88 @@ const NuevoTicket = () => {
         </Text>
         <Divider orientation="vertical" />
 
-        <SimpleGrid columns={[1, 1, 3]} spacing={4}>
+        
+          <FormControl  as={SimpleGrid} columns={{ base: 1, lg: 6 }}>
+
+
+
           <FormControl paddingTop={2} paddingLeft={2}>
+   
+
+
             <FormLabel htmlFor="servicio_domestico">Servicio Doméstico</FormLabel>
             <Switch
+               
               id="is_servicio_domestico"
               size="lg"
               onChange={formTicket.handleChange}
               isChecked={formTicket.values.is_servicio_domestico}
             />
+                   {formTicket.values.is_servicio_domestico? (
+                <Flex
+                  w={"100%"}
+                  padding = {1}
+                  bgColor={"green"}
+                  justifyContent="center"
+                  borderRadius={"2xl"}
+                >
+                  <Text color={"white"} fontWeight="bold">
+                    Servicio domestico activado
+                  </Text>
+                </Flex>
+              ) : null}
           </FormControl>
           <FormControl paddingTop={2} paddingLeft={2}>
+     
             <FormLabel htmlFor="asistencia_vial">Servicio Víal</FormLabel>
+           
             <Switch
+              
               id="asistencia_vial"
               size="lg"
               onChange={formTicket.handleChange}
               isChecked={formTicket.values.asistencia_vial}
             />
+                 {formTicket.values.asistencia_vial? (
+                <Flex
+                  w={"100%"}
+                  padding = {1}
+                  bgColor={"green"}
+                  justifyContent="center"
+                  borderRadius={"2xl"}
+                >
+                  <Text color={"white"} fontWeight="bold">
+                    Servicio vial activado
+                  </Text>
+                </Flex>
+              ) : null}
           </FormControl>
-
+         
           <FormControl paddingTop={2} paddingLeft={2}>
+      
             <FormLabel htmlFor="servicio_foraneo">Servicio Foráneo</FormLabel>
             <Switch
               id="is_servicio_foraneo"
               size="lg"
               onChange={formTicket.handleChange}
+           
               isChecked={formTicket.values.is_servicio_foraneo}
             />
+                {formTicket.values.is_servicio_foraneo? (
+                <Flex
+                  w={"100%"}
+                  padding = {1}
+                  bgColor={"green"}
+                  justifyContent="center"
+                  borderRadius={"2xl"}
+                >
+                  <Text color={"white"} fontWeight="bold">
+                    Servicio vial activado
+                  </Text>
+                </Flex>
+              ) : null}
           </FormControl>
-        </SimpleGrid>
+          </FormControl>
 
 
 
