@@ -358,7 +358,7 @@ function TicketVer() {
                 <SimpleGrid columns={[1, 1, 2]} spacing={5}>
                     <ViewText
                         id_form="hora_de_contacto"
-                        form_label=">Fecha y Hora de Contacto">
+                        form_label="Fecha y Hora de Contacto">
                         {ticket?.fecha_llamada}
                     </ViewText>
 

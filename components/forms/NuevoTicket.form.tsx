@@ -206,8 +206,8 @@ const NuevoTicket = () => {
             variant="filled"
             type="datetime-local"
             borderColor="twitter.100"
-            //value={fecha}
-            value={formTicket.values.fecha_llamada}
+            value={fecha}
+            //value={formTicket.values.fecha_llamada}
             onChange={(e) => {
               setFecha(e.target.value);
               formTicket.setFieldValue(
@@ -258,7 +258,7 @@ const NuevoTicket = () => {
             <Input
               variant="filled"
               id="nombre_usuario_final"
-              placeholder="Usuario del Técnico"
+              placeholder="Usuario Final"
               borderColor="twitter.100"
               onChange={formTicket.handleChange}
               value={formTicket.values.nombre_usuario_final}
@@ -284,7 +284,7 @@ const NuevoTicket = () => {
             <FormLabel htmlFor="aseguradoraId">Aseguradora</FormLabel>
             <Select
               id="aseguradoraId"
-              placeholder="Selecciona la aseguradora"
+              placeholder="Selecciona la Aseguradora"
               variant="filled"
               borderColor="twitter.100"
               value={formTicket.values.aseguradoraId}
@@ -311,7 +311,7 @@ const NuevoTicket = () => {
             <FormLabel htmlFor="asistenciaId">Asistencia</FormLabel>
             <Select
               id="asistenciaId"
-              placeholder="Selecciona el Tipo de Asistencia"
+              placeholder="Selecciona Tipo de Asistencia"
               variant="filled"
               borderColor="twitter.100"
               value={formTicket.values.asistenciaId}
@@ -453,59 +453,66 @@ const NuevoTicket = () => {
             </Select>
           </FormControl>
 
-          <FormControl isRequired paddingTop={15} paddingLeft={5}>
-            <FormLabel htmlFor="colonia">Colonia</FormLabel>
-            <Input
-              variant="filled"
-              id="colonia"
-              placeholder="Colonia"
-              borderColor="twitter.100"
-              onChange={formTicket.handleChange}
-              value={formTicket.values.colonia}
-            />
-          </FormControl>
-
-          <FormControl isRequired paddingTop={15}>
-            <FormLabel htmlFor="calle">Calle</FormLabel>
-            <Input
-              variant="filled"
-              id="calle"
-              placeholder="Calle"
-              borderColor="twitter.100"
-              onChange={formTicket.handleChange}
-              value={formTicket.values.calle}
-            />
-          </FormControl>
+          {formTicket.values.is_servicio_domestico === true ? (
+            <FormControl isRequired paddingTop={15} paddingLeft={5}>
+              <FormLabel htmlFor="colonia">Colonia</FormLabel>
+              <Input
+                variant="filled"
+                id="colonia"
+                placeholder="Colonia"
+                borderColor="twitter.100"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.colonia}
+              />
+            </FormControl>
+          ) : null}
 
 
+          {formTicket.values.is_servicio_domestico === true ? (
+            <FormControl isRequired paddingTop={15}>
+              <FormLabel htmlFor="calle">Calle</FormLabel>
+              <Input
+                variant="filled"
+                id="calle"
+                placeholder="Calle"
+                borderColor="twitter.100"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.calle}
+              />
+            </FormControl>
+          ) : null}
 
-          <FormControl isRequired paddingLeft={5} paddingTop={15}>
-            <FormLabel htmlFor="numero_domicilio_interior">
-              Número Interior
-            </FormLabel>
-            <Input
-              variant="filled"
-              id="num_interior"
-              placeholder="N° de Domicilio Interior"
-              borderColor="twitter.100"
-              onChange={formTicket.handleChange}
-              value={formTicket.values.num_interior}
-            />
-          </FormControl>
+          {formTicket.values.is_servicio_domestico === true ? (
+            <FormControl isRequired paddingLeft={5} paddingTop={15}>
+              <FormLabel htmlFor="numero_domicilio_interior">
+                Número Interior
+              </FormLabel>
+              <Input
+                variant="filled"
+                id="num_interior"
+                placeholder="N° de Domicilio Interior"
+                borderColor="twitter.100"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.num_interior}
+              />
+            </FormControl>
+          ) : null}
 
-          <FormControl isRequired paddingLeft={5} paddingTop={15}>
-            <FormLabel htmlFor="numero_domicilio_exterior">
-              Número Exterior
-            </FormLabel>
-            <Input
-              variant="filled"
-              id="numero_domicilio"
-              placeholder="N° de Domicilio Exterior"
-              borderColor="twitter.100"
-              onChange={formTicket.handleChange}
-              value={formTicket.values.numero_domicilio}
-            />
-          </FormControl>
+          {formTicket.values.is_servicio_domestico === true ? (
+            <FormControl paddingLeft={5} paddingTop={15}>
+              <FormLabel htmlFor="numero_domicilio_exterior">
+                Número Exterior
+              </FormLabel>
+              <Input
+                variant="filled"
+                id="numero_domicilio"
+                placeholder="N° de Domicilio Exterior"
+                borderColor="twitter.100"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.numero_domicilio}
+              />
+            </FormControl>
+          ) : null}
         </SimpleGrid>
 
         <Center>
@@ -667,7 +674,7 @@ const NuevoTicket = () => {
                 variant="filled"
                 id="casetas"
                 placeholder="0"
-                min={0}
+
                 type="number"
                 borderColor="twitter.100"
                 onChange={formTicket.handleChange}
