@@ -32,7 +32,6 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
-import Link from "next/link";
 import { useState, useEffect } from "react";
 
 const NuevoTicket = () => {
@@ -42,12 +41,6 @@ const NuevoTicket = () => {
   const [asistenciasList, setAsistenciasList] = useState<IAsistencias[]>([]);
   const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
   const [serviciosList, setServiciosList] = useState<IServicio[]>([]);
-
-  const [selectedvial, setSelectedVial] = useState(false)
-  const [selecteddomestico, setSelectedDomestico] = useState(false)
-
-
-
 
   const [fecha, setFecha] = useState("");
   const [serviciosSeleccionados, setServiciosSeleccionados] = useState<
@@ -135,12 +128,11 @@ const NuevoTicket = () => {
       marca_carro: "",
       is_servicio_domestico: false,
       is_servicio_foraneo: false,
-
     },
     onSubmit: async (values) => {
       const ticket: any = { ...values };
 
-      console.log(ticket)
+      console.log(ticket);
 
       const servicio = new TicketsService();
       const respuestaTicketPost: any = await servicio.create(ticket);
@@ -191,9 +183,7 @@ const NuevoTicket = () => {
         <Stack direction="row">
           <Spacer />
           <Divider orientation="vertical" />
-          <FormLabel htmlFor="num_expediente">
-            Numero de Expediente:
-          </FormLabel>
+          <FormLabel htmlFor="num_expediente">Numero de Expediente:</FormLabel>
           <Input
             variant="filled"
             id="num_expediente"
@@ -272,7 +262,9 @@ const NuevoTicket = () => {
           </FormControl>
 
           <FormControl isRequired paddingLeft={5} paddingTop={15}>
-            <FormLabel htmlFor="titulo_ticket">Descripción Corta del Ticket</FormLabel>
+            <FormLabel htmlFor="titulo_ticket">
+              Descripción Corta del Ticket
+            </FormLabel>
             <Input
               variant="filled"
               id="titulo_ticket"
@@ -303,12 +295,12 @@ const NuevoTicket = () => {
             >
               {aseguradorasList?.length !== 0
                 ? aseguradorasList?.map((aseguradora, index) => {
-                  return (
-                    <option key={index} value={Number(aseguradora.id)}>
-                      {aseguradora.nombre}
-                    </option>
-                  );
-                })
+                    return (
+                      <option key={index} value={Number(aseguradora.id)}>
+                        {aseguradora.nombre}
+                      </option>
+                    );
+                  })
                 : null}
             </Select>
           </FormControl>
@@ -333,12 +325,12 @@ const NuevoTicket = () => {
             >
               {asistenciasList.length !== 0
                 ? asistenciasList.map((asistencia, index) => {
-                  return (
-                    <option key={index} value={Number(asistencia.id)}>
-                      {asistencia.nombre}
-                    </option>
-                  );
-                })
+                    return (
+                      <option key={index} value={Number(asistencia.id)}>
+                        {asistencia.nombre}
+                      </option>
+                    );
+                  })
                 : null}
             </Select>
           </FormControl>
@@ -354,7 +346,8 @@ const NuevoTicket = () => {
             placeholder="Problemática"
             borderColor="twitter.100"
             onChange={formTicket.handleChange}
-            value={formTicket.values.problematica} />
+            value={formTicket.values.problematica}
+          />
         </FormControl>
 
         <FormControl paddingTop={15}>
@@ -371,16 +364,16 @@ const NuevoTicket = () => {
             <SimpleGrid minChildWidth="3rem" spacing="4rem">
               {serviciosList?.length !== 0
                 ? serviciosList.map((servicio, index) => {
-                  return (
-                    <Checkbox
-                      key={index}
-                      id={servicio.nombre}
-                      value={servicio.id?.toString()}
-                    >
-                      {servicio.nombre}
-                    </Checkbox>
-                  );
-                })
+                    return (
+                      <Checkbox
+                        key={index}
+                        id={servicio.nombre}
+                        value={servicio.id?.toString()}
+                      >
+                        {servicio.nombre}
+                      </Checkbox>
+                    );
+                  })
                 : null}
             </SimpleGrid>
           </CheckboxGroup>
@@ -402,93 +395,90 @@ const NuevoTicket = () => {
         </Text>
         <Divider orientation="vertical" />
 
-        
-          <FormControl  as={SimpleGrid} columns={{ base: 1, lg: 6 }}>
-
-
-
+        <FormControl as={SimpleGrid} columns={{ base: 1, lg: 6 }}>
           <FormControl paddingTop={2} paddingLeft={2}>
-   
-
-
-            <FormLabel htmlFor="servicio_domestico">Servicio Doméstico</FormLabel>
+            <FormLabel htmlFor="servicio_domestico">
+              Servicio Doméstico
+            </FormLabel>
             <Switch
-               
               id="is_servicio_domestico"
               size="lg"
-              onChange={formTicket.handleChange}
+              onChange={(e) => {
+                formTicket.handleChange(e);
+                formTicket.values.asistencia_vial == true
+                  ? formTicket.setFieldValue("asistencia_vial", false)
+                  : null;
+              }}
               isChecked={formTicket.values.is_servicio_domestico}
             />
-                   {formTicket.values.is_servicio_domestico? (
-                <Flex
-                  w={"100%"}
-                  padding = {1}
-                  bgColor={"green"}
-                  justifyContent="center"
-                  borderRadius={"2xl"}
-                >
-                  <Text color={"white"} fontWeight="bold">
-                    Servicio domestico activado
-                  </Text>
-                </Flex>
-              ) : null}
+            {formTicket.values.is_servicio_domestico ? (
+              <Flex
+                w={"100%"}
+                padding={1}
+                bgColor={"green"}
+                justifyContent="center"
+                borderRadius={"2xl"}
+              >
+                <Text color={"white"} fontWeight="bold">
+                  Servicio domestico activado
+                </Text>
+              </Flex>
+            ) : null}
           </FormControl>
           <FormControl paddingTop={2} paddingLeft={2}>
-     
             <FormLabel htmlFor="asistencia_vial">Servicio Víal</FormLabel>
-           
+
             <Switch
-              
               id="asistencia_vial"
               size="lg"
-              onChange={formTicket.handleChange}
+              onChange={(e)=>{
+                formTicket.handleChange(e);
+                formTicket.values.is_servicio_domestico == true
+                  ? formTicket.setFieldValue("is_servicio_domestico", false)
+                  : null;
+              }}
               isChecked={formTicket.values.asistencia_vial}
             />
-                 {formTicket.values.asistencia_vial? (
-                <Flex
-                  w={"100%"}
-                  padding = {1}
-                  bgColor={"green"}
-                  justifyContent="center"
-                  borderRadius={"2xl"}
-                >
-                  <Text color={"white"} fontWeight="bold">
-                    Servicio vial activado
-                  </Text>
-                </Flex>
-              ) : null}
+            {formTicket.values.asistencia_vial ? (
+              <Flex
+                w={"100%"}
+                padding={1}
+                bgColor={"green"}
+                justifyContent="center"
+                borderRadius={"2xl"}
+              >
+                <Text color={"white"} fontWeight="bold">
+                  Servicio vial activado
+                </Text>
+              </Flex>
+            ) : null}
           </FormControl>
-         
+
           <FormControl paddingTop={2} paddingLeft={2}>
-      
             <FormLabel htmlFor="servicio_foraneo">Servicio Foráneo</FormLabel>
             <Switch
               id="is_servicio_foraneo"
               size="lg"
               onChange={formTicket.handleChange}
-           
               isChecked={formTicket.values.is_servicio_foraneo}
             />
-                {formTicket.values.is_servicio_foraneo? (
-                <Flex
-                  w={"100%"}
-                  padding = {1}
-                  bgColor={"green"}
-                  justifyContent="center"
-                  borderRadius={"2xl"}
-                >
-                  <Text color={"white"} fontWeight="bold">
-                    Servicio vial activado
-                  </Text>
-                </Flex>
-              ) : null}
+            {formTicket.values.is_servicio_foraneo ? (
+              <Flex
+                w={"100%"}
+                padding={1}
+                bgColor={"green"}
+                justifyContent="center"
+                borderRadius={"2xl"}
+              >
+                <Text color={"white"} fontWeight="bold">
+                  Servicio vial activado
+                </Text>
+              </Flex>
+            ) : null}
           </FormControl>
-          </FormControl>
-
-
+        </FormControl>
 
         <SimpleGrid columns={[1, 1, 5]} spacing={4}>
-
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="ciudad">Ciudad</FormLabel>
             <Select
@@ -501,12 +491,12 @@ const NuevoTicket = () => {
             >
               {ciudadesList?.length !== 0
                 ? ciudadesList?.map((ciudad, index) => {
-                  return (
-                    <option key={index} value={ciudad.nombre}>
-                      {ciudad.nombre}
-                    </option>
-                  );
-                })
+                    return (
+                      <option key={index} value={ciudad.nombre}>
+                        {ciudad.nombre}
+                      </option>
+                    );
+                  })
                 : null}
             </Select>
           </FormControl>
@@ -524,7 +514,6 @@ const NuevoTicket = () => {
               />
             </FormControl>
           ) : null}
-
 
           {formTicket.values.is_servicio_domestico === true ? (
             <FormControl isRequired paddingTop={15}>
@@ -637,7 +626,9 @@ const NuevoTicket = () => {
           </FormControl>
 
           <FormControl isRequired paddingTop={15} paddingLeft={5}>
-            <FormLabel htmlFor="costoPorKilometro">Costo por Kilómetro</FormLabel>
+            <FormLabel htmlFor="costoPorKilometro">
+              Costo por Kilómetro
+            </FormLabel>
             <InputLeftElement
               paddingTop={55}
               paddingStart={8}
@@ -716,7 +707,6 @@ const NuevoTicket = () => {
               />
             </FormControl>
           ) : null}
-
         </SimpleGrid>
 
         {/*SERVICIOS FORANEOS */}
@@ -728,7 +718,6 @@ const NuevoTicket = () => {
                 variant="filled"
                 id="casetas"
                 placeholder="0"
-
                 type="number"
                 borderColor="twitter.100"
                 onChange={formTicket.handleChange}
@@ -852,7 +841,6 @@ const NuevoTicket = () => {
             />
           </FormControl>
 
-
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="total">Monto Total</FormLabel>
             <InputLeftElement
@@ -903,7 +891,7 @@ const NuevoTicket = () => {
           Publicar Ticket
         </Button>
       </Box>
-    </form >
+    </form>
   );
 };
 
