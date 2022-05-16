@@ -4,7 +4,6 @@ import DesktopLayout from "@/layouts/DesktopLayout";
 import { IAseguradoras, IAsistencias, IServicio, ITicket } from "@/services/api.models";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";
-import { ServiciosService } from "@/services/servicios.service";
 import { TicketsService } from "@/services/tickets.service";
 
 import {
@@ -15,14 +14,10 @@ import {
 import {
     Box,
     Divider,
-    FormControl,
-    FormLabel,
     Text,
     Center,
     Stack,
-    Switch,
     Image,
-    Button,
     TableContainer,
     Table,
     TableCaption,
@@ -32,7 +27,6 @@ import {
     Tbody,
     Td,
     useDisclosure,
-    Input,
     SimpleGrid,
 
 } from "@chakra-ui/react";
@@ -71,11 +65,7 @@ function TicketVer() {
         const getAseguradora = async () => {
             const service = new AseguradoraService();
             const respuesta = await service.getById(Number(ticket?.aseguradoraId));
-
-
             const data = respuesta.data as IAseguradoras;
-
-
             setAseguradora(data);
         }
 
@@ -83,11 +73,7 @@ function TicketVer() {
         const getAsistencias = async () => {
             const service = new AsistenciasService();
             const respuesta = await service.getById(Number(ticket?.asistenciaId));
-
-
             const data = respuesta.data as IAsistencias;
-
-
             setAsistencias(data);
 
         }
@@ -96,8 +82,6 @@ function TicketVer() {
         getAseguradora();
 
     }, [ticket])
-
-
 
 
 
@@ -183,6 +167,7 @@ function TicketVer() {
             <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' rounded='md' bg='white'>
                 <Text fontWeight="bold" fontSize='25px'>Cotización de Grupo Lías </Text>
 
+{/* 
                 <SimpleGrid columns={[1, 1, 3]} spacing={5}>
                     <ViewText
                         id_form="is_servicio_domestico"
@@ -202,6 +187,7 @@ function TicketVer() {
                         {ticket?.is_servicio_foraneo}
                     </ViewText>
                 </SimpleGrid>
+                */}
 
                 <SimpleGrid columns={[1, 1, 5]} spacing={4}>
                     <ViewText
@@ -364,7 +350,7 @@ function TicketVer() {
 
                     <ViewText
                         id_form="hora_de_cierre"
-                        form_label=">Hora de Cierre">
+                        form_label="Hora de Cierre">
                         {ticket?.hora_cierre}
                     </ViewText>
                 </SimpleGrid>

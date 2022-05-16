@@ -22,6 +22,7 @@ import {
   AddIcon,
   EditIcon,
   SearchIcon,
+  ViewIcon,
 } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { ITicket } from "@/services/api.models";
@@ -139,7 +140,7 @@ export default function ListadoTickets() {
                             <IconButton
                               variant="outline"
                               aria-label="edit"
-                              icon={<EditIcon/>}
+                              icon={<ViewIcon/>}
                             />
                           </a>
                         </Link>

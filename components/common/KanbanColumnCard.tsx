@@ -1,15 +1,31 @@
 import { IAseguradoras, ITicket } from "@/services/api.models";
+import { AseguradoraService } from "@/services/aseguradoras.service";
 import { Text, Container, Heading, HStack, Tooltip } from "@chakra-ui/react";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 
 interface IKanbanColumnCard {
   ticket: ITicket;
-  aseguradoras: IAseguradoras;
 }
 const KanbanColumnCard = ({
-  ticket, aseguradoras,
+  ticket, 
 }: IKanbanColumnCard): React.ReactElement => {
+
+  const [aseguradora, setAseguradora] = useState<IAseguradoras>();
+
+  useEffect(() => {
+    /*Obtener aseguradora*/
+    const getAseguradora = async () => {
+        const service = new AseguradoraService();
+        const respuesta = await service.getById(Number(ticket?.aseguradoraId));
+        const data = respuesta.data as IAseguradoras;
+        setAseguradora(data);
+    }
+
+    getAseguradora();
+  }, [ticket])
+
   return (
     <Link href={`/tickets/${ticket.id}`}>
       <a>
@@ -39,7 +55,7 @@ const KanbanColumnCard = ({
 
           <HStack>
             <Text fontWeight={"bold"}>Aseguradora:</Text>
-            <Text>{ticket.aseguradoraId}</Text>
+            <Text>{aseguradora?.nombre}</Text>
           </HStack>
           {/* {ticket.tecnico ? (
             <HStack>

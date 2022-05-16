@@ -116,8 +116,8 @@ const NuevoTicket = () => {
       deducible: "",
       kilometraje: "",
       costo_de_kilometraje: "",
-      costo_por_caseta: "",
-      casetas: "",
+      costo_por_caseta: 0,
+      casetas: 0,
       total: "",
       anticipo: "",
       estado: "NUEVO",
@@ -564,45 +564,41 @@ const NuevoTicket = () => {
         </Center>
 
         <Center>
-          {formTicket.values.is_servicio_foraneo === true ? (
-            <FormControl isRequired paddingTop={15}>
-              <FormLabel htmlFor="kilometraje">Kilómetros a Recorrer</FormLabel>
-              <Input
-                variant="filled"
-                id="kilometraje"
-                min={0}
-                placeholder="0"
-                type="number"
-                borderColor="twitter.100"
-                onChange={formTicket.handleChange}
-                value={formTicket.values.kilometraje}
-              />
-            </FormControl>
-          ) : null}
+          <FormControl isRequired paddingTop={15}>
+            <FormLabel htmlFor="kilometraje">Kilómetros a Recorrer</FormLabel>
+            <Input
+              variant="filled"
+              id="kilometraje"
+              min={0}
+              placeholder="0"
+              type="number"
+              borderColor="twitter.100"
+              onChange={formTicket.handleChange}
+              value={formTicket.values.kilometraje}
+            />
+          </FormControl>
 
-          {formTicket.values.is_servicio_foraneo === true ? (
-            <FormControl isRequired paddingTop={15} paddingLeft={5}>
-              <FormLabel htmlFor="costoPorKilometro">Costo por Kilómetro</FormLabel>
-              <InputLeftElement
-                paddingTop={55}
-                paddingStart={8}
-                color="gray.300"
-                pointerEvents="none"
-                children="$"
-              />
-              <Input
-                variant="filled"
-                id="costo_de_kilometraje"
-                min={0}
-                placeholder="0.00"
-                paddingLeft={8}
-                type="number"
-                borderColor="twitter.100"
-                onChange={formTicket.handleChange}
-                value={formTicket.values.costo_de_kilometraje}
-              />
-            </FormControl>
-          ) : null}
+          <FormControl isRequired paddingTop={15} paddingLeft={5}>
+            <FormLabel htmlFor="costoPorKilometro">Costo por Kilómetro</FormLabel>
+            <InputLeftElement
+              paddingTop={55}
+              paddingStart={8}
+              color="gray.300"
+              pointerEvents="none"
+              children="$"
+            />
+            <Input
+              variant="filled"
+              id="costo_de_kilometraje"
+              min={0}
+              placeholder="0.00"
+              paddingLeft={8}
+              type="number"
+              borderColor="twitter.100"
+              onChange={formTicket.handleChange}
+              value={formTicket.values.costo_de_kilometraje}
+            />
+          </FormControl>
         </Center>
 
         {/* PARA SERVICIOS VIALES*/}
