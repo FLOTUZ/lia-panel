@@ -47,6 +47,17 @@ const NuevoTicket = () => {
     string[]
   >([]);
 
+  const [cobertura, setCobertura] = useState(0);
+  const [costoGPOLIAS, setCostoGPOLIAS] = useState(0);
+  const [kilometrosARecorrer, setKilometrosARecorrer] = useState(0);
+  const [costoPorKilometro, setCostoPorKilometro] = useState(0);
+  const [costoBanderazo, setCostoBanderazo] = useState(0);
+
+  const [calculoDeducible, setCalculoDeducible] = useState(0);
+  const [calculoAnticipo, setCalculoAnticipo] = useState(0);
+  const [calculoTotalSalida, setCalculoTotalSalida] = useState(0);
+  const [calculoMontoTotal, setCalculoMontoTotal] = useState(0);
+
   useEffect(() => {
     const consultarAseguradoras = async () => {
       const servicio = new AseguradoraService();
@@ -76,6 +87,48 @@ const NuevoTicket = () => {
     consultarCiudades();
     consultarServicios();
   }, []);
+
+  useEffect(() => {
+    const calcular = () => {
+      let cober = Number(formTicket.values.cobertura);
+      let costoLias = Number(formTicket.values.costo_gpo_lias);
+
+      let km = Number(formTicket.values.kilometraje);
+      let costoKM = Number(formTicket.values.costo_de_kilometraje);
+      let totalKM = km * costoKM; //Costo de desplazo de tecnico
+
+      let banderazo = Number(formTicket.values.banderazo);
+      let nCasetas = Number(formTicket.values.casetas);
+      let costoPorCasetas = Number(formTicket.values.costo_por_caseta);
+      let totalCasetas = nCasetas * costoPorCasetas; //Costo de casetas
+
+      let anticipo = (costoLias + totalKM + banderazo) * 0.6; //Anticipo del ticket
+      let deducible = cober - costoLias - totalKM; //Costo que no cubre el seguro
+      let totalSalida = totalKM + totalCasetas + banderazo; //Total de salida para tecnico
+      
+      let montoTotal = 0;
+      if (deducible < 0) {
+        montoTotal = totalSalida + costoGPOLIAS + Math.abs(deducible);
+      } else {
+        montoTotal = totalSalida + costoGPOLIAS;
+      }
+
+      setCalculoDeducible(deducible);
+      setCalculoAnticipo(anticipo);
+      setCalculoTotalSalida(totalSalida);
+      setCalculoMontoTotal(montoTotal);
+
+      console.log({
+        costoGPOLIAS,
+        totalKM,
+        totalCasetas,
+        banderazo,
+        totalSalida
+      });
+    };
+
+    calcular();
+  }, [cobertura, costoGPOLIAS, costoPorKilometro, costoBanderazo]);
 
   const asistenciaById = async () => {
     if (Number(formTicket.values.aseguradoraId) !== 0) {
@@ -110,12 +163,12 @@ const NuevoTicket = () => {
       numero_domicilio: "",
       banderazo: 0,
       total_salida: "",
-      costo_gpo_lias: "",
-      cobertura: "",
+      costo_gpo_lias: 0,
+      cobertura: 0,
       cotizacion_gpo_lias: "",
       deducible: "",
-      kilometraje: "",
-      costo_de_kilometraje: "",
+      kilometraje: 0,
+      costo_de_kilometraje: 0,
       costo_por_caseta: 0,
       casetas: 0,
       total: "",
@@ -126,7 +179,7 @@ const NuevoTicket = () => {
       placas_carro: "",
       color_carro: "",
       marca_carro: "",
-      is_servicio_domestico: false,
+      is_servicio_domestico: true,
       is_servicio_foraneo: false,
     },
     onSubmit: async (values) => {
@@ -431,7 +484,7 @@ const NuevoTicket = () => {
             <Switch
               id="asistencia_vial"
               size="lg"
-              onChange={(e)=>{
+              onChange={(e) => {
                 formTicket.handleChange(e);
                 formTicket.values.is_servicio_domestico == true
                   ? formTicket.setFieldValue("is_servicio_domestico", false)
@@ -582,7 +635,10 @@ const NuevoTicket = () => {
               paddingLeft={8}
               type="number"
               borderColor="twitter.100"
-              onChange={formTicket.handleChange}
+              onChange={(e) => {
+                setCobertura(Number(e.target.value));
+                formTicket.handleChange(e);
+              }}
               value={formTicket.values.cobertura}
             />
           </FormControl>
@@ -604,7 +660,10 @@ const NuevoTicket = () => {
               min={0}
               type="number"
               borderColor="twitter.100"
-              onChange={formTicket.handleChange}
+              onChange={(e) => {
+                setCostoGPOLIAS(Number(e.target.value));
+                formTicket.handleChange(e);
+              }}
               value={formTicket.values.costo_gpo_lias}
             />
           </FormControl>
@@ -620,7 +679,10 @@ const NuevoTicket = () => {
               placeholder="0"
               type="number"
               borderColor="twitter.100"
-              onChange={formTicket.handleChange}
+              onChange={(e) => {
+                setKilometrosARecorrer(Number(e.target.value));
+                formTicket.handleChange(e);
+              }}
               value={formTicket.values.kilometraje}
             />
           </FormControl>
@@ -644,7 +706,10 @@ const NuevoTicket = () => {
               paddingLeft={8}
               type="number"
               borderColor="twitter.100"
-              onChange={formTicket.handleChange}
+              onChange={(e) => {
+                setCostoPorKilometro(Number(e.target.value));
+                formTicket.handleChange(e);
+              }}
               value={formTicket.values.costo_de_kilometraje}
             />
           </FormControl>
@@ -720,7 +785,10 @@ const NuevoTicket = () => {
                 placeholder="0"
                 type="number"
                 borderColor="twitter.100"
-                onChange={formTicket.handleChange}
+                onChange={(e) => {
+                  setCostoBanderazo(Number(e.target.value));
+                  formTicket.handleChange(e);
+                }}
                 value={formTicket.values.casetas}
               />
             </FormControl>
@@ -744,7 +812,10 @@ const NuevoTicket = () => {
                 paddingLeft={8}
                 type="number"
                 borderColor="twitter.100"
-                onChange={formTicket.handleChange}
+                onChange={(e) => {
+                  setCostoBanderazo(Number(e.target.value));
+                  formTicket.handleChange(e);
+                }}
                 value={formTicket.values.costo_por_caseta}
               />
             </FormControl>
@@ -768,7 +839,10 @@ const NuevoTicket = () => {
                 type="number"
                 min={0}
                 borderColor="twitter.100"
-                onChange={formTicket.handleChange}
+                onChange={(e) => {
+                  setCostoBanderazo(Number(e.target.value));
+                  formTicket.handleChange(e);
+                }}
                 value={formTicket.values.banderazo}
               />
             </FormControl>
@@ -796,6 +870,11 @@ const NuevoTicket = () => {
               onChange={formTicket.handleChange}
               value={formTicket.values.deducible}
             />
+            <Text>
+              {calculoDeducible < 0
+                ? calculoDeducible
+                : `Se cubre por el seguro: ${calculoDeducible}`}
+            </Text>
           </FormControl>
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="anticipo">Anticipo 60%</FormLabel>
@@ -817,6 +896,7 @@ const NuevoTicket = () => {
               onChange={formTicket.handleChange}
               value={formTicket.values.anticipo}
             />
+            <Text>{`Anticipo: ${calculoAnticipo}`}</Text>
           </FormControl>
 
           <FormControl isRequired paddingTop={15} paddingLeft={4}>
@@ -839,6 +919,7 @@ const NuevoTicket = () => {
               onChange={formTicket.handleChange}
               value={formTicket.values.total_salida}
             />
+            <Text>{`Total salida: ${calculoTotalSalida}`}</Text>
           </FormControl>
 
           <FormControl isRequired paddingTop={15}>
@@ -861,6 +942,7 @@ const NuevoTicket = () => {
               onChange={formTicket.handleChange}
               value={formTicket.values.total}
             />
+          <Text>{`Monto Total: ${calculoMontoTotal}`}</Text>
           </FormControl>
         </SimpleGrid>
 
