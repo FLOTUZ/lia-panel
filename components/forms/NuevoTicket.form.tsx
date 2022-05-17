@@ -52,6 +52,8 @@ const NuevoTicket = () => {
 
   const [aseguradorasList, setAseguradorasList] = useState<IAseguradoras[]>([]);
   const [asistenciasList, setAsistenciasList] = useState<IAsistencias[]>([]);
+  const [asesorList, setAsesorList] = useState<IAsistencias[]>([]);
+
   const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
   const [serviciosList, setServiciosList] = useState<IServicio[]>([]);
 
@@ -389,26 +391,26 @@ const NuevoTicket = () => {
           <FormControl isRequired paddingLeft={5} paddingTop={15}>
             <FormLabel htmlFor="asesorid">Asesor de aseguradora</FormLabel>
             <Select
-              id="asistenciaId"
+              id="asesorId"
               placeholder="Selecciona el asesor de la aseguradora"
               variant="filled"
               borderColor="twitter.100"
-              value={formTicket.values.asistenciaId}
+              value={formTicket.values.aseguradoraId}
               onChange={(e) => {
                 formTicket.setFieldValue(
-                  "asistenciaId",
+                  "aseguradoraId",
                   parseInt(e.target.value)
                 );
               }}
               onFocus={() => {
-                asistenciaById();
+                asesorById();
               }}
             >
-              {asistenciasList.length !== 0
-                ? asistenciasList.map((asistencia, index) => {
+              {asesorList.length !== 0
+                ? asesorList.map((asesor, index) => {
                     return (
-                      <option key={index} value={Number(asistencia.id)}>
-                        {asistencia.nombre}
+                      <option key={index} value={Number(asesor.id)}>
+                        {asesor.nombre}
                       </option>
                     );
                   })

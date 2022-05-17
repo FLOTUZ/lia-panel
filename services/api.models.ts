@@ -101,3 +101,10 @@ export interface ICiudad {
   createdAt?: string | null;
   updatedAt?: string | null;
 }
+export interface IAsesor {
+  id?: number;
+  nombre: string;
+  aseguradoraId?: number | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+}
