@@ -140,7 +140,7 @@ function UsuarioNuevo() {
         toast({
           title: "Guardado",
           status: "success",
-          description: `Se guardo el técnico ${tecnicoGuardado.nombre} con el usuario ${usuarioGuardado.usuario}`,
+          description: `Se guardo el tecnico ${tecnicoGuardado.nombre} con el usuario ${usuarioGuardado.usuario}`,
         });
 
         const servicioToTecnicos = new ServiciosToTecnicos();
@@ -199,7 +199,7 @@ function UsuarioNuevo() {
             spacing={2}
             alignItems={"start"}
           >
-            <FormLabel htmlFor="usuario">Nombre de Usuario</FormLabel>
+            <FormLabel htmlFor="usuario">Nombre de usuario</FormLabel>
             <Input
               isRequired
               variant="filled"
@@ -228,27 +228,28 @@ function UsuarioNuevo() {
               isRequired={true}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <FormHelperText>Mínimo 8 caracteres</FormHelperText>
+            <FormHelperText>minimo 8 caracteres</FormHelperText>
             </FormControl>
             <FormLabel htmlFor="rol">Seleccione Rol</FormLabel>
 
             <RadioGroup
+            
               id="rol"
               aria-required={true}
-              defaultValue="USUARIO"
+              
               onChange={(e) => setRol(e)}
             >
-              
+
               <HStack spacing="1rem">
-              <Radio size={"lg"} value="TECNICO">
-                  Es Técnico
+              <Radio    size={"lg"} value="TECNICO">
+                  Es Tecnico
                 </Radio>
 
-                <Radio size={"lg"} value="CAPTURISTA">
+                <Radio isDisabled size={"lg"} value="CAPTURISTA">
                   Capturista
                 </Radio>
 
-                <Radio size={"lg"} value="ADMIN">
+                <Radio isDisabled size={"lg"} value="ADMIN">
                   Administrador
                 </Radio>
                 
@@ -269,7 +270,7 @@ function UsuarioNuevo() {
                   rounded="md"
                   bg={"white"}
                 >
-                  <Text fontWeight="bold">Datos Básicos del Técnico</Text>
+                  <Text fontWeight="bold">Datos básicos del tecnico</Text>
 
                   <Center>
                     <Divider orientation="vertical" />
@@ -320,7 +321,7 @@ function UsuarioNuevo() {
                   <Center>
                     <Divider orientation="vertical" />
                     <FormControl isRequired paddingTop={15}>
-                      <FormLabel htmlFor="telefono">Teléfono</FormLabel>
+                      <FormLabel htmlFor="telefono">Telefono</FormLabel>
                       <Input
                         variant="filled"
                         id="telefono"
