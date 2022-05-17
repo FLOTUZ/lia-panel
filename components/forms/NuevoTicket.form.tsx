@@ -5,11 +5,14 @@ import {
   IServicio,
   ITicket,
 } from "@/services/api.models";
+import { FaBeer, FaUserShield } from "react-icons/fa";
+
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";
 import { CiudadesService } from "@/services/ciudades.service";
 import { ServiciosService } from "@/services/servicios.service";
 import { TicketsService } from "@/services/tickets.service";
+import { EmailIcon } from "@chakra-ui/icons";
 import {
   Box,
   Stack,
@@ -30,12 +33,22 @@ import {
   Button,
   useToast,
   Flex,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { useState, useEffect } from "react";
+import { MdAdd } from "react-icons/md";
 
 const NuevoTicket = () => {
   const toast = useToast();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [aseguradorasList, setAseguradorasList] = useState<IAseguradoras[]>([]);
   const [asistenciasList, setAsistenciasList] = useState<IAsistencias[]>([]);
@@ -105,7 +118,7 @@ const NuevoTicket = () => {
       let anticipo = (costoLias + totalKM + banderazo) * 0.6; //Anticipo del ticket
       let deducible = cober - costoLias - totalKM; //Costo que no cubre el seguro
       let totalSalida = totalKM + totalCasetas + banderazo; //Total de salida para tecnico
-      
+
       let montoTotal = 0;
       if (deducible < 0) {
         montoTotal = totalSalida + costoGPOLIAS + Math.abs(deducible);
@@ -123,7 +136,7 @@ const NuevoTicket = () => {
         totalKM,
         totalCasetas,
         banderazo,
-        totalSalida
+        totalSalida,
       });
     };
 
@@ -266,7 +279,97 @@ const NuevoTicket = () => {
             }}
           />
         </FormControl>
+        <SimpleGrid columns={[1, 1, 2]} spacing="20px">
+          <Center>
+            <Divider orientation="vertical" />
+            <FormControl isRequired paddingTop={15}>
+              <FormLabel htmlFor="aseguradoraId">Aseguradora</FormLabel>
+              <Select
+                id="aseguradoraId"
+                placeholder="Selecciona la Aseguradora"
+                variant="filled"
+                borderColor="twitter.100"
+                value={formTicket.values.aseguradoraId}
+                onChange={(e) => {
+                  formTicket.setFieldValue(
+                    "aseguradoraId",
+                    parseInt(e.target.value)
+                  );
+                }}
+              >
+                {aseguradorasList?.length !== 0
+                  ? aseguradorasList?.map((aseguradora, index) => {
+                      return (
+                        <option key={index} value={Number(aseguradora.id)}>
+                          {aseguradora.nombre}
+                        </option>
+                      );
+                    })
+                  : null}
+              </Select>
+            </FormControl>
 
+            <FormControl isRequired paddingLeft={5} paddingTop={15}>
+              <FormLabel htmlFor="asistenciaId">Asistencia</FormLabel>
+              <Select
+                id="asistenciaId"
+                placeholder="Selecciona Tipo de Asistencia"
+                variant="filled"
+                borderColor="twitter.100"
+                value={formTicket.values.asistenciaId}
+                onChange={(e) => {
+                  formTicket.setFieldValue(
+                    "asistenciaId",
+                    parseInt(e.target.value)
+                  );
+                }}
+                onFocus={() => {
+                  asistenciaById();
+                }}
+              >
+                {asistenciasList.length !== 0
+                  ? asistenciasList.map((asistencia, index) => {
+                      return (
+                        <option key={index} value={Number(asistencia.id)}>
+                          {asistencia.nombre}
+                        </option>
+                      );
+                    })
+                  : null}
+              </Select>
+            </FormControl>
+          </Center>
+          <Center>
+            <Button
+              onClick={onOpen}
+              marginTop={55}
+              height="50px"
+              width="500px"
+              leftIcon={<MdAdd />}
+              rightIcon={<FaUserShield />}
+              colorScheme="teal"
+              variant="outline"
+            >
+              Agregar asesor de aseguradora
+            </Button>
+          </Center>
+        </SimpleGrid>
+
+        <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Create your account</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}></ModalBody>
+
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3}>
+                Save
+              </Button>
+              <Button onClick={onClose}>Cancel</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
         <Center>
           <Divider orientation="vertical" />
           <FormControl isRequired paddingTop={15}>
@@ -284,20 +387,35 @@ const NuevoTicket = () => {
           </FormControl>
 
           <FormControl isRequired paddingLeft={5} paddingTop={15}>
-            <FormLabel htmlFor="nombre_asesor_aseguradora">
-              Asesor de Aseguradora
-            </FormLabel>
-            <Input
+            <FormLabel htmlFor="asesorid">Asesor de aseguradora</FormLabel>
+            <Select
+              id="asistenciaId"
+              placeholder="Selecciona el asesor de la aseguradora"
               variant="filled"
-              id="nombre_asesor_aseguradora"
-              placeholder="Asesor de la Aseguradora"
               borderColor="twitter.100"
-              onChange={formTicket.handleChange}
-              value={formTicket.values.nombre_asesor_aseguradora}
-            />
+              value={formTicket.values.asistenciaId}
+              onChange={(e) => {
+                formTicket.setFieldValue(
+                  "asistenciaId",
+                  parseInt(e.target.value)
+                );
+              }}
+              onFocus={() => {
+                asistenciaById();
+              }}
+            >
+              {asistenciasList.length !== 0
+                ? asistenciasList.map((asistencia, index) => {
+                    return (
+                      <option key={index} value={Number(asistencia.id)}>
+                        {asistencia.nombre}
+                      </option>
+                    );
+                  })
+                : null}
+            </Select>
           </FormControl>
         </Center>
-
         <Center>
           <Divider orientation="vertical" />
           <FormControl isRequired paddingTop={15}>
@@ -326,66 +444,6 @@ const NuevoTicket = () => {
               onChange={formTicket.handleChange}
               value={formTicket.values.titulo_ticket}
             />
-          </FormControl>
-        </Center>
-
-        <Center>
-          <Divider orientation="vertical" />
-          <FormControl isRequired paddingTop={15}>
-            <FormLabel htmlFor="aseguradoraId">Aseguradora</FormLabel>
-            <Select
-              id="aseguradoraId"
-              placeholder="Selecciona la Aseguradora"
-              variant="filled"
-              borderColor="twitter.100"
-              value={formTicket.values.aseguradoraId}
-              onChange={(e) => {
-                formTicket.setFieldValue(
-                  "aseguradoraId",
-                  parseInt(e.target.value)
-                );
-              }}
-            >
-              {aseguradorasList?.length !== 0
-                ? aseguradorasList?.map((aseguradora, index) => {
-                    return (
-                      <option key={index} value={Number(aseguradora.id)}>
-                        {aseguradora.nombre}
-                      </option>
-                    );
-                  })
-                : null}
-            </Select>
-          </FormControl>
-
-          <FormControl isRequired paddingLeft={5} paddingTop={15}>
-            <FormLabel htmlFor="asistenciaId">Asistencia</FormLabel>
-            <Select
-              id="asistenciaId"
-              placeholder="Selecciona Tipo de Asistencia"
-              variant="filled"
-              borderColor="twitter.100"
-              value={formTicket.values.asistenciaId}
-              onChange={(e) => {
-                formTicket.setFieldValue(
-                  "asistenciaId",
-                  parseInt(e.target.value)
-                );
-              }}
-              onFocus={() => {
-                asistenciaById();
-              }}
-            >
-              {asistenciasList.length !== 0
-                ? asistenciasList.map((asistencia, index) => {
-                    return (
-                      <option key={index} value={Number(asistencia.id)}>
-                        {asistencia.nombre}
-                      </option>
-                    );
-                  })
-                : null}
-            </Select>
           </FormControl>
         </Center>
 
@@ -943,7 +1001,7 @@ const NuevoTicket = () => {
               onChange={formTicket.handleChange}
               value={formTicket.values.total}
             />
-          <Text>{`Monto Total: ${calculoMontoTotal}`}</Text>
+            <Text>{`Monto Total: ${calculoMontoTotal}`}</Text>
           </FormControl>
         </SimpleGrid>
 
