@@ -72,7 +72,7 @@ function TenicosListado() {
           rounded="md"
           bg="white"
         >
-          <Link href={"/usuarios/nuevo"}>
+          <Link href={"/tecnicos/nuevo"}>
             <a>
               {" "}
               <Button
