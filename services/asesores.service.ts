@@ -1,7 +1,7 @@
-import { IAseguradoras } from "./api.models";
+import { IAseguradoras, IAsesor } from "./api.models";
 import { Actualizar, Consultar, Crear, Eliminar } from "./ApiCall";
 
-export class AsesorService {
+export class AsesoresService {
   private url = "/asesores";
 
   public async create(data: IAsesor) {
@@ -31,6 +31,11 @@ export class AsesorService {
 
   async count(usuario: IAsesor) {
     const respuesta = await Consultar(`${this.url}/count`, usuario);
+    return respuesta;
+  }
+
+  async getAsesoresByIdAseguradora(id: number) {
+    const respuesta = await Consultar(`${this.url}/aseguradoras/${id}`);
     return respuesta;
   }
 }

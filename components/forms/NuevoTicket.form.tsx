@@ -1,5 +1,6 @@
 import {
   IAseguradoras,
+  IAsesor,
   IAsistencias,
   ICiudad,
   IServicio,
@@ -41,18 +42,30 @@ import {
   ModalBody,
   ModalFooter,
   useDisclosure,
+  toast,
+  extendTheme,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import { MdAdd } from "react-icons/md";
+import { AsesoresService } from "@/services/asesores.service";
+
 
 const NuevoTicket = () => {
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const breakpoints = {
+    sm: '30em',
+    md: '48em',
+    lg: '62em',
+    xl: '80em',
+    '2xl': '96em',
+  }
+  const theme = extendTheme({ breakpoints })
 
   const [aseguradorasList, setAseguradorasList] = useState<IAseguradoras[]>([]);
   const [asistenciasList, setAsistenciasList] = useState<IAsistencias[]>([]);
-  const [asesorList, setAsesorList] = useState<IAsistencias[]>([]);
+  const [asesorList, setAsesorList] = useState<IAsesor[]>([]);
 
   const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
   const [serviciosList, setServiciosList] = useState<IServicio[]>([]);
@@ -62,6 +75,9 @@ const NuevoTicket = () => {
     string[]
   >([]);
 
+  const [aseguradoraSeleccionada, setAseguradoraSeleccionada] = useState<
+    string[]
+  >([]);
   const [cobertura, setCobertura] = useState(0);
   const [costoGPOLIAS, setCostoGPOLIAS] = useState(0);
   const [kilometrosARecorrer, setKilometrosARecorrer] = useState(0);
@@ -147,7 +163,7 @@ const NuevoTicket = () => {
 
   const asistenciaById = async () => {
     if (Number(formTicket.values.aseguradoraId) !== 0) {
-      const servicio = new AsistenciasService();
+      const servicio = new AsistenciasService;
       const respuesta: any = await servicio.getAsistenciasByIdAseguradora(
         Number(formTicket.values.aseguradoraId)
       );
@@ -157,6 +173,22 @@ const NuevoTicket = () => {
       setAsistenciasList(data || []);
     }
   };
+
+  const asesorById = async () => {
+    if (Number(formTicket.values.aseguradoraId) !== 0) {
+      const service = new AsesoresService();
+      const respuesta: any = await service.getAsesoresByIdAseguradora(
+        Number(formTicket.values.aseguradoraId)
+      );
+
+      const data = respuesta.data as IAsesor[];
+
+      setAsesorList(data || []);
+    }
+  };
+
+  /**AGREGAR ASESOR A LA ASEGURADORA */
+
 
   const formTicket = useFormik({
     initialValues: {
@@ -169,7 +201,8 @@ const NuevoTicket = () => {
       nombre_usuario_final: "",
       titulo_ticket: "",
       aseguradoraId: "",
-      asistenciaId: "", //TODO: cambiar por el id de la asistencia
+      asistenciaId: "",
+      asesorId: "",
       problematica: "",
       //---------------------COTIZACION GPO LIAS
       ciudad: "",
@@ -301,12 +334,12 @@ const NuevoTicket = () => {
               >
                 {aseguradorasList?.length !== 0
                   ? aseguradorasList?.map((aseguradora, index) => {
-                      return (
-                        <option key={index} value={Number(aseguradora.id)}>
-                          {aseguradora.nombre}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={index} value={Number(aseguradora.id)}>
+                        {aseguradora.nombre}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
             </FormControl>
@@ -331,12 +364,12 @@ const NuevoTicket = () => {
               >
                 {asistenciasList.length !== 0
                   ? asistenciasList.map((asistencia, index) => {
-                      return (
-                        <option key={index} value={Number(asistencia.id)}>
-                          {asistencia.nombre}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={index} value={Number(asistencia.id)}>
+                        {asistencia.nombre}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
             </FormControl>
@@ -360,18 +393,19 @@ const NuevoTicket = () => {
         <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Create your account</ModalHeader>
+            <ModalHeader>Crea un nuevo asesor de la aseguradora seleccionada</ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}></ModalBody>
 
             <ModalFooter>
               <Button colorScheme="blue" mr={3}>
-                Save
+                Guardar
               </Button>
-              <Button onClick={onClose}>Cancel</Button>
+              <Button onClick={onClose}>Cancelar</Button>
             </ModalFooter>
           </ModalContent>
         </Modal>
+        <SimpleGrid columns={1} spacing={5}>
         <Center>
           <Divider orientation="vertical" />
           <FormControl isRequired paddingTop={15}>
@@ -388,36 +422,42 @@ const NuevoTicket = () => {
             />
           </FormControl>
 
-          <FormControl isRequired paddingLeft={5} paddingTop={15}>
+          
+          <FormControl isRequired paddingLeft={5} paddingTop={15} >
             <FormLabel htmlFor="asesorid">Asesor de aseguradora</FormLabel>
             <Select
+            
+            overflowWrap ={"normal"}
               id="asesorId"
               placeholder="Selecciona el asesor de la aseguradora"
+              alignItems={"center"}
+              alignContent={"center" }    
               variant="filled"
               borderColor="twitter.100"
-              value={formTicket.values.aseguradoraId}
-              onChange={(e) => {
-                formTicket.setFieldValue(
-                  "aseguradoraId",
-                  parseInt(e.target.value)
-                );
-              }}
+              value={formTicket.values.asesorId}
               onFocus={() => {
                 asesorById();
+              }}
+              onChange={(e) => {
+                formTicket.setFieldValue(
+                  "asesorId",
+                  parseInt(e.target.value)
+                );
               }}
             >
               {asesorList.length !== 0
                 ? asesorList.map((asesor, index) => {
-                    return (
-                      <option key={index} value={Number(asesor.id)}>
-                        {asesor.nombre}
-                      </option>
-                    );
-                  })
+                  return (
+                    <option key={index} value={Number(asesor.id)}>
+                      {asesor.nombre}
+                    </option>
+                  );
+                })
                 : null}
             </Select>
           </FormControl>
         </Center>
+        </SimpleGrid>
         <Center>
           <Divider orientation="vertical" />
           <FormControl isRequired paddingTop={15}>
@@ -477,16 +517,16 @@ const NuevoTicket = () => {
             <SimpleGrid minChildWidth="3rem" spacing="4rem">
               {serviciosList?.length !== 0
                 ? serviciosList.map((servicio, index) => {
-                    return (
-                      <Checkbox
-                        key={index}
-                        id={servicio.nombre}
-                        value={servicio.id?.toString()}
-                      >
-                        {servicio.nombre}
-                      </Checkbox>
-                    );
-                  })
+                  return (
+                    <Checkbox
+                      key={index}
+                      id={servicio.nombre}
+                      value={servicio.id?.toString()}
+                    >
+                      {servicio.nombre}
+                    </Checkbox>
+                  );
+                })
                 : null}
             </SimpleGrid>
           </CheckboxGroup>
@@ -604,12 +644,12 @@ const NuevoTicket = () => {
             >
               {ciudadesList?.length !== 0
                 ? ciudadesList?.map((ciudad, index) => {
-                    return (
-                      <option key={index} value={ciudad.nombre}>
-                        {ciudad.nombre}
-                      </option>
-                    );
-                  })
+                  return (
+                    <option key={index} value={ciudad.nombre}>
+                      {ciudad.nombre}
+                    </option>
+                  );
+                })
                 : null}
             </Select>
           </FormControl>
