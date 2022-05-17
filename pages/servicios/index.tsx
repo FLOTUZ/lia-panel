@@ -35,6 +35,7 @@ import {
   Stack,
   Checkbox,
   useToast,
+  HStack,
 } from "@chakra-ui/react";
 import {
   AddIcon,
@@ -147,9 +148,9 @@ function ServiciosListado() {
 
     onSubmit: async (values: IServicio) => {
       const actualizaServicio = async () => {
-        const data = {
-          ...values,
-        };
+        const data ={
+          ...values
+        }
 
         const service = new ServiciosService();
         const respuesta = await service.getById(Number(idServicio));
@@ -367,15 +368,20 @@ function ServiciosListado() {
               <FormControl >
                 <FormLabel padding={1} >Tipo del servicio</FormLabel>
                 <CheckboxGroup colorScheme='green'
-                  onChange={formServicio.handleChange}
+                  onChange={(checks)=>{
+                    console.log(checks);
+                    formServicio.setFieldValue(
+                      'tipo',
+                      checks
+                    )
+                  }}
                 >
                   <Stack padding={2} spacing={[1, 5]} direction={['column', 'row']}>
-                    <Checkbox value={"DOMESTICO"}
-                    >Domestico</Checkbox>
-                    <Checkbox
-                      value={"VIAL"}
-                    >Automovilistico</Checkbox>
-
+                  <Checkbox value={"DOMESTICO"}
+                  >Domestico</Checkbox>
+                  <Checkbox
+                    value={"VIAL"}
+                  >Automovilistico</Checkbox> 
                   </Stack>
                 </CheckboxGroup>
               </FormControl>
