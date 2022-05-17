@@ -634,6 +634,7 @@ const NuevoTicket = () => {
               placeholder="0.00"
               paddingLeft={8}
               type="number"
+              max={2}
               borderColor="twitter.100"
               onChange={(e) => {
                 setCobertura(Number(e.target.value));

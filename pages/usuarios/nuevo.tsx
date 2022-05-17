@@ -140,7 +140,7 @@ function UsuarioNuevo() {
         toast({
           title: "Guardado",
           status: "success",
-          description: `Se guardo el tecnico ${tecnicoGuardado.nombre} con el usuario ${usuarioGuardado.usuario}`,
+          description: `Se guardo el técnico ${tecnicoGuardado.nombre} con el usuario ${usuarioGuardado.usuario}`,
         });
 
         const servicioToTecnicos = new ServiciosToTecnicos();
@@ -199,7 +199,7 @@ function UsuarioNuevo() {
             spacing={2}
             alignItems={"start"}
           >
-            <FormLabel htmlFor="usuario">Nombre de usuario</FormLabel>
+            <FormLabel htmlFor="usuario">Nombre de Usuario</FormLabel>
             <Input
               isRequired
               variant="filled"
@@ -228,7 +228,7 @@ function UsuarioNuevo() {
               isRequired={true}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <FormHelperText>minimo 8 caracteres</FormHelperText>
+            <FormHelperText>Mínimo 8 caracteres</FormHelperText>
             </FormControl>
             <FormLabel htmlFor="rol">Seleccione Rol</FormLabel>
 
@@ -241,7 +241,7 @@ function UsuarioNuevo() {
               
               <HStack spacing="1rem">
               <Radio size={"lg"} value="TECNICO">
-                  Es Tecnico
+                  Es Técnico
                 </Radio>
 
                 <Radio size={"lg"} value="CAPTURISTA">
@@ -269,7 +269,7 @@ function UsuarioNuevo() {
                   rounded="md"
                   bg={"white"}
                 >
-                  <Text fontWeight="bold">Datos básicos del tecnico</Text>
+                  <Text fontWeight="bold">Datos Básicos del Técnico</Text>
 
                   <Center>
                     <Divider orientation="vertical" />
@@ -320,7 +320,7 @@ function UsuarioNuevo() {
                   <Center>
                     <Divider orientation="vertical" />
                     <FormControl isRequired paddingTop={15}>
-                      <FormLabel htmlFor="telefono">Telefono</FormLabel>
+                      <FormLabel htmlFor="telefono">Teléfono</FormLabel>
                       <Input
                         variant="filled"
                         id="telefono"
