@@ -11,29 +11,20 @@ import {
   Td,
   Box,
   Button,
-  Input,
-  InputLeftAddon,
-  InputGroup,
   IconButton,
   useToast,
-  useDisclosure,
 } from "@chakra-ui/react";
-import { AddIcon, SearchIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { AddIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
-import { ITecnico } from "@/services/api.models";
+import { ITecnico, ICiudad } from "@/services/api.models";
 import { TecnicoService } from "@/services/tecnicos.service";
 
 function TenicosListado() {
   const toast = useToast();
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    isOpen: isOpenedit,
-    onOpen: onOpenedit,
-    onClose: onCloseedit,
-  } = useDisclosure();
   const [query, setQuery] = useState("");
 
   const [listadoTecnicos, setListadoTenicos] = useState<ITecnico[]>([]);
+  const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
 
   useEffect(() => {
     const consultarTecnicos = async () => {
@@ -86,18 +77,6 @@ function TenicosListado() {
             </a>
           </Link>
         </Box>
-        {/* 
-        <InputGroup>
-          <InputLeftAddon>
-            <IconButton
-              disabled
-              colorScheme="blue"
-              aria-label="Search database"
-              icon={<SearchIcon />}
-            />{" "}
-          </InputLeftAddon>
-          <Input type="search" placeholder="Buscar aseguradoras..." />
-        </InputGroup> */}
 
         <TableContainer>
           <Table variant="striped" colorScheme="teal">
@@ -117,21 +96,25 @@ function TenicosListado() {
                     <Tr key={index}>
                       <Td>{t.nombre}</Td>
                       <Td>{t.apellido_paterno}</Td>
-                      <Td>{t.ciudadId}</Td>
+                      <Td>
+                        {ciudadesList?.length !== 0
+                          ? ciudadesList?.map((ciudad, index) => {
+                              return (
+                                <option key={index} value={ciudad.id}>
+                                  {ciudad.nombre}
+                                </option>
+                              );
+                            })
+                          : null}
+                          </Td>
                       <Td>{t.telefono}</Td>
                       <Td>
                         <IconButton
-                          onClick={onOpenedit}
+
                           variant="ghost"
                           aria-label="edit"
                           icon={<EditIcon />}
                         />{" "}
-                        <IconButton
-                          variant="ghost"
-                          aria-label="delet"
-                          colorScheme={"red"}
-                          icon={<DeleteIcon color={"red"} />}
-                        />
                       </Td>
                     </Tr>
                   );
