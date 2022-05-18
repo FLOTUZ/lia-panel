@@ -53,7 +53,6 @@ const Kanban = ({}: IKanban) => {
   return (
     <>
       <Grid
-        h="90%"
         templateRows="repeat(10, 1fr)"
         templateColumns={"repeat( 8, 1fr)"}
         overflow="overlay"

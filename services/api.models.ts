@@ -12,44 +12,44 @@ export interface IUsuario {
 }
 
 export interface ITicket {
-  id?: number
-  num_expediente: string
-  asistencia_vial: boolean
-  fecha_llamada: string
-  nombre_asesor_aseguradora: string
-  nombre_asesor_gpo_lias: string
-  nombre_usuario_final: string
-  titulo_ticket: string
-  asistenciaId: number
-  aseguradoraId: number
-  problematica: string
-  ciudad: string
-  colonia: string
-  calle: string
-  numero_domicilio: string
-  banderazo: string | null
-  total_salida: string
-  cobertura: string
-  cotizacion_gpo_lias: string | null
-  deducible: string
-  kilometraje: number
-  costo_de_kilometraje: number
-  costo_por_caseta: number
-  total: string
-  anticipo: string
-  hora_cierre?: string | null
-  casetas: number
-  costo_gpo_lias: string
-  estado: string
-  num_interior?: string | null
-  modelo_carro?: string | null
-  placas_carro?: string | null
-  color_carro?: string | null
-  marca_carro?: string | null
-  is_servicio_domestico?: boolean | null
-  is_servicio_foraneo?: boolean | null
-  createdAt?: string | null
-  updatedAt?: string | null
+  id?: number;
+  num_expediente: string;
+  asistencia_vial: boolean;
+  fecha_llamada: string;
+  nombre_asesor_aseguradora: string;
+  nombre_asesor_gpo_lias: string;
+  nombre_usuario_final: string;
+  titulo_ticket: string;
+  asistenciaId: number;
+  aseguradoraId: number;
+  problematica: string;
+  ciudad: string;
+  colonia: string;
+  calle: string;
+  numero_domicilio: string;
+  banderazo: string | null;
+  total_salida: string;
+  cobertura: string;
+  cotizacion_gpo_lias: string | null;
+  deducible: string;
+  kilometraje: number;
+  costo_de_kilometraje: number;
+  costo_por_caseta: number;
+  total: string;
+  anticipo: string;
+  hora_cierre?: string | null;
+  casetas: number;
+  costo_gpo_lias: string;
+  estado: string;
+  num_interior?: string | null;
+  modelo_carro?: string | null;
+  placas_carro?: string | null;
+  color_carro?: string | null;
+  marca_carro?: string | null;
+  is_servicio_domestico?: boolean | null;
+  is_servicio_foraneo?: boolean | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
 }
 
 export interface ITecnico {
@@ -61,6 +61,10 @@ export interface ITecnico {
   telefono: string;
   usuarioId: number;
   ciudadId: number;
+  Servicio: IServicio[];
+  Ciudad: ICiudad[];
+  Cotizaciones: ICotizacionTecnico[];
+  Usuario: IUsuario;
   createdAt?: string | null;
   updatedAt?: string | null;
 }
@@ -101,6 +105,23 @@ export interface ICiudad {
   createdAt?: string | null;
   updatedAt?: string | null;
 }
+
+export interface ICotizacionTecnico {
+  id: number;
+  checkInId: number;
+  diagnostico_problema: string;
+  solucion_tecnico: string;
+  fecha_contacto: string;
+  costo_mano_obra: number;
+  costo_materiales: number;
+  total_cotizacion: number;
+  ticketId: number;
+  tecnicoId: number;
+  preSolucionId: number;
+  createdAt: string | null;
+  updatedAt: string | null;
+}
+
 export interface IAsesor {
   id?: number;
   nombre: string;
