@@ -73,7 +73,7 @@ export interface ITecnico {
 export interface IServicio {
   id?: number;
   nombre: string;
-  Tecnico?: ITecnico;
+  Tecnico?: ITecnico[];
   createdAt?: string | null;
   updatedAt?: string | null;
   tipo: string;

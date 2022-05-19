@@ -33,7 +33,6 @@ import {
   Switch,
   InputLeftElement,
   Button,
-  useToast,
   Flex,
   Modal,
   ModalOverlay,
@@ -45,6 +44,7 @@ import {
   useDisclosure,
   toast,
   extendTheme,
+  useToast,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import { useState, useEffect } from "react";
@@ -53,12 +53,12 @@ import { AsesoresService } from "@/services/asesores.service";
 import { TecnicoService } from "@/services/tecnicos.service";
 
 
+
 const NuevoTicket = () => {
   {/* Asignar Técnico*/ }
   const { isOpen: abierto, onOpen: abrir, onClose: cerrar } = useDisclosure();
 
 
-  const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const breakpoints = {
     sm: '30em',
@@ -73,23 +73,18 @@ const NuevoTicket = () => {
   const [asistenciasList, setAsistenciasList] = useState<IAsistencias[]>([]);
   const [asesorList, setAsesorList] = useState<IAsesor[]>([]);
 
-  {/* Asignar Tecnico */ }
-
-  const [tecnicosList, setTecnicosList] = useState<ITecnico[]>([]);
-  const [tecnicosSeleccionados, setTecnicosSeleccionados] = useState<string[]>([]);
-
 
 
   const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
   const [serviciosList, setServiciosList] = useState<IServicio[]>([]);
   const [serviciosSeleccionados, setServiciosSeleccionados] = useState<string[]>([]);
 
+  const [tecnicosByServicios, setTecnicosByServicios] = useState<IServicio>();
+
   const [fecha, setFecha] = useState("");
 
 
-  const [aseguradoraSeleccionada, setAseguradoraSeleccionada] = useState<
-    string[]
-  >([]);
+  const [aseguradoraSeleccionada, setAseguradoraSeleccionada] = useState<string[]>([]);
   const [cobertura, setCobertura] = useState(0);
   const [costoGPOLIAS, setCostoGPOLIAS] = useState(0);
   const [kilometrosARecorrer, setKilometrosARecorrer] = useState(0);
@@ -101,44 +96,54 @@ const NuevoTicket = () => {
   const [calculoTotalSalida, setCalculoTotalSalida] = useState(0);
   const [calculoMontoTotal, setCalculoMontoTotal] = useState(0);
 
+  const toast = useToast()
 
 
   useEffect(() => {
-    const consultarAseguradoras = async () => {
-      const servicio = new AseguradoraService();
-      const respuesta = await servicio.getAll();
-      const data = respuesta.data as IAseguradoras[];
-
-      setAseguradorasList(data);
-    };
-
-    const consultarCiudades = async () => {
-      const servicio = new CiudadesService();
-      const respuesta = await servicio.getAll();
-      const data = respuesta.data as ICiudad[];
-
-      setCiudadesList(data);
-    };
-
-    const consultarServicios = async () => {
-      const servicio = new ServiciosService();
-      const respuesta = await servicio.getAll();
-      const data = respuesta.data as IServicio[];
-
-      setServiciosList(data);
-    };
-
-    const consultarTecnicos = async () => {
-      const servicio = new TecnicoService();
-      const respuesta = await servicio.getAll();
-      const data = respuesta.data as ITecnico[];
-    }
 
     consultarAseguradoras();
     consultarCiudades();
     consultarServicios();
     consultarTecnicos();
   }, []);
+
+  const consultarAseguradoras = async () => {
+    const servicio = new AseguradoraService();
+    const respuesta = await servicio.getAll();
+    const data = respuesta.data as IAseguradoras[];
+
+    setAseguradorasList(data);
+  };
+
+  const consultarCiudades = async () => {
+    const servicio = new CiudadesService();
+    const respuesta = await servicio.getAll();
+    const data = respuesta.data as ICiudad[];
+
+    setCiudadesList(data);
+  };
+
+  const consultarServicios = async () => {
+    const servicio = new ServiciosService();
+    const respuesta = await servicio.getAll();
+    const data = respuesta.data as IServicio[];
+
+    setServiciosList(data);
+  };
+
+  const consultarTecnicosByServicio = async (id: number) => {
+    const servicio = new ServiciosService();
+    const respuesta = await servicio.getTecnicosByServicio(id);
+    const data = respuesta.data as IServicio;
+
+    setTecnicosByServicios(data);
+  };
+
+  const consultarTecnicos = async () => {
+    const servicio = new TecnicoService();
+    const respuesta = await servicio.getAll();
+    const data = respuesta.data as ITecnico[];
+  }
 
   useEffect(() => {
     const calcular = () => {
@@ -208,11 +213,8 @@ const NuevoTicket = () => {
     }
   };
 
+
   /**AGREGAR ASESOR A LA ASEGURADORA */
-
-
-
-
 
   const formTicket = useFormik({
     initialValues: {
@@ -267,7 +269,6 @@ const NuevoTicket = () => {
           await servicio.addServiciosForTicket(
             dataTicketGuardado.id || 0,
             serviciosSeleccionados,
-            tecnicosSeleccionados
           );
 
         if (respuestaServiciosTicket.status === 201) {
@@ -288,8 +289,11 @@ const NuevoTicket = () => {
       }
     },
   });
+
   return (
+
     <form onSubmit={formTicket.handleSubmit}>
+
       <Box
         m={2}
         bgColor="white"
@@ -407,7 +411,7 @@ const NuevoTicket = () => {
               colorScheme="teal"
               variant="outline"
             >
-              Agregar asesor de aseguradora
+              Agregar Asesor de Aseguradora
             </Button>
           </Center>
         </SimpleGrid>
@@ -415,7 +419,7 @@ const NuevoTicket = () => {
         <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Crea un nuevo asesor de la aseguradora seleccionada</ModalHeader>
+            <ModalHeader>Crea un Nuevo Asesor de la Aseguradora Seleccionada</ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}></ModalBody>
 
@@ -1123,16 +1127,16 @@ const NuevoTicket = () => {
                   placeholder="Selecciona el Servicio"
                   variant="filled"
                   borderColor="twitter.100"
-                  
                   onChange={(e) => {
-                    setServiciosSeleccionados(e as string[]);
+                    consultarTecnicosByServicio(Number(e.target.value));
+                    console.log(tecnicosByServicios?.nombre)
                   }
-                }
+                  }
                 >
                   {serviciosList.length !== 0
-                    ? serviciosList?.map((servicio, index) => {
+                    ? serviciosList.map((servicio) => {
                       return (
-                        <option key={index} value={Number(servicio.id)}>
+                        <option key={servicio.id} value={Number(servicio.id)}>
                           {servicio.nombre}
                         </option>
                       );
@@ -1148,28 +1152,37 @@ const NuevoTicket = () => {
                   placeholder="Selecciona el Técnico"
                   variant="filled"
                   borderColor="twitter.100"
-                  
-                  onChange={(e) => {
-                    setTecnicosSeleccionados(e as string[]);
-                  }}
+
                 >
-                  {tecnicosList.length !== 0
-                    ? tecnicosList.map((tecnico, index) => {
-                      return (
-                        <option key={index} value={Number(tecnico.id)}>
-                          {tecnico.nombre}
-                        </option>
-                      );
-                    })
-                    : null}
+                  {
+                    tecnicosByServicios?.Tecnico?.length !== 0 ?
+                      tecnicosByServicios?.Tecnico?.map((tecnico) => {
+                        return (
+                          <option key={tecnico.id} value={tecnico.nombre}>
+                            {tecnico.nombre}
+                          </option>
+                        )
+                      }) : null
+                  }
+
                 </Select>
+
               </FormControl>
 
 
             </ModalBody>
 
             <ModalFooter>
-              <Button colorScheme="blue" mr={3}>
+              <Button colorScheme="blue" mr={3}
+                onClick={() =>
+                  toast({
+                    title: 'Técnico Asignado.',
+                    description: "Se Asigno el servicio al Técnico",
+                    status: 'success',
+                    duration: 9000,
+                    isClosable: true,
+                  })
+                }>
                 Guardar
               </Button>
               <Button onClick={cerrar}>Cancelar</Button>
