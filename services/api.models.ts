@@ -61,6 +61,7 @@ export interface ITecnico {
   telefono: string;
   usuarioId: number;
   ciudadId: number;
+  ViveEn?: ICiudad;
   Servicio: IServicio[];
   Ciudad: ICiudad[];
   Cotizaciones: ICotizacionTecnico[];

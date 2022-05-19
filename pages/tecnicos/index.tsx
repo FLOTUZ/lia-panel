@@ -18,13 +18,13 @@ import { AddIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { ITecnico, ICiudad } from "@/services/api.models";
 import { TecnicoService } from "@/services/tecnicos.service";
+import { CiudadesService } from "@/services/ciudades.service";
 
 function TenicosListado() {
   const toast = useToast();
   const [query, setQuery] = useState("");
 
   const [listadoTecnicos, setListadoTenicos] = useState<ITecnico[]>([]);
-  const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
 
   useEffect(() => {
     const consultarTecnicos = async () => {
@@ -33,7 +33,6 @@ function TenicosListado() {
 
       if (respuesta.status == 200) {
         const data = respuesta.data as ITecnico[];
-        console.log(data);
         setListadoTenicos(data);
       }
     };
@@ -96,21 +95,10 @@ function TenicosListado() {
                     <Tr key={index}>
                       <Td>{t.nombre}</Td>
                       <Td>{t.apellido_paterno}</Td>
-                      <Td>
-                        {ciudadesList?.length !== 0
-                          ? ciudadesList?.map((ciudad, index) => {
-                              return (
-                                <option key={index} value={ciudad.id}>
-                                  {ciudad.nombre}
-                                </option>
-                              );
-                            })
-                          : null}
-                          </Td>
+                      <Td>{t.ViveEn?.nombre}</Td>
                       <Td>{t.telefono}</Td>
                       <Td>
                         <IconButton
-
                           variant="ghost"
                           aria-label="edit"
                           icon={<EditIcon />}
