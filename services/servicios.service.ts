@@ -33,4 +33,9 @@ export class ServiciosService {
     const respuesta = await Consultar(`${this.url}/count`, usuario);
     return respuesta;
   }
+
+  async getTecnicosByServicio(id: number){
+    const respuesta: any = await Consultar(`${this.url}/${id}/tecnicos`);
+    return respuesta;
+  }
 }
