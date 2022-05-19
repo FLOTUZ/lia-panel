@@ -4,6 +4,7 @@ import {
   IAsistencias,
   ICiudad,
   IServicio,
+  ITecnico,
   ITicket,
 } from "@/services/api.models";
 import { FaBeer, FaUserShield } from "react-icons/fa";
@@ -13,7 +14,7 @@ import { AsistenciasService } from "@/services/asistencias.service";
 import { CiudadesService } from "@/services/ciudades.service";
 import { ServiciosService } from "@/services/servicios.service";
 import { TicketsService } from "@/services/tickets.service";
-import { EmailIcon } from "@chakra-ui/icons";
+import { AddIcon, ArrowUpIcon, EmailIcon } from "@chakra-ui/icons";
 import {
   Box,
   Stack,
@@ -49,9 +50,14 @@ import { useFormik } from "formik";
 import { useState, useEffect } from "react";
 import { MdAdd } from "react-icons/md";
 import { AsesoresService } from "@/services/asesores.service";
+import { TecnicoService } from "@/services/tecnicos.service";
 
 
 const NuevoTicket = () => {
+  {/* Asignar Técnico*/ }
+  const { isOpen: abierto, onOpen: abrir, onClose: cerrar } = useDisclosure();
+
+
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const breakpoints = {
@@ -67,13 +73,19 @@ const NuevoTicket = () => {
   const [asistenciasList, setAsistenciasList] = useState<IAsistencias[]>([]);
   const [asesorList, setAsesorList] = useState<IAsesor[]>([]);
 
+  {/* Asignar Tecnico */ }
+
+  const [tecnicosList, setTecnicosList] = useState<ITecnico[]>([]);
+  const [tecnicosSeleccionados, setTecnicosSeleccionados] = useState<string[]>([]);
+
+
+
   const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
   const [serviciosList, setServiciosList] = useState<IServicio[]>([]);
+  const [serviciosSeleccionados, setServiciosSeleccionados] = useState<string[]>([]);
 
   const [fecha, setFecha] = useState("");
-  const [serviciosSeleccionados, setServiciosSeleccionados] = useState<
-    string[]
-  >([]);
+
 
   const [aseguradoraSeleccionada, setAseguradoraSeleccionada] = useState<
     string[]
@@ -88,6 +100,8 @@ const NuevoTicket = () => {
   const [calculoAnticipo, setCalculoAnticipo] = useState(0);
   const [calculoTotalSalida, setCalculoTotalSalida] = useState(0);
   const [calculoMontoTotal, setCalculoMontoTotal] = useState(0);
+
+
 
   useEffect(() => {
     const consultarAseguradoras = async () => {
@@ -114,9 +128,16 @@ const NuevoTicket = () => {
       setServiciosList(data);
     };
 
+    const consultarTecnicos = async () => {
+      const servicio = new TecnicoService();
+      const respuesta = await servicio.getAll();
+      const data = respuesta.data as ITecnico[];
+    }
+
     consultarAseguradoras();
     consultarCiudades();
     consultarServicios();
+    consultarTecnicos();
   }, []);
 
   useEffect(() => {
@@ -190,6 +211,9 @@ const NuevoTicket = () => {
   /**AGREGAR ASESOR A LA ASEGURADORA */
 
 
+
+
+
   const formTicket = useFormik({
     initialValues: {
       //--------------------DATOS BASICOS
@@ -233,8 +257,6 @@ const NuevoTicket = () => {
     onSubmit: async (values) => {
       const ticket: any = { ...values };
 
-      console.log(ticket);
-
       const servicio = new TicketsService();
       const respuestaTicketPost: any = await servicio.create(ticket);
       const dataTicketGuardado = respuestaTicketPost.data as ITicket;
@@ -244,7 +266,8 @@ const NuevoTicket = () => {
         const respuestaServiciosTicket: any =
           await servicio.addServiciosForTicket(
             dataTicketGuardado.id || 0,
-            serviciosSeleccionados
+            serviciosSeleccionados,
+            tecnicosSeleccionados
           );
 
         if (respuestaServiciosTicket.status === 201) {
@@ -316,7 +339,6 @@ const NuevoTicket = () => {
         </FormControl>
         <SimpleGrid columns={[1, 1, 2]} spacing="20px">
           <Center>
-            <Divider orientation="vertical" />
             <FormControl isRequired paddingTop={15}>
               <FormLabel htmlFor="aseguradoraId">Aseguradora</FormLabel>
               <Select
@@ -405,58 +427,58 @@ const NuevoTicket = () => {
             </ModalFooter>
           </ModalContent>
         </Modal>
-        <SimpleGrid columns={1} spacing={5}>
-        <Center>
-          <Divider orientation="vertical" />
-          <FormControl isRequired paddingTop={15}>
-            <FormLabel htmlFor="nombre_asesor_gpo_lias">
-              Asesor de Gpo. Lías
-            </FormLabel>
-            <Input
-              variant="filled"
-              id="nombre_asesor_gpo_lias"
-              placeholder="Asesor de Grupo Lías"
-              borderColor="twitter.100"
-              onChange={formTicket.handleChange}
-              value={formTicket.values.nombre_asesor_gpo_lias}
-            />
-          </FormControl>
 
-          
-          <FormControl isRequired paddingLeft={5} paddingTop={15} >
-            <FormLabel htmlFor="asesorid">Asesor de aseguradora</FormLabel>
-            <Select
-            
-            overflowWrap ={"normal"}
-              id="asesorId"
-              placeholder="Selecciona el asesor de la aseguradora"
-              alignItems={"center"}
-              alignContent={"center" }    
-              variant="filled"
-              borderColor="twitter.100"
-              value={formTicket.values.asesorId}
-              onFocus={() => {
-                asesorById();
-              }}
-              onChange={(e) => {
-                formTicket.setFieldValue(
-                  "asesorId",
-                  parseInt(e.target.value)
-                );
-              }}
-            >
-              {asesorList.length !== 0
-                ? asesorList.map((asesor, index) => {
-                  return (
-                    <option key={index} value={Number(asesor.id)}>
-                      {asesor.nombre}
-                    </option>
+        <SimpleGrid columns={1} spacing={5}>
+          <Center>
+            <FormControl isRequired paddingTop={15}>
+              <FormLabel htmlFor="nombre_asesor_gpo_lias">
+                Asesor de Gpo. Lías
+              </FormLabel>
+              <Input
+                variant="filled"
+                id="nombre_asesor_gpo_lias"
+                placeholder="Asesor de Grupo Lías"
+                borderColor="twitter.100"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.nombre_asesor_gpo_lias}
+              />
+            </FormControl>
+
+
+            <FormControl isRequired paddingLeft={5} paddingTop={15} >
+              <FormLabel htmlFor="asesorid">Asesor de aseguradora</FormLabel>
+              <Select
+
+                overflowWrap={"normal"}
+                id="asesorId"
+                placeholder="Selecciona el asesor de la aseguradora"
+                alignItems={"center"}
+                alignContent={"center"}
+                variant="filled"
+                borderColor="twitter.100"
+                value={formTicket.values.asesorId}
+                onFocus={() => {
+                  asesorById();
+                }}
+                onChange={(e) => {
+                  formTicket.setFieldValue(
+                    "asesorId",
+                    parseInt(e.target.value)
                   );
-                })
-                : null}
-            </Select>
-          </FormControl>
-        </Center>
+                }}
+              >
+                {asesorList.length !== 0
+                  ? asesorList.map((asesor, index) => {
+                    return (
+                      <option key={index} value={Number(asesor.id)}>
+                        {asesor.nombre}
+                      </option>
+                    );
+                  })
+                  : null}
+              </Select>
+            </FormControl>
+          </Center>
         </SimpleGrid>
         <Center>
           <Divider orientation="vertical" />
@@ -1063,16 +1085,97 @@ const NuevoTicket = () => {
 
         <Button
           marginTop={15}
+          marginRight={8}
           justifySelf="end"
           isLoading={formTicket.isSubmitting}
+          leftIcon={<ArrowUpIcon />}
           id="publicarTicket"
           type="submit"
-          colorScheme="blue"
+          colorScheme="facebook"
           borderColor="twitter.100"
           size="lg"
         >
           Publicar Ticket
         </Button>
+
+        {/* ASIGNAR TÉCNICO */}
+        <Button
+          marginTop={15}
+          leftIcon={<AddIcon />}
+          colorScheme="facebook"
+          variant="solid"
+          size="lg"
+          onClick={abrir}>
+          Asignar Técnico
+        </Button>
+
+        <Modal closeOnOverlayClick={false} isOpen={abierto} onClose={cerrar}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Asignar Técnico</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+
+              <FormControl paddingTop={15}>
+                <FormLabel htmlFor="servicioId">Servicio</FormLabel>
+                <Select
+                  id="servicioId"
+                  placeholder="Selecciona el Servicio"
+                  variant="filled"
+                  borderColor="twitter.100"
+                  
+                  onChange={(e) => {
+                    setServiciosSeleccionados(e as string[]);
+                  }
+                }
+                >
+                  {serviciosList.length !== 0
+                    ? serviciosList?.map((servicio, index) => {
+                      return (
+                        <option key={index} value={Number(servicio.id)}>
+                          {servicio.nombre}
+                        </option>
+                      );
+                    })
+                    : null}
+                </Select>
+              </FormControl>
+
+              <FormControl paddingTop={15}>
+                <FormLabel htmlFor="tecnicoId">Técnico</FormLabel>
+                <Select
+                  id="tecnicoId"
+                  placeholder="Selecciona el Técnico"
+                  variant="filled"
+                  borderColor="twitter.100"
+                  
+                  onChange={(e) => {
+                    setTecnicosSeleccionados(e as string[]);
+                  }}
+                >
+                  {tecnicosList.length !== 0
+                    ? tecnicosList.map((tecnico, index) => {
+                      return (
+                        <option key={index} value={Number(tecnico.id)}>
+                          {tecnico.nombre}
+                        </option>
+                      );
+                    })
+                    : null}
+                </Select>
+              </FormControl>
+
+
+            </ModalBody>
+
+            <ModalFooter>
+              <Button colorScheme="blue" mr={3}>
+                Guardar
+              </Button>
+              <Button onClick={cerrar}>Cancelar</Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </Box>
     </form>
   );
