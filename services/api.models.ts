@@ -76,7 +76,7 @@ export interface IServicio {
   Tecnico?: ITecnico[];
   createdAt?: string | null;
   updatedAt?: string | null;
-  tipo: string;
+  tipo?: string;
 }
 export interface IAseguradoras {
   id?: number;
@@ -99,9 +99,11 @@ export interface IAsistencias {
   createdAt?: string | null;
   updatedAt?: string | null;
 }
+
 export interface ICiudad {
   id?: number;
   nombre: string;
+  estadoId?: number | null;
   latitud?: number | null;
   longitud?: number | null;
   createdAt?: string | null;
@@ -128,6 +130,13 @@ export interface IAsesor {
   id?: number;
   nombre: string;
   aseguradoraId?: number | null;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+}
+
+export interface IEstado {
+  id?: number;
+  nombre: string;
   createdAt?: string | null;
   updatedAt?: string | null;
 }
