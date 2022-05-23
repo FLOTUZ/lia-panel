@@ -10,16 +10,11 @@ import {
   Th,
   Tbody,
   Td,
-  Tfoot,
   Box,
   Button,
   FormLabel,
   Input,
-  InputLeftAddon,
-  InputGroup,
   IconButton,
-  EditableInput,
-  Spacer,
   Modal,
   ModalOverlay,
   ModalContent,
@@ -29,50 +24,39 @@ import {
   FormControl,
   ModalFooter,
   useDisclosure,
-  Editable,
-  EditablePreview,
-  CheckboxGroup,
+  RadioGroup,
   Stack,
-  Checkbox,
+  Radio,
   useToast,
-  HStack,
 } from "@chakra-ui/react";
 import {
   AddIcon,
-  AttachmentIcon,
-  DeleteIcon,
   EditIcon,
-  PhoneIcon,
-  SearchIcon,
 } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { ServiciosService } from "@/services/servicios.service";
 import { IServicio } from "@/services/api.models";
-import { Form, Formik, useFormik } from "formik";
-
 import { useRouter } from "next/router";
+import { useFormik } from "formik";
+
 function ServiciosListado() {
   const toast = useToast();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isOpenedit,
-    onOpen: onOpenedit,
+    onOpen: Openedit,
     onClose: onCloseedit,
-  } = useDisclosure();
 
+
+  } = useDisclosure();
 
   const [nombreServicio, setNombreServicio] = useState("");
   const [tipoServicio, setTipoServicio] = useState("");
 
-  const [nombreServicioEdit, setNombreServicioEdit] = useState("");
-  const [servicioEdit, setServicioEdit] = useState<IServicio>();
+  const router = useRouter();
 
   const [cargando, setCargando] = useState(false);
-
-  
-  const router = useRouter();
-  
 
   const guardarServicio = async () => {
     const data: IServicio = {
@@ -80,10 +64,8 @@ function ServiciosListado() {
       tipo: tipoServicio,
     };
 
-    const service = new ServiciosService()
-    const response = await service.create(data)
-
-
+    const service = new ServiciosService();
+    const response = await service.create(data);
 
     if (response.status === 201) {
       onClose();
@@ -262,21 +244,13 @@ function ServiciosListado() {
                         <Td>{serv.nombre}</Td>
                         <Td>{serv.tipo}</Td>
                         <Td>
+                        <Link href={`/servicios/${serv.id}`}>
                           <IconButton
-                            onClick={() => {
-                              onOpenedit();
-                              setServicioEdit(serv);
-                            }}
                             variant="ghost"
                             aria-label="edit"
                             icon={<EditIcon />}
-                          />{" "}
-                          <IconButton
-                            variant="ghost"
-                            aria-label="delet"
-                            colorScheme={"red"}
-                            icon={<DeleteIcon color={"red"} />}
                           />
+                          </Link>
                         </Td>
                       </Tr>
                     );
@@ -308,30 +282,30 @@ function ServiciosListado() {
                 }}
               />
               <FormLabel padding={1}>Tipo del servicio</FormLabel>
-              <CheckboxGroup colorScheme="green">
+              <RadioGroup colorScheme="green">
                 <Stack
                   padding={2}
                   spacing={[1, 5]}
                   direction={["column", "row"]}
                 >
-                  <Checkbox
+                  <Radio
                     onChange={(e) => {
                       setTipoServicio(e.target.value);
                     }}
                     value="DOMESTICO"
                   >
                     Domestico
-                  </Checkbox>
-                  <Checkbox
+                  </Radio>
+                  <Radio
                     onChange={(e) => {
                       setTipoServicio(e.target.value);
                     }}
                     value="VIAL"
                   >
                     Automovilistico
-                  </Checkbox>
+                  </Radio>
                 </Stack>
-              </CheckboxGroup>
+              </RadioGroup>
             </FormControl>
           </ModalBody>
 
@@ -367,7 +341,7 @@ function ServiciosListado() {
 
               <FormControl >
                 <FormLabel padding={1} >Tipo del servicio</FormLabel>
-                <CheckboxGroup colorScheme='green'
+                <RadioGroup colorScheme='green'
                   onChange={(checks)=>{
                     console.log(checks);
                     formServicio.setFieldValue(
@@ -377,13 +351,18 @@ function ServiciosListado() {
                   }}
                 >
                   <Stack padding={2} spacing={[1, 5]} direction={['column', 'row']}>
-                  <Checkbox value={"DOMESTICO"}
-                  >Domestico</Checkbox>
-                  <Checkbox
+                  <Radio 
+                  value={"DOMESTICO"}
+                  >
+                    Domestico
+                    </Radio>
+                  <Radio
                     value={"VIAL"}
-                  >Automovilistico</Checkbox> 
+                  >
+                    Automovilistico
+                    </Radio> 
                   </Stack>
-                </CheckboxGroup>
+                </RadioGroup>
               </FormControl>
             </ModalBody>
 

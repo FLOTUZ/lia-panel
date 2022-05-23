@@ -39,7 +39,7 @@ function UsuarioNuevo() {
   const [usuario, setUsuario] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rol, setRol] = useState("USUARIO");
+  const [rol, setRol] = useState("TECNICO");
 
   //----------------------- DATA TECNICO -------------------------------------
   const [nombre, setNombre] = useState("");
@@ -232,31 +232,7 @@ function UsuarioNuevo() {
             </FormControl>
             <FormLabel htmlFor="rol">Seleccione Rol</FormLabel>
 
-            <RadioGroup
-            
-              id="rol"
-              aria-required={true}
-              
-              onChange={(e) => setRol(e)}
-            >
 
-              <HStack spacing="1rem">
-              <Radio    size={"lg"} value="TECNICO">
-                  Es Tecnico
-                </Radio>
-
-                <Radio isDisabled size={"lg"} value="CAPTURISTA">
-                  Capturista
-                </Radio>
-
-                <Radio isDisabled size={"lg"} value="ADMIN">
-                  Administrador
-                </Radio>
-                
-
-               
-              </HStack>
-            </RadioGroup>
             {/* //----------------------------FORMULARIO NUEVO TECNICO------------------------------------ */}
             {rol === "TECNICO" ? (
               <>

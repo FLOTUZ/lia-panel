@@ -36,7 +36,6 @@ import { CiudadesService } from "@/services/ciudades.service";
 import { useFormik } from "formik";
 
 function EstadoVer() {
-
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
@@ -58,9 +57,7 @@ function EstadoVer() {
 
   const consultarCiudades = async () => {
     const city = new CiudadesService();
-    const response: any = await city.getCiudadesByIdEstado(
-      Number(idEstado)
-      );
+    const response: any = await city.getCiudadesByIdEstado(Number(idEstado));
     const data = response.data as ICiudad[];
 
     if (response.status == 200) {
@@ -103,13 +100,11 @@ function EstadoVer() {
   /**ID ESTADO  */
 
   useEffect(() => {
-    
     const getEstado = async () => {
       const service = new EstadosService();
       const respuesta = await service.getById(Number(idEstado));
       if (respuesta.status == 200) {
         setData(respuesta.data as IEstado);
-        
       }
     };
     const consultaCiudades = async () => {
@@ -122,7 +117,7 @@ function EstadoVer() {
       if (response.status == 200) {
         setListadoCiudades(data || []);
       } else {
-        console.log(response);        
+        console.log(response);
       }
     };
 
@@ -189,11 +184,11 @@ function EstadoVer() {
                     <Input
                       id="nombre"
                       variant="filled"
-                      type="Nombre"
                       defaultValue={data?.nombre}
                       placeholder="Estado"
                       onChange={(e) => {
-                        formEstado.handleChange;
+                        const nombreM = e.target.value.toUpperCase();
+                        formEstado.setFieldValue("nombre", nombreM);
                       }}
                     />
                   </InputGroup>
@@ -220,15 +215,13 @@ function EstadoVer() {
                 Acualizar
               </Button>
 
-              
-
-                  <Button 
-                  onClick={() => router.back()}
-                  colorScheme="red" 
-                  variant="outline"
-                  >
-                    Cancelar
-                  </Button>
+              <Button
+                onClick={() => router.back()}
+                colorScheme="red"
+                variant="outline"
+              >
+                Cancelar
+              </Button>
             </Stack>
           </Box>
 
@@ -278,25 +271,18 @@ function EstadoVer() {
                     <Input
                       placeholder="Nombre de la Asistencia"
                       onChange={(e) => {
-                        setNombreCiudad(e.target.value);
+                        const nombreM = e.target.value.toUpperCase();
+                        setNombreCiudad(nombreM);
                       }}
                     />
                   </FormControl>
                 </ModalBody>
 
                 <ModalFooter>
-                  <Button 
-                  colorScheme="blue" 
-                  mr={3} 
-                  onClick={guardarCiudad}
-                  >
+                  <Button colorScheme="blue" mr={3} onClick={guardarCiudad}>
                     Guardar
                   </Button>
-                  <Button 
-                  onClick={onClose}
-                  >
-                    Cancelar
-                  </Button>
+                  <Button onClick={onClose}>Cancelar</Button>
                 </ModalFooter>
               </ModalContent>
             </Modal>

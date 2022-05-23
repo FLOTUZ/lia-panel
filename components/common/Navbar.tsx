@@ -40,12 +40,12 @@ const Navbar = () => {
       icon: <IoBook size={32} />,
     },
     {
-      name: "Aseguradoras",
+      name: "Seguros",
       path: "/aseguradoras",
       icon: <MdVerifiedUser size={32} />,
     },
     {
-      name: "Ciudades",
+      name: "Estados",
       path: "/ciudades",
       icon: <IoMdMap size={32} />,
     },

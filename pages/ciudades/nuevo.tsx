@@ -38,13 +38,13 @@ function EstadoNuevo() {
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
-
+  const [IdEstado, setIdEstado] = useState(0);
   /*CONSULTA de Ciudades  */
   const [listadoCiudades, setListadoCiudades] = useState<ICiudad[]>([]);
 
   const consultarCiudades = async () => {
     const ciudad = new CiudadesService();
-    const respuesta = await ciudad.getAll();
+    const respuesta: any = await ciudad.getCiudadesByIdEstado(IdEstado);
     const data = respuesta.data as ICiudad[];
 
     if (respuesta.status == 200) {
@@ -101,10 +101,13 @@ function EstadoNuevo() {
     const response = await estado.create(data);
     const estad = response.data as IEstado;
     setEstadoGuardado(estad);
+    console.log(data);
+    
 
     if (response.status === 201) {
       //onClose();
       setNombreEstado("");
+      setIdEstado(estad.id || 0);
       toast({
         title: "Estado Nuevo Agregado con Exito.",
         description: "El Estado se Agrego con Exito.",
@@ -147,7 +150,8 @@ function EstadoNuevo() {
                     type="Nombre"
                     placeholder="Estado"
                     onChange={(e) => {
-                      setNombreEstado(e.target.value);
+                      const nombreM = e.target.value.toUpperCase();
+                      setNombreEstado(nombreM);
                     }}
                   />
                 </InputGroup>
@@ -210,7 +214,7 @@ function EstadoNuevo() {
               variant="solid"
               onClick={onOpen}
             >
-              Nueva Asistencia
+              Nueva Ciudad
             </Button>
           </Stack>
 
@@ -225,7 +229,8 @@ function EstadoNuevo() {
                   <Input
                     placeholder="Nombre de la Asistencia"
                     onChange={(e) => {
-                      setNombreCiudad(e.target.value);
+                      const nombreM = e.target.value.toUpperCase();
+                      setNombreCiudad(nombreM);
                     }}
                   />
                 </FormControl>
