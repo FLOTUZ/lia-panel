@@ -222,13 +222,13 @@ const NuevoTicket = () => {
       num_expediente: "",
       asistencia_vial: false,
       fecha_llamada: "",
-      nombre_asesor_aseguradora: "",
+      nombre_asesor_aseguradora: " " || "hola Mundo",
       nombre_asesor_gpo_lias: "",
       nombre_usuario_final: "",
       titulo_ticket: "",
       aseguradoraId: "",
       asistenciaId: "",
-      asesorId: "",
+      asesorId: 0, 
       problematica: "",
       //---------------------COTIZACION GPO LIAS
       ciudad: "",
@@ -270,6 +270,7 @@ const NuevoTicket = () => {
             dataTicketGuardado.id || 0,
             serviciosSeleccionados,
           );
+
 
         if (respuestaServiciosTicket.status === 201) {
           toast({
