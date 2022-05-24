@@ -6,6 +6,8 @@ export class AsesoresService {
 
   public async create(data: IAsesor) {
     const respuesta: any = await Crear(this.url, data);
+    console.log(data);
+    
     return respuesta;
   }
 

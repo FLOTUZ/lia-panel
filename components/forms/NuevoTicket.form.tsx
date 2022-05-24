@@ -45,46 +45,53 @@ import {
   toast,
   extendTheme,
   useToast,
+  DrawerBody,
+  DrawerFooter,
+  Drawer,
+  DrawerOverlay,
+  DrawerContent,
+  DrawerCloseButton,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { MdAdd } from "react-icons/md";
 import { AsesoresService } from "@/services/asesores.service";
 import { TecnicoService } from "@/services/tecnicos.service";
-
-
+import { useRouter } from "next/router";
 
 const NuevoTicket = () => {
-  {/* Asignar Técnico*/ }
+  {
+    /* Asignar Técnico*/
+  }
   const { isOpen: abierto, onOpen: abrir, onClose: cerrar } = useDisclosure();
-
+  const btnRef = React.useRef();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   const breakpoints = {
-    sm: '30em',
-    md: '48em',
-    lg: '62em',
-    xl: '80em',
-    '2xl': '96em',
-  }
-  const theme = extendTheme({ breakpoints })
+    sm: "30em",
+    md: "48em",
+    lg: "62em",
+    xl: "80em",
+    "2xl": "96em",
+  };
+  const theme = extendTheme({ breakpoints });
 
   const [aseguradorasList, setAseguradorasList] = useState<IAseguradoras[]>([]);
   const [asistenciasList, setAsistenciasList] = useState<IAsistencias[]>([]);
   const [asesorList, setAsesorList] = useState<IAsesor[]>([]);
 
-
-
   const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
   const [serviciosList, setServiciosList] = useState<IServicio[]>([]);
-  const [serviciosSeleccionados, setServiciosSeleccionados] = useState<string[]>([]);
+  const [serviciosSeleccionados, setServiciosSeleccionados] = useState<
+    string[]
+  >([]);
 
+  const [nombreAseguradora, setNombreAseguradora]= useState("");
   const [tecnicosByServicios, setTecnicosByServicios] = useState<IServicio>();
 
   const [fecha, setFecha] = useState("");
 
 
-  const [aseguradoraSeleccionada, setAseguradoraSeleccionada] = useState<string[]>([]);
   const [cobertura, setCobertura] = useState(0);
   const [costoGPOLIAS, setCostoGPOLIAS] = useState(0);
   const [kilometrosARecorrer, setKilometrosARecorrer] = useState(0);
@@ -96,11 +103,9 @@ const NuevoTicket = () => {
   const [calculoTotalSalida, setCalculoTotalSalida] = useState(0);
   const [calculoMontoTotal, setCalculoMontoTotal] = useState(0);
 
-  const toast = useToast()
-
+  const toast = useToast();
 
   useEffect(() => {
-
     consultarAseguradoras();
     consultarCiudades();
     consultarServicios();
@@ -143,7 +148,7 @@ const NuevoTicket = () => {
     const servicio = new TecnicoService();
     const respuesta = await servicio.getAll();
     const data = respuesta.data as ITecnico[];
-  }
+  };
 
   useEffect(() => {
     const calcular = () => {
@@ -170,9 +175,7 @@ const NuevoTicket = () => {
         montoTotal = totalSalida + costoGPOLIAS;
       }
 
-
       setCalculoDeducible(deducible);
-  
       setCalculoAnticipo(anticipo);
       setCalculoTotalSalida(totalSalida);
       setCalculoMontoTotal(montoTotal);
@@ -191,7 +194,7 @@ const NuevoTicket = () => {
 
   const asistenciaById = async () => {
     if (Number(formTicket.values.aseguradoraId) !== 0) {
-      const servicio = new AsistenciasService;
+      const servicio = new AsistenciasService();
       const respuesta: any = await servicio.getAsistenciasByIdAseguradora(
         Number(formTicket.values.aseguradoraId)
       );
@@ -215,22 +218,70 @@ const NuevoTicket = () => {
     }
   };
 
-
   /**AGREGAR ASESOR A LA ASEGURADORA */
+  const router = useRouter();
+  const [nombreAsesor, setNombreAsesor]=useState("");
+  const [idAseguradora, setidAseguradora] = useState(0)
+
+  const consultarAsesores = async ()=>{
+    const services = new AsesoresService();
+    const response: any = await services.getAsesoresByIdAseguradora(
+      Number(idAseguradora)
+    );
+    const data = response.data as IAsesor[];
+    if (response.status ==200){
+      setAsesorList(data || []);
+
+    }else{
+      console.log(response);
+    }
+  };
+  const guardarAsesor = async()=>{
+    console.log(idAseguradora);
+    
+    const data: IAsesor={
+      nombre:nombreAsesor,
+      aseguradoraId:Number(idAseguradora),
+    };
+    const service = new AsesoresService();
+    const response = await service.create(data);
+
+    consultarAsesores();
+    if (response.status === 201) {
+      onClose();
+      toast({
+        title: "Asesor Agregado con Exito.",
+        description: "El asesor se Agrego con Exito.",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Oops.. Algo salio mal",
+        description: response.message,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  }
+
+
 
   const formTicket = useFormik({
     initialValues: {
       //--------------------DATOS BASICOS
-      num_expediente: "",
+      num_expediente: "", 
       asistencia_vial: false,
       fecha_llamada: "",
-      nombre_asesor_aseguradora: " " || "hola Mundo",
+      nombre_asesor_aseguradora: "",
       nombre_asesor_gpo_lias: "",
       nombre_usuario_final: "",
       titulo_ticket: "",
       aseguradoraId: "",
       asistenciaId: "",
-      asesorId: 0, 
+      asesorId: "",
       problematica: "",
       //---------------------COTIZACION GPO LIAS
       ciudad: "",
@@ -270,9 +321,8 @@ const NuevoTicket = () => {
         const respuestaServiciosTicket: any =
           await servicio.addServiciosForTicket(
             dataTicketGuardado.id || 0,
-            serviciosSeleccionados,
+            serviciosSeleccionados
           );
-
 
         if (respuestaServiciosTicket.status === 201) {
           toast({
@@ -294,9 +344,7 @@ const NuevoTicket = () => {
   });
 
   return (
-
     <form onSubmit={formTicket.handleSubmit}>
-
       <Box
         m={2}
         bgColor="white"
@@ -355,6 +403,9 @@ const NuevoTicket = () => {
                 borderColor="twitter.100"
                 value={formTicket.values.aseguradoraId}
                 onChange={(e) => {
+                 
+                  
+                  
                   formTicket.setFieldValue(
                     "aseguradoraId",
                     parseInt(e.target.value)
@@ -363,12 +414,12 @@ const NuevoTicket = () => {
               >
                 {aseguradorasList?.length !== 0
                   ? aseguradorasList?.map((aseguradora, index) => {
-                    return (
-                      <option key={index} value={Number(aseguradora.id)}>
-                        {aseguradora.nombre}
-                      </option>
-                    );
-                  })
+                      return (
+                        <option key={index} value={Number(aseguradora.id)}>
+                          {aseguradora.nombre}
+                        </option>
+                      );
+                    })
                   : null}
               </Select>
             </FormControl>
@@ -377,7 +428,7 @@ const NuevoTicket = () => {
               <FormLabel htmlFor="asistenciaId">Asistencia</FormLabel>
               <Select
                 id="asistenciaId"
-                placeholder="Selecciona Tipo de Asistencia"
+                placeholder="Selecciona Asistencia"
                 variant="filled"
                 borderColor="twitter.100"
                 value={formTicket.values.asistenciaId}
@@ -393,12 +444,12 @@ const NuevoTicket = () => {
               >
                 {asistenciasList.length !== 0
                   ? asistenciasList.map((asistencia, index) => {
-                    return (
-                      <option key={index} value={Number(asistencia.id)}>
-                        {asistencia.nombre}
-                      </option>
-                    );
-                  })
+                      return (
+                        <option key={index} value={Number(asistencia.id)}>
+                          {asistencia.nombre}
+                        </option>
+                      );
+                    })
                   : null}
               </Select>
             </FormControl>
@@ -419,21 +470,63 @@ const NuevoTicket = () => {
           </Center>
         </SimpleGrid>
 
-        <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Crea un Nuevo Asesor de la Aseguradora Seleccionada</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody pb={6}></ModalBody>
+        <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+          <DrawerOverlay />
+          <DrawerContent>
+            <DrawerCloseButton />
+            <ModalHeader>
+              Crea un Nuevo Asesor de la Aseguradora Seleccionada
+            </ModalHeader>
 
-            <ModalFooter>
-              <Button colorScheme="blue" mr={3}>
+            <DrawerBody>
+              <FormControl isRequired>
+                <FormLabel>Nombre</FormLabel>
+                <Input
+                  placeholder="Nombre del asesor"
+                  onChange={(e) => {
+                    setNombreAsesor(e.target.value);
+                  }}
+                />
+              </FormControl>
+              <FormControl isRequired paddingTop={15}>
+                <FormLabel htmlFor="aseguradoraId">Aseguradora</FormLabel>
+                <Select
+                  id="aseguradoraId"
+                  placeholder="Selecciona la Aseguradora"
+                  variant="filled"
+                  borderColor="twitter.100"
+                  value={formTicket.values.aseguradoraId}
+                  onChange={(e) => {
+                    setidAseguradora (parseInt(e.target.value))
+                    formTicket.setFieldValue(
+                      "aseguradoraId",
+                      parseInt(e.target.value)
+                    );
+                  }}
+                >
+                  {aseguradorasList?.length !== 0
+                    ? aseguradorasList?.map((aseguradora, index) => {
+                        return (
+                          <option key={index} value={Number(aseguradora.id)}>
+                            {aseguradora.nombre}
+                          </option>
+                        );
+                      })
+                    : null}
+                </Select>
+              </FormControl>
+            </DrawerBody>
+
+            <DrawerFooter>
+              <Button variant="outline" mr={3} onClick={onClose}>
+                Cancelar
+              </Button>
+              <Button onClick={guardarAsesor} colorScheme="blue">
                 Guardar
               </Button>
-              <Button onClick={onClose}>Cancelar</Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
 
         <SimpleGrid columns={1} spacing={5}>
           <Center>
@@ -451,11 +544,9 @@ const NuevoTicket = () => {
               />
             </FormControl>
 
-
-            <FormControl isRequired paddingLeft={5} paddingTop={15} >
+            <FormControl isRequired paddingLeft={5} paddingTop={15}>
               <FormLabel htmlFor="asesorid">Asesor de aseguradora</FormLabel>
               <Select
-
                 overflowWrap={"normal"}
                 id="asesorId"
                 placeholder="Selecciona el asesor de la aseguradora"
@@ -468,20 +559,19 @@ const NuevoTicket = () => {
                   asesorById();
                 }}
                 onChange={(e) => {
-                  formTicket.setFieldValue(
-                    "asesorId",
-                    parseInt(e.target.value)
-                  );
+                  
+                  setNombreAseguradora(e.target.value);
+                  
                 }}
               >
                 {asesorList.length !== 0
                   ? asesorList.map((asesor, index) => {
-                    return (
-                      <option key={index} value={Number(asesor.id)}>
-                        {asesor.nombre}
-                      </option>
-                    );
-                  })
+                      return (
+                        <option key={index} value={Number(asesor.id)}>
+                          {asesor.nombre}
+                        </option>
+                      );
+                    })
                   : null}
               </Select>
             </FormControl>
@@ -546,16 +636,16 @@ const NuevoTicket = () => {
             <SimpleGrid minChildWidth="3rem" spacing="4rem">
               {serviciosList?.length !== 0
                 ? serviciosList.map((servicio, index) => {
-                  return (
-                    <Checkbox
-                      key={index}
-                      id={servicio.nombre}
-                      value={servicio.id?.toString()}
-                    >
-                      {servicio.nombre}
-                    </Checkbox>
-                  );
-                })
+                    return (
+                      <Checkbox
+                        key={index}
+                        id={servicio.nombre}
+                        value={servicio.id?.toString()}
+                      >
+                        {servicio.nombre}
+                      </Checkbox>
+                    );
+                  })
                 : null}
             </SimpleGrid>
           </CheckboxGroup>
@@ -673,12 +763,12 @@ const NuevoTicket = () => {
             >
               {ciudadesList?.length !== 0
                 ? ciudadesList?.map((ciudad, index) => {
-                  return (
-                    <option key={index} value={ciudad.nombre}>
-                      {ciudad.nombre}
-                    </option>
-                  );
-                })
+                    return (
+                      <option key={index} value={ciudad.nombre}>
+                        {ciudad.nombre}
+                      </option>
+                    );
+                  })
                 : null}
             </Select>
           </FormControl>
@@ -1112,7 +1202,8 @@ const NuevoTicket = () => {
           colorScheme="facebook"
           variant="solid"
           size="lg"
-          onClick={abrir}>
+          onClick={abrir}
+        >
           Asignar Técnico
         </Button>
 
@@ -1122,7 +1213,6 @@ const NuevoTicket = () => {
             <ModalHeader>Asignar Técnico</ModalHeader>
             <ModalCloseButton />
             <ModalBody pb={6}>
-
               <FormControl paddingTop={15}>
                 <FormLabel htmlFor="servicioId">Servicio</FormLabel>
                 <Select
@@ -1132,18 +1222,17 @@ const NuevoTicket = () => {
                   borderColor="twitter.100"
                   onChange={(e) => {
                     consultarTecnicosByServicio(Number(e.target.value));
-                    console.log(tecnicosByServicios?.nombre)
-                  }
-                  }
+                    console.log(tecnicosByServicios?.nombre);
+                  }}
                 >
                   {serviciosList.length !== 0
                     ? serviciosList.map((servicio) => {
-                      return (
-                        <option key={servicio.id} value={Number(servicio.id)}>
-                          {servicio.nombre}
-                        </option>
-                      );
-                    })
+                        return (
+                          <option key={servicio.id} value={Number(servicio.id)}>
+                            {servicio.nombre}
+                          </option>
+                        );
+                      })
                     : null}
                 </Select>
               </FormControl>
@@ -1155,37 +1244,34 @@ const NuevoTicket = () => {
                   placeholder="Selecciona el Técnico"
                   variant="filled"
                   borderColor="twitter.100"
-
                 >
-                  {
-                    tecnicosByServicios?.Tecnico?.length !== 0 ?
-                      tecnicosByServicios?.Tecnico?.map((tecnico) => {
+                  {tecnicosByServicios?.Tecnico?.length !== 0
+                    ? tecnicosByServicios?.Tecnico?.map((tecnico) => {
                         return (
                           <option key={tecnico.id} value={tecnico.nombre}>
                             {tecnico.nombre}
                           </option>
-                        )
-                      }) : null
-                  }
-
+                        );
+                      })
+                    : null}
                 </Select>
-
               </FormControl>
-
-
             </ModalBody>
 
             <ModalFooter>
-              <Button colorScheme="blue" mr={3}
+              <Button
+                colorScheme="blue"
+                mr={3}
                 onClick={() =>
                   toast({
-                    title: 'Técnico Asignado.',
+                    title: "Técnico Asignado.",
                     description: "Se Asigno el servicio al Técnico",
-                    status: 'success',
+                    status: "success",
                     duration: 9000,
                     isClosable: true,
                   })
-                }>
+                }
+              >
                 Guardar
               </Button>
               <Button onClick={cerrar}>Cancelar</Button>

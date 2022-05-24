@@ -91,6 +91,8 @@ function AseguradoraNueva() {
     }
   };
 
+  
+
   /*AGREGAR ASISTENCIA */
   const guardarAsistencia = async () => {
     const data: IAsistencias = {
@@ -121,6 +123,9 @@ function AseguradoraNueva() {
       });
     }
   };
+
+  /**AGREGAR ASESOR EN LA ASEGURADORA */
+  
 
   /*AGREGAR ASEGURADORA*/
   const guardarAseguradora = async () => {
@@ -337,6 +342,7 @@ function AseguradoraNueva() {
               </InputGroup>
             </SimpleGrid>
           </Stack>
+          <SimpleGrid columns={2} spacingX='40px' spacingY='20px'>
           <Stack
             marginTop={50}
             direction="row"
@@ -360,7 +366,11 @@ function AseguradoraNueva() {
                 </Button>
               </a>
             </Link>
+            
+
           </Stack>
+          </SimpleGrid>
+
         </Box>
 
         <Box
