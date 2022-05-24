@@ -88,7 +88,7 @@ const NuevoTicket = () => {
     string[]
   >([]);
 
-  const [nombreAseguradora, setNombreAseguradora]= useState("");
+  const [nombreAseguradora, setNombreAseguradora] = useState("");
   const [tecnicosByServicios, setTecnicosByServicios] = useState<IServicio>();
 
   const [fecha, setFecha] = useState("");
@@ -222,28 +222,28 @@ const NuevoTicket = () => {
 
   /**AGREGAR ASESOR A LA ASEGURADORA */
   const router = useRouter();
-  const [nombreAsesor, setNombreAsesor]=useState("");
+  const [nombreAsesor, setNombreAsesor] = useState("");
   const [idAseguradora, setidAseguradora] = useState(0)
 
-  const consultarAsesores = async ()=>{
+  const consultarAsesores = async () => {
     const services = new AsesoresService();
     const response: any = await services.getAsesoresByIdAseguradora(
       Number(idAseguradora)
     );
     const data = response.data as IAsesor[];
-    if (response.status ==200){
+    if (response.status == 200) {
       setAsesorList(data || []);
 
-    }else{
+    } else {
       console.log(response);
     }
   };
-  const guardarAsesor = async()=>{
+  const guardarAsesor = async () => {
     console.log(idAseguradora);
-    
-    const data: IAsesor={
-      nombre:nombreAsesor,
-      aseguradoraId:Number(idAseguradora),
+
+    const data: IAsesor = {
+      nombre: nombreAsesor,
+      aseguradoraId: Number(idAseguradora),
     };
     const service = new AsesoresService();
     const response = await service.create(data);
@@ -274,7 +274,7 @@ const NuevoTicket = () => {
   const formTicket = useFormik({
     initialValues: {
       //--------------------DATOS BASICOS
-      num_expediente: "", 
+      num_expediente: "",
       asistencia_vial: false,
       fecha_llamada: "",
       nombre_asesor_aseguradora: "",
@@ -405,9 +405,9 @@ const NuevoTicket = () => {
                 borderColor="twitter.100"
                 value={formTicket.values.aseguradoraId}
                 onChange={(e) => {
-                 
-                  
-                  
+
+
+
                   formTicket.setFieldValue(
                     "aseguradoraId",
                     parseInt(e.target.value)
@@ -416,12 +416,12 @@ const NuevoTicket = () => {
               >
                 {aseguradorasList?.length !== 0
                   ? aseguradorasList?.map((aseguradora, index) => {
-                      return (
-                        <option key={index} value={Number(aseguradora.id)}>
-                          {aseguradora.nombre}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={index} value={Number(aseguradora.id)}>
+                        {aseguradora.nombre}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
             </FormControl>
@@ -446,12 +446,12 @@ const NuevoTicket = () => {
               >
                 {asistenciasList.length !== 0
                   ? asistenciasList.map((asistencia, index) => {
-                      return (
-                        <option key={index} value={Number(asistencia.id)}>
-                          {asistencia.nombre}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={index} value={Number(asistencia.id)}>
+                        {asistencia.nombre}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
             </FormControl>
@@ -499,7 +499,7 @@ const NuevoTicket = () => {
                   borderColor="twitter.100"
                   value={formTicket.values.aseguradoraId}
                   onChange={(e) => {
-                    setidAseguradora (parseInt(e.target.value))
+                    setidAseguradora(parseInt(e.target.value))
                     formTicket.setFieldValue(
                       "aseguradoraId",
                       parseInt(e.target.value)
@@ -508,12 +508,12 @@ const NuevoTicket = () => {
                 >
                   {aseguradorasList?.length !== 0
                     ? aseguradorasList?.map((aseguradora, index) => {
-                        return (
-                          <option key={index} value={Number(aseguradora.id)}>
-                            {aseguradora.nombre}
-                          </option>
-                        );
-                      })
+                      return (
+                        <option key={index} value={Number(aseguradora.id)}>
+                          {aseguradora.nombre}
+                        </option>
+                      );
+                    })
                     : null}
                 </Select>
               </FormControl>
@@ -561,19 +561,19 @@ const NuevoTicket = () => {
                   asesorById();
                 }}
                 onChange={(e) => {
-                  
+
                   setNombreAseguradora(e.target.value);
-                  
+
                 }}
               >
                 {asesorList.length !== 0
                   ? asesorList.map((asesor, index) => {
-                      return (
-                        <option key={index} value={Number(asesor.id)}>
-                          {asesor.nombre}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={index} value={Number(asesor.id)}>
+                        {asesor.nombre}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
             </FormControl>
@@ -638,16 +638,16 @@ const NuevoTicket = () => {
             <SimpleGrid minChildWidth="3rem" spacing="4rem">
               {serviciosList?.length !== 0
                 ? serviciosList.map((servicio, index) => {
-                    return (
-                      <Checkbox
-                        key={index}
-                        id={servicio.nombre}
-                        value={servicio.id?.toString()}
-                      >
-                        {servicio.nombre}
-                      </Checkbox>
-                    );
-                  })
+                  return (
+                    <Checkbox
+                      key={index}
+                      id={servicio.nombre}
+                      value={servicio.id?.toString()}
+                    >
+                      {servicio.nombre}
+                    </Checkbox>
+                  );
+                })
                 : null}
             </SimpleGrid>
           </CheckboxGroup>
@@ -765,12 +765,12 @@ const NuevoTicket = () => {
             >
               {ciudadesList?.length !== 0
                 ? ciudadesList?.map((ciudad, index) => {
-                    return (
-                      <option key={index} value={ciudad.nombre}>
-                        {ciudad.nombre}
-                      </option>
-                    );
-                  })
+                  return (
+                    <option key={index} value={ciudad.nombre}>
+                      {ciudad.nombre}
+                    </option>
+                  );
+                })
                 : null}
             </Select>
           </FormControl>
@@ -1075,66 +1075,58 @@ const NuevoTicket = () => {
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="deducible">Deducible</FormLabel>
             <InputGroup>
-            <InputLeftAddon
-              background={"white"}
-                      
-                      pointerEvents="none"
-                      children={<MdOutlineAttachMoney  />}
-                    />
-            <Input
-            variant='unstyled'
-              isReadOnly
-              id="deducible"
-              min={0}
-              placeholder="0.00"
-              paddingLeft={8}
-              type="number"
-              borderColor="twitter.100"
-              onChange={formTicket.handleChange}
-              fontWeight={"bold"}
-              textColor = {"red"}
-              value={calculoDeducible}
-            />
+              <InputLeftAddon
+                pointerEvents="none"
+                children={<MdOutlineAttachMoney />}
+              />
+              <Input
+                //variant='unstyled'
+                //isReadOnly
+                variant="filled"
+                id="deducible"
+                min={0}
+                placeholder="0.00"
+                paddingLeft={8}
+                type="number"
+                borderColor="twitter.100"
+                onChange={formTicket.handleChange}
+                fontWeight={"bold"}
+                textColor={"red"}
+                value={calculoDeducible}
+              />
             </InputGroup>
-            <Text>
-              {calculoDeducible < 0
-                ? calculoDeducible
-                : `Se cubre por el seguro: ${calculoDeducible}` }
-            </Text>
           </FormControl>
+
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="anticipo">Anticipo 60%</FormLabel>
-            <InputLeftElement
-              paddingTop={55}
-              paddingStart={4}
-              color="gray.300"
-              pointerEvents="none"
-              children="$"
-            />
-            <Input
-              variant="filled"
-              isDisabled
-              id="anticipo"
-              min={0}
-              placeholder="0.00"
-              paddingLeft={8}
-              type="number"
-              borderColor="twitter.100"
-              onChange={formTicket.handleChange}
-              value={formTicket.values.anticipo}
-            />
-            <Text>{`Anticipo: ${calculoAnticipo}`}</Text>
+            <InputGroup>
+              <InputLeftAddon
+                pointerEvents="none"
+                children={<MdOutlineAttachMoney />}
+              />
+              <Input
+                variant="filled"
+                id="anticipo"
+                min={0}
+                placeholder="0.00"
+                paddingLeft={8}
+                type="number"
+                borderColor="twitter.100"
+                fontWeight={"bold"}
+                textColor={"red"}
+                onChange={formTicket.handleChange}
+                value={calculoAnticipo}
+              />
+            </InputGroup>
           </FormControl>
 
           <FormControl isRequired paddingTop={15} paddingLeft={4}>
             <FormLabel htmlFor="total_salida">Total de Salida</FormLabel>
-            <InputLeftElement
-              paddingTop={55}
-              paddingStart={6}
-              color="gray.300"
-              pointerEvents="none"
-              children="$"
-            />
+            <InputGroup>
+              <InputLeftAddon
+                pointerEvents="none"
+                children={<MdOutlineAttachMoney />}
+              />
             <Input
               variant="filled"
               id="total_salida"
@@ -1143,21 +1135,21 @@ const NuevoTicket = () => {
               paddingLeft={8}
               type="number"
               borderColor="twitter.100"
+              fontWeight={"bold"}
+              textColor={"red"}
               onChange={formTicket.handleChange}
-              value={formTicket.values.total_salida}
+              value={calculoTotalSalida}
             />
-            <Text>{`Total salida: ${calculoTotalSalida}`}</Text>
+            </InputGroup>
           </FormControl>
 
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="total">Monto Total</FormLabel>
-            <InputLeftElement
-              paddingTop={55}
-              paddingStart={4}
-              color="gray.300"
-              pointerEvents="none"
-              children="$"
-            />
+            <InputGroup>
+              <InputLeftAddon
+                pointerEvents="none"
+                children={<MdOutlineAttachMoney />}
+              />
             <Input
               variant="filled"
               id="total"
@@ -1166,10 +1158,12 @@ const NuevoTicket = () => {
               paddingLeft={8}
               type="number"
               borderColor="twitter.100"
+              fontWeight={"bold"}
+                textColor={"red"}
               onChange={formTicket.handleChange}
-              value={formTicket.values.total}
+              value={calculoMontoTotal}
             />
-            <Text>{`Monto Total: ${calculoMontoTotal}`}</Text>
+            </InputGroup>
           </FormControl>
         </SimpleGrid>
 
@@ -1234,12 +1228,12 @@ const NuevoTicket = () => {
                 >
                   {serviciosList.length !== 0
                     ? serviciosList.map((servicio) => {
-                        return (
-                          <option key={servicio.id} value={Number(servicio.id)}>
-                            {servicio.nombre}
-                          </option>
-                        );
-                      })
+                      return (
+                        <option key={servicio.id} value={Number(servicio.id)}>
+                          {servicio.nombre}
+                        </option>
+                      );
+                    })
                     : null}
                 </Select>
               </FormControl>
@@ -1254,12 +1248,12 @@ const NuevoTicket = () => {
                 >
                   {tecnicosByServicios?.Tecnico?.length !== 0
                     ? tecnicosByServicios?.Tecnico?.map((tecnico) => {
-                        return (
-                          <option key={tecnico.id} value={tecnico.nombre}>
-                            {tecnico.nombre}
-                          </option>
-                        );
-                      })
+                      return (
+                        <option key={tecnico.id} value={tecnico.nombre}>
+                          {tecnico.nombre}
+                        </option>
+                      );
+                    })
                     : null}
                 </Select>
               </FormControl>
