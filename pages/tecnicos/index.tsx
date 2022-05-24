@@ -40,6 +40,7 @@ console.log(respuesta);
 
     consultarTecnicos();
   }, []);
+  
 
   return (
     <DesktopLayout>

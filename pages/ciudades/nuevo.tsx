@@ -227,7 +227,7 @@ function EstadoNuevo() {
                 <FormControl mt={4}>
                   <FormLabel>Nombre de la Ciudad</FormLabel>
                   <Input
-                    placeholder="Nombre de la Asistencia"
+                    placeholder="Nombre de la Ciudad"
                     onChange={(e) => {
                       const nombreM = e.target.value.toUpperCase();
                       setNombreCiudad(nombreM);

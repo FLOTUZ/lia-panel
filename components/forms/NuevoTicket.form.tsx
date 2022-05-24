@@ -170,7 +170,9 @@ const NuevoTicket = () => {
         montoTotal = totalSalida + costoGPOLIAS;
       }
 
+
       setCalculoDeducible(deducible);
+  
       setCalculoAnticipo(anticipo);
       setCalculoTotalSalida(totalSalida);
       setCalculoMontoTotal(montoTotal);

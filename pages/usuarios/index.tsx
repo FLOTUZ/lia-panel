@@ -130,12 +130,7 @@ function UsuariosListado() {
                           colorScheme={"red"}
                           icon={<AttachmentIcon color={"gray"} />}
                         />
-                        <IconButton
-                          variant="ghost"
-                          aria-label="delet"
-                          colorScheme={"red"}
-                          icon={<DeleteIcon color={"red"} />}
-                        />
+                        
                       </Td>
                     </Tr>
                   );
