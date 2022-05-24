@@ -3,6 +3,7 @@ import {
   Avatar,
   Box,
   Button,
+  Center,
   Flex,
   FormControl,
   FormHelperText,
@@ -13,7 +14,7 @@ import {
   InputRightElement,
   Stack,
   Wrap,
-  WrapItem
+  WrapItem,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import React from "react";
@@ -23,8 +24,8 @@ import Image from "next/image";
 import Logo from "../../public/logo.jpeg";
 
 export default function Home(): JSX.Element {
-  const [show, setShow] = React.useState(false)
-  const handleClick = () => setShow(!show)
+  const [show, setShow] = React.useState(false);
+  const handleClick = () => setShow(!show);
   return (
     <>
       <Flex
@@ -35,7 +36,6 @@ export default function Home(): JSX.Element {
         justifyContent="center"
         alignItems="center"
       >
-
         <Box
           m={2}
           bgColor="white"
@@ -52,15 +52,13 @@ export default function Home(): JSX.Element {
             justifyContent="center"
             alignItems="center"
           >
-            <Heading color="teal.400">Grupo Lias</Heading>
-
-            <Wrap>
-              <WrapItem>
-                <Avatar size='lg' name='Logo grupo lias' src='Logo' />
-              </WrapItem>
-            </Wrap>
-
-           
+            <Image
+        
+              height={250}
+              width={250}
+              src={Logo}
+              alt="Logo de grupo lias"
+            />
 
             <Box minW={{ base: "90%", md: "468px" }}>
               <form>
@@ -74,62 +72,45 @@ export default function Home(): JSX.Element {
                     <InputGroup>
                       <InputLeftElement
                         pointerEvents="none"
-                        color="gray.300"
+                        color="facebook.300"
                         children={<IoMail color="gray.300" />}
                       />
                       <Input type="email" placeholder="Usuario" />
                     </InputGroup>
                   </FormControl>
-                  <FormControl>
-
-
-
-
-
-
-                    <InputGroup size='md'>
+                  <FormControl paddingEnd={5}>
+                    <InputGroup size="md">
                       <InputLeftElement
                         pointerEvents="none"
                         color="gray.300"
-                        children={<LockIcon color="gray.300" />}
+                        children={<LockIcon color="facebook.300" />}
                       />
                       <Input
-                        pr='4.5rem'
-                        type={show ? 'text' : 'password'}
-                        placeholder='Ingresa tu contraseña'
+                        pr="4.5rem"
+                        type={show ? "text" : "password"}
+                        placeholder="Ingresa tu contraseña"
                       />
-                      <InputRightElement width='4.5rem'>
-                        <Button h='1.75rem' size='sm' onClick={handleClick}
-
-                        >
-                          {show ? 'Ocultar' : 'Ver'}
+                      <InputRightElement width="4.5rem">
+                        <Button h="1.75rem" size="sm" onClick={handleClick}>
+                          {show ? "Ocultar" : "Ver"}
                         </Button>
                       </InputRightElement>
                     </InputGroup>
-
-
-
-
-
-
-
-                    <FormHelperText textAlign="right">
-
-                    </FormHelperText>
+                    <FormHelperText textAlign="right"></FormHelperText>
                   </FormControl>
+
                   <Button
                     borderRadius={0}
                     type="submit"
                     variant="solid"
-                    colorScheme="teal"
-                    width="full"
+                    colorScheme="facebook"
+                    width="50"
                   >
                     Ingresar
                   </Button>
                 </Stack>
               </form>
             </Box>
-
           </Stack>
         </Box>
       </Flex>

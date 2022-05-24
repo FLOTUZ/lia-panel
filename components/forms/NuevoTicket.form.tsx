@@ -51,10 +51,12 @@ import {
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
+  InputGroup,
+  InputLeftAddon,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import React, { useState, useEffect } from "react";
-import { MdAdd } from "react-icons/md";
+import { MdAdd, MdOutlineAttachMoney } from "react-icons/md";
 import { AsesoresService } from "@/services/asesores.service";
 import { TecnicoService } from "@/services/tecnicos.service";
 import { useRouter } from "next/router";
@@ -750,7 +752,7 @@ const NuevoTicket = () => {
           </FormControl>
         </FormControl>
 
-        <SimpleGrid columns={[1, 1, 5]} spacing={4}>
+        <SimpleGrid columns={[1, 1, 5]} spacing={5}>
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="ciudad">Ciudad</FormLabel>
             <Select
@@ -1072,15 +1074,16 @@ const NuevoTicket = () => {
         <SimpleGrid columns={[1, 1, 4]} spacing={4}>
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="deducible">Deducible</FormLabel>
-            <InputLeftElement
-              paddingTop={55}
-              paddingStart={4}
-              color="gray.300"
-              pointerEvents="none"
-              children="$"
-            />
+            <InputGroup>
+            <InputLeftAddon
+              background={"white"}
+                      
+                      pointerEvents="none"
+                      children={<MdOutlineAttachMoney  />}
+                    />
             <Input
-              variant="filled"
+            variant='unstyled'
+              isReadOnly
               id="deducible"
               min={0}
               placeholder="0.00"
@@ -1088,12 +1091,15 @@ const NuevoTicket = () => {
               type="number"
               borderColor="twitter.100"
               onChange={formTicket.handleChange}
-              value={formTicket.values.deducible}
+              fontWeight={"bold"}
+              textColor = {"red"}
+              value={calculoDeducible}
             />
+            </InputGroup>
             <Text>
               {calculoDeducible < 0
                 ? calculoDeducible
-                : `Se cubre por el seguro: ${calculoDeducible}`}
+                : `Se cubre por el seguro: ${calculoDeducible}` }
             </Text>
           </FormControl>
           <FormControl isRequired paddingTop={15}>
@@ -1107,6 +1113,7 @@ const NuevoTicket = () => {
             />
             <Input
               variant="filled"
+              isDisabled
               id="anticipo"
               min={0}
               placeholder="0.00"

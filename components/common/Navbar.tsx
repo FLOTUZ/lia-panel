@@ -49,11 +49,11 @@ const Navbar = () => {
       path: "/ciudades",
       icon: <IoMdMap size={32} />,
     },
-    // {
-    //   name: "Salir",
-    //   path: "/login",
-    //   icon: <IoExit size={32} />,
-    // },
+     {
+      name: "Salir",
+       path: "/login",
+       icon: <IoExit size={32} />,
+    },
 
   ];
   return (

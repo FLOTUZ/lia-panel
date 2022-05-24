@@ -67,8 +67,10 @@ function AseguradoraNueva() {
   const [telefonoVialAseguradora, setTelefonoVialAseguradora] = useState("");
   const [telefonoWhatsAseguradora, setTelefonoWhatsAseguradora] = useState("");
 
-  const [kilometrajeAseguradora, setKilometrajeAseguradora] = useState<number>(0);
-  const [costoKilometroAseguradora, setCostoKilometroAseguradora] = useState<number>(0);
+  const [kilometrajeAseguradora, setKilometrajeAseguradora] =
+    useState<number>(0);
+  const [costoKilometroAseguradora, setCostoKilometroAseguradora] =
+    useState<number>(0);
 
   const [nombreAsistencia, setNombreAsistencia] = useState("");
   const [aseguradoraGuardada, setAseguradoraGuardada] =
@@ -90,8 +92,6 @@ function AseguradoraNueva() {
       console.log(respuesta);
     }
   };
-
-  
 
   /*AGREGAR ASISTENCIA */
   const guardarAsistencia = async () => {
@@ -125,7 +125,6 @@ function AseguradoraNueva() {
   };
 
   /**AGREGAR ASESOR EN LA ASEGURADORA */
-  
 
   /*AGREGAR ASEGURADORA*/
   const guardarAseguradora = async () => {
@@ -207,8 +206,8 @@ function AseguradoraNueva() {
                     children={<MdOutlineMapsHomeWork color="gray.300" />}
                   />
                   <Input
-                     minLength={8}
-                     maxLength={12}
+                    minLength={8}
+                    maxLength={12}
                     onChange={(e) => {
                       setTelefonoAseguradora(e.target.value);
                     }}
@@ -222,17 +221,19 @@ function AseguradoraNueva() {
             <SimpleGrid columns={2} spacing={5}>
               <InputGroup>
                 <FormControl isRequired>
-                  <FormLabel htmlFor="kilometraje">Kilometraje maximo</FormLabel>
+                  <FormLabel htmlFor="kilometraje">
+                    Kilometraje maximo
+                  </FormLabel>
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents="none"
                       children={<IoSpeedometerOutline color="gray.300" />}
                     />
                     <Input
-                    minLength={1}
-                    maxLength={3}
-                    min={0}
-                    max={100}
+                      minLength={1}
+                      maxLength={3}
+                      min={0}
+                      max={100}
                       onChange={(e) => {
                         setKilometrajeAseguradora(Number(e.target.value));
                       }}
@@ -306,8 +307,8 @@ function AseguradoraNueva() {
                       children={<MdCarRepair color="gray.300" />}
                     />
                     <Input
-                        minLength={8}
-                        maxLength={12}
+                      minLength={8}
+                      maxLength={12}
                       onChange={(e) => {
                         setTelefonoVialAseguradora(e.target.value);
                       }}
@@ -341,36 +342,31 @@ function AseguradoraNueva() {
                 </FormControl>
               </InputGroup>
             </SimpleGrid>
+
+            <Stack
+            paddingTop={10}
+             align="center"
+             paddingLeft={730}
+            direction={["column", "row"]} spacing="24px">
+              <Button
+               
+                width={120}
+                colorScheme="facebook"
+                variant="solid"
+                onClick={guardarAseguradora}
+              >
+                Agregar
+              </Button>
+
+              <Link href={"/aseguradoras"}>
+                <a>
+                  <Button colorScheme="red" variant="outline">
+                    Cancelar
+                  </Button>
+                </a>
+              </Link>
+            </Stack>
           </Stack>
-          <SimpleGrid columns={2} spacingX='40px' spacingY='20px'>
-          <Stack
-            marginTop={50}
-            direction="row"
-            spacing={4}
-            align="center"
-            paddingLeft={930}
-          >
-            <Button
-              colorScheme="facebook"
-              variant="solid"
-              onClick={guardarAseguradora}
-            >
-              Agregar
-            </Button>
-
-            <Link href={"/aseguradoras"}>
-              <a>
-                {" "}
-                <Button colorScheme="red" variant="outline">
-                  Cancelar
-                </Button>
-              </a>
-            </Link>
-            
-
-          </Stack>
-          </SimpleGrid>
-
         </Box>
 
         <Box
@@ -387,13 +383,14 @@ function AseguradoraNueva() {
             Asistencia de Aseguradora
           </Heading>
 
-          <Stack
-            marginTop={2}
-            direction="row"
-            spacing={2}
-            align="center"
-            paddingLeft={930}
-          >
+          
+            <Stack
+            paddingTop={5}
+             align="center"
+             paddingLeft={730}
+            direction={["column", "row"]} spacing="24px">
+          
+
             <Button
               leftIcon={<AddIcon />}
               colorScheme="facebook"

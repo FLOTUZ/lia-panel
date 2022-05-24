@@ -28,6 +28,7 @@ import {
   useDisclosure,
   useToast,
   toast,
+  Stack,
 } from "@chakra-ui/react";
 import {
   AddIcon,
@@ -90,24 +91,27 @@ export default function AseguradorasListado() {
           bg="white"
         >
           <FormControl>
+          <Stack 
+            paddingTop={10}
+           
+             paddingLeft={530}
+            direction={["column", "row"]} spacing="24px">
 
-            <Link href={"/aseguradoras/nuevo"}>
-              <a>
-                {" "}
+            <Link href={"/aseguradoras/nuevo"}>    
                 <Button
                   leftIcon={<AddIcon />}
                   colorScheme="facebook"
                   variant="solid"
-                  marginLeft={"80%"}
+                  marginLeft={"20%"}
                 >
                   Nueva aseguradora
                 </Button>
-              </a>
             </Link>
+            </Stack>
           </FormControl>
         </Box>
 
-        <Box marginLeft="25%" p={4}>
+        <Box  marginLeft="20%" padding={5}>
           <InputGroup>
             <InputLeftAddon>
               <IconButton

@@ -5,6 +5,7 @@ import {
 } from "@chakra-ui/react";
 
 interface IViewText {
+  
   form_label: string;
   id_form: string;
   children?: React.ReactNode;
@@ -22,7 +23,7 @@ const ViewText = (props: IViewText) => {
         borderRadius={"5px"}
         height={10}
         bgColor={"gray.100"}
-        px="4"
+        px="6"
         paddingTop="4px"
         transitionDuration={"1s"}
         _hover={{

@@ -97,7 +97,7 @@ function TicketVer() {
                 <Stack
                     direction='row'
                     paddingTop={15}
-                    marginLeft="1300px">
+                    marginLeft="820px">
                     <ViewText
                         id_form="num_expediente"
                         form_label="Numero de Expediente:">
