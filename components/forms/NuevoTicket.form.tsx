@@ -3,6 +3,7 @@ import {
   IAsesor,
   IAsistencias,
   ICiudad,
+  IEstado,
   IServicio,
   ITecnico,
   ITicket,
@@ -60,6 +61,7 @@ import { MdAdd, MdOutlineAttachMoney } from "react-icons/md";
 import { AsesoresService } from "@/services/asesores.service";
 import { TecnicoService } from "@/services/tecnicos.service";
 import { useRouter } from "next/router";
+import { EstadosService } from "@/services/estados.service";
 
 const NuevoTicket = () => {
   {
@@ -82,7 +84,7 @@ const NuevoTicket = () => {
   const [asistenciasList, setAsistenciasList] = useState<IAsistencias[]>([]);
   const [asesorList, setAsesorList] = useState<IAsesor[]>([]);
 
-  const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
+
   const [serviciosList, setServiciosList] = useState<IServicio[]>([]);
   const [serviciosSeleccionados, setServiciosSeleccionados] = useState<
     string[]
@@ -105,11 +107,18 @@ const NuevoTicket = () => {
   const [calculoTotalSalida, setCalculoTotalSalida] = useState(0);
   const [calculoMontoTotal, setCalculoMontoTotal] = useState(0);
 
+  const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
+  const [ciudadId, setCiudadId] = useState<number>(0);
+  const [estadoId, setEstadoId] = useState<number>();
+  const [estadosList, setEstadosList] = useState<IEstado[]>([]);
+  const [IdEstado, setIdEstado] = useState(0);
+
   const toast = useToast();
 
   useEffect(() => {
     consultarAseguradoras();
     consultarCiudades();
+    consultarEstados();
     consultarServicios();
     consultarTecnicos();
   }, []);
@@ -124,10 +133,18 @@ const NuevoTicket = () => {
 
   const consultarCiudades = async () => {
     const servicio = new CiudadesService();
-    const respuesta = await servicio.getAll();
+    const respuesta: any = await servicio.getCiudadesByIdEstado(IdEstado);
     const data = respuesta.data as ICiudad[];
 
     setCiudadesList(data);
+  };
+
+  const consultarEstados = async () => {
+    const servicio = new EstadosService();
+    const respuesta = await servicio.getAll();
+    const data = respuesta.data as IEstado[];
+
+    setEstadosList(data);
   };
 
   const consultarServicios = async () => {
@@ -583,7 +600,7 @@ const NuevoTicket = () => {
           <Divider orientation="vertical" />
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="nombre_usuario_final">
-              Nombre del Usuario a brindar servicio
+              Nombre del Usuario a Brindar Servicio
             </FormLabel>
             <Input
               variant="filled"
@@ -635,7 +652,7 @@ const NuevoTicket = () => {
               setServiciosSeleccionados(e as string[]);
             }}
           >
-            <SimpleGrid padding={5} minChildWidth='120px' spacing='40px'>
+            <SimpleGrid minChildWidth="3rem" spacing="4rem">
               {serviciosList?.length !== 0
                 ? serviciosList.map((servicio, index) => {
                   return (
@@ -752,7 +769,32 @@ const NuevoTicket = () => {
           </FormControl>
         </FormControl>
 
-        <SimpleGrid columns={[1, 1, 5]} spacing={5}>
+        <SimpleGrid columns={[1, 1, 2]} spacing={5}>
+          <FormControl isRequired paddingTop={15}>
+            <FormLabel htmlFor="estado">Estado</FormLabel>
+            <Select
+              id="estado"
+              placeholder="Selecciona el Estado"
+              variant="filled"
+              borderColor="twitter.100"
+              onChange={(e) => {
+                setEstadoId(Number(e.target.value));
+                setIdEstado(Number(e.target.value));
+              }}
+            >
+              {estadosList?.length !== 0
+                ? estadosList?.map((estado, index) => {
+                  return (
+                    <option key={index} value={estado.id}>
+                      {estado.nombre}
+                    </option>
+                  );
+
+                })
+                : null}
+            </Select>
+          </FormControl>
+
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="ciudad">Ciudad</FormLabel>
             <Select
@@ -760,8 +802,12 @@ const NuevoTicket = () => {
               placeholder="Selecciona la Ciudad"
               variant="filled"
               borderColor="twitter.100"
-              value={formTicket.values.ciudad}
-              onChange={formTicket.handleChange}
+              onChange={(e) => {
+                setCiudadId(Number(e.target.value));
+              }}
+              onFocus={(e) => {
+                consultarCiudades();
+              }}
             >
               {ciudadesList?.length !== 0
                 ? ciudadesList?.map((ciudad, index) => {
@@ -774,9 +820,11 @@ const NuevoTicket = () => {
                 : null}
             </Select>
           </FormControl>
+        </SimpleGrid>
 
+        <SimpleGrid columns={[1, 1, 4]} spacing={5}>
           {formTicket.values.is_servicio_domestico === true ? (
-            <FormControl isRequired paddingTop={15} paddingLeft={5}>
+            <FormControl isRequired paddingTop={15}>
               <FormLabel htmlFor="colonia">Colonia</FormLabel>
               <Input
                 variant="filled"
@@ -928,7 +976,6 @@ const NuevoTicket = () => {
               paddingLeft={8}
               type="number"
               borderColor="twitter.100"
-
               onChange={(e) => {
                 setCostoPorKilometro(Number(e.target.value));
                 formTicket.setFieldValue(
@@ -938,7 +985,6 @@ const NuevoTicket = () => {
               }}
               value={formTicket.values.costo_de_kilometraje}
             />
-
           </FormControl>
         </Center>
 
