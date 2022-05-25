@@ -106,6 +106,7 @@ export interface ICiudad {
   estadoId?: number | null;
   latitud?: number | null;
   longitud?: number | null;
+  Estado?: IEstado ;
   createdAt?: string | null;
   updatedAt?: string | null;
 }
