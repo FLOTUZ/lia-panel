@@ -62,10 +62,10 @@ export interface ITecnico {
   usuarioId: number;
   ciudadId: number;
   ViveEn?: ICiudad;
-  Servicio: IServicio[];
-  Ciudad: ICiudad[];
-  Cotizaciones: ICotizacionTecnico[];
-  Usuario: IUsuario;
+  Servicio?: IServicio[];
+  Ciudad?: ICiudad[];
+  Cotizaciones?: ICotizacionTecnico[];
+  Usuario?: IUsuario;
   createdAt?: string | null;
   updatedAt?: string | null;
 }
