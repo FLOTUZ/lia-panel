@@ -49,7 +49,7 @@ function UsuarioNuevo() {
   const [apellidoMaterno, setApellidoMaterno] = useState("");
   const [telefono, setTelefono] = useState("");
   const [usuarioId, setUsuarioId] = useState(0);
-  const [ciudadId, setciudadId] = useState<number>();
+  const [ciudadId, setciudadId] = useState<number>(0);
   const [estadoId, setestadoId] = useState<number>();
   const [servicios, setServicios] = useState<string[]>([]);
   const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
@@ -90,7 +90,6 @@ function UsuarioNuevo() {
       password,
       rol,
     };
-console.log(dataUsuario);
 
     const serviceUsuario = new UsuariosService();
     const respuestaUsuario = await serviceUsuario.create(dataUsuario);
