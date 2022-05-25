@@ -34,7 +34,6 @@ import {
 import { AddIcon, CheckIcon, EmailIcon, PhoneIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import {
-  MdAttachMoney,
   MdCarRepair,
   MdHomeFilled,
   MdHomeRepairService,
@@ -162,6 +161,7 @@ function AseguradoraNueva() {
       });
     }
   };
+  
   return (
     <div>
       <DesktopLayout>

@@ -15,8 +15,6 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Select,
-  Textarea,
   useDisclosure,
   InputLeftElement,
   Stack,
@@ -27,23 +25,15 @@ import {
   Th,
   Tbody,
   Td,
-  Spacer,
   Heading,
-  IconButton,
   InputRightAddon,
-  Switch,
-  EditableInput,
-  Editable,
-  EditablePreview,
   useToast,
   SimpleGrid,
   Divider,
 } from "@chakra-ui/react";
 import {
   AddIcon,
-  CheckIcon,
   EditIcon,
-  EmailIcon,
   PhoneIcon,
 } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
@@ -403,6 +393,7 @@ function AseguradoraVer() {
                 </Button>
               </Stack>
             </Box>
+
             <Box
               m={2}
               bgColor="white"
@@ -462,10 +453,15 @@ function AseguradoraVer() {
                     >
                       Guardar
                     </Button>
-                    <Button onClick={onClose}>Cancelar</Button>
+                    <Button 
+                    onClick={onClose}
+                    >
+                      Cancelar
+                      </Button>
                   </ModalFooter>
                 </ModalContent>
               </Modal>
+              
               <TableContainer>
                 <Table
                   marginTop={50}

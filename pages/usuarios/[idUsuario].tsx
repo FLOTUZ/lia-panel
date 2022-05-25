@@ -23,6 +23,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 function UsuarioVer() {
+  
   const [servicios, setServicios] = useState<string[]>([]);
   const filtradoServicios = (t: IServicio) => {
     const id = t.id || 0;
@@ -146,7 +147,6 @@ function UsuarioVer() {
                 isRequired
                 variant="filled"
                 id="usuario"
-                defaultValue={data?.usuario}
                 onChange={formUsuario.handleChange}
                 value={formUsuario.values.usuario}
               />

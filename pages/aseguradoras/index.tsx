@@ -12,43 +12,22 @@ import {
   Td,
   Box,
   Button,
-  FormLabel,
   Input,
   InputLeftAddon,
   InputGroup,
   IconButton,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalCloseButton,
-  ModalBody,
   FormControl,
-  ModalFooter,
-  useDisclosure,
-  useToast,
-  toast,
-  Stack,
 } from "@chakra-ui/react";
 import {
   AddIcon,
-  AttachmentIcon,
   EditIcon,
-  PhoneIcon,
   SearchIcon,
 } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
-import { IAseguradoras, IAsistencias } from "@/services/api.models";
+import { IAseguradoras, } from "@/services/api.models";
 import { AseguradoraService } from "@/services/aseguradoras.service";
-import { AsistenciasService } from "@/services/asistencias.service";
 
 export default function AseguradorasListado() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const toast = useToast()
-
-
-  const [nombreAsistencia, setNombreAsistencia] = useState("")
-
 
   /*CONSULTA EN TABLA DE LAS ASEGURADORAS CON ASISTENCIAS */
   const [listadoAseguradoras, setListadoAseguradoras] = useState<IAseguradoras[]>([])
@@ -165,7 +144,6 @@ export default function AseguradorasListado() {
                       <Link href={`/aseguradoras/${aseguradoras.id}`}>
                           <a>
                             <IconButton
-
                               variant="outline"
                               aria-label="edit"
                               icon={<EditIcon />}
@@ -187,28 +165,6 @@ export default function AseguradorasListado() {
           </Table>
         </TableContainer>
       </Box>
-      <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Crea una nueva asistencia</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl mt={4}>
-              <FormLabel>Nombre de la asistencia</FormLabel>
-              <Input onChange={(e) => {
-                setNombreAsistencia(e.target.value)
-              }} placeholder="Nombre de la asistencia" />
-            </FormControl>
-          </ModalBody>
-
-          <ModalFooter>
-            <Button colorScheme="blue" mr={3}>
-              Guardar
-            </Button>
-            <Button onClick={onClose}>Cancelar</Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
     </DesktopLayout>
   );
 }
