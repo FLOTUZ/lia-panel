@@ -978,6 +978,68 @@ const NuevoTicket = () => {
             />
 
           </FormControl>
+            <InputGroup>
+              <InputLeftAddon
+                pointerEvents="none"
+                children={<MdOutlineAttachMoney />}
+              />
+              <Input
+                variant="filled"
+                id="costo_de_kilometraje"
+                min={0}
+                placeholder="0.00"
+                paddingLeft={8}
+                type="number"
+                borderColor="twitter.100"
+                onChange={(e) => {
+                  setCostoPorKilometro(Number(e.target.value));
+                  formTicket.setFieldValue(
+                    "costo_de_kilometraje",
+                    parseInt(e.target.value)
+                  );
+                }}
+                value={formTicket.values.costo_de_kilometraje}
+              />
+            </InputGroup>
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel htmlFor="kilometrajeMaxPorAseguradora">
+              Kilómetros max por aseguradora
+            </FormLabel>
+            <InputGroup>
+              <InputLeftAddon
+                pointerEvents="none"
+                children={<IoSpeedometerOutline />}
+              />
+              <Input
+                variant="filled"
+                min={0}
+                placeholder="0"
+                type="number"
+                borderColor="twitter.100"
+              ></Input>
+            </InputGroup>
+          </FormControl>
+
+          <FormControl isRequired>
+            <FormLabel htmlFor="costoPorKilometroDeAseguradora">
+              Costo por Kilómetro por aseguradora
+            </FormLabel>
+            <InputGroup>
+              <InputLeftAddon
+                pointerEvents="none"
+                children={<MdOutlineAttachMoney />}
+              />
+              <Input
+                variant="filled"
+                min={0}
+                placeholder="0.00"
+                paddingLeft={8}
+                type="number"
+                borderColor="twitter.100"
+              />
+            </InputGroup>
+          </FormControl>
         </SimpleGrid>
 
         {/* PARA SERVICIOS VIALES*/}
