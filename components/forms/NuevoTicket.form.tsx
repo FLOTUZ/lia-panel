@@ -583,7 +583,7 @@ const NuevoTicket = () => {
           <Divider orientation="vertical" />
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="nombre_usuario_final">
-              Nombre del Usuario Final
+              Nombre del Usuario a brindar servicio
             </FormLabel>
             <Input
               variant="filled"
@@ -635,7 +635,7 @@ const NuevoTicket = () => {
               setServiciosSeleccionados(e as string[]);
             }}
           >
-            <SimpleGrid minChildWidth="3rem" spacing="4rem">
+            <SimpleGrid padding={5} minChildWidth='120px' spacing='40px'>
               {serviciosList?.length !== 0
                 ? serviciosList.map((servicio, index) => {
                   return (
@@ -928,12 +928,17 @@ const NuevoTicket = () => {
               paddingLeft={8}
               type="number"
               borderColor="twitter.100"
+
               onChange={(e) => {
                 setCostoPorKilometro(Number(e.target.value));
-                formTicket.handleChange(e);
+                formTicket.setFieldValue(
+                  "costo_de_kilometraje",
+                  parseInt(e.target.value)
+                );
               }}
               value={formTicket.values.costo_de_kilometraje}
             />
+
           </FormControl>
         </Center>
 
@@ -1127,19 +1132,19 @@ const NuevoTicket = () => {
                 pointerEvents="none"
                 children={<MdOutlineAttachMoney />}
               />
-            <Input
-              variant="filled"
-              id="total_salida"
-              min={0}
-              placeholder="0.00"
-              paddingLeft={8}
-              type="number"
-              borderColor="twitter.100"
-              fontWeight={"bold"}
-              textColor={"red"}
-              onChange={formTicket.handleChange}
-              value={calculoTotalSalida}
-            />
+              <Input
+                variant="filled"
+                id="total_salida"
+                min={0}
+                placeholder="0.00"
+                paddingLeft={8}
+                type="number"
+                borderColor="twitter.100"
+                fontWeight={"bold"}
+                textColor={"red"}
+                onChange={formTicket.handleChange}
+                value={calculoTotalSalida}
+              />
             </InputGroup>
           </FormControl>
 
@@ -1150,19 +1155,19 @@ const NuevoTicket = () => {
                 pointerEvents="none"
                 children={<MdOutlineAttachMoney />}
               />
-            <Input
-              variant="filled"
-              id="total"
-              min={0}
-              placeholder="0.00"
-              paddingLeft={8}
-              type="number"
-              borderColor="twitter.100"
-              fontWeight={"bold"}
+              <Input
+                variant="filled"
+                id="total"
+                min={0}
+                placeholder="0.00"
+                paddingLeft={8}
+                type="number"
+                borderColor="twitter.100"
+                fontWeight={"bold"}
                 textColor={"red"}
-              onChange={formTicket.handleChange}
-              value={calculoMontoTotal}
-            />
+                onChange={formTicket.handleChange}
+                value={calculoMontoTotal}
+              />
             </InputGroup>
           </FormControl>
         </SimpleGrid>
