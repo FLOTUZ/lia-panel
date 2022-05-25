@@ -28,11 +28,13 @@ import {
 //import { useFormik } from "formik";
 
 import { FormEvent, useState, useEffect } from "react";
-import { ITecnico, IUsuario, IServicio, ICiudad } from "@/services/api.models";
+import { ITecnico, IUsuario, IServicio, ICiudad, IEstado } from "@/services/api.models";
 import { UsuariosService } from "@/services/usuarios.service";
 import { TecnicoService } from "@/services/tecnicos.service";
 import { ServiciosService } from "@/services/servicios.service";
 import { ServiciosToTecnicos } from "@/services/serviciosToTecnicos.service";
+import { EstadosService } from "@/services/estados.service";
+import { Consultar } from "@/services/ApiCall";
 
 function UsuarioNuevo() {
   //------------------------ DATA USUARIO -------------------------------------
@@ -48,8 +50,10 @@ function UsuarioNuevo() {
   const [telefono, setTelefono] = useState("");
   const [usuarioId, setUsuarioId] = useState(0);
   const [ciudadId, setciudadId] = useState<number>();
+  const [estadoId, setestadoId] = useState<number>();
   const [servicios, setServicios] = useState<string[]>([]);
   const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
+  const [estadosList, setEstadosList] = useState<IEstado[]>([]);
 
   const [cargando, setCargando] = useState(false);
   const [checkedItems, setCheckedItems] = React.useState([false, false]);
@@ -67,13 +71,10 @@ function UsuarioNuevo() {
     if (!found) {
       arr.push(String(id));
       setServicios(arr);
-      console.log(servicios);
     } else {
       for (let i = 0; i < arr.length; i++) {
         if (arr[i] == String(id)) {
           arr.splice(i, 1);
-
-          console.log(arr);
           setServicios(arr);
         }
       }
@@ -89,6 +90,7 @@ function UsuarioNuevo() {
       password,
       rol,
     };
+console.log(dataUsuario);
 
     const serviceUsuario = new UsuariosService();
     const respuestaUsuario = await serviceUsuario.create(dataUsuario);
@@ -104,7 +106,7 @@ function UsuarioNuevo() {
         description: `Error al dar de alta, verifique sus campos de usuario`,
       });
     }
-    if (respuestaUsuario.status == 201) {
+    if (respuestaUsuario.status == 200) {
       toast({
         title: "Guardado",
         status: "success",
@@ -119,7 +121,7 @@ function UsuarioNuevo() {
         apellido_materno: apellidoMaterno,
         telefono: telefono,
         usuarioId: usuarioGuardado.id || 0,
-        ciudadId: 1,
+        ciudadId: ciudadId || 0,
       };
 
       const serviceTecnico = new TecnicoService();
@@ -159,26 +161,42 @@ function UsuarioNuevo() {
 
   const [listadoServicios, setListadoServicios] = useState<IServicio[]>([]);
 
+  // ciudades por Estado
+  const [IdEstado, setIdEstado] = useState(0);
+
+  // consultas
+
+  const consultarTecnicos = async () => {
+    const service = new ServiciosService();
+    const respuesta = await service.getAll();
+
+    if (respuesta.status != 200) {
+    } else {
+      const data = respuesta.data as IServicio[];
+      setListadoServicios(data);
+    }
+  };
+
+  const consultarEstados = async () => {
+    const servicio = new EstadosService();
+    const respuesta = await servicio.getAll();
+    const data = respuesta.data as IEstado[];
+
+    setEstadosList(data);
+  };
+
+  const consultarCiudades = async () => {
+    const servicio = new CiudadesService();
+    const respuesta: any = await servicio.getCiudadesByIdEstado(IdEstado);
+    const data = respuesta.data as ICiudad[];
+
+    setCiudadesList(data);
+  };
+
   useEffect(() => {
-    const consultarTecnicos = async () => {
-      const service = new ServiciosService();
-      const respuesta = await service.getAll();
+   
 
-      if (respuesta.status != 200) {
-      } else {
-        const data = respuesta.data as IServicio[];
-        setListadoServicios(data);
-      }
-    };
-
-    const consultarCiudades = async () => {
-      const servicio = new CiudadesService();
-      const respuesta = await servicio.getAll();
-      const data = respuesta.data as ICiudad[];
-
-      setCiudadesList(data);
-    };
-
+    consultarEstados();
     consultarCiudades();
     consultarTecnicos();
   }, []);
@@ -261,11 +279,8 @@ function UsuarioNuevo() {
                         }}
                       />
                     </FormControl>
-                  </Center>
 
-                  <Center>
-                    <Divider orientation="vertical" />
-                    <FormControl isRequired paddingTop={15}>
+                    <FormControl isRequired paddingTop={15} paddingLeft={15}>
                       <FormLabel htmlFor="apellidoPaterno">
                         Apellido Paterno
                       </FormLabel>
@@ -279,7 +294,12 @@ function UsuarioNuevo() {
                       />
                     </FormControl>
 
-                    <FormControl isRequired paddingLeft={5} paddingTop={15}>
+                  </Center>
+
+                  <Center>
+                    <Divider orientation="vertical" />
+                    
+                    <FormControl isRequired  paddingTop={15}>
                       <FormLabel htmlFor="apellidoMaterno">
                         Apellido Materno
                       </FormLabel>
@@ -292,11 +312,8 @@ function UsuarioNuevo() {
                         }}
                       />
                     </FormControl>
-                  </Center>
 
-                  <Center>
-                    <Divider orientation="vertical" />
-                    <FormControl isRequired paddingTop={15}>
+                    <FormControl isRequired paddingTop={15} paddingLeft={15}>
                       <FormLabel htmlFor="telefono">Telefono</FormLabel>
                       <Input
                         variant="filled"
@@ -308,6 +325,35 @@ function UsuarioNuevo() {
                         }}
                       />
                     </FormControl>
+                    
+                  </Center>
+
+                  <Center>
+                    <Divider orientation="vertical" />
+                    
+                    <FormControl isRequired  paddingTop={15}>
+                      <FormLabel htmlFor="estado">Estado</FormLabel>
+                      <Select
+                        id="estado"
+                        placeholder="Selecciona el estado"
+                        variant="filled"
+                        onChange={(e) => {
+                           setestadoId(Number(e.target.value));
+                           setIdEstado(Number(e.target.value));
+                        }}
+                        
+                      >
+                        {estadosList?.length !== 0
+                          ? estadosList?.map((estado, index) => {
+                              return (
+                                <option key={index} value={estado.id}>
+                                  {estado.nombre}
+                                </option>
+                              );
+                            })
+                          : null}
+                      </Select>
+                    </FormControl>
 
                     <FormControl isRequired paddingLeft={5} paddingTop={15}>
                       <FormLabel htmlFor="ciudad">Ciudad</FormLabel>
@@ -317,6 +363,9 @@ function UsuarioNuevo() {
                         variant="filled"
                         onChange={(e) => {
                            setciudadId(Number(e.target.value));
+                        }}
+                        onFocus={(e) => {
+                          consultarCiudades();
                         }}
                       >
                         {ciudadesList?.length !== 0
