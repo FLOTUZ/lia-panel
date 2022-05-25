@@ -17,6 +17,7 @@ import {
   InputGroup,
   IconButton,
   FormControl,
+  Stack,
 } from "@chakra-ui/react";
 import {
   AddIcon,
@@ -70,10 +71,8 @@ export default function AseguradorasListado() {
           bg="white"
         >
           <FormControl>
-          <Stack 
+          <Stack
             paddingTop={10}
-           
-             paddingLeft={530}
             direction={["column", "row"]} spacing="24px">
 
             <Link href={"/aseguradoras/nuevo"}>    
@@ -81,7 +80,7 @@ export default function AseguradorasListado() {
                   leftIcon={<AddIcon />}
                   colorScheme="facebook"
                   variant="solid"
-                  marginLeft={"20%"}
+                  marginLeft={"80%"}
                 >
                   Nueva aseguradora
                 </Button>
@@ -110,7 +109,7 @@ export default function AseguradorasListado() {
           </InputGroup>
         </Box>
 
-        <TableContainer>
+        <TableContainer padding={10}>
           <Table variant="simple" colorScheme="teal">
             <TableCaption>Aseguradoras</TableCaption>
             <Thead>
@@ -121,8 +120,7 @@ export default function AseguradorasListado() {
                 <Th>Km Max</Th>
                 <Th>Costo Km</Th>
                 <Th>Creado</Th>
- 
-                <Th></Th>
+                <Th> opciones</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -138,7 +136,6 @@ export default function AseguradorasListado() {
                       <Td>{aseguradoras.kilometraje_permitido}</Td>
                       <Td>{aseguradoras.costo_por_kilometro}</Td>
                       <Td>{aseguradoras.createdAt}</Td>
-                      <Td>{aseguradoras.updatedAt}</Td>
                       
                       <Td>
                       <Link href={`/aseguradoras/${aseguradoras.id}`}>

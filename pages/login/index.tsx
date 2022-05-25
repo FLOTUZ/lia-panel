@@ -53,7 +53,6 @@ export default function Home(): JSX.Element {
             alignItems="center"
           >
             <Image
-        
               height={250}
               width={250}
               src={Logo}

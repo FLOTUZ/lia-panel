@@ -57,7 +57,7 @@ const Kanban = ({}: IKanban) => {
         templateColumns={"repeat( 8, 1fr)"}
         overflow="overlay"
         p={2}
-        columnGap={2}
+        columnGap={1}
       >
         <KanbanColumn colorGridBg={"green"} columnName={"Nuevos"}>
           {nuevosTickets.map((ticket, index) => {

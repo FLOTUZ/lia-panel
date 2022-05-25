@@ -161,7 +161,7 @@ function AseguradoraNueva() {
       });
     }
   };
-  
+
   return (
     <div>
       <DesktopLayout>
@@ -344,12 +344,13 @@ function AseguradoraNueva() {
             </SimpleGrid>
 
             <Stack
-            paddingTop={10}
-             align="center"
-             paddingLeft={730}
-            direction={["column", "row"]} spacing="24px">
+              paddingTop={10}
+              align="center"
+              paddingLeft={"75%"}
+              spacing={4}
+              direction="row"
+            >
               <Button
-               
                 width={120}
                 colorScheme="facebook"
                 variant="solid"
@@ -383,23 +384,17 @@ function AseguradoraNueva() {
             Asistencia de Aseguradora
           </Heading>
 
+            <Stack paddingLeft={"75%"}>
+              <Button
+                leftIcon={<AddIcon />}
+                colorScheme="facebook"
+                variant="solid"
+                onClick={onOpen}
+              >
+                Nueva Asistencia
+              </Button>
+            </Stack>
           
-            <Stack
-            paddingTop={5}
-             align="center"
-             paddingLeft={730}
-            direction={["column", "row"]} spacing="24px">
-          
-
-            <Button
-              leftIcon={<AddIcon />}
-              colorScheme="facebook"
-              variant="solid"
-              onClick={onOpen}
-            >
-              Nueva Asistencia
-            </Button>
-          </Stack>
 
           <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
