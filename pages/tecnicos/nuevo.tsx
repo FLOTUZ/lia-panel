@@ -216,7 +216,7 @@ function UsuarioNuevo() {
             spacing={2}
             alignItems={"start"}
           >
-            <FormLabel htmlFor="usuario">Nombre de usuario</FormLabel>
+            <FormLabel htmlFor="usuario">Nombre de Usuario</FormLabel>
             <Input
               isRequired
               variant="filled"
@@ -245,7 +245,7 @@ function UsuarioNuevo() {
               isRequired={true}
               onChange={(e) => setPassword(e.target.value)}
             />
-            <FormHelperText>minimo 8 caracteres</FormHelperText>
+            <FormHelperText>Mínimo 8 Caracteres</FormHelperText>
             </FormControl>
             <FormLabel htmlFor="rol">Seleccione Rol</FormLabel>
 
@@ -263,7 +263,7 @@ function UsuarioNuevo() {
                   rounded="md"
                   bg={"white"}
                 >
-                  <Text fontWeight="bold">Datos básicos del tecnico</Text>
+                  <Text fontWeight="bold">Datos Básicos del Técnico</Text>
 
                   <Center>
                     <Divider orientation="vertical" />
@@ -313,11 +313,11 @@ function UsuarioNuevo() {
                     </FormControl>
 
                     <FormControl isRequired paddingTop={15} paddingLeft={15}>
-                      <FormLabel htmlFor="telefono">Telefono</FormLabel>
+                      <FormLabel htmlFor="telefono">Teléfono</FormLabel>
                       <Input
                         variant="filled"
                         id="telefono"
-                        placeholder="1234567890"
+                        placeholder="Teléfono"
                         type={"tel"}
                         onChange={(e) => {
                           setTelefono(e.target.value);
@@ -334,7 +334,7 @@ function UsuarioNuevo() {
                       <FormLabel htmlFor="estado">Estado</FormLabel>
                       <Select
                         id="estado"
-                        placeholder="Selecciona el estado"
+                        placeholder="Selecciona el Estado"
                         variant="filled"
                         onChange={(e) => {
                            setestadoId(Number(e.target.value));

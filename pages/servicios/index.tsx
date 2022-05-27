@@ -222,7 +222,7 @@ function ServiciosListado() {
             variant="solid"
             marginLeft={"80%"}
           >
-            Nuevo servicio
+            Nuevo Servicio
           </Button>
         </Box>
         <Box marginLeft={"1%"}>
@@ -269,19 +269,19 @@ function ServiciosListado() {
       <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Crea una nuevo servicio</ModalHeader>
+          <ModalHeader>Crea un Nuevo Servicio </ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
             <FormControl mt={4}>
-              <FormLabel padding={1}>Nombre del servicio</FormLabel>
+              <FormLabel padding={1}>Nombre del Servicio</FormLabel>
               <Input
                 paddingBottom={2}
-                placeholder="Nombre del servicio"
+                placeholder="Nombre del Servicio"
                 onChange={(e) => {
                   setNombreServicio(e.target.value);
                 }}
               />
-              <FormLabel padding={1}>Tipo del servicio</FormLabel>
+              <FormLabel padding={1}>Tipo del Servicio</FormLabel>
               <RadioGroup colorScheme="green">
                 <Stack
                   padding={2}
@@ -294,7 +294,7 @@ function ServiciosListado() {
                     }}
                     value="DOMESTICO"
                   >
-                    Domestico
+                    Doméstico
                   </Radio>
                   <Radio
                     onChange={(e) => {
@@ -302,7 +302,7 @@ function ServiciosListado() {
                     }}
                     value="VIAL"
                   >
-                    Automovilistico
+                    Automovilístico
                   </Radio>
                 </Stack>
               </RadioGroup>

@@ -82,7 +82,7 @@ export default function AseguradorasListado() {
                   variant="solid"
                   marginLeft={"80%"}
                 >
-                  Nueva aseguradora
+                  Nueva Aseguradora
                 </Button>
             </Link>
             </Stack>
@@ -116,7 +116,7 @@ export default function AseguradorasListado() {
               <Tr>
                 <Th>Nº</Th>
                 <Th>Nombre</Th>
-                <Th>Telefono</Th>
+                <Th>Teléfono</Th>
                 <Th>Km Max</Th>
                 <Th>Costo Km</Th>
                 <Th>Creado</Th>

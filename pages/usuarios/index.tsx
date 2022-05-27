@@ -80,7 +80,7 @@ function UsuariosListado() {
                 variant="solid"
                 marginLeft={"80%"}
               >
-                Nuevo usuario
+                Nuevo Usuario
               </Button>
             </a>
           </Link>

@@ -25,7 +25,7 @@ const Navbar = () => {
       icon: <IoReceipt size={32} />,
     },
     {
-      name: "Tecnicos",
+      name: "Técnicos",
       path: "/tecnicos",
       icon: <MdHomeRepairService size={32} />,
     },

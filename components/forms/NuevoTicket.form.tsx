@@ -381,7 +381,7 @@ const NuevoTicket = () => {
         <Stack direction="row">
           <Spacer />
           <Divider orientation="vertical" />
-          <FormLabel htmlFor="num_expediente">Numero de Expediente:</FormLabel>
+          <FormLabel htmlFor="num_expediente">Número de Expediente:</FormLabel>
           <Input
             variant="filled"
             id="num_expediente"
@@ -561,11 +561,11 @@ const NuevoTicket = () => {
             </FormControl>
 
             <FormControl isRequired paddingLeft={5} paddingTop={15}>
-              <FormLabel htmlFor="asesorid">Asesor de aseguradora</FormLabel>
+              <FormLabel htmlFor="asesorid">Asesor de Aseguradora</FormLabel>
               <Select
                 overflowWrap={"normal"}
                 id="asesorId"
-                placeholder="Selecciona el asesor de la aseguradora"
+                placeholder="Selecciona el Asesor de la Aseguradora"
                 alignItems={"center"}
                 alignContent={"center"}
                 variant="filled"
@@ -603,7 +603,7 @@ const NuevoTicket = () => {
             <Input
               variant="filled"
               id="nombre_usuario_final"
-              placeholder="Usuario Final"
+              placeholder="Usuario a Brindar Servicio"
               borderColor="twitter.100"
               onChange={formTicket.handleChange}
               value={formTicket.values.nombre_usuario_final}
@@ -641,7 +641,7 @@ const NuevoTicket = () => {
 
         <FormControl paddingTop={15}>
           <FormLabel htmlFor="servicioId">
-            Seleccione Servicios relacionados:
+            Seleccione Servicios Relacionados:
           </FormLabel>
           <CheckboxGroup
             variant="filled"
@@ -709,13 +709,13 @@ const NuevoTicket = () => {
                 borderRadius={"2xl"}
               >
                 <Text color={"white"} fontWeight="bold">
-                  Servicio domestico activado
+                  Servicio Dómestico Activado
                 </Text>
               </Flex>
             ) : null}
           </FormControl>
           <FormControl paddingTop={2} paddingLeft={2}>
-            <FormLabel htmlFor="asistencia_vial">Servicio Víal</FormLabel>
+            <FormLabel htmlFor="asistencia_vial">Servicio Vial</FormLabel>
 
             <Switch
               id="asistencia_vial"
@@ -737,7 +737,7 @@ const NuevoTicket = () => {
                 borderRadius={"2xl"}
               >
                 <Text color={"white"} fontWeight="bold">
-                  Servicio vial activado
+                  Servicio Vial Activado
                 </Text>
               </Flex>
             ) : null}
@@ -760,7 +760,7 @@ const NuevoTicket = () => {
                 borderRadius={"2xl"}
               >
                 <Text color={"white"} fontWeight="bold">
-                  Servicio vial activado
+                  Servicio Vial Activado
                 </Text>
               </Flex>
             ) : null}
@@ -994,7 +994,7 @@ const NuevoTicket = () => {
         <SimpleGrid columns={[1, 1, 4]} spacing={4}>
           {formTicket.values.asistencia_vial === true ? (
             <FormControl isRequired paddingTop={15}>
-              <FormLabel htmlFor="modelo_del_carro">Módelo del Carro</FormLabel>
+              <FormLabel htmlFor="modelo_del_carro">Modelo del Carro</FormLabel>
               <Input
                 variant="filled"
                 id="modelo_carro"
@@ -1053,7 +1053,7 @@ const NuevoTicket = () => {
         <SimpleGrid columns={[1, 1, 3]} spacing={4}>
           {formTicket.values.is_servicio_foraneo === true ? (
             <FormControl paddingTop={15}>
-              <FormLabel htmlFor="casetas">Número de casetas</FormLabel>
+              <FormLabel htmlFor="casetas">Número de Casetas</FormLabel>
               <Input
                 variant="filled"
                 id="casetas"

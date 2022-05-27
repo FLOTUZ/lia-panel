@@ -180,7 +180,7 @@ function AseguradoraNueva() {
           <Stack spacing={4}>
             <InputGroup>
               <FormControl isRequired>
-                <FormLabel htmlFor="nombre">Nombre de la aseguradora</FormLabel>
+                <FormLabel htmlFor="nombre">Nombre de la Aseguradora</FormLabel>
                 <InputGroup>
                   <InputLeftElement
                     pointerEvents="none"
@@ -270,13 +270,13 @@ function AseguradoraNueva() {
 
             <Divider paddingTop={5} orientation="horizontal" />
             <Heading paddingLeft={2} paddingBottom={5} as="h4" size="md">
-              Información adicional
+              Información Adicional
             </Heading>
             <SimpleGrid columns={3} spacing={5}>
               <InputGroup>
                 <FormControl>
                   <FormLabel htmlFor="telefono">
-                    Teléfono Servicio Domestico
+                    Teléfono Servicio Doméstico
                   </FormLabel>
                   <InputGroup>
                     <InputLeftElement
@@ -290,7 +290,7 @@ function AseguradoraNueva() {
                       minLength={8}
                       maxLength={12}
                       type="phone"
-                      placeholder="Numero de Teléfono de servicio domestico"
+                      placeholder="Número de Teléfono de Servicio Doméstico"
                     />
                   </InputGroup>
                 </FormControl>
@@ -313,7 +313,7 @@ function AseguradoraNueva() {
                         setTelefonoVialAseguradora(e.target.value);
                       }}
                       type="phone"
-                      placeholder="Numero de Teléfono de servicio vial"
+                      placeholder="Número de Teléfono de Servicio Vial"
                     />
                   </InputGroup>
                 </FormControl>
@@ -322,7 +322,7 @@ function AseguradoraNueva() {
               <InputGroup>
                 <FormControl>
                   <FormLabel htmlFor="telefono">
-                    Teléfono solo para whatsapp
+                    Teléfono de WhatsApp
                   </FormLabel>
                   <InputGroup>
                     <InputLeftElement
@@ -336,7 +336,7 @@ function AseguradoraNueva() {
                         setTelefonoWhatsAseguradora(e.target.value);
                       }}
                       type="phone"
-                      placeholder="Numero de whatsapp"
+                      placeholder="Numero de WhatsApp"
                     />
                   </InputGroup>
                 </FormControl>

@@ -225,6 +225,7 @@ function UsuarioNuevo() {
               variant="filled"
               id="password"
               type={"password"}
+              placeholder="Contraseña"
               isRequired={true}
               onChange={(e) => setPassword(e.target.value)}
             />
@@ -324,7 +325,7 @@ function UsuarioNuevo() {
                       <Input
                         variant="filled"
                         id="telefono"
-                        placeholder="1234567890"
+                        placeholder="Teléfono"
                         type={"tel"}
                         onChange={(e) => {
                           setTelefono(e.target.value);
