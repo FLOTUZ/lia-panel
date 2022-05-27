@@ -14,6 +14,7 @@ import {
   SimpleGrid,
   InputGroup,
   InputLeftAddon,
+  Button,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import React, { useState, useEffect } from "react";
@@ -25,6 +26,7 @@ import { IoFlag, IoSpeedometerOutline } from "react-icons/io5";
 import { EstadosService } from "@/services/estados.service";
 import DesktopLayout from "@/layouts/DesktopLayout";
 import Header from "@/common/Header";
+import CrearCotizacionTecnico from "@/forms/CotizacionTecnicoForm";
 
 function verTicketVialForaneo() {
   const router = useRouter();
@@ -42,107 +44,116 @@ function verTicketVialForaneo() {
           rounded="md"
           bg="white"
         >
-          <Text fontWeight="bold" fontSize={"25px"}>
+          <Text fontWeight="bold" fontSize="25px">
             Datos Básicos
           </Text>
 
-          <Stack direction="row">
-            <Spacer />
-            <Divider orientation="vertical" />
+          <SimpleGrid columns={[1, 1, 5]} spacing="20px" paddingTop={17}>
             <FormLabel htmlFor="num_expediente">
               Número de Expediente:
             </FormLabel>
             <Input
-              variant="filled"
+              variant="unstyled"
+              isReadOnly
               id="num_expediente"
               type="text"
               placeholder="N° Expediente"
               borderColor="twitter.100"
             />
-          </Stack>
+          </SimpleGrid>
 
-          <FormControl isRequired paddingTop={15}>
-            <FormLabel htmlFor="fecha_llamada">Fecha de la Llamada</FormLabel>
-            <Input
-              w={"fit-content"}
-              id="fecha_llamada"
-              variant="filled"
-              type="datetime-local"
-              borderColor="twitter.100"
-            />
-          </FormControl>
+          <SimpleGrid columns={[1, 1, 1]} spacing="20px">
+            <FormControl paddingTop={15}>
+              <FormLabel htmlFor="fecha_llamada">Fecha de la Llamada</FormLabel>
+              <Input
+                w={"fit-content"}
+                id="fecha_llamada"
+                variant="unstyled"
+                isReadOnly
+                placeholder="Fecha de la Llamada"
+                borderColor="twitter.100"
+              />
+            </FormControl>
+          </SimpleGrid>
+
           <SimpleGrid columns={[1, 1, 2]} spacing="20px">
             <Center>
-              <FormControl isRequired paddingTop={15}>
+              <FormControl paddingTop={15}>
                 <FormLabel htmlFor="aseguradoraId">Aseguradora</FormLabel>
-                <Select
+                <Input
+                  variant="unstyled"
+                  isReadOnly
                   id="aseguradoraId"
-                  placeholder="Selecciona la Aseguradora"
-                  variant="filled"
+                  placeholder="Nombre de Aseguradora"
                   borderColor="twitter.100"
-                ></Select>
+                />
               </FormControl>
 
-              <FormControl isRequired paddingLeft={5} paddingTop={15}>
+              <FormControl paddingTop={15}>
                 <FormLabel htmlFor="asistenciaId">Asistencia</FormLabel>
-                <Select
+                <Input
+                  variant="unstyled"
+                  isReadOnly
                   id="asistenciaId"
-                  placeholder="Selecciona Asistencia"
-                  variant="filled"
+                  placeholder="Nombre de Asistencia"
                   borderColor="twitter.100"
-                ></Select>
+                />
               </FormControl>
             </Center>
           </SimpleGrid>
 
-          <SimpleGrid columns={1} spacing={5}>
+          <SimpleGrid columns={[1, 1, 2]} spacing={5}>
             <Center>
-              <FormControl isRequired paddingTop={15}>
+              <FormControl paddingTop={15}>
                 <FormLabel htmlFor="nombre_asesor_gpo_lias">
                   Asesor de Gpo. Lías
                 </FormLabel>
                 <Input
-                  variant="filled"
+                  variant="unstyled"
+                  isReadOnly
                   id="nombre_asesor_gpo_lias"
                   placeholder="Asesor de Grupo Lías"
                   borderColor="twitter.100"
                 />
               </FormControl>
 
-              <FormControl isRequired paddingLeft={5} paddingTop={15}>
-                <FormLabel htmlFor="asesorid">Asesor de Aseguradora</FormLabel>
-                <Select
-                  overflowWrap={"normal"}
-                  id="asesorId"
-                  placeholder="Selecciona el Asesor de la Aseguradora"
-                  alignItems={"center"}
-                  alignContent={"center"}
-                  variant="filled"
+              <FormControl paddingTop={15}>
+                <FormLabel htmlFor="nombre_asesor_aseguradora">
+                  Asesor de la Aseguradora
+                </FormLabel>
+                <Input
+                  variant="unstyled"
+                  isReadOnly
+                  id="nombre_asesor_aseguradora"
+                  placeholder="Asesor de la Aseguradora"
                   borderColor="twitter.100"
-                ></Select>
+                />
               </FormControl>
             </Center>
           </SimpleGrid>
+
           <Center>
             <Divider orientation="vertical" />
-            <FormControl isRequired paddingTop={15}>
+            <FormControl paddingTop={15}>
               <FormLabel htmlFor="nombre_usuario_final">
                 Nombre del Usuario a Brindar Servicio
               </FormLabel>
               <Input
-                variant="filled"
+                variant="unstyled"
+                isReadOnly
                 id="nombre_usuario_final"
                 placeholder="Usuario a Brindar Servicio"
                 borderColor="twitter.100"
               />
             </FormControl>
 
-            <FormControl isRequired paddingLeft={5} paddingTop={15}>
+            <FormControl paddingLeft={5} paddingTop={15}>
               <FormLabel htmlFor="titulo_ticket">
                 Descripción Corta del Ticket
               </FormLabel>
               <Input
-                variant="filled"
+                variant="unstyled"
+                isReadOnly
                 id="titulo_ticket"
                 placeholder="Descripción Corta"
                 borderColor="twitter.100"
@@ -150,25 +161,30 @@ function verTicketVialForaneo() {
             </FormControl>
           </Center>
 
-          <FormControl isRequired paddingTop={15}>
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="problematica">
               Descripción de la Problemática
             </FormLabel>
             <Textarea
               id="problematica"
-              variant="filled"
+              variant="unstyled"
               placeholder="Problemática"
               borderColor="twitter.100"
             />
           </FormControl>
 
           <FormControl paddingTop={15}>
-            <FormLabel htmlFor="servicioId">
-              Seleccione Servicios Relacionados:
-            </FormLabel>
-            <CheckboxGroup variant="filled" size={"lg"}></CheckboxGroup>
+            <FormLabel htmlFor="servicioId">Servicios Relacionados:</FormLabel>
+            <Textarea
+              id="servicioId"
+              variant="unstyled"
+              isReadOnly
+              placeholder="Servicios Relacionados"
+              borderColor="twitter.100"
+            />
           </FormControl>
         </Box>
+
         <Box
           m={2}
           bgColor="white"
@@ -184,68 +200,77 @@ function verTicketVialForaneo() {
           </Text>
           <Divider orientation="vertical" />
 
-         
-
           <SimpleGrid columns={[1, 1, 2]} spacing={5}>
-            <FormControl isRequired paddingTop={15}>
+            <FormControl paddingTop={15}>
               <FormLabel htmlFor="estado">Estado</FormLabel>
-             
+              <Input
+                variant="unstyled"
+                isReadOnly
+                id="estado"
+                placeholder="Estado"
+                borderColor="twitter.100"
+              />
             </FormControl>
 
-            <FormControl isRequired paddingTop={15}>
+            <FormControl paddingTop={15}>
               <FormLabel htmlFor="ciudad">Ciudad</FormLabel>
-              
+              <Input
+                id="ciudad"
+                placeholder="Ciudad"
+                variant="unstyled"
+                isReadOnly
+                borderColor="twitter.100"
+              ></Input>
             </FormControl>
           </SimpleGrid>
-
-          <SimpleGrid columns={[1, 1, 4]} spacing={5}>
+          <SimpleGrid columns={[1, 1, 4]} spacing={4}>
             <FormControl isRequired paddingTop={15}>
-              <FormLabel htmlFor="colonia">Colonia</FormLabel>
+              <FormLabel htmlFor="modelo_del_carro">Modelo del Carro</FormLabel>
               <Input
-                variant="filled"
-                id="colonia"
-                placeholder="Colonia"
+                variant="unstyled"
+                isReadOnly
+                id="modelo_carro"
+                placeholder="Modelo del Carro"
                 borderColor="twitter.100"
               />
             </FormControl>
 
             <FormControl isRequired paddingTop={15}>
-              <FormLabel htmlFor="calle">Calle</FormLabel>
+              <FormLabel htmlFor="placas">Placas</FormLabel>
               <Input
-                variant="filled"
-                id="calle"
-                placeholder="Calle"
+                variant="unstyled"
+                isReadOnly
+                id="placas_carro"
+                placeholder="Placas"
                 borderColor="twitter.100"
               />
             </FormControl>
 
-            <FormControl isRequired paddingLeft={5} paddingTop={15}>
-              <FormLabel htmlFor="numero_domicilio_exterior">
-                Número Exterior
-              </FormLabel>
+            <FormControl isRequired paddingTop={15}>
+              <FormLabel htmlFor="color">Color</FormLabel>
               <Input
-                variant="filled"
-                id="numero_domicilio"
-                placeholder="N° de Domicilio Exterior"
+                variant="unstyled"
+                isReadOnly
+                id="color_carro"
+                placeholder="Color"
                 borderColor="twitter.100"
               />
             </FormControl>
 
-            <FormControl paddingLeft={5} paddingTop={15}>
-              <FormLabel htmlFor="numero_domicilio_interior">
-                Número Interior
-              </FormLabel>
+            <FormControl isRequired paddingTop={15}>
+              <FormLabel htmlFor="marca">Marca</FormLabel>
               <Input
-                variant="filled"
-                id="num_interior"
-                placeholder="N° de Domicilio Interior"
+                variant="unstyled"
+                isReadOnly
+                id="marca_carro"
+                placeholder="Marca"
                 borderColor="twitter.100"
               />
             </FormControl>
           </SimpleGrid>
 
           <Center>
-            <FormControl isRequired paddingTop={15}>
+            <FormControl paddingTop={15}>
               <FormLabel htmlFor="cobertura">
                 Monto de Cobertura del Seguro
               </FormLabel>
@@ -255,7 +280,8 @@ function verTicketVialForaneo() {
                   children={<MdOutlineAttachMoney />}
                 />
                 <Input
-                  variant="filled"
+                  variant="unstyled"
+                  isReadOnly
                   id="cobertura"
                   min={0}
                   placeholder="0.00"
@@ -267,7 +293,7 @@ function verTicketVialForaneo() {
               </InputGroup>
             </FormControl>
 
-            <FormControl isRequired paddingTop={15} paddingLeft={5}>
+            <FormControl paddingTop={15} paddingLeft={5}>
               <FormLabel htmlFor="costo_gpo_lias">Costo Grupo Lías</FormLabel>
               <InputGroup>
                 <InputLeftAddon
@@ -275,7 +301,8 @@ function verTicketVialForaneo() {
                   children={<MdOutlineAttachMoney />}
                 />
                 <Input
-                  variant="filled"
+                  variant="unstyled"
+                  isReadOnly
                   id="costo_gpo_lias"
                   placeholder="0.00"
                   paddingLeft={8}
@@ -287,8 +314,8 @@ function verTicketVialForaneo() {
             </FormControl>
           </Center>
 
-          <SimpleGrid paddingTop={10} columns={[1, 2, 4]} spacing="40px">
-            <FormControl isRequired>
+          <SimpleGrid paddingTop={10} columns={[1, 1, 4]} spacing="40px">
+            <FormControl>
               <FormLabel htmlFor="kilometraje">Kilómetros a Recorrer</FormLabel>
               <InputGroup>
                 <InputLeftAddon
@@ -296,17 +323,19 @@ function verTicketVialForaneo() {
                   children={<IoSpeedometerOutline />}
                 />
                 <Input
-                  variant="filled"
+                  variant="unstyled"
+                  isReadOnly
                   id="kilometraje"
                   min={0}
                   placeholder="0"
+                  paddingLeft={8}
                   type="number"
                   borderColor="twitter.100"
                 />
               </InputGroup>
             </FormControl>
 
-            <FormControl isRequired>
+            <FormControl>
               <FormLabel htmlFor="costoPorKilometro">
                 Costo por Kilómetro
               </FormLabel>
@@ -316,7 +345,8 @@ function verTicketVialForaneo() {
                   children={<MdOutlineAttachMoney />}
                 />
                 <Input
-                  variant="filled"
+                  variant="unstyled"
+                  isReadOnly
                   id="costo_de_kilometraje"
                   min={0}
                   placeholder="0.00"
@@ -326,8 +356,148 @@ function verTicketVialForaneo() {
                 />
               </InputGroup>
             </FormControl>
+
+            <FormControl>
+              <FormLabel htmlFor="casetas">Número de Casetas</FormLabel>
+              <Input
+                variant="unstyled"
+                isReadOnly
+                id="casetas"
+                placeholder="0"
+                type="number"
+                borderColor="twitter.100"
+              />
+            </FormControl>
+
+            <FormControl>
+              <FormLabel htmlFor="costoPorCaseta">Costo por Caseta</FormLabel>
+              <InputGroup>
+                <InputLeftAddon
+                  pointerEvents="none"
+                  children={<MdOutlineAttachMoney />}
+                />
+                <Input
+                  variant="unstyled"
+                  isReadOnly
+                  id="costo_por_caseta"
+                  min={0}
+                  placeholder="0.00"
+                  paddingLeft={8}
+                  type="number"
+                  borderColor="twitter.100"
+                />
+              </InputGroup>
+            </FormControl>
           </SimpleGrid>
+
+          <SimpleGrid paddingTop={5} columns={[1, 2, 4]} spacing="40px">
+            <FormControl isRequired paddingTop={15}>
+              <FormLabel htmlFor="deducible">Deducible</FormLabel>
+              <InputGroup>
+                <InputLeftAddon
+                  pointerEvents="none"
+                  children={<MdOutlineAttachMoney />}
+                />
+                <Input
+                  variant="unstyled"
+                  isReadOnly
+                  id="deducible"
+                  min={0}
+                  placeholder="0.00"
+                  paddingLeft={8}
+                  type="number"
+                  borderColor="twitter.100"
+                  fontWeight={"bold"}
+                  textColor={"red"}
+                />
+              </InputGroup>
+            </FormControl>
+
+            <FormControl paddingTop={15}>
+              <FormLabel htmlFor="anticipo">Anticipo 60%</FormLabel>
+              <InputGroup>
+                <InputLeftAddon
+                  pointerEvents="none"
+                  children={<MdOutlineAttachMoney />}
+                />
+                <Input
+                  variant="unstyled"
+                  id="anticipo"
+                  isReadOnly
+                  min={0}
+                  placeholder="0.00"
+                  paddingLeft={8}
+                  type="number"
+                  borderColor="twitter.100"
+                  fontWeight={"bold"}
+                  textColor={"red"}
+                />
+              </InputGroup>
+            </FormControl>
+
+            <FormControl paddingTop={15} paddingLeft={4}>
+              <FormLabel htmlFor="total_salida">Total de Salida</FormLabel>
+              <InputGroup>
+                <InputLeftAddon
+                  pointerEvents="none"
+                  children={<MdOutlineAttachMoney />}
+                />
+                <Input
+                  variant="unstyled"
+                  id="total_salida"
+                  isReadOnly
+                  min={0}
+                  placeholder="0.00"
+                  paddingLeft={8}
+                  type="number"
+                  borderColor="twitter.100"
+                  fontWeight={"bold"}
+                  textColor={"red"}
+                />
+              </InputGroup>
+            </FormControl>
+
+            <FormControl paddingTop={15}>
+              <FormLabel htmlFor="total">Monto Total</FormLabel>
+              <InputGroup>
+                <InputLeftAddon
+                  pointerEvents="none"
+                  children={<MdOutlineAttachMoney />}
+                />
+                <Input
+                  isReadOnly
+                  variant="unstyled"
+                  id="total"
+                  min={0}
+                  placeholder="0.00"
+                  paddingLeft={8}
+                  type="number"
+                  borderColor="twitter.100"
+                  fontWeight={"bold"}
+                  textColor={"red"}
+                />
+              </InputGroup>
+            </FormControl>
+          </SimpleGrid>
+          <FormControl paddingTop={15}>
+            <FormLabel htmlFor="cotizacion_gpo_lias">
+              Cotización de Grupo Lías (Información Adicional)
+            </FormLabel>
+            <Textarea
+              id="cotizacion_gpo_lias"
+              variant="unstyled"
+              isReadOnly
+              placeholder="Cotización"
+              borderColor="twitter.100"
+            />
+          </FormControl>
+          <Button
+          
+          colorScheme="facebook">
+          Abrir cita
+        </Button>
         </Box>
+     =
       </DesktopLayout>
     </>
   );

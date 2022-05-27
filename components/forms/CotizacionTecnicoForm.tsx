@@ -2,11 +2,9 @@ import ViewText from "@/common/ViewText";
 import { Box, Center, Divider, SimpleGrid, Tab, Table, TableCaption, TableContainer, TabList, TabPanel, TabPanels, Tabs, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 import Image from "next/image";
 
-interface IcotizacionTecnico {
-    nombre: string;
-}
 
-const CrearCotizacionTecnicoForm = (props: IcotizacionTecnico): JSX.Element => {
+
+const CrearCotizacionTecnico = () =>{
     return <div>
         <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' rounded='md' bg='white'>
             <Text fontWeight="bold" fontSize='25px'>Cotización del Técnico</Text>
@@ -48,10 +46,10 @@ const CrearCotizacionTecnicoForm = (props: IcotizacionTecnico): JSX.Element => {
             <Center>
                 <Divider orientation='vertical' paddingTop={30} />
                 <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' height={200} width={200}>
-                    <Image src='' alt='Evidencia 1'  />
+                    <Image src='Logo' alt='Evidencia 1'  />
                 </Box>
                 <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' height={200} width={200} paddingLeft={10}>
-                    <Image src='' alt='Evidencia 2' />
+                    <Image src="Logo" alt='Evidencia 2' />
                 </Box>
             </Center>
         </Box>
@@ -126,4 +124,4 @@ const CrearCotizacionTecnicoForm = (props: IcotizacionTecnico): JSX.Element => {
     </div>;
 };
 
-export default CrearCotizacionTecnicoForm;
+export default CrearCotizacionTecnico;
