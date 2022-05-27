@@ -203,30 +203,7 @@ function VerTicketDomestico() {
                     </Text>
                     <Divider orientation="vertical" />
 
-                    <FormControl as={SimpleGrid} columns={{ base: 1, lg: 6 }}>
-                        <FormControl paddingTop={2} paddingLeft={2}>
-                            <FormLabel htmlFor="servicio_domestico">
-                                Servicio Doméstico
-                            </FormLabel>
-                            <Switch
-                                id="is_servicio_domestico"
-                                size="lg"
-                                isReadOnly
-                            />
-                            <Flex
-                                w={"100%"}
-                                padding={1}
-                                bgColor={"green"}
-                                justifyContent="center"
-                                borderRadius={"2xl"}
-                            >
-                                <Text color={"white"} fontWeight="bold">
-                                    Servicio Dómestico Activado
-                                </Text>
-                            </Flex>
-                        </FormControl>
-                    </FormControl>
-
+                
                     <SimpleGrid columns={[1, 1, 2]} spacing={5}>
                         <FormControl paddingTop={15}>
                             <FormLabel htmlFor="estado">
