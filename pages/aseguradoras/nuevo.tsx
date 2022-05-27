@@ -346,13 +346,12 @@ function AseguradoraNueva() {
             <Stack
               paddingTop={10}
               align="center"
-              paddingLeft={"75%"}
+              paddingLeft={"70%"}
               spacing={4}
               direction="row"
             >
               <Button
-                width={120}
-                colorScheme="facebook"
+                colorScheme="whatsapp"
                 variant="solid"
                 onClick={guardarAseguradora}
               >

@@ -13,6 +13,7 @@ import {
   Button,
   IconButton,
   Link,
+  Spacer,
 } from "@chakra-ui/react";
 import { AddIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
@@ -66,12 +67,14 @@ function EstadosListado() {
           bg="white"
         >
           {" "}
+          <Spacer/>
           <Link href={"/ciudades/nuevo"}>
              <Button
                 leftIcon={<AddIcon />}
+                marginLeft={"auto"}
                 colorScheme="facebook"
                 variant="solid"
-                marginLeft={"80%"}
+                
              >
                 Agregar Nuevo Estado
               </Button>

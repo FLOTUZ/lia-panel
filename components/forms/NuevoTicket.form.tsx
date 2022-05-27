@@ -9,7 +9,7 @@ import {
   ITicket,
 } from "@/services/api.models";
 import { FaBeer, FaMoneyBill, FaUserShield } from "react-icons/fa";
-
+import {RiFileUserFill} from "react-icons/ri"
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";
 import { CiudadesService } from "@/services/ciudades.service";
@@ -85,13 +85,14 @@ const NuevoTicket = () => {
   const [asistenciasList, setAsistenciasList] = useState<IAsistencias[]>([]);
   const [asesorList, setAsesorList] = useState<IAsesor[]>([]);
 
-
   const [serviciosList, setServiciosList] = useState<IServicio[]>([]);
   const [serviciosSeleccionados, setServiciosSeleccionados] = useState<
     string[]
   >([]);
 
-  const [nombreAseguradora, setNombreAseguradora] = useState("");
+  const [costokmAseguradora, setCostoKMAseguradora] = useState<IAseguradoras[]>([]);
+ 
+
   const [tecnicosByServicios, setTecnicosByServicios] = useState<IServicio>();
 
   const [fecha, setFecha] = useState("");
@@ -129,6 +130,8 @@ const NuevoTicket = () => {
     const data = respuesta.data as IAseguradoras[];
 
     setAseguradorasList(data);
+    setCostoKMAseguradora;
+    
   };
 
   const consultarCiudades = async () => {
@@ -572,7 +575,10 @@ const NuevoTicket = () => {
                   asesorById();
                 }}
                 onChange={(e) => {
-                  setNombreAseguradora(e.target.value);
+                  formTicket.setFieldValue(
+                    "asesorId",
+                    parseInt(e.target.value)
+                  );
                 }}
               >
                 {asesorList.length !== 0
@@ -644,7 +650,7 @@ const NuevoTicket = () => {
               setServiciosSeleccionados(e as string[]);
             }}
           >
-            <SimpleGrid padding={5} minChildWidth='120px' spacing='40px'>
+            <SimpleGrid padding={5} minChildWidth="120px" spacing="40px">
               {serviciosList?.length !== 0
                 ? serviciosList.map((servicio, index) => {
                     return (
@@ -776,13 +782,12 @@ const NuevoTicket = () => {
             >
               {estadosList?.length !== 0
                 ? estadosList?.map((estado, index) => {
-                  return (
-                    <option key={index} value={estado.id}>
-                      {estado.nombre}
-                    </option>
-                  );
-
-                })
+                    return (
+                      <option key={index} value={estado.id}>
+                        {estado.nombre}
+                      </option>
+                    );
+                  })
                 : null}
             </Select>
           </FormControl>
@@ -882,43 +887,49 @@ const NuevoTicket = () => {
               Monto de Cobertura del Seguro
             </FormLabel>
             <InputGroup>
-                <InputLeftAddon pointerEvents="none" children={<MdOutlineAttachMoney/>} />
-            <Input
-              variant="filled"
-              id="cobertura"
-              min={0}
-              placeholder="0.00"
-              paddingLeft={8}
-              type="number"
-              max={2}
-              borderColor="twitter.100"
-              onChange={(e) => {
-                setCobertura(Number(e.target.value));
-                formTicket.handleChange(e);
-              }}
-              value={formTicket.values.cobertura}
-            />
-          </InputGroup>
+              <InputLeftAddon
+                pointerEvents="none"
+                children={<MdOutlineAttachMoney />}
+              />
+              <Input
+                variant="filled"
+                id="cobertura"
+                min={0}
+                placeholder="0.00"
+                paddingLeft={8}
+                type="number"
+                max={2}
+                borderColor="twitter.100"
+                onChange={(e) => {
+                  setCobertura(Number(e.target.value));
+                  formTicket.handleChange(e);
+                }}
+                value={formTicket.values.cobertura}
+              />
+            </InputGroup>
           </FormControl>
 
           <FormControl isRequired paddingTop={15} paddingLeft={5}>
             <FormLabel htmlFor="costo_gpo_lias">Costo Grupo Lías</FormLabel>
             <InputGroup>
-                <InputLeftAddon pointerEvents="none" children={<MdOutlineAttachMoney/>} />
-            <Input
-              variant="filled"
-              id="costo_gpo_lias"
-              placeholder="0.00"
-              paddingLeft={8}
-              min={0}
-              type="number"
-              borderColor="twitter.100"
-              onChange={(e) => {
-                setCostoGPOLIAS(Number(e.target.value));
-                formTicket.handleChange(e);
-              }}
-              value={formTicket.values.costo_gpo_lias}
-            />
+              <InputLeftAddon
+                pointerEvents="none"
+                children={<MdOutlineAttachMoney />}
+              />
+              <Input
+                variant="filled"
+                id="costo_gpo_lias"
+                placeholder="0.00"
+                paddingLeft={8}
+                min={0}
+                type="number"
+                borderColor="twitter.100"
+                onChange={(e) => {
+                  setCostoGPOLIAS(Number(e.target.value));
+                  formTicket.handleChange(e);
+                }}
+                value={formTicket.values.costo_gpo_lias}
+              />
             </InputGroup>
           </FormControl>
         </Center>
@@ -951,33 +962,6 @@ const NuevoTicket = () => {
             <FormLabel htmlFor="costoPorKilometro">
               Costo por Kilómetro
             </FormLabel>
-            <InputLeftElement
-              paddingTop={55}
-              paddingStart={8}
-              color="gray.300"
-              pointerEvents="none"
-              children="$"
-            />
-            <Input
-              variant="filled"
-              id="costo_de_kilometraje"
-              min={0}
-              placeholder="0.00"
-              paddingLeft={8}
-              type="number"
-              borderColor="twitter.100"
-
-              onChange={(e) => {
-                setCostoPorKilometro(Number(e.target.value));
-                formTicket.setFieldValue(
-                  "costo_de_kilometraje",
-                  parseInt(e.target.value)
-                );
-              }}
-              value={formTicket.values.costo_de_kilometraje}
-            />
-
-          </FormControl>
             <InputGroup>
               <InputLeftAddon
                 pointerEvents="none"
@@ -1002,44 +986,8 @@ const NuevoTicket = () => {
               />
             </InputGroup>
           </FormControl>
-          <FormControl isRequired>
-            <FormLabel htmlFor="kilometrajeMaxPorAseguradora">
-              Kilómetros max por aseguradora
-            </FormLabel>
-            <InputGroup>
-              <InputLeftAddon
-                pointerEvents="none"
-                children={<IoSpeedometerOutline />}
-              />
-              <Input
-                variant="filled"
-                min={0}
-                placeholder="0"
-                type="number"
-                borderColor="twitter.100"
-              ></Input>
-            </InputGroup>
-          </FormControl>
 
-          <FormControl isRequired>
-            <FormLabel htmlFor="costoPorKilometroDeAseguradora">
-              Costo por Kilómetro por aseguradora
-            </FormLabel>
-            <InputGroup>
-              <InputLeftAddon
-                pointerEvents="none"
-                children={<MdOutlineAttachMoney />}
-              />
-              <Input
-                variant="filled"
-                min={0}
-                placeholder="0.00"
-                paddingLeft={8}
-                type="number"
-                borderColor="twitter.100"
-              />
-            </InputGroup>
-          </FormControl>
+  
         </SimpleGrid>
 
         {/* PARA SERVICIOS VIALES*/}
@@ -1293,7 +1241,7 @@ const NuevoTicket = () => {
           leftIcon={<ArrowUpIcon />}
           id="publicarTicket"
           type="submit"
-          colorScheme="facebook"
+          colorScheme="telegram"
           borderColor="twitter.100"
           size="lg"
         >
@@ -1303,8 +1251,8 @@ const NuevoTicket = () => {
         {/* ASIGNAR TÉCNICO */}
         <Button
           marginTop={15}
-          leftIcon={<AddIcon />}
-          colorScheme="facebook"
+          leftIcon={<RiFileUserFill />}
+          colorScheme="green"
           variant="solid"
           size="lg"
           onClick={abrir}
@@ -1365,7 +1313,7 @@ const NuevoTicket = () => {
 
             <ModalFooter>
               <Button
-                colorScheme="blue"
+                colorScheme="green"
                 mr={3}
                 onClick={() =>
                   toast({
@@ -1379,7 +1327,9 @@ const NuevoTicket = () => {
               >
                 Guardar
               </Button>
-              <Button onClick={cerrar}>Cancelar</Button>
+              <Button colorScheme="red" onClick={cerrar}>
+                Cancelar
+              </Button>
             </ModalFooter>
           </ModalContent>
         </Modal>
