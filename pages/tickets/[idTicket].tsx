@@ -6,10 +6,7 @@ import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";
 import { TicketsService } from "@/services/tickets.service";
 
-import {
-    AddIcon,
 
-} from '@chakra-ui/icons'
 
 import {
     Box,

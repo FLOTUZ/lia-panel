@@ -378,39 +378,42 @@ const NuevoTicket = () => {
           Datos Básicos
         </Text>
 
-        <Stack direction="row">
-          <Spacer />
-          <Divider orientation="vertical" />
-          <FormLabel htmlFor="num_expediente">Número de Expediente:</FormLabel>
-          <Input
-            variant="filled"
-            id="num_expediente"
-            type="text"
-            placeholder="N° Expediente"
-            borderColor="twitter.100"
-            onChange={formTicket.handleChange}
-            value={formTicket.values.num_expediente}
-          />
-        </Stack>
+        <SimpleGrid columns={[1, 1, 2]} spacing="10px" paddingTop={17}>
+          <FormControl isRequired>
+            <FormLabel htmlFor="num_expediente">Número de Expediente:</FormLabel>
+            <Input
+              variant="filled"
+              id="num_expediente"
+              type="text"
+              placeholder="N° Expediente"
+              borderColor="twitter.100"
+              onChange={formTicket.handleChange}
+              value={formTicket.values.num_expediente}
+            />
+          </FormControl>
+        </SimpleGrid>
 
-        <FormControl isRequired paddingTop={15}>
-          <FormLabel htmlFor="fecha_llamada">Fecha de la Llamada</FormLabel>
-          <Input
-            w={"fit-content"}
-            id="fecha_llamada"
-            variant="filled"
-            type="datetime-local"
-            borderColor="twitter.100"
-            value={fecha}
-            onChange={(e) => {
-              setFecha(e.target.value);
-              formTicket.setFieldValue(
-                "fecha_llamada",
-                new Date(e.target.value).toISOString()
-              );
-            }}
-          />
-        </FormControl>
+        <SimpleGrid columns={[1, 1, 1]} spacing="20px">
+          <FormControl isRequired paddingTop={15}>
+            <FormLabel htmlFor="fecha_llamada">Fecha de la Llamada</FormLabel>
+            <Input
+              w={"fit-content"}
+              id="fecha_llamada"
+              variant="filled"
+              type="datetime-local"
+              borderColor="twitter.100"
+              value={fecha}
+              onChange={(e) => {
+                setFecha(e.target.value);
+                formTicket.setFieldValue(
+                  "fecha_llamada",
+                  new Date(e.target.value).toISOString()
+                );
+              }}
+            />
+          </FormControl>
+        </SimpleGrid>
+
         <SimpleGrid columns={[1, 1, 2]} spacing="20px">
           <Center>
             <FormControl isRequired paddingTop={15}>
@@ -760,7 +763,7 @@ const NuevoTicket = () => {
                 borderRadius={"2xl"}
               >
                 <Text color={"white"} fontWeight="bold">
-                  Servicio Vial Activado
+                  Servicio Foráneo Activado
                 </Text>
               </Flex>
             ) : null}
@@ -934,7 +937,7 @@ const NuevoTicket = () => {
           </FormControl>
         </Center>
 
-        <SimpleGrid paddingTop={10} columns={[1, 2, 4]} spacing="40px">
+        <SimpleGrid paddingTop={10} columns={[1, 1, 4]} spacing="40px">
           <FormControl isRequired>
             <FormLabel htmlFor="kilometraje">Kilómetros a Recorrer</FormLabel>
             <InputGroup>
@@ -957,6 +960,7 @@ const NuevoTicket = () => {
               />
             </InputGroup>
           </FormControl>
+
 
           <FormControl isRequired>
             <FormLabel htmlFor="costoPorKilometro">
@@ -987,7 +991,49 @@ const NuevoTicket = () => {
             </InputGroup>
           </FormControl>
 
+          {formTicket.values.is_servicio_foraneo === true ? (
+            <FormControl>
+              <FormLabel htmlFor="casetas">Número de Casetas</FormLabel>
+              <Input
+                variant="filled"
+                id="casetas"
+                placeholder="0"
+                type="number"
+                borderColor="twitter.100"
+                onChange={(e) => {
+                  setCostoBanderazo(Number(e.target.value));
+                  formTicket.handleChange(e);
+                }}
+                value={formTicket.values.casetas}
+              />
+            </FormControl>
+          ) : null}
 
+          {formTicket.values.is_servicio_foraneo === true ? (
+            <FormControl>
+              <FormLabel htmlFor="costoPorCaseta">Costo por Caseta</FormLabel>
+              <InputGroup>
+                <InputLeftAddon
+                  pointerEvents="none"
+                  children={<MdOutlineAttachMoney />}
+                />
+                <Input
+                  variant="filled"
+                  id="costo_por_caseta"
+                  min={0}
+                  placeholder="0.00"
+                  paddingLeft={8}
+                  type="number"
+                  borderColor="twitter.100"
+                  onChange={(e) => {
+                    setCostoBanderazo(Number(e.target.value));
+                    formTicket.handleChange(e);
+                  }}
+                  value={formTicket.values.costo_por_caseta}
+                />
+              </InputGroup>
+            </FormControl>
+          ) : null}
         </SimpleGrid>
 
         {/* PARA SERVICIOS VIALES*/}
@@ -1050,51 +1096,7 @@ const NuevoTicket = () => {
         </SimpleGrid>
 
         {/*SERVICIOS FORANEOS */}
-        <SimpleGrid columns={[1, 1, 3]} spacing={4}>
-          {formTicket.values.is_servicio_foraneo === true ? (
-            <FormControl paddingTop={15}>
-              <FormLabel htmlFor="casetas">Número de Casetas</FormLabel>
-              <Input
-                variant="filled"
-                id="casetas"
-                placeholder="0"
-                type="number"
-                borderColor="twitter.100"
-                onChange={(e) => {
-                  setCostoBanderazo(Number(e.target.value));
-                  formTicket.handleChange(e);
-                }}
-                value={formTicket.values.casetas}
-              />
-            </FormControl>
-          ) : null}
-
-          {formTicket.values.is_servicio_foraneo === true ? (
-            <FormControl paddingTop={15} paddingLeft={5}>
-              <FormLabel htmlFor="costoPorCaseta">Costo por Caseta</FormLabel>
-              <InputLeftElement
-                paddingTop={55}
-                paddingStart={8}
-                color="gray.300"
-                pointerEvents="none"
-                children="$"
-              />
-              <Input
-                variant="filled"
-                id="costo_por_caseta"
-                min={0}
-                placeholder="0.00"
-                paddingLeft={8}
-                type="number"
-                borderColor="twitter.100"
-                onChange={(e) => {
-                  setCostoBanderazo(Number(e.target.value));
-                  formTicket.handleChange(e);
-                }}
-                value={formTicket.values.costo_por_caseta}
-              />
-            </FormControl>
-          ) : null}
+        <SimpleGrid columns={[1, 1, 1]} spacing={4}>
 
           {formTicket.values.asistencia_vial === true ? (
             <FormControl paddingTop={15}>
