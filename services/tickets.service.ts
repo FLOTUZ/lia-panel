@@ -9,7 +9,7 @@ export class TicketsService {
     return respuesta;
   }
 
-  public async update(data: ITicket, id: number) {
+  public async update(data: Partial<ITicket>, id: number) {
     const respuesta: any = await Actualizar(`${this.url}/${id}`, data);
     return respuesta;
   }

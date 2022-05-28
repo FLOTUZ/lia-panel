@@ -26,10 +26,10 @@ import { IoFlag, IoSpeedometerOutline } from "react-icons/io5";
 import { EstadosService } from "@/services/estados.service";
 import DesktopLayout from "@/layouts/DesktopLayout";
 import Header from "@/common/Header";
-import CrearCotizacionTecnico from "@/forms/CotizacionTecnicoForm";
 import { IAseguradora, IAsistencia, ITicket } from "@/services/api.models";
 import SeguimientoForm from "@/forms/SeguimientoForm";
 import { BsPrinter } from "react-icons/bs";
+import { CrearCotizacionTecnico } from "@/forms/CotizacionTecnicoForm";
 
 interface VerTicketVialForaneoProps {
   ticket: ITicket;

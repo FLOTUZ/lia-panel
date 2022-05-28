@@ -3,6 +3,7 @@ import Header from "@/common/Header";
 
 import {
   Box,
+  Button,
   Center,
   Divider,
   FormControl,
@@ -17,17 +18,22 @@ import {
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { IoSpeedometerOutline } from "react-icons/io5";
 import { IAseguradora, IAsistencia, ITicket } from "@/services/api.models";
+import { CrearCotizacionTecnico } from "@/forms/CotizacionTecnicoForm";
+import SeguimientoForm from "@/forms/SeguimientoForm";
+import { BsPrinter } from "react-icons/bs";
 
 interface VerTicketVialProps {
   ticket: ITicket;
   aseguradora: IAseguradora;
   asistencia: IAsistencia;
 }
-export function VerTicketVial({ ticket, aseguradora, asistencia }: VerTicketVialProps) {
-
+export function VerTicketVial({
+  ticket,
+  aseguradora,
+  asistencia,
+}: VerTicketVialProps) {
   return (
     <>
-
       <Header title="Ticket de servicio vial" />
 
       <Box
@@ -45,9 +51,7 @@ export function VerTicketVial({ ticket, aseguradora, asistencia }: VerTicketVial
         </Text>
 
         <SimpleGrid columns={[1, 1, 5]} spacing="20px" paddingTop={17}>
-          <FormLabel htmlFor="num_expediente">
-            Número de Expediente:
-          </FormLabel>
+          <FormLabel htmlFor="num_expediente">Número de Expediente:</FormLabel>
           <Text>{ticket.num_expediente}</Text>
         </SimpleGrid>
 
@@ -450,8 +454,26 @@ export function VerTicketVial({ ticket, aseguradora, asistencia }: VerTicketVial
             borderColor="twitter.100"
           />
         </FormControl>
+        <Box paddingTop={10}>
+          <Button
+            padding={"2%"}
+            marginTop={15}
+            marginRight={8}
+            justifySelf="end"
+            leftIcon={<BsPrinter />}
+            id="imprimirTicket"
+            type="submit"
+            colorScheme="telegram"
+            borderColor="twitter.100"
+            size="lg"
+          >
+            Imprimir
+          </Button>
+        </Box>
       </Box>
 
+      <CrearCotizacionTecnico />
+      <SeguimientoForm />
     </>
   );
 }

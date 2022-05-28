@@ -9,7 +9,7 @@ import {
   ITicket,
 } from "@/services/api.models";
 import { FaBeer, FaMoneyBill, FaUserShield } from "react-icons/fa";
-import { RiFileUserFill } from "react-icons/ri"
+import { RiFileUserFill } from "react-icons/ri";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";
 import { CiudadesService } from "@/services/ciudades.service";
@@ -55,7 +55,7 @@ import {
   InputGroup,
   InputLeftAddon,
 } from "@chakra-ui/react";
-import { useFormik } from "formik";
+import { Formik, useFormik } from "formik";
 import React, { useState, useEffect } from "react";
 import { MdAdd, MdOutlineAttachMoney } from "react-icons/md";
 import { AsesoresService } from "@/services/asesores.service";
@@ -90,8 +90,9 @@ const NuevoTicket = () => {
     string[]
   >([]);
 
-  const [costokmAseguradora, setCostoKMAseguradora] = useState<IAseguradora[]>([]);
-
+  const [costokmAseguradora, setCostoKMAseguradora] = useState<IAseguradora[]>(
+    []
+  );
 
   const [tecnicosByServicios, setTecnicosByServicios] = useState<IServicio>();
 
@@ -131,7 +132,6 @@ const NuevoTicket = () => {
 
     setAseguradorasList(data);
     setCostoKMAseguradora;
-
   };
 
   const consultarCiudades = async () => {
@@ -288,13 +288,26 @@ const NuevoTicket = () => {
     }
   };
 
+  const asignarTicketATecnico = async () => {
+    const data = { estado: "TOMADO" };
+    const service = new TicketsService();
+    //TODO: Agregar el ID del ticket
+    const respuesta = await service.update(data, 0);
+    toast({
+      title: "Técnico Asignado.",
+      description: "Se Asigno el servicio al Técnico",
+      status: "success",
+      duration: 9000,
+      isClosable: true,
+    });
+  };
+
   const formTicket = useFormik({
     initialValues: {
       //--------------------DATOS BASICOS
       num_expediente: "",
       asistencia_vial: false,
       fecha_llamada: "",
-      nombre_asesor_aseguradora: "",
       nombre_asesor_gpo_lias: "",
       nombre_usuario_final: "",
       titulo_ticket: "",
@@ -303,22 +316,22 @@ const NuevoTicket = () => {
       asesorId: "",
       problematica: "",
       //---------------------COTIZACION GPO LIAS
-      ciudad: "",
+      ciudadId: 0,
       colonia: "",
       calle: "",
       numero_domicilio: "",
       banderazo: 0,
-      total_salida: "",
+      total_salida: calculoTotalSalida,
       costo_gpo_lias: 0,
       cobertura: 0,
       cotizacion_gpo_lias: "",
-      deducible: "",
+      deducible: calculoDeducible,
       kilometraje: 0,
       costo_de_kilometraje: 0,
       costo_por_caseta: 0,
       casetas: 0,
-      total: "",
-      anticipo: "",
+      total: calculoMontoTotal,
+      anticipo: calculoAnticipo,
       estado: "NUEVO",
       num_interior: "",
       modelo_carro: "",
@@ -330,13 +343,13 @@ const NuevoTicket = () => {
     },
     onSubmit: async (values) => {
       const ticket: any = { ...values };
+      console.log(ticket);
 
       const servicio = new TicketsService();
       const respuestaTicketPost: any = await servicio.create(ticket);
       const dataTicketGuardado = respuestaTicketPost.data as ITicket;
 
       if (respuestaTicketPost.status === 201) {
-        const servicio = new TicketsService();
         const respuestaServiciosTicket: any =
           await servicio.addServiciosForTicket(
             dataTicketGuardado.id || 0,
@@ -344,6 +357,7 @@ const NuevoTicket = () => {
           );
 
         if (respuestaServiciosTicket.status === 201) {
+          router.push(`/tickets/${dataTicketGuardado.id}`);
           toast({
             id: "altaExitosa",
             title: "Ticket creado",
@@ -380,7 +394,9 @@ const NuevoTicket = () => {
 
         <SimpleGrid columns={[1, 1, 2]} spacing="10px" paddingTop={17}>
           <FormControl isRequired>
-            <FormLabel htmlFor="num_expediente">Número de Expediente:</FormLabel>
+            <FormLabel htmlFor="num_expediente">
+              Número de Expediente:
+            </FormLabel>
             <Input
               variant="filled"
               id="num_expediente"
@@ -425,6 +441,7 @@ const NuevoTicket = () => {
                 borderColor="twitter.100"
                 value={formTicket.values.aseguradoraId}
                 onChange={(e) => {
+                  setidAseguradora(parseInt(e.target.value));
                   formTicket.setFieldValue(
                     "aseguradoraId",
                     parseInt(e.target.value)
@@ -798,12 +815,14 @@ const NuevoTicket = () => {
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="ciudad">Ciudad</FormLabel>
             <Select
-              id="ciudad"
+              id="ciudadId"
               placeholder="Selecciona la Ciudad"
               variant="filled"
               borderColor="twitter.100"
               onChange={(e) => {
                 setCiudadId(Number(e.target.value));
+                formTicket.setFieldValue("ciudadId", Number(e.target.value));
+                console.log(e.target.value);
               }}
               onFocus={(e) => {
                 consultarCiudades();
@@ -812,7 +831,7 @@ const NuevoTicket = () => {
               {ciudadesList?.length !== 0
                 ? ciudadesList?.map((ciudad, index) => {
                   return (
-                    <option key={index} value={ciudad.nombre}>
+                    <option key={index} value={ciudad.id}>
                       {ciudad.nombre}
                     </option>
                   );
@@ -901,7 +920,6 @@ const NuevoTicket = () => {
                 placeholder="0.00"
                 paddingLeft={8}
                 type="number"
-                max={2}
                 borderColor="twitter.100"
                 onChange={(e) => {
                   setCobertura(Number(e.target.value));
@@ -960,7 +978,6 @@ const NuevoTicket = () => {
               />
             </InputGroup>
           </FormControl>
-
 
           <FormControl isRequired>
             <FormLabel htmlFor="costoPorKilometro">
@@ -1097,7 +1114,6 @@ const NuevoTicket = () => {
 
         {/*SERVICIOS FORANEOS */}
         <SimpleGrid columns={[1, 1, 1]} spacing={4}>
-
           {formTicket.values.asistencia_vial === true ? (
             <FormControl paddingTop={15}>
               <FormLabel htmlFor="banderazo">Banderazo</FormLabel>
@@ -1250,91 +1266,6 @@ const NuevoTicket = () => {
           Publicar Ticket
         </Button>
 
-        {/* ASIGNAR TÉCNICO */}
-        <Button
-          marginTop={15}
-          leftIcon={<RiFileUserFill />}
-          colorScheme="green"
-          variant="solid"
-          size="lg"
-          onClick={abrir}
-        >
-          Asignar Técnico
-        </Button>
-
-        <Modal closeOnOverlayClick={false} isOpen={abierto} onClose={cerrar}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Asignar Técnico</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody pb={6}>
-              <FormControl paddingTop={15}>
-                <FormLabel htmlFor="servicioId">Servicio</FormLabel>
-                <Select
-                  id="servicioId"
-                  placeholder="Selecciona el Servicio"
-                  variant="filled"
-                  borderColor="twitter.100"
-                  onChange={(e) => {
-                    consultarTecnicosByServicio(Number(e.target.value));
-                    console.log(tecnicosByServicios?.nombre);
-                  }}
-                >
-                  {serviciosList.length !== 0
-                    ? serviciosList.map((servicio) => {
-                      return (
-                        <option key={servicio.id} value={Number(servicio.id)}>
-                          {servicio.nombre}
-                        </option>
-                      );
-                    })
-                    : null}
-                </Select>
-              </FormControl>
-
-              <FormControl paddingTop={15}>
-                <FormLabel htmlFor="tecnicoId">Técnico</FormLabel>
-                <Select
-                  id="tecnicoId"
-                  placeholder="Selecciona el Técnico"
-                  variant="filled"
-                  borderColor="twitter.100"
-                >
-                  {tecnicosByServicios?.Tecnico?.length !== 0
-                    ? tecnicosByServicios?.Tecnico?.map((tecnico) => {
-                      return (
-                        <option key={tecnico.id} value={tecnico.nombre}>
-                          {tecnico.nombre}
-                        </option>
-                      );
-                    })
-                    : null}
-                </Select>
-              </FormControl>
-            </ModalBody>
-
-            <ModalFooter>
-              <Button
-                colorScheme="green"
-                mr={3}
-                onClick={() =>
-                  toast({
-                    title: "Técnico Asignado.",
-                    description: "Se Asigno el servicio al Técnico",
-                    status: "success",
-                    duration: 9000,
-                    isClosable: true,
-                  })
-                }
-              >
-                Asignar
-              </Button>
-              <Button colorScheme="red" onClick={cerrar}>
-                Cancelar
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
       </Box>
     </form>
   );
