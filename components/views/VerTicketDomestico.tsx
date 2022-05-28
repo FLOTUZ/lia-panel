@@ -472,6 +472,7 @@ export function VerTicketDomestico({ ticket, aseguradora, asistencia }: VerTicke
             <Box
             paddingTop={10}>
             <Button
+                    
                     padding={"2%"}
                     marginTop={15}
                     marginRight={8}
