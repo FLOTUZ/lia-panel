@@ -632,7 +632,7 @@ export function VerTicketDomestico({ ticket, aseguradora, asistencia }: VerTicke
                     Imprimir
                 </Button>
             </Box>
-
+            
 
         </>
     );
