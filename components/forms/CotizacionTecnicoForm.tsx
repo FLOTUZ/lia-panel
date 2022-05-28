@@ -1,10 +1,8 @@
 import ViewText from "@/common/ViewText";
 import { Box, Center, Divider, SimpleGrid, Tab, Table, TableCaption, TableContainer, TabList, TabPanel, TabPanels, Tabs, Tbody, Td, Text, Th, Thead, Tr } from "@chakra-ui/react";
 import Image from "next/image";
-
-
-
-const CrearCotizacionTecnico = () =>{
+import Logo from '../../public/vercel.svg'
+export const CrearCotizacionTecnico = () => {
     return <div>
         <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' rounded='md' bg='white'>
             <Text fontWeight="bold" fontSize='25px'>Cotización del Técnico</Text>
@@ -19,13 +17,13 @@ const CrearCotizacionTecnico = () =>{
                 <ViewText
                     id_form="hora_de_contacto"
                     form_label="Fecha y Hora de Contacto">
-                    
+
                 </ViewText>
 
                 <ViewText
                     id_form="hora_de_cierre"
                     form_label="Hora de Cierre">
-                    
+
                 </ViewText>
             </SimpleGrid>
 
@@ -46,10 +44,10 @@ const CrearCotizacionTecnico = () =>{
             <Center>
                 <Divider orientation='vertical' paddingTop={30} />
                 <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' height={200} width={200}>
-                    <Image src='Logo' alt='Evidencia 1'  />
+                    <Image  layout="responsive" src={Logo} alt='Evidencia 1' />
                 </Box>
                 <Box m={2} bgColor="white" padding={5} borderRadius={10} boxShadow='2xl' p='6' height={200} width={200} paddingLeft={10}>
-                    <Image src="Logo" alt='Evidencia 2' />
+                    <Image layout="responsive" src={Logo} alt='Evidencia 2' />
                 </Box>
             </Center>
         </Box>
@@ -59,4 +57,4 @@ const CrearCotizacionTecnico = () =>{
     </div>;
 };
 
-export default CrearCotizacionTecnico;
+
