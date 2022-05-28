@@ -1,7 +1,7 @@
 import {
-  IAseguradoras,
+  IAseguradora,
   IAsesor,
-  IAsistencias,
+  IAsistencia,
   ICiudad,
   IEstado,
   IServicio,
@@ -81,8 +81,8 @@ const NuevoTicket = () => {
   };
   const theme = extendTheme({ breakpoints });
 
-  const [aseguradorasList, setAseguradorasList] = useState<IAseguradoras[]>([]);
-  const [asistenciasList, setAsistenciasList] = useState<IAsistencias[]>([]);
+  const [aseguradorasList, setAseguradorasList] = useState<IAseguradora[]>([]);
+  const [asistenciasList, setAsistenciasList] = useState<IAsistencia[]>([]);
   const [asesorList, setAsesorList] = useState<IAsesor[]>([]);
 
   const [serviciosList, setServiciosList] = useState<IServicio[]>([]);
@@ -90,7 +90,7 @@ const NuevoTicket = () => {
     string[]
   >([]);
 
-  const [costokmAseguradora, setCostoKMAseguradora] = useState<IAseguradoras[]>([]);
+  const [costokmAseguradora, setCostoKMAseguradora] = useState<IAseguradora[]>([]);
 
 
   const [tecnicosByServicios, setTecnicosByServicios] = useState<IServicio>();
@@ -127,7 +127,7 @@ const NuevoTicket = () => {
   const consultarAseguradoras = async () => {
     const servicio = new AseguradoraService();
     const respuesta = await servicio.getAll();
-    const data = respuesta.data as IAseguradoras[];
+    const data = respuesta.data as IAseguradora[];
 
     setAseguradorasList(data);
     setCostoKMAseguradora;
@@ -221,7 +221,7 @@ const NuevoTicket = () => {
         Number(formTicket.values.aseguradoraId)
       );
 
-      const data = respuesta.data as IAsistencias[];
+      const data = respuesta.data as IAsistencia[];
 
       setAsistenciasList(data || []);
     }

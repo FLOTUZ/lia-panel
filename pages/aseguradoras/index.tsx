@@ -25,18 +25,18 @@ import {
   SearchIcon,
 } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
-import { IAseguradoras, } from "@/services/api.models";
+import { IAseguradora, } from "@/services/api.models";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 
 export default function AseguradorasListado() {
 
   /*CONSULTA EN TABLA DE LAS ASEGURADORAS CON ASISTENCIAS */
-  const [listadoAseguradoras, setListadoAseguradoras] = useState<IAseguradoras[]>([])
+  const [listadoAseguradoras, setListadoAseguradoras] = useState<IAseguradora[]>([])
   useEffect(() => {
     const consultaAseguradoras = async () => {
       const services = new AseguradoraService();
       const respuesta = await services.getAll();
-      const data = respuesta.data as IAseguradoras[];
+      const data = respuesta.data as IAseguradora[];
 
       if (respuesta.status == 200) {
         setListadoAseguradoras(data);

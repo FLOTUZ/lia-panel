@@ -78,7 +78,7 @@ export interface IServicio {
   updatedAt?: string | null;
   tipo?: string;
 }
-export interface IAseguradoras {
+export interface IAseguradora {
   id?: number;
   nombre: string;
   telefono: string;
@@ -87,12 +87,12 @@ export interface IAseguradoras {
   telefono_whats?: string;
   kilometraje_permitido?: number;
   costo_por_kilometro?: number;
-  Asistencia?: IAsistencias[] | null;
+  Asistencia?: IAsistencia[] | null;
   createdAt?: string | null;
   updatedAt?: string | null;
 }
 
-export interface IAsistencias {
+export interface IAsistencia {
   id?: number;
   nombre: string;
   aseguradoraId?: number | null;

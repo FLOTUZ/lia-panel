@@ -47,7 +47,7 @@ import {
 } from "react-icons/md";
 import Link from "next/link";
 import { AseguradoraService } from "@/services/aseguradoras.service";
-import { IAseguradoras, IAsistencias } from "@/services/api.models";
+import { IAseguradora, IAsistencia } from "@/services/api.models";
 import { AsistenciasService } from "@/services/asistencias.service";
 import {
   IoLogoWhatsapp,
@@ -73,17 +73,17 @@ function AseguradoraNueva() {
 
   const [nombreAsistencia, setNombreAsistencia] = useState("");
   const [aseguradoraGuardada, setAseguradoraGuardada] =
-    useState<IAseguradoras>();
+    useState<IAseguradora>();
 
   /*CONSULTA de asistencias  */
-  const [listadoAsistencias, setListadoAsistencias] = useState<IAsistencias[]>(
+  const [listadoAsistencias, setListadoAsistencias] = useState<IAsistencia[]>(
     []
   );
 
   const consultaAsistencias = async () => {
     const services = new AseguradoraService();
     const respuesta = await services.getById(aseguradoraGuardada?.id || 0);
-    const data = respuesta.data as IAseguradoras;
+    const data = respuesta.data as IAseguradora;
 
     if (respuesta.status == 200) {
       setListadoAsistencias(data.Asistencia || []);
@@ -94,7 +94,7 @@ function AseguradoraNueva() {
 
   /*AGREGAR ASISTENCIA */
   const guardarAsistencia = async () => {
-    const data: IAsistencias = {
+    const data: IAsistencia = {
       nombre: nombreAsistencia,
       aseguradoraId: aseguradoraGuardada?.id,
     };
@@ -127,7 +127,7 @@ function AseguradoraNueva() {
 
   /*AGREGAR ASEGURADORA*/
   const guardarAseguradora = async () => {
-    const data: IAseguradoras = {
+    const data: IAseguradora = {
       nombre: nombreAseguradora,
       telefono: telefonoAseguradora,
       kilometraje_permitido: kilometrajeAseguradora,
@@ -139,7 +139,7 @@ function AseguradoraNueva() {
 
     const service = new AseguradoraService();
     const response = await service.create(data);
-    const aseguradora = response.data as IAseguradoras;
+    const aseguradora = response.data as IAseguradora;
     setAseguradoraGuardada(aseguradora);
 
     if (response.status === 201) {

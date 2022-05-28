@@ -1,4 +1,4 @@
-import { IAseguradoras, ITicket } from "@/services/api.models";
+import { IAseguradora, ITicket } from "@/services/api.models";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { Text, Container, Heading, HStack, Tooltip } from "@chakra-ui/react";
 import Link from "next/link";
@@ -12,14 +12,14 @@ const KanbanColumnCard = ({
   ticket, 
 }: IKanbanColumnCard): React.ReactElement => {
 
-  const [aseguradora, setAseguradora] = useState<IAseguradoras>();
+  const [aseguradora, setAseguradora] = useState<IAseguradora>();
 
   useEffect(() => {
     /*Obtener aseguradora*/
     const getAseguradora = async () => {
         const service = new AseguradoraService();
         const respuesta = await service.getById(Number(ticket?.aseguradoraId));
-        const data = respuesta.data as IAseguradoras;
+        const data = respuesta.data as IAseguradora;
         setAseguradora(data);
     }
 

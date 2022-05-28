@@ -1,30 +1,44 @@
-import DesktopLayout from "@/layouts/DesktopLayout";
-import Header from "@/common/Header";
-
-import { useRouter } from "next/router";
 import {
   Box,
-  Center,
+  Stack,
+  Spacer,
   Divider,
-  FormControl,
   FormLabel,
   Input,
+  FormControl,
+  Center,
+  Select,
+  Textarea,
+  Text,
+  CheckboxGroup,
+  SimpleGrid,
   InputGroup,
   InputLeftAddon,
-  SimpleGrid,
-  Text,
-  Textarea,
+  Button,
 } from "@chakra-ui/react";
-import { MdOutlineAttachMoney } from "react-icons/md";
-import { IoSpeedometerOutline } from "react-icons/io5";
+import { useFormik } from "formik";
+import React, { useState, useEffect } from "react";
+import { MdAdd, MdOutlineAttachMoney } from "react-icons/md";
+import { AsesoresService } from "@/services/asesores.service";
+import { TecnicoService } from "@/services/tecnicos.service";
+import { useRouter } from "next/router";
+import { IoFlag, IoSpeedometerOutline } from "react-icons/io5";
+import { EstadosService } from "@/services/estados.service";
+import DesktopLayout from "@/layouts/DesktopLayout";
+import Header from "@/common/Header";
+import CrearCotizacionTecnico from "@/forms/CotizacionTecnicoForm";
+import { IAseguradora, IAsistencia, ITicket } from "@/services/api.models";
 
-function VerTicketVial() {
-  const router = useRouter();
+interface VerTicketVialForaneoProps {
+  ticket: ITicket;
+  aseguradora: IAseguradora;
+  asistencia: IAsistencia;
+}
+export function VerTicketVialForaneo({ticket,aseguradora,asistencia} : VerTicketVialForaneoProps) {
   return (
     <>
-      <DesktopLayout>
-        <Header title="Ticket de servicio vial" />
-
+      
+        <Header title="Ver Ticket de Servicio Vial Foráneo" />
         <Box
           m={2}
           bgColor="white"
@@ -214,7 +228,6 @@ function VerTicketVial() {
               ></Input>
             </FormControl>
           </SimpleGrid>
-
           <SimpleGrid columns={[1, 1, 4]} spacing={4}>
             <FormControl isRequired paddingTop={15}>
               <FormLabel htmlFor="modelo_del_carro">Modelo del Carro</FormLabel>
@@ -348,6 +361,38 @@ function VerTicketVial() {
                 />
               </InputGroup>
             </FormControl>
+
+            <FormControl>
+              <FormLabel htmlFor="casetas">Número de Casetas</FormLabel>
+              <Input
+                variant="unstyled"
+                isReadOnly
+                id="casetas"
+                placeholder="0"
+                type="number"
+                borderColor="twitter.100"
+              />
+            </FormControl>
+
+            <FormControl>
+              <FormLabel htmlFor="costoPorCaseta">Costo por Caseta</FormLabel>
+              <InputGroup>
+                <InputLeftAddon
+                  pointerEvents="none"
+                  children={<MdOutlineAttachMoney />}
+                />
+                <Input
+                  variant="unstyled"
+                  isReadOnly
+                  id="costo_por_caseta"
+                  min={0}
+                  placeholder="0.00"
+                  paddingLeft={8}
+                  type="number"
+                  borderColor="twitter.100"
+                />
+              </InputGroup>
+            </FormControl>
           </SimpleGrid>
 
           <SimpleGrid paddingTop={5} columns={[1, 2, 4]} spacing="40px">
@@ -439,7 +484,6 @@ function VerTicketVial() {
               </InputGroup>
             </FormControl>
           </SimpleGrid>
-
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="cotizacion_gpo_lias">
               Cotización de Grupo Lías (Información Adicional)
@@ -452,10 +496,15 @@ function VerTicketVial() {
               borderColor="twitter.100"
             />
           </FormControl>
+          <Button
+          
+          colorScheme="facebook">
+          Abrir cita
+        </Button>
         </Box>
-      </DesktopLayout>
+        
+      
     </>
   );
 }
 
-export default VerTicketVial;

@@ -43,7 +43,7 @@ import {
   MdOutlineHomeMax,
   MdVerifiedUser,
 } from "react-icons/md";
-import { IAseguradoras, IAsistencias } from "@/services/api.models";
+import { IAseguradora, IAsistencia } from "@/services/api.models";
 import { useRouter } from "next/router";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";
@@ -56,7 +56,7 @@ function AseguradoraVer() {
 
   const [nombreAsistencia, setNombreAsistencia] = useState("");
 
-  const [data, setData] = useState<IAseguradoras>();
+  const [data, setData] = useState<IAseguradora>();
 
   const router = useRouter();
 
@@ -65,7 +65,7 @@ function AseguradoraVer() {
   const { idAseguradora } = router.query;
   /**CONSULTA DE ASISTENCIA DE LA ASEGURADORA */
 
-  const [listaAsistencias, setListaAsistencias] = useState<IAsistencias[]>([]);
+  const [listaAsistencias, setListaAsistencias] = useState<IAsistencia[]>([]);
 
   /**AGREGAR ASISTENCIA A LA ASEGURADORA */
 
@@ -74,7 +74,7 @@ function AseguradoraVer() {
     const response: any = await services.getAsistenciasByIdAseguradora(
       Number(idAseguradora)
     );
-    const data = response.data as IAsistencias[];
+    const data = response.data as IAsistencia[];
 
     if (response.status == 200) {
       setListaAsistencias(data || []);
@@ -84,7 +84,7 @@ function AseguradoraVer() {
   };
 
   const guardarAsistencia = async () => {
-    const data: IAsistencias = {
+    const data: IAsistencia = {
       nombre: nombreAsistencia,
       aseguradoraId: Number(idAseguradora),
     };
@@ -120,7 +120,7 @@ function AseguradoraVer() {
       const service = new AseguradoraService();
       const respuesta = await service.getById(Number(idAseguradora));
       if (respuesta.status == 200) {
-        setData(respuesta.data as IAseguradoras);
+        setData(respuesta.data as IAseguradora);
       }
     };
     const consultaAsistencias = async () => {
@@ -128,7 +128,7 @@ function AseguradoraVer() {
       const response: any = await services.getAsistenciasByIdAseguradora(
         Number(idAseguradora)
       );
-      const data = response.data as IAsistencias[];
+      const data = response.data as IAsistencia[];
 
       if (response.status == 200) {
         setListaAsistencias(data || []);
@@ -155,7 +155,7 @@ function AseguradoraVer() {
     },
     enableReinitialize: true,
 
-    onSubmit: async (values: IAseguradoras) => {
+    onSubmit: async (values: IAseguradora) => {
       const data = {
         ...values,
       };
@@ -163,7 +163,7 @@ function AseguradoraVer() {
       const service = new AseguradoraService();
       const respuesta = await service.update(data, Number(idAseguradora));
 
-      const dataUpdate = respuesta.data as IAseguradoras;
+      const dataUpdate = respuesta.data as IAseguradora;
       setData(dataUpdate);
 
       if (respuesta.status !== 200) {

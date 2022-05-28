@@ -2,8 +2,8 @@
 import Header from "@/common/Header";
 import DesktopLayout from "@/layouts/DesktopLayout";
 import {
-  IAseguradoras,
-  IAsistencias,
+  IAseguradora,
+  IAsistencia,
   ICiudad,
   IServicio,
 } from "@/services/api.models";

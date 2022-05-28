@@ -1,15 +1,15 @@
-import { IAsistencias } from "./api.models";
+import { IAsistencia } from "./api.models";
 import { Actualizar, Consultar, Crear, Eliminar } from "./ApiCall";
 
 export class AsistenciasService {
   private url = "/asistencias";
 
-  public async create(data: IAsistencias) {
+  public async create(data: IAsistencia) {
     const respuesta: any = await Crear(this.url, data);
     return respuesta;
   }
 
-  public async update(data: IAsistencias, id: number) {
+  public async update(data: IAsistencia, id: number) {
     const respuesta: any = await Actualizar(`${this.url}/${id}`, data);
     return respuesta;
   }
@@ -29,7 +29,7 @@ export class AsistenciasService {
     return respuesta;
   }
 
-  async count(usuario: IAsistencias) {
+  async count(usuario: IAsistencia) {
     const respuesta = await Consultar(`${this.url}/count`, usuario);
     return respuesta;
   }
