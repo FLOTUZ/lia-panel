@@ -30,7 +30,7 @@ import {
 import { BsPrinter } from "react-icons/bs";
 import { MdAdd, MdOutlineAttachMoney } from "react-icons/md";
 import { IoFlag, IoSpeedometerOutline } from "react-icons/io5";
-import CrearCotizacionTecnicoForm from "@/forms/CotizacionTecnicoForm";
+
 
 
 
@@ -479,7 +479,7 @@ function VerTicketDomestico() {
 
 
                 {/*---------------------------------Cotización del Técnico--------------------------------*/}
-                <CrearCotizacionTecnicoForm />
+                
 
 
             </DesktopLayout>
