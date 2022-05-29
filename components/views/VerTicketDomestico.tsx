@@ -70,6 +70,7 @@ export function VerTicketDomestico({
             type="text"
             placeholder="N° Expediente"
             borderColor="twitter.100"
+            value={ticket.num_expediente}
           />
         </SimpleGrid>
 
@@ -83,6 +84,7 @@ export function VerTicketDomestico({
               isReadOnly
               placeholder="Fecha de la Llamada"
               borderColor="twitter.100"
+              value={ticket.fecha_llamada}
             />
           </FormControl>
         </SimpleGrid>
@@ -97,6 +99,7 @@ export function VerTicketDomestico({
                 id="aseguradoraId"
                 placeholder="Nombre de Aseguradora"
                 borderColor="twitter.100"
+                value={ticket.aseguradoraId}
               />
             </FormControl>
 
@@ -108,6 +111,7 @@ export function VerTicketDomestico({
                 id="asistenciaId"
                 placeholder="Nombre de Asistencia"
                 borderColor="twitter.100"
+                value={ticket.asistenciaId}
               />
             </FormControl>
           </Center>
@@ -125,6 +129,7 @@ export function VerTicketDomestico({
                 id="nombre_asesor_gpo_lias"
                 placeholder="Asesor de Grupo Lías"
                 borderColor="twitter.100"
+                value={ticket.nombre_asesor_gpo_lias}
               />
             </FormControl>
 
@@ -138,6 +143,7 @@ export function VerTicketDomestico({
                 id="nombre_asesor_aseguradora"
                 placeholder="Asesor de la Aseguradora"
                 borderColor="twitter.100"
+                
               />
             </FormControl>
           </Center>
@@ -155,6 +161,7 @@ export function VerTicketDomestico({
               id="nombre_usuario_final"
               placeholder="Usuario a Brindar Servicio"
               borderColor="twitter.100"
+              value={ticket.nombre_usuario_final}
             />
           </FormControl>
 
@@ -168,6 +175,7 @@ export function VerTicketDomestico({
               id="titulo_ticket"
               placeholder="Descripción Corta"
               borderColor="twitter.100"
+              value={ticket.titulo_ticket}
             />
           </FormControl>
         </Center>
@@ -181,19 +189,10 @@ export function VerTicketDomestico({
             variant="unstyled"
             placeholder="Problemática"
             borderColor="twitter.100"
+            value={ticket.problematica}
           />
         </FormControl>
 
-        <FormControl paddingTop={15}>
-          <FormLabel htmlFor="servicioId">Servicios Relacionados:</FormLabel>
-          <Textarea
-            id="servicioId"
-            variant="unstyled"
-            isReadOnly
-            placeholder="Servicios Relacionados"
-            borderColor="twitter.100"
-          />
-        </FormControl>
       </Box>
 
       <Box
@@ -220,6 +219,7 @@ export function VerTicketDomestico({
               id="estado"
               placeholder="Estado"
               borderColor="twitter.100"
+              
             />
           </FormControl>
 
@@ -231,6 +231,7 @@ export function VerTicketDomestico({
               variant="unstyled"
               isReadOnly
               borderColor="twitter.100"
+              
             ></Input>
           </FormControl>
         </SimpleGrid>
@@ -244,6 +245,7 @@ export function VerTicketDomestico({
               id="colonia"
               placeholder="Colonia"
               borderColor="twitter.100"
+              value={ticket.colonia}
             />
           </FormControl>
 
@@ -255,6 +257,7 @@ export function VerTicketDomestico({
               id="calle"
               placeholder="Calle"
               borderColor="twitter.100"
+              value={ticket.calle}
             />
           </FormControl>
 
@@ -268,6 +271,7 @@ export function VerTicketDomestico({
               id="numero_domicilio"
               placeholder="N° de Domicilio Exterior"
               borderColor="twitter.100"
+              value={ticket.numero_domicilio}
             />
           </FormControl>
 
@@ -281,6 +285,7 @@ export function VerTicketDomestico({
               id="num_interior"
               placeholder="N° de Domicilio Interior"
               borderColor="twitter.100"
+              value={ticket.num_interior}
             />
           </FormControl>
         </SimpleGrid>
@@ -305,6 +310,7 @@ export function VerTicketDomestico({
                 type="number"
                 max={2}
                 borderColor="twitter.100"
+                value={ticket.cobertura}
               />
             </InputGroup>
           </FormControl>
@@ -325,6 +331,7 @@ export function VerTicketDomestico({
                 min={0}
                 type="number"
                 borderColor="twitter.100"
+                value={ticket.costo_gpo_lias}
               />
             </InputGroup>
           </FormControl>
@@ -347,6 +354,7 @@ export function VerTicketDomestico({
                 paddingLeft={8}
                 type="number"
                 borderColor="twitter.100"
+                value={ticket.kilometraje}
               />
             </InputGroup>
           </FormControl>
@@ -369,6 +377,7 @@ export function VerTicketDomestico({
                 paddingLeft={8}
                 type="number"
                 borderColor="twitter.100"
+                value={ticket.costo_de_kilometraje}
               />
             </InputGroup>
           </FormControl>
@@ -393,6 +402,7 @@ export function VerTicketDomestico({
                 borderColor="twitter.100"
                 fontWeight={"bold"}
                 textColor={"red"}
+                value={ticket.deducible}
               />
             </InputGroup>
           </FormControl>
@@ -415,6 +425,7 @@ export function VerTicketDomestico({
                 borderColor="twitter.100"
                 fontWeight={"bold"}
                 textColor={"red"}
+                value={ticket.anticipo}
               />
             </InputGroup>
           </FormControl>
@@ -437,6 +448,7 @@ export function VerTicketDomestico({
                 borderColor="twitter.100"
                 fontWeight={"bold"}
                 textColor={"red"}
+                value={ticket.total_salida}
               />
             </InputGroup>
           </FormControl>
@@ -459,6 +471,7 @@ export function VerTicketDomestico({
                 borderColor="twitter.100"
                 fontWeight={"bold"}
                 textColor={"red"}
+                value={ticket.total}
               />
             </InputGroup>
           </FormControl>

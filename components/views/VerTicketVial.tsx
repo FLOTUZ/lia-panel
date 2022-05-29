@@ -65,6 +65,7 @@ export function VerTicketVial({
               isReadOnly
               placeholder="Fecha de la Llamada"
               borderColor="twitter.100"
+              value={ticket.fecha_llamada}
             />
           </FormControl>
         </SimpleGrid>
@@ -79,6 +80,7 @@ export function VerTicketVial({
                 id="aseguradoraId"
                 placeholder="Nombre de Aseguradora"
                 borderColor="twitter.100"
+                value={ticket.aseguradoraId}
               />
             </FormControl>
 
@@ -107,6 +109,7 @@ export function VerTicketVial({
                 id="nombre_asesor_gpo_lias"
                 placeholder="Asesor de Grupo Lías"
                 borderColor="twitter.100"
+                value={ticket.nombre_asesor_gpo_lias}
               />
             </FormControl>
 
@@ -137,6 +140,7 @@ export function VerTicketVial({
               id="nombre_usuario_final"
               placeholder="Usuario a Brindar Servicio"
               borderColor="twitter.100"
+              value={ticket.nombre_usuario_final}
             />
           </FormControl>
 
@@ -150,6 +154,7 @@ export function VerTicketVial({
               id="titulo_ticket"
               placeholder="Descripción Corta"
               borderColor="twitter.100"
+              value={ticket.titulo_ticket}
             />
           </FormControl>
         </Center>
@@ -163,17 +168,9 @@ export function VerTicketVial({
             variant="unstyled"
             placeholder="Problemática"
             borderColor="twitter.100"
-          />
-        </FormControl>
+            value={ticket.problematica}
 
-        <FormControl paddingTop={15}>
-          <FormLabel htmlFor="servicioId">Servicios Relacionados:</FormLabel>
-          <Textarea
-            id="servicioId"
-            variant="unstyled"
-            isReadOnly
-            placeholder="Servicios Relacionados"
-            borderColor="twitter.100"
+            
           />
         </FormControl>
       </Box>
@@ -202,6 +199,7 @@ export function VerTicketVial({
               id="estado"
               placeholder="Estado"
               borderColor="twitter.100"
+              
             />
           </FormControl>
 
@@ -226,6 +224,7 @@ export function VerTicketVial({
               id="modelo_carro"
               placeholder="Modelo del Carro"
               borderColor="twitter.100"
+              value={ticket.modelo_carro}
             />
           </FormControl>
 
@@ -237,6 +236,7 @@ export function VerTicketVial({
               id="placas_carro"
               placeholder="Placas"
               borderColor="twitter.100"
+              value={ticket.placas_carro}
             />
           </FormControl>
 
@@ -248,6 +248,7 @@ export function VerTicketVial({
               id="color_carro"
               placeholder="Color"
               borderColor="twitter.100"
+              value={ticket.color_carro}
             />
           </FormControl>
 
@@ -259,6 +260,7 @@ export function VerTicketVial({
               id="marca_carro"
               placeholder="Marca"
               borderColor="twitter.100"
+              value={ticket.marca_carro}
             />
           </FormControl>
         </SimpleGrid>
@@ -283,6 +285,7 @@ export function VerTicketVial({
                 type="number"
                 max={2}
                 borderColor="twitter.100"
+                value={ticket.cobertura}
               />
             </InputGroup>
           </FormControl>
@@ -303,6 +306,7 @@ export function VerTicketVial({
                 min={0}
                 type="number"
                 borderColor="twitter.100"
+                value={ticket.costo_gpo_lias}
               />
             </InputGroup>
           </FormControl>
@@ -325,6 +329,7 @@ export function VerTicketVial({
                 paddingLeft={8}
                 type="number"
                 borderColor="twitter.100"
+                value={ticket.kilometraje}
               />
             </InputGroup>
           </FormControl>
@@ -347,6 +352,7 @@ export function VerTicketVial({
                 paddingLeft={8}
                 type="number"
                 borderColor="twitter.100"
+                value={ticket.costo_de_kilometraje}
               />
             </InputGroup>
           </FormControl>
@@ -371,6 +377,7 @@ export function VerTicketVial({
                 borderColor="twitter.100"
                 fontWeight={"bold"}
                 textColor={"red"}
+                value={ticket.deducible}
               />
             </InputGroup>
           </FormControl>
@@ -393,6 +400,7 @@ export function VerTicketVial({
                 borderColor="twitter.100"
                 fontWeight={"bold"}
                 textColor={"red"}
+                value={ticket.anticipo}
               />
             </InputGroup>
           </FormControl>
@@ -415,6 +423,7 @@ export function VerTicketVial({
                 borderColor="twitter.100"
                 fontWeight={"bold"}
                 textColor={"red"}
+                value={ticket.total_salida}
               />
             </InputGroup>
           </FormControl>
@@ -437,6 +446,7 @@ export function VerTicketVial({
                 borderColor="twitter.100"
                 fontWeight={"bold"}
                 textColor={"red"}
+                value={ticket.total}
               />
             </InputGroup>
           </FormControl>
@@ -452,6 +462,7 @@ export function VerTicketVial({
             isReadOnly
             placeholder="Cotización"
             borderColor="twitter.100"
+            value={ticket.cotizacion_gpo_lias}
           />
         </FormControl>
         <Box paddingTop={10}>
