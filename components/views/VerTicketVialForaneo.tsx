@@ -232,7 +232,7 @@ export function VerTicketVialForaneo({
               variant="unstyled"
               id="modelo_carro"
               placeholder="Modelo del Carro"
-              value={ticket.modelo_carro}
+              value={ticket.modelo_carro!}
             ></Input>
           </FormControl>
 
@@ -242,7 +242,7 @@ export function VerTicketVialForaneo({
               variant="unstyled"
               id="placas_carro"
               placeholder="Placas"
-              value={ticket.placas_carro}
+              value={ticket.placas_carro!}
             ></Input>
           </FormControl>
 
@@ -254,7 +254,7 @@ export function VerTicketVialForaneo({
               id="color_carro"
               placeholder="Color"
               borderColor="twitter.100"
-              value={ticket.color_carro}
+              value={ticket.color_carro!}
             />
           </FormControl>
 
@@ -266,7 +266,7 @@ export function VerTicketVialForaneo({
               id="marca_carro"
               placeholder="Marca"
               borderColor="twitter.100"
-              value={ticket.marca_carro}
+              value={ticket.marca_carro!}
             />
           </FormControl>
         </SimpleGrid>
@@ -501,7 +501,7 @@ export function VerTicketVialForaneo({
             isReadOnly
             placeholder="Cotización"
             borderColor="twitter.100"
-            value={ticket.cotizacion_gpo_lias}
+            value={ticket.cotizacion_gpo_lias!}
           />
         </FormControl>
         <Box paddingTop={10}>

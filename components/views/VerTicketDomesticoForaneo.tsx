@@ -15,7 +15,6 @@ import {
   Button,
   InputGroup,
   InputLeftAddon,
-
 } from "@chakra-ui/react";
 import { BsPrinter } from "react-icons/bs";
 import { MdAdd, MdOutlineAttachMoney } from "react-icons/md";
@@ -134,7 +133,6 @@ export function VerTicketDomesticoForaneo({
                 id="nombre_asesor_aseguradora"
                 placeholder="Asesor de la Aseguradora"
                 borderColor="twitter.100"
-              
               />
             </FormControl>
           </Center>
@@ -200,8 +198,6 @@ export function VerTicketDomesticoForaneo({
         </Text>
         <Divider orientation="vertical" />
 
-  
-
         <SimpleGrid columns={[1, 1, 2]} spacing={5}>
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="estado">Estado</FormLabel>
@@ -263,7 +259,6 @@ export function VerTicketDomesticoForaneo({
               borderColor="twitter.100"
               value={ticket.numero_domicilio}
             />
-
           </FormControl>
 
           <FormControl paddingLeft={5} paddingTop={15}>
@@ -276,7 +271,7 @@ export function VerTicketDomesticoForaneo({
               id="num_interior"
               placeholder="N° de Domicilio Interior"
               borderColor="twitter.100"
-              value={ticket.num_interior}
+              value={ticket.num_interior !== null ? ticket.num_interior : ""}
             />
           </FormControl>
         </SimpleGrid>
@@ -512,7 +507,7 @@ export function VerTicketDomesticoForaneo({
             isReadOnly
             placeholder="Cotización"
             borderColor="twitter.100"
-            value={ticket.cotizacion_gpo_lias}
+            value={ticket.cotizacion_gpo_lias!}
           />
         </FormControl>
 

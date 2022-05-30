@@ -143,7 +143,6 @@ export function VerTicketDomestico({
                 id="nombre_asesor_aseguradora"
                 placeholder="Asesor de la Aseguradora"
                 borderColor="twitter.100"
-                
               />
             </FormControl>
           </Center>
@@ -192,7 +191,6 @@ export function VerTicketDomestico({
             value={ticket.problematica}
           />
         </FormControl>
-
       </Box>
 
       <Box
@@ -219,7 +217,6 @@ export function VerTicketDomestico({
               id="estado"
               placeholder="Estado"
               borderColor="twitter.100"
-              
             />
           </FormControl>
 
@@ -231,7 +228,6 @@ export function VerTicketDomestico({
               variant="unstyled"
               isReadOnly
               borderColor="twitter.100"
-              
             ></Input>
           </FormControl>
         </SimpleGrid>
@@ -285,7 +281,7 @@ export function VerTicketDomestico({
               id="num_interior"
               placeholder="N° de Domicilio Interior"
               borderColor="twitter.100"
-              value={ticket.num_interior}
+              value={ticket.num_interior !== null ? ticket.num_interior : ""}
             />
           </FormControl>
         </SimpleGrid>
