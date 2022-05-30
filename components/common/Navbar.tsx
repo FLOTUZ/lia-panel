@@ -1,18 +1,18 @@
 import { Button, Flex, Spacer, Stack } from "@chakra-ui/react";
 import {
   MdHomeRepairService,
-  MdSpaceDashboard,
   MdSupervisedUserCircle,
   MdVerifiedUser,
 } from "react-icons/md";
-import { IoBook, IoExit, IoReceipt, } from "react-icons/io5";
-import { IoMdMap, } from "react-icons/io";
+
+import { IoBook, IoExit, IoReceipt } from "react-icons/io5";
+import { IoMdMap } from "react-icons/io";
 
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "../../public/logo.jpeg";
 
-const Navbar = () => {
+const Navbar = (hideNabar: any, setHideNabar: Function) => {
   const routes = [
     // {
     //   name: "Dashboard",
@@ -49,12 +49,11 @@ const Navbar = () => {
       path: "/ciudades",
       icon: <IoMdMap size={32} />,
     },
-     {
+    {
       name: "Salir",
-       path: "/login",
-       icon: <IoExit size={32} />,
+      path: "/login",
+      icon: <IoExit size={32} />,
     },
-
   ];
   return (
     <Stack width="20vh" h="100vh" pos="fixed" p={2}>
