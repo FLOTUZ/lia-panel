@@ -60,3 +60,5 @@ cypress/plugins/index.js
 cypress/screenshots/All Integration Specs/my-image.png
 cypress/support/commands.js
 cypress/support/index.js
+
+.env

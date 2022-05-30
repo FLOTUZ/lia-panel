@@ -208,6 +208,8 @@ const NuevoTicket = () => {
         totalCasetas,
         banderazo,
         totalSalida,
+        calculoDeducible,
+        calculoAnticipo,
       });
     };
 
@@ -343,6 +345,10 @@ const NuevoTicket = () => {
     },
     onSubmit: async (values) => {
       const ticket: any = { ...values };
+      ticket.deducible = calculoDeducible;
+      ticket.anticipo = calculoAnticipo;
+      ticket.total_salida = calculoTotalSalida;
+      ticket.total = calculoMontoTotal;
       console.log(ticket);
 
       const servicio = new TicketsService();
@@ -357,7 +363,7 @@ const NuevoTicket = () => {
           );
 
         if (respuestaServiciosTicket.status === 201) {
-          router.push(`/tickets/${dataTicketGuardado.id}`);
+          //router.push(`/tickets/${dataTicketGuardado.id}`);
           toast({
             id: "altaExitosa",
             title: "Ticket creado",
@@ -450,12 +456,12 @@ const NuevoTicket = () => {
               >
                 {aseguradorasList?.length !== 0
                   ? aseguradorasList?.map((aseguradora, index) => {
-                    return (
-                      <option key={index} value={Number(aseguradora.id)}>
-                        {aseguradora.nombre}
-                      </option>
-                    );
-                  })
+                      return (
+                        <option key={index} value={Number(aseguradora.id)}>
+                          {aseguradora.nombre}
+                        </option>
+                      );
+                    })
                   : null}
               </Select>
             </FormControl>
@@ -480,12 +486,12 @@ const NuevoTicket = () => {
               >
                 {asistenciasList.length !== 0
                   ? asistenciasList.map((asistencia, index) => {
-                    return (
-                      <option key={index} value={Number(asistencia.id)}>
-                        {asistencia.nombre}
-                      </option>
-                    );
-                  })
+                      return (
+                        <option key={index} value={Number(asistencia.id)}>
+                          {asistencia.nombre}
+                        </option>
+                      );
+                    })
                   : null}
               </Select>
             </FormControl>
@@ -542,12 +548,12 @@ const NuevoTicket = () => {
                 >
                   {aseguradorasList?.length !== 0
                     ? aseguradorasList?.map((aseguradora, index) => {
-                      return (
-                        <option key={index} value={Number(aseguradora.id)}>
-                          {aseguradora.nombre}
-                        </option>
-                      );
-                    })
+                        return (
+                          <option key={index} value={Number(aseguradora.id)}>
+                            {aseguradora.nombre}
+                          </option>
+                        );
+                      })
                     : null}
                 </Select>
               </FormControl>
@@ -603,12 +609,12 @@ const NuevoTicket = () => {
               >
                 {asesorList.length !== 0
                   ? asesorList.map((asesor, index) => {
-                    return (
-                      <option key={index} value={Number(asesor.id)}>
-                        {asesor.nombre}
-                      </option>
-                    );
-                  })
+                      return (
+                        <option key={index} value={Number(asesor.id)}>
+                          {asesor.nombre}
+                        </option>
+                      );
+                    })
                   : null}
               </Select>
             </FormControl>
@@ -673,16 +679,16 @@ const NuevoTicket = () => {
             <SimpleGrid padding={5} minChildWidth="120px" spacing="40px">
               {serviciosList?.length !== 0
                 ? serviciosList.map((servicio, index) => {
-                  return (
-                    <Checkbox
-                      key={index}
-                      id={servicio.nombre}
-                      value={servicio.id?.toString()}
-                    >
-                      {servicio.nombre}
-                    </Checkbox>
-                  );
-                })
+                    return (
+                      <Checkbox
+                        key={index}
+                        id={servicio.nombre}
+                        value={servicio.id?.toString()}
+                      >
+                        {servicio.nombre}
+                      </Checkbox>
+                    );
+                  })
                 : null}
             </SimpleGrid>
           </CheckboxGroup>
@@ -802,12 +808,12 @@ const NuevoTicket = () => {
             >
               {estadosList?.length !== 0
                 ? estadosList?.map((estado, index) => {
-                  return (
-                    <option key={index} value={estado.id}>
-                      {estado.nombre}
-                    </option>
-                  );
-                })
+                    return (
+                      <option key={index} value={estado.id}>
+                        {estado.nombre}
+                      </option>
+                    );
+                  })
                 : null}
             </Select>
           </FormControl>
@@ -830,12 +836,12 @@ const NuevoTicket = () => {
             >
               {ciudadesList?.length !== 0
                 ? ciudadesList?.map((ciudad, index) => {
-                  return (
-                    <option key={index} value={ciudad.id}>
-                      {ciudad.nombre}
-                    </option>
-                  );
-                })
+                    return (
+                      <option key={index} value={ciudad.id}>
+                        {ciudad.nombre}
+                      </option>
+                    );
+                  })
                 : null}
             </Select>
           </FormControl>
@@ -1265,7 +1271,6 @@ const NuevoTicket = () => {
         >
           Publicar Ticket
         </Button>
-
       </Box>
     </form>
   );
