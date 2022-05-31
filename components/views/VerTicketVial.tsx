@@ -17,7 +17,13 @@ import {
 } from "@chakra-ui/react";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { IoSpeedometerOutline } from "react-icons/io5";
-import { IAseguradora, IAsistencia, ICiudad, IEstado, ITicket } from "@/services/api.models";
+import {
+  IAseguradora,
+  IAsistencia,
+  ICiudad,
+  IEstado,
+  ITicket,
+} from "@/services/api.models";
 import { CrearCotizacionTecnico } from "@/forms/CotizacionTecnicoForm";
 import SeguimientoForm from "@/forms/SeguimientoForm";
 import { BsPrinter } from "react-icons/bs";
@@ -29,20 +35,12 @@ import { EstadosService } from "@/services/estados.service";
 
 interface VerTicketVialProps {
   ticket: ITicket;
-  aseguradora: IAseguradora;
-  asistencia: IAsistencia;
-  ciudad: ICiudad;
-  estado: IEstado;
 }
-export function VerTicketVial({
-  ticket,
-  
-}: VerTicketVialProps) {
+export function VerTicketVial({ ticket }: VerTicketVialProps) {
   const [aseguradora, setAseguradora] = useState<IAseguradora>();
   const [asistencia, setAsistencia] = useState<IAsistencia>();
   const [ciudad, setCiudad] = useState<ICiudad>();
   const [estado, setEstado] = useState<IEstado>();
-  
 
   useEffect(() => {
     /*Obtener aseguradora*/
@@ -51,7 +49,7 @@ export function VerTicketVial({
       const respuesta = await service.getById(Number(ticket?.aseguradoraId));
       const data = respuesta.data as IAseguradora;
       setAseguradora(data);
-    }
+    };
 
     /*Obtener asistencia*/
     const getAsistencia = async () => {
@@ -59,7 +57,7 @@ export function VerTicketVial({
       const respuesta = await service.getById(Number(ticket?.asistenciaId));
       const data = respuesta.data as IAsistencia;
       setAsistencia(data);
-    }
+    };
 
     /*Obtener ciudad*/
     const getCiudad = async () => {
@@ -67,26 +65,22 @@ export function VerTicketVial({
       const respuesta = await service.getById(Number(ticket?.ciudadId));
       const data = respuesta.data as IEstado;
       setCiudad(data);
-    }
+    };
     /*Obtener estado*/
     const getEstado = async () => {
       const service = new EstadosService();
       const respuesta = await service.getAll();
       const data = respuesta.data as IEstado;
       setEstado(data);
-    }
+    };
 
-     /*Obtener asesor de aseguradora*/
-     
-
-
+    /*Obtener asesor de aseguradora*/
 
     getAseguradora();
     getAsistencia();
     getCiudad();
     getEstado();
-    
-  }, [ticket])
+  }, [ticket]);
 
   return (
     <>
@@ -226,8 +220,6 @@ export function VerTicketVial({
             placeholder="Problemática"
             borderColor="twitter.100"
             value={ticket.problematica}
-
-            
           />
         </FormControl>
       </Box>
@@ -256,7 +248,6 @@ export function VerTicketVial({
               id="estado"
               placeholder="Estado"
               borderColor="twitter.100"
-              
             />
           </FormControl>
 

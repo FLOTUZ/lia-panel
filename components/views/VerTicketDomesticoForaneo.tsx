@@ -19,7 +19,14 @@ import {
 import { BsPrinter } from "react-icons/bs";
 import { MdAdd, MdOutlineAttachMoney } from "react-icons/md";
 import { IoFlag, IoSpeedometerOutline } from "react-icons/io5";
-import { IAseguradora, IAsesor, IAsistencia, ICiudad, IEstado, ITicket } from "@/services/api.models";
+import {
+  IAseguradora,
+  IAsesor,
+  IAsistencia,
+  ICiudad,
+  IEstado,
+  ITicket,
+} from "@/services/api.models";
 import { CrearCotizacionTecnico } from "@/forms/CotizacionTecnicoForm";
 import SeguimientoForm from "@/forms/SeguimientoForm";
 import { useEffect, useState } from "react";
@@ -30,10 +37,6 @@ import { EstadosService } from "@/services/estados.service";
 
 interface VerTicketDomesticoForaneoProps {
   ticket: ITicket;
-  aseguradora: IAseguradora;
-  asistencia: IAsistencia;
-  ciudad: ICiudad;
-  estado: IEstado;
 }
 
 export function VerTicketDomesticoForaneo({
@@ -43,7 +46,6 @@ export function VerTicketDomesticoForaneo({
   const [asistencia, setAsistencia] = useState<IAsistencia>();
   const [ciudad, setCiudad] = useState<ICiudad>();
   const [estado, setEstado] = useState<IEstado>();
-  
 
   useEffect(() => {
     /*Obtener aseguradora*/
@@ -52,7 +54,7 @@ export function VerTicketDomesticoForaneo({
       const respuesta = await service.getById(Number(ticket?.aseguradoraId));
       const data = respuesta.data as IAseguradora;
       setAseguradora(data);
-    }
+    };
 
     /*Obtener asistencia*/
     const getAsistencia = async () => {
@@ -60,7 +62,7 @@ export function VerTicketDomesticoForaneo({
       const respuesta = await service.getById(Number(ticket?.asistenciaId));
       const data = respuesta.data as IAsistencia;
       setAsistencia(data);
-    }
+    };
 
     /*Obtener ciudad*/
     const getCiudad = async () => {
@@ -68,26 +70,22 @@ export function VerTicketDomesticoForaneo({
       const respuesta = await service.getById(Number(ticket?.ciudadId));
       const data = respuesta.data as IEstado;
       setCiudad(data);
-    }
+    };
     /*Obtener estado*/
     const getEstado = async () => {
       const service = new EstadosService();
       const respuesta = await service.getAll();
       const data = respuesta.data as IEstado;
       setEstado(data);
-    }
+    };
 
-     /*Obtener asesor de aseguradora*/
-     
-
-
+    /*Obtener asesor de aseguradora*/
 
     getAseguradora();
     getAsistencia();
     getCiudad();
     getEstado();
-    
-  }, [ticket])
+  }, [ticket]);
 
   return (
     <>
@@ -566,7 +564,6 @@ export function VerTicketDomesticoForaneo({
             value={ticket.cotizacion_gpo_lias!}
           />
         </FormControl>
-
       </Box>
       <CrearCotizacionTecnico />
       <SeguimientoForm />

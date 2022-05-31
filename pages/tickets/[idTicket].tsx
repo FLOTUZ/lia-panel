@@ -115,37 +115,13 @@ function TicketVer() {
 
   const getVista = () => {
     if (ticket?.asistencia_vial && ticket?.is_servicio_foraneo) {
-      setTipoVista(
-        <VerTicketVialForaneo
-          ticket={ticket}
-          aseguradora={aseguradora!}
-          asistencia={asistencia!}
-        />
-      );
+      setTipoVista(<VerTicketVialForaneo ticket={ticket} />);
     } else if (ticket?.asistencia_vial) {
-      setTipoVista(
-        <VerTicketVial
-          ticket={ticket}
-          aseguradora={aseguradora!}
-          asistencia={asistencia!}
-        />
-      );
+      setTipoVista(<VerTicketVial ticket={ticket} />);
     } else if (ticket?.is_servicio_domestico) {
-      setTipoVista(
-        <VerTicketDomestico
-          ticket={ticket}
-          aseguradora={aseguradora!}
-          asistencia={asistencia!}
-        />
-      );
+      setTipoVista(<VerTicketDomestico ticket={ticket} />);
     } else if (ticket?.is_servicio_domestico && ticket?.is_servicio_foraneo) {
-      setTipoVista(
-        <VerTicketDomesticoForaneo
-          ticket={ticket}
-          aseguradora={aseguradora!}
-          asistencia={asistencia!}
-        />
-      );
+      setTipoVista(<VerTicketDomesticoForaneo ticket={ticket} />);
     } else {
       setTipoVista(<></>);
     }
@@ -173,8 +149,8 @@ function TicketVer() {
         }}
         onClick={abrir}
       >
-        <Center marginTop={"3.5"} >
-          <IoAdd  size={40} />
+        <Center marginTop={"3.5"}>
+          <IoAdd size={40} />
         </Center>
       </Box>
       <Box

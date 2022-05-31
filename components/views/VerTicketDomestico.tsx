@@ -17,7 +17,14 @@ import {
 } from "@chakra-ui/react";
 import { MdAdd, MdOutlineAttachMoney } from "react-icons/md";
 import { IoFlag, IoSpeedometerOutline } from "react-icons/io5";
-import { IAseguradora, IAsesor, IAsistencia, ICiudad, IEstado, ITicket } from "@/services/api.models";
+import {
+  IAseguradora,
+  IAsesor,
+  IAsistencia,
+  ICiudad,
+  IEstado,
+  ITicket,
+} from "@/services/api.models";
 import { CrearCotizacionTecnico } from "@/forms/CotizacionTecnicoForm";
 import SeguimientoForm from "@/forms/SeguimientoForm";
 import { useEffect, useState } from "react";
@@ -26,26 +33,15 @@ import { AsistenciasService } from "@/services/asistencias.service";
 import { EstadosService } from "@/services/estados.service";
 import { CiudadesService } from "@/services/ciudades.service";
 
-
 interface VerTicketDomesticoProps {
   ticket: ITicket;
-  aseguradora: IAseguradora;
-  asistencia: IAsistencia;
-  ciudad: ICiudad;
-  estado: IEstado;
-
 }
 
-
-export function VerTicketDomestico({
-  ticket,
-}: VerTicketDomesticoProps) {
-
+export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
   const [aseguradora, setAseguradora] = useState<IAseguradora>();
   const [asistencia, setAsistencia] = useState<IAsistencia>();
   const [ciudad, setCiudad] = useState<ICiudad>();
   const [estado, setEstado] = useState<IEstado>();
-  
 
   useEffect(() => {
     /*Obtener aseguradora*/
@@ -54,7 +50,7 @@ export function VerTicketDomestico({
       const respuesta = await service.getById(Number(ticket?.aseguradoraId));
       const data = respuesta.data as IAseguradora;
       setAseguradora(data);
-    }
+    };
 
     /*Obtener asistencia*/
     const getAsistencia = async () => {
@@ -62,7 +58,7 @@ export function VerTicketDomestico({
       const respuesta = await service.getById(Number(ticket?.asistenciaId));
       const data = respuesta.data as IAsistencia;
       setAsistencia(data);
-    }
+    };
 
     /*Obtener ciudad*/
     const getCiudad = async () => {
@@ -70,27 +66,22 @@ export function VerTicketDomestico({
       const respuesta = await service.getById(Number(ticket?.ciudadId));
       const data = respuesta.data as IEstado;
       setCiudad(data);
-    }
+    };
     /*Obtener estado*/
     const getEstado = async () => {
       const service = new EstadosService();
       const respuesta = await service.getAll();
       const data = respuesta.data as IEstado;
       setEstado(data);
-    }
+    };
 
-     /*Obtener asesor de aseguradora*/
-     
-
-
+    /*Obtener asesor de aseguradora*/
 
     getAseguradora();
     getAsistencia();
     getCiudad();
     getEstado();
-    
-  }, [ticket])
-
+  }, [ticket]);
 
   return (
     <>
@@ -260,7 +251,7 @@ export function VerTicketDomestico({
         <SimpleGrid columns={[1, 1, 2]} spacing={5}>
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="estado">Estado</FormLabel>
-            
+
             <Input
               variant="unstyled"
               isReadOnly
@@ -268,9 +259,7 @@ export function VerTicketDomestico({
               placeholder="Estado"
               borderColor="twitter.100"
               //value={}
-            >
-             
-            </Input>
+            ></Input>
           </FormControl>
 
           <FormControl paddingTop={15}>
@@ -526,7 +515,6 @@ export function VerTicketDomestico({
             </InputGroup>
           </FormControl>
         </SimpleGrid>
-
       </Box>
       <CrearCotizacionTecnico />
       <SeguimientoForm />
