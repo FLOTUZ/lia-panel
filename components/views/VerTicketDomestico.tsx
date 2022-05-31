@@ -10,40 +10,88 @@ import {
   FormControl,
   Center,
   Textarea,
-  Image,
   Text,
   SimpleGrid,
-  Switch,
-  Button,
-  Flex,
   InputGroup,
   InputLeftAddon,
-  TableContainer,
-  Table,
-  TableCaption,
-  Thead,
-  Tr,
-  Th,
-  Tbody,
-  Td,
 } from "@chakra-ui/react";
-import { BsPrinter } from "react-icons/bs";
 import { MdAdd, MdOutlineAttachMoney } from "react-icons/md";
 import { IoFlag, IoSpeedometerOutline } from "react-icons/io5";
-import { IAseguradora, IAsistencia, ITicket } from "@/services/api.models";
+import { IAseguradora, IAsesor, IAsistencia, ICiudad, IEstado, ITicket } from "@/services/api.models";
 import { CrearCotizacionTecnico } from "@/forms/CotizacionTecnicoForm";
 import SeguimientoForm from "@/forms/SeguimientoForm";
+import { useEffect, useState } from "react";
+import { AseguradoraService } from "@/services/aseguradoras.service";
+import { AsistenciasService } from "@/services/asistencias.service";
+import { EstadosService } from "@/services/estados.service";
+import { CiudadesService } from "@/services/ciudades.service";
+
 
 interface VerTicketDomesticoProps {
   ticket: ITicket;
   aseguradora: IAseguradora;
   asistencia: IAsistencia;
+  ciudad: ICiudad;
+  estado: IEstado;
+
 }
+
+
 export function VerTicketDomestico({
   ticket,
-  aseguradora,
-  asistencia,
 }: VerTicketDomesticoProps) {
+
+  const [aseguradora, setAseguradora] = useState<IAseguradora>();
+  const [asistencia, setAsistencia] = useState<IAsistencia>();
+  const [ciudad, setCiudad] = useState<ICiudad>();
+  const [estado, setEstado] = useState<IEstado>();
+  
+
+  useEffect(() => {
+    /*Obtener aseguradora*/
+    const getAseguradora = async () => {
+      const service = new AseguradoraService();
+      const respuesta = await service.getById(Number(ticket?.aseguradoraId));
+      const data = respuesta.data as IAseguradora;
+      setAseguradora(data);
+    }
+
+    /*Obtener asistencia*/
+    const getAsistencia = async () => {
+      const service = new AsistenciasService();
+      const respuesta = await service.getById(Number(ticket?.asistenciaId));
+      const data = respuesta.data as IAsistencia;
+      setAsistencia(data);
+    }
+
+    /*Obtener ciudad*/
+    const getCiudad = async () => {
+      const service = new CiudadesService();
+      const respuesta = await service.getById(Number(ticket?.ciudadId));
+      const data = respuesta.data as IEstado;
+      setCiudad(data);
+    }
+    /*Obtener estado*/
+    const getEstado = async () => {
+      const service = new EstadosService();
+      const respuesta = await service.getAll();
+      const data = respuesta.data as IEstado;
+      setEstado(data);
+    }
+
+     /*Obtener asesor de aseguradora*/
+     
+
+
+
+    getAseguradora();
+    getAsistencia();
+    getCiudad();
+    getEstado();
+    
+  }, [ticket])
+
+
   return (
     <>
       <Header title="Ver Ticket de Servicio Doméstico" />
@@ -99,7 +147,7 @@ export function VerTicketDomestico({
                 id="aseguradoraId"
                 placeholder="Nombre de Aseguradora"
                 borderColor="twitter.100"
-                value={ticket.aseguradoraId}
+                value={aseguradora?.nombre}
               />
             </FormControl>
 
@@ -111,7 +159,7 @@ export function VerTicketDomestico({
                 id="asistenciaId"
                 placeholder="Nombre de Asistencia"
                 borderColor="twitter.100"
-                value={ticket.asistenciaId}
+                value={asistencia?.nombre}
               />
             </FormControl>
           </Center>
@@ -143,6 +191,7 @@ export function VerTicketDomestico({
                 id="nombre_asesor_aseguradora"
                 placeholder="Asesor de la Aseguradora"
                 borderColor="twitter.100"
+                //value={asesores.nombre}
               />
             </FormControl>
           </Center>
@@ -211,13 +260,17 @@ export function VerTicketDomestico({
         <SimpleGrid columns={[1, 1, 2]} spacing={5}>
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="estado">Estado</FormLabel>
+            
             <Input
               variant="unstyled"
               isReadOnly
               id="estado"
               placeholder="Estado"
               borderColor="twitter.100"
-            />
+              //value={}
+            >
+             
+            </Input>
           </FormControl>
 
           <FormControl paddingTop={15}>
@@ -228,6 +281,7 @@ export function VerTicketDomestico({
               variant="unstyled"
               isReadOnly
               borderColor="twitter.100"
+              value={ciudad?.nombre}
             ></Input>
           </FormControl>
         </SimpleGrid>
@@ -279,7 +333,7 @@ export function VerTicketDomestico({
               variant="unstyled"
               isReadOnly
               id="num_interior"
-              placeholder="N° de Domicilio Interior"
+              placeholder=""
               borderColor="twitter.100"
               value={ticket.num_interior !== null ? ticket.num_interior : ""}
             />
@@ -473,22 +527,6 @@ export function VerTicketDomestico({
           </FormControl>
         </SimpleGrid>
 
-        <Box paddingTop={10}>
-          <Button
-            padding={"2%"}
-            marginTop={15}
-            marginRight={8}
-            justifySelf="end"
-            leftIcon={<BsPrinter />}
-            id="imprimirTicket"
-            type="submit"
-            colorScheme="telegram"
-            borderColor="twitter.100"
-            size="lg"
-          >
-            Imprimir
-          </Button>
-        </Box>
       </Box>
       <CrearCotizacionTecnico />
       <SeguimientoForm />

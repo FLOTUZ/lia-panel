@@ -202,15 +202,7 @@ const NuevoTicket = () => {
       setCalculoTotalSalida(totalSalida);
       setCalculoMontoTotal(montoTotal);
 
-      console.log({
-        costoGPOLIAS,
-        totalKM,
-        totalCasetas,
-        banderazo,
-        totalSalida,
-        calculoDeducible,
-        calculoAnticipo,
-      });
+      
     };
 
     calcular();
@@ -363,7 +355,7 @@ const NuevoTicket = () => {
           );
 
         if (respuestaServiciosTicket.status === 201) {
-          //router.push(`/tickets/${dataTicketGuardado.id}`);
+          router.push(`/tickets/${dataTicketGuardado.id}`);
           toast({
             id: "altaExitosa",
             title: "Ticket creado",
@@ -828,7 +820,7 @@ const NuevoTicket = () => {
               onChange={(e) => {
                 setCiudadId(Number(e.target.value));
                 formTicket.setFieldValue("ciudadId", Number(e.target.value));
-                console.log(e.target.value);
+                //console.log(e.target.value);
               }}
               onFocus={(e) => {
                 consultarCiudades();
@@ -1194,7 +1186,7 @@ const NuevoTicket = () => {
             </InputGroup>
           </FormControl>
 
-          <FormControl isRequired paddingTop={15} paddingLeft={4}>
+          <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="total_salida">Total de Salida</FormLabel>
             <InputGroup>
               <InputLeftAddon
@@ -1236,7 +1228,10 @@ const NuevoTicket = () => {
                 borderColor="twitter.100"
                 fontWeight={"bold"}
                 textColor={"red"}
-                onChange={formTicket.handleChange}
+                onChange={(e)=>{
+                  
+                  formTicket.handleChange(e.target.value);
+                }}
                 value={calculoMontoTotal}
               />
             </InputGroup>

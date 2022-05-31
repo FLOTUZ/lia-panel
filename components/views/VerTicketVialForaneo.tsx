@@ -17,22 +17,76 @@ import {  MdOutlineAttachMoney } from "react-icons/md";
 
 import { IoSpeedometerOutline } from "react-icons/io5";
 import Header from "@/common/Header";
-import { IAseguradora, IAsistencia, ITicket } from "@/services/api.models";
+import { IAseguradora, IAsistencia, ICiudad, IEstado, ITicket } from "@/services/api.models";
 import SeguimientoForm from "@/forms/SeguimientoForm";
 import { BsPrinter } from "react-icons/bs";
 import { CrearCotizacionTecnico } from "@/forms/CotizacionTecnicoForm";
+import { AseguradoraService } from "@/services/aseguradoras.service";
+import { AsistenciasService } from "@/services/asistencias.service";
+import { CiudadesService } from "@/services/ciudades.service";
+import { EstadosService } from "@/services/estados.service";
 
 interface VerTicketVialForaneoProps {
   ticket: ITicket;
   aseguradora: IAseguradora;
   asistencia: IAsistencia;
+  ciudad: ICiudad;
+  estado: IEstado;
 }
 export function VerTicketVialForaneo({
   ticket,
-  aseguradora,
-  asistencia,
 
 }: VerTicketVialForaneoProps) {
+  const [aseguradora, setAseguradora] = useState<IAseguradora>();
+  const [asistencia, setAsistencia] = useState<IAsistencia>();
+  const [ciudad, setCiudad] = useState<ICiudad>();
+  const [estado, setEstado] = useState<IEstado>();
+  
+
+  useEffect(() => {
+    /*Obtener aseguradora*/
+    const getAseguradora = async () => {
+      const service = new AseguradoraService();
+      const respuesta = await service.getById(Number(ticket?.aseguradoraId));
+      const data = respuesta.data as IAseguradora;
+      setAseguradora(data);
+    }
+
+    /*Obtener asistencia*/
+    const getAsistencia = async () => {
+      const service = new AsistenciasService();
+      const respuesta = await service.getById(Number(ticket?.asistenciaId));
+      const data = respuesta.data as IAsistencia;
+      setAsistencia(data);
+    }
+
+    /*Obtener ciudad*/
+    const getCiudad = async () => {
+      const service = new CiudadesService();
+      const respuesta = await service.getById(Number(ticket?.ciudadId));
+      const data = respuesta.data as IEstado;
+      setCiudad(data);
+    }
+    /*Obtener estado*/
+    const getEstado = async () => {
+      const service = new EstadosService();
+      const respuesta = await service.getAll();
+      const data = respuesta.data as IEstado;
+      setEstado(data);
+    }
+
+     /*Obtener asesor de aseguradora*/
+     
+
+
+
+    getAseguradora();
+    getAsistencia();
+    getCiudad();
+    getEstado();
+    
+  }, [ticket])
+
   return (
     <>
       <Header title="Ver Ticket de Servicio Vial Foráneo" />
@@ -88,7 +142,7 @@ export function VerTicketVialForaneo({
                 id="aseguradoraId"
                 placeholder="Nombre de Aseguradora"
                 borderColor="twitter.100"
-                value={ticket.aseguradoraId}
+                value={aseguradora?.nombre}
               />
             </FormControl>
 
@@ -100,7 +154,7 @@ export function VerTicketVialForaneo({
                 id="asistenciaId"
                 placeholder="Nombre de Asistencia"
                 borderColor="twitter.100"
-                value={ticket.asistenciaId}
+                value={asistencia?.nombre}
               />
             </FormControl>
           </Center>
@@ -221,7 +275,7 @@ export function VerTicketVialForaneo({
               variant="unstyled"
               isReadOnly
               borderColor="twitter.100"
-              value={ticket.ciudadId}
+              value={ciudad?.nombre}
             ></Input>
           </FormControl>
         </SimpleGrid>
@@ -504,22 +558,6 @@ export function VerTicketVialForaneo({
             value={ticket.cotizacion_gpo_lias!}
           />
         </FormControl>
-        <Box paddingTop={10}>
-          <Button
-            padding={"2%"}
-            marginTop={15}
-            marginRight={8}
-            justifySelf="end"
-            leftIcon={<BsPrinter />}
-            id="imprimirTicket"
-            type="submit"
-            colorScheme="telegram"
-            borderColor="twitter.100"
-            size="lg"
-          >
-            Imprimir
-          </Button>
-        </Box>
       </Box>
       <CrearCotizacionTecnico />
       <SeguimientoForm />
