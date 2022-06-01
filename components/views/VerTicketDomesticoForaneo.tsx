@@ -34,18 +34,19 @@ import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";
 import { CiudadesService } from "@/services/ciudades.service";
 import { EstadosService } from "@/services/estados.service";
+import { AsesoresService } from "@/services/asesores.service";
 
 interface VerTicketDomesticoForaneoProps {
   ticket: ITicket;
 }
 
-export function VerTicketDomesticoForaneo({
-  ticket,
-}: VerTicketDomesticoForaneoProps) {
+
+export function VerTicketVial({ ticket }: VerTicketDomesticoForaneoProps) {
   const [aseguradora, setAseguradora] = useState<IAseguradora>();
   const [asistencia, setAsistencia] = useState<IAsistencia>();
   const [ciudad, setCiudad] = useState<ICiudad>();
   const [estado, setEstado] = useState<IEstado>();
+  const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>()
 
   useEffect(() => {
     /*Obtener aseguradora*/
@@ -71,20 +72,28 @@ export function VerTicketDomesticoForaneo({
       const data = respuesta.data as IEstado;
       setCiudad(data);
     };
+
     /*Obtener estado*/
     const getEstado = async () => {
       const service = new EstadosService();
-      const respuesta = await service.getAll();
+      const respuesta = await service.getById(ciudad?.estadoId!);
       const data = respuesta.data as IEstado;
       setEstado(data);
     };
 
     /*Obtener asesor de aseguradora*/
+    const getAsesorAseguradora = async () => {
+      const service = new AsesoresService();
+      const respuesta = await service.getById(ticket.asesorId);
+      const data = respuesta.data as IAsesor;
+      setAsesorAseguradora(data);
+    };
 
     getAseguradora();
     getAsistencia();
     getCiudad();
     getEstado();
+    getAsesorAseguradora();
   }, [ticket]);
 
   return (
@@ -186,6 +195,7 @@ export function VerTicketDomesticoForaneo({
                 id="nombre_asesor_aseguradora"
                 placeholder="Asesor de la Aseguradora"
                 borderColor="twitter.100"
+                value={asesorAseguradora?.nombre}
               />
             </FormControl>
           </Center>
@@ -260,6 +270,7 @@ export function VerTicketDomesticoForaneo({
               id="estado"
               placeholder="Estado"
               borderColor="twitter.100"
+              value={estado?.nombre}
             />
           </FormControl>
 
