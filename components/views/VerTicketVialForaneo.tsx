@@ -38,7 +38,7 @@ interface VerTicketVialForaneoProps {
   ticket: ITicket;
 }
 
-export function VerTicketVial({ ticket }: VerTicketVialForaneoProps) {
+export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
   const [aseguradora, setAseguradora] = useState<IAseguradora>();
   const [asistencia, setAsistencia] = useState<IAsistencia>();
   const [ciudad, setCiudad] = useState<ICiudad>();
