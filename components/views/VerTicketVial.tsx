@@ -19,6 +19,7 @@ import { MdOutlineAttachMoney } from "react-icons/md";
 import { IoSpeedometerOutline } from "react-icons/io5";
 import {
   IAseguradora,
+  IAsesor,
   IAsistencia,
   ICiudad,
   IEstado,
@@ -32,6 +33,7 @@ import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";
 import { CiudadesService } from "@/services/ciudades.service";
 import { EstadosService } from "@/services/estados.service";
+import { AsesoresService } from "@/services/asesores.service";
 
 interface VerTicketVialProps {
   ticket: ITicket;
@@ -41,6 +43,7 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
   const [asistencia, setAsistencia] = useState<IAsistencia>();
   const [ciudad, setCiudad] = useState<ICiudad>();
   const [estado, setEstado] = useState<IEstado>();
+  const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>()
 
   useEffect(() => {
     /*Obtener aseguradora*/
@@ -66,20 +69,31 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
       const data = respuesta.data as IEstado;
       setCiudad(data);
     };
+
     /*Obtener estado*/
     const getEstado = async () => {
       const service = new EstadosService();
-      const respuesta = await service.getAll();
+      const respuesta = await service.getById(ciudad?.estadoId!);
       const data = respuesta.data as IEstado;
       setEstado(data);
     };
 
     /*Obtener asesor de aseguradora*/
+    const getAsesorAseguradora = async () => {
+      const service = new AsesoresService();
+      const respuesta = await service.getById(ticket.asesorId);
+      const data = respuesta.data as IAsesor;
+      setAsesorAseguradora(data);
+    };
+
+    
+
 
     getAseguradora();
     getAsistencia();
     getCiudad();
     getEstado();
+    getAsesorAseguradora();
   }, [ticket]);
 
   return (
@@ -174,6 +188,7 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
                 id="nombre_asesor_aseguradora"
                 placeholder="Asesor de la Aseguradora"
                 borderColor="twitter.100"
+                value={asesorAseguradora?.nombre}
               />
             </FormControl>
           </Center>
@@ -248,6 +263,7 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
               id="estado"
               placeholder="Estado"
               borderColor="twitter.100"
+              value={estado?.nombre}
             />
           </FormControl>
 

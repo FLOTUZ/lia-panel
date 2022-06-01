@@ -17,6 +17,7 @@ export interface ITicket {
   asistencia_vial: boolean;
   fecha_llamada: string;
   nombre_asesor_gpo_lias: string;
+  asesorId: number;
   nombre_usuario_final: string;
   titulo_ticket: string;
   asistenciaId: number;
