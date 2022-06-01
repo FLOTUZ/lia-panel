@@ -26,8 +26,9 @@ import {
   Heading,
   useToast,
   Divider,
+  Link,
 } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, ViewOffIcon } from "@chakra-ui/icons";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { EstadosService } from "@/services/estados.service";
@@ -166,6 +167,7 @@ function EstadoVer() {
       <DesktopLayout>
         <Header title={"Editar Estado"} />
         <form onSubmit={formEstado.handleSubmit}>
+
           <Box
             m={2}
             bgColor="white"
@@ -176,6 +178,19 @@ function EstadoVer() {
             rounded="md"
             bg="white"
           >
+            <Stack paddingLeft={"63%"}>
+              <Link href={"/ciudades"}>
+                <Button
+                  leftIcon={<ViewOffIcon />}
+                  colorScheme="facebook"
+                  variant="solid"
+                  width={200}
+                >
+                  Ver Listado de Estados
+                </Button>
+              </Link>
+            </Stack>
+
             <Stack spacing={4}>
               <InputGroup>
                 <FormControl isRequired>

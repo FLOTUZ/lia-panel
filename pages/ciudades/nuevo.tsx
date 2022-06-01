@@ -26,13 +26,16 @@ import {
   Heading,
   useToast,
   Divider,
+  SimpleGrid,
 } from "@chakra-ui/react";
-import { AddIcon } from "@chakra-ui/icons";
+import { AddIcon, ViewOffIcon } from "@chakra-ui/icons";
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { EstadosService } from "@/services/estados.service";
 import { IEstado, ICiudad } from "@/services/api.models";
 import { CiudadesService } from "@/services/ciudades.service";
+import { route } from "next/dist/server/router";
+import { Router } from "next/router";
 
 function EstadoNuevo() {
 
@@ -102,7 +105,7 @@ function EstadoNuevo() {
     const estad = response.data as IEstado;
     setEstadoGuardado(estad);
     console.log(data);
-    
+
 
     if (response.status === 201) {
       //onClose();
@@ -141,7 +144,20 @@ function EstadoNuevo() {
           rounded="md"
           bg="white"
         >
-          <Stack spacing={4}>
+          <Stack paddingLeft={"65%"}>
+            <Link href={"/ciudades"}>
+              <Button
+                leftIcon={<ViewOffIcon />}
+                colorScheme="facebook"
+                variant="solid"
+                width={200}
+              >
+                Ver Listado de Estados
+              </Button>
+            </Link>
+          </Stack>
+
+          <Stack spacing={4} paddingTop={15}>
             <InputGroup>
               <FormControl isRequired>
                 <FormLabel htmlFor="nombre">Nombre del Estado</FormLabel>
@@ -162,14 +178,14 @@ function EstadoNuevo() {
           </Stack>
 
           <Stack
-            marginTop={50}
-            direction="row"
-            spacing={4}
+            paddingTop={10}
             align="center"
-            paddingLeft={930}
+            paddingLeft={"65%"}
+            spacing={4}
+            direction="row"
           >
             <Button
-              colorScheme="facebook"
+              colorScheme="whatsapp"
               variant="solid"
               onClick={guardarEstado}
             >
@@ -202,17 +218,19 @@ function EstadoNuevo() {
           </Heading>
 
           <Stack
-            marginTop={2}
-            direction="row"
-            spacing={2}
+            paddingTop={10}
             align="center"
-            paddingLeft={930}
+            paddingLeft={"65%"}
+            spacing={5}
+            direction="row"
           >
             <Button
               leftIcon={<AddIcon />}
               colorScheme="facebook"
               variant="solid"
               onClick={onOpen}
+              textAlign="center"
+
             >
               Nueva Ciudad
             </Button>

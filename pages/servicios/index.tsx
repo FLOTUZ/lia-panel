@@ -130,7 +130,7 @@ function ServiciosListado() {
 
     onSubmit: async (values: IServicio) => {
       const actualizaServicio = async () => {
-        const data ={
+        const data = {
           ...values
         }
 
@@ -159,39 +159,39 @@ function ServiciosListado() {
   });
 
   /**DELET SERVICIO */
- /* const deleteServicio = async () => {
-    const data: IServicio = {
-      nombre: nombreServicio,
-      tipo: tipoServicio,
-    };
-
-    const service = new ServiciosService()
-    const response = await service.remove(Number(idServicio))
-
-
-
-    if (response.status === 201) {
-      onClose();
-      setNombreServicio("");
-      setTipoServicio("");
-      toast({
-        title: "Servicio eliminado con exito",
-        description: "El servicio de agrego con exito",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-      });
-    } else {
-      toast({
-        title: "Oops.. Algo salio mal",
-        description: response.message,
-        status: "error",
-        duration: 9000,
-        isClosable: true,
-      });
-    }
-  };
-*/
+  /* const deleteServicio = async () => {
+     const data: IServicio = {
+       nombre: nombreServicio,
+       tipo: tipoServicio,
+     };
+ 
+     const service = new ServiciosService()
+     const response = await service.remove(Number(idServicio))
+ 
+ 
+ 
+     if (response.status === 201) {
+       onClose();
+       setNombreServicio("");
+       setTipoServicio("");
+       toast({
+         title: "Servicio eliminado con exito",
+         description: "El servicio de agrego con exito",
+         status: "success",
+         duration: 9000,
+         isClosable: true,
+       });
+     } else {
+       toast({
+         title: "Oops.. Algo salio mal",
+         description: response.message,
+         status: "error",
+         duration: 9000,
+         isClosable: true,
+       });
+     }
+   };
+ */
   return (
     <DesktopLayout>
       <Header title={"Lista de servicios "} />
@@ -225,6 +225,7 @@ function ServiciosListado() {
             Nuevo Servicio
           </Button>
         </Box>
+
         <Box marginLeft={"1%"}>
           <TableContainer>
             <Table size={"md"} variant="simple" colorScheme="teal">
@@ -244,12 +245,12 @@ function ServiciosListado() {
                         <Td>{serv.nombre}</Td>
                         <Td>{serv.tipo}</Td>
                         <Td>
-                        <Link href={`/servicios/${serv.id}`}>
-                          <IconButton
-                            variant="ghost"
-                            aria-label="edit"
-                            icon={<EditIcon />}
-                          />
+                          <Link href={`/servicios/${serv.id}`}>
+                            <IconButton
+                              variant="ghost"
+                              aria-label="edit"
+                              icon={<EditIcon />}
+                            />
                           </Link>
                         </Td>
                       </Tr>
@@ -310,7 +311,8 @@ function ServiciosListado() {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="blue" mr={3} onClick={guardarServicio}>
+            <Button colorScheme="whatsapp"
+              variant="solid" mr={3} onClick={guardarServicio}>
               Guardar
             </Button>
             <Button onClick={onClose}>Cancelar</Button>
@@ -342,7 +344,7 @@ function ServiciosListado() {
               <FormControl >
                 <FormLabel padding={1} >Tipo del servicio</FormLabel>
                 <RadioGroup colorScheme='green'
-                  onChange={(checks)=>{
+                  onChange={(checks) => {
                     console.log(checks);
                     formServicio.setFieldValue(
                       'tipo',
@@ -351,16 +353,16 @@ function ServiciosListado() {
                   }}
                 >
                   <Stack padding={2} spacing={[1, 5]} direction={['column', 'row']}>
-                  <Radio 
-                  value={"DOMESTICO"}
-                  >
-                    Domestico
+                    <Radio
+                      value={"DOMESTICO"}
+                    >
+                      Domestico
                     </Radio>
-                  <Radio
-                    value={"VIAL"}
-                  >
-                    Automovilistico
-                    </Radio> 
+                    <Radio
+                      value={"VIAL"}
+                    >
+                      Automovilistico
+                    </Radio>
                   </Stack>
                 </RadioGroup>
               </FormControl>

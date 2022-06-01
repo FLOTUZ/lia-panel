@@ -220,16 +220,16 @@ function UsuarioNuevo() {
             />
 
             <FormControl isRequired>
-            <FormLabel htmlFor="password">Contraseña</FormLabel>
-            <Input
-              variant="filled"
-              id="password"
-              type={"password"}
-              placeholder="Contraseña"
-              isRequired={true}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <FormHelperText>Mínimo 8 caracteres</FormHelperText>
+              <FormLabel htmlFor="password">Contraseña</FormLabel>
+              <Input
+                variant="filled"
+                id="password"
+                type={"password"}
+                placeholder="Contraseña"
+                isRequired={true}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <FormHelperText>Mínimo 8 caracteres</FormHelperText>
             </FormControl>
             <FormLabel htmlFor="rol">Seleccione Rol</FormLabel>
 
@@ -239,9 +239,9 @@ function UsuarioNuevo() {
               defaultValue="USUARIO"
               onChange={(e) => setRol(e)}
             >
-              
+
               <HStack spacing="1rem">
-              <Radio size={"lg"} value="TECNICO">
+                <Radio size={"lg"} value="TECNICO">
                   Es Técnico
                 </Radio>
 
@@ -252,9 +252,9 @@ function UsuarioNuevo() {
                 <Radio size={"lg"} value="ADMIN">
                   Administrador
                 </Radio>
-                
 
-               
+
+
               </HStack>
             </RadioGroup>
             {/* //----------------------------FORMULARIO NUEVO TECNICO------------------------------------ */}
@@ -340,17 +340,17 @@ function UsuarioNuevo() {
                         placeholder="Selecciona la Ciudad"
                         variant="filled"
                         onChange={(e) => {
-                           setciudadId(Number(e.target.value));
+                          setciudadId(Number(e.target.value));
                         }}
                       >
                         {ciudadesList?.length !== 0
                           ? ciudadesList?.map((ciudad, index) => {
-                              return (
-                                <option key={index} value={ciudad.id}>
-                                  {ciudad.nombre}
-                                </option>
-                              );
-                            })
+                            return (
+                              <option key={index} value={ciudad.id}>
+                                {ciudad.nombre}
+                              </option>
+                            );
+                          })
                           : null}
                       </Select>
                     </FormControl>
@@ -382,12 +382,11 @@ function UsuarioNuevo() {
                 </Box>
               </>
             ) : null}
-
             <HStack spacing={4} w={"100%"} mt={"12rem"}>
               <Spacer />
               <Button
                 id="guardar"
-                colorScheme="blue"
+                colorScheme="whatsapp"
                 variant="solid"
                 type="submit"
                 isLoading={cargando}
@@ -403,6 +402,7 @@ function UsuarioNuevo() {
                 Cancelar
               </Button>
             </HStack>
+
           </VStack>
         </FormControl>
       </form>

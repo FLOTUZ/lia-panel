@@ -83,7 +83,7 @@ function ServicioVer() {
   return (
     <div>
       <DesktopLayout>
-        <Header title={"Editar Ciudad"} />
+        <Header title={"Editar Servicio"} />
         <form onSubmit={formServicio.handleSubmit}>
           <FormControl isRequired>
             <Box
@@ -109,34 +109,34 @@ function ServicioVer() {
                     onChange={formServicio.handleChange}
                   />
                   <FormLabel padding={1}>Tipo del servicio</FormLabel>
-              <RadioGroup 
-              colorScheme="green"
-              defaultValue={data?.tipo}
-              onChange={(checks)=>{
-                console.log(checks);
-                formServicio.setFieldValue(
-                  'tipo',
-                  checks
-                )
-              }}
-              >
-                <Stack
-                  padding={2}
-                  spacing={[1, 5]}
-                  direction={["column", "row"]}
-                >
-                  <Radio
-                    value="DOMESTICO"
+                  <RadioGroup
+                    colorScheme="green"
+                    defaultValue={data?.tipo}
+                    onChange={(checks) => {
+                      console.log(checks);
+                      formServicio.setFieldValue(
+                        'tipo',
+                        checks
+                      )
+                    }}
                   >
-                    Domestico
-                  </Radio>
-                  <Radio
-                    value="VIAL"
-                  >
-                    Automovilistico
-                  </Radio>
-                </Stack>
-              </RadioGroup>
+                    <Stack
+                      padding={2}
+                      spacing={[1, 5]}
+                      direction={["column", "row"]}
+                    >
+                      <Radio
+                        value="DOMESTICO"
+                      >
+                        Domestico
+                      </Radio>
+                      <Radio
+                        value="VIAL"
+                      >
+                        Automovilistico
+                      </Radio>
+                    </Stack>
+                  </RadioGroup>
                 </FormControl>
 
                 <footer>
@@ -150,18 +150,18 @@ function ServicioVer() {
                     rounded="md"
                     bg="white"
                   >
-                      
+
                     <Button
                       id="guardar"
                       type="submit"
                       isLoading={cargando}
-                      colorScheme="facebook"
+                      colorScheme="whatsapp"
                       variant="solid"
                       onClick={() => router.back()}
                     >
                       Guardar
                     </Button>
-                     
+
                     <Button
                       onClick={() => router.back()}
                       colorScheme="red"

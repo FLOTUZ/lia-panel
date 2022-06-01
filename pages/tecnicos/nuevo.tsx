@@ -248,7 +248,6 @@ function UsuarioNuevo() {
               />
               <FormHelperText>Mínimo 8 Caracteres</FormHelperText>
             </FormControl>
-            <FormLabel htmlFor="rol">Seleccione Rol</FormLabel>
 
 
             {/* //----------------------------FORMULARIO NUEVO TECNICO------------------------------------ */}
@@ -263,6 +262,7 @@ function UsuarioNuevo() {
                   p="6"
                   rounded="md"
                   bg={"white"}
+                  paddingTop={10}
                 >
                   <Text fontWeight="bold">Datos Básicos del Técnico</Text>
 
@@ -404,32 +404,34 @@ function UsuarioNuevo() {
                       )}{" "}
                     </Stack>
                   </FormControl>
+
+                  <HStack spacing={4} w={"100%"}>
+                    <Spacer />
+                    <Link href={"/usuarios/index"}>
+                      <Button
+                        id="guardar"
+                        colorScheme="whatsapp"
+                        variant="solid"
+                        type="submit"
+                      //isLoading={cargando}
+                      >
+                        Agregar
+                      </Button>
+                    </Link>
+
+                    <Button
+                      colorScheme="red"
+                      variant="outline"
+                      onClick={() => Router.back()}
+                    >
+                      Cancelar
+                    </Button>
+                  </HStack>
                 </Box>
               </>
             ) : null}
 
-            <HStack spacing={4} w={"100%"} mt={"12rem"}>
-              <Spacer />
-              <Link href={"/usuarios/index"}>
-                <Button
-                  id="guardar"
-                  colorScheme="blue"
-                  variant="solid"
-                  type="submit"
-                //isLoading={cargando}
-                >
-                  Agregar
-                </Button>
-              </Link>
 
-              <Button
-                colorScheme="red"
-                variant="outline"
-                onClick={() => Router.back()}
-              >
-                Cancelar
-              </Button>
-            </HStack>
           </VStack>
         </FormControl>
       </form>
