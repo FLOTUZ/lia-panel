@@ -5,15 +5,10 @@ import {
   IServicio,
   ITicket,
 } from "@/services/api.models";
-import FabIcon from "../../public/vercel.svg";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";
 import { ServiciosService } from "@/services/servicios.service";
-import { TicketsService } from "@/services/tickets.service";
-import { VerTicketDomestico } from "@/views/VerTicketDomestico";
-import { VerTicketDomesticoForaneo } from "@/views/VerTicketDomesticoForaneo";
-import { VerTicketVial } from "@/views/VerTicketVial";
-import { VerTicketVialForaneo } from "@/views/VerTicketVialForaneo";
+
 import {
   Button,
   Modal,
@@ -32,13 +27,17 @@ import {
   color,
   Center,
 } from "@chakra-ui/react";
-import Image from "next/image";
 
 import { useRouter } from "next/router";
 
 import React, { useEffect, useState } from "react";
 import { IoAdd } from "react-icons/io5";
 import { BsPrinter } from "react-icons/bs";
+import { TicketsService } from "@/services/tickets.service";
+import { VerTicketVialForaneo } from "@/views/VerTicketVialForaneo";
+import { VerTicketVial } from "@/views/VerTicketVial";
+import { VerTicketDomestico } from "@/views/VerTicketDomestico";
+import { VerTicketDomesticoForaneo } from "@/views/VerTicketDomesticoForaneo";
 
 function TicketVer() {
   const router = useRouter();
@@ -48,8 +47,8 @@ function TicketVer() {
   const [ticket, setTicket] = useState<ITicket>();
   const [aseguradora, setAseguradora] = useState<IAseguradora>();
   const [asistencia, setAsistencia] = useState<IAsistencia>();
-  const [serviciosList, setServiciosList] = useState<IServicio[]>([]);
 
+  const [serviciosList, setServiciosList] = useState<IServicio[]>([]);
   const [tecnicosByServicios, setTecnicosByServicios] = useState<IServicio>();
 
   const [tipoVista, setTipoVista] = useState<JSX.Element>();
@@ -71,6 +70,7 @@ function TicketVer() {
     const data = respuesta.data as IAsistencia;
     setAsistencia(data);
   };
+
   const getTicket = async () => {
     const service = new TicketsService();
     const respuesta = await service.getById(Number(idTicket));
@@ -80,6 +80,15 @@ function TicketVer() {
     setTicket(data);
   };
 
+  const consultarServicios = async () => {
+    const service = new ServiciosService();
+    const respuesta = await service.getAll();
+    const data = respuesta.data as IServicio[];
+
+    setServiciosList(data);
+
+  };
+
   const consultarTecnicosByServicio = async (id: number) => {
     const servicio = new ServiciosService();
     const respuesta = await servicio.getTecnicosByServicio(id);
@@ -87,11 +96,13 @@ function TicketVer() {
 
     setTecnicosByServicios(data);
   };
-  const asignarTicketATecnico = async () => {
+
+  const getAsignarTicketATecnico = async () => {
     const data = { estado: "TOMADO" };
     const service = new TicketsService();
     //TODO: Agregar el ID del ticket
-    const respuesta = await service.update(data, ticket!.id || 0);
+    const respuesta = await service.update(data, ticket?.id || 0);
+
     toast({
       title: "Técnico Asignado.",
       description: "Se Asigno el servicio al Técnico",
@@ -99,29 +110,36 @@ function TicketVer() {
       duration: 9000,
       isClosable: true,
     });
+
   };
 
   /*Obtener ticket*/
 
   useEffect(() => {
     getTicket();
+
   }, []);
 
   useEffect(() => {
     getAsistencia();
     getAseguradora();
     getVista();
+    consultarServicios();
+
   }, [ticket]);
 
   const getVista = () => {
     if (ticket?.asistencia_vial && ticket?.is_servicio_foraneo) {
       setTipoVista(<VerTicketVialForaneo ticket={ticket} />);
+      console.log("Es vial con foraneo")
+    } else if (ticket?.is_servicio_domestico && ticket?.is_servicio_foraneo) {
+      setTipoVista(<VerTicketDomesticoForaneo ticket={ticket} />);
+      console.log("Es domestico Foraneo")
     } else if (ticket?.asistencia_vial) {
       setTipoVista(<VerTicketVial ticket={ticket} />);
     } else if (ticket?.is_servicio_domestico) {
       setTipoVista(<VerTicketDomestico ticket={ticket} />);
-    } else if (ticket?.is_servicio_domestico && ticket?.is_servicio_foraneo) {
-      setTipoVista(<VerTicketDomesticoForaneo ticket={ticket} />);
+      console.log("Es solo domestico")
     } else {
       setTipoVista(<></>);
     }
@@ -201,12 +219,12 @@ function TicketVer() {
               >
                 {serviciosList.length !== 0
                   ? serviciosList.map((servicio) => {
-                      return (
-                        <option key={servicio.id} value={Number(servicio.id)}>
-                          {servicio.nombre}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={servicio.id} value={Number(servicio.id)}>
+                        {servicio.nombre}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
             </FormControl>
@@ -217,22 +235,25 @@ function TicketVer() {
                 placeholder="Selecciona el Técnico"
                 variant="filled"
                 borderColor="twitter.100"
+                onChange={e => {
+                  console.log(e);
+                }}
               >
                 {tecnicosByServicios?.Tecnico?.length !== 0
                   ? tecnicosByServicios?.Tecnico?.map((tecnico) => {
-                      return (
-                        <option key={tecnico.id} value={tecnico.nombre}>
-                          {tecnico.nombre}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={tecnico.id} value={tecnico.id}>
+                        {tecnico.nombre}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="green" mr={3} onClick={asignarTicketATecnico}>
+            <Button colorScheme="green" mr={3} onClick={getAsignarTicketATecnico}>
               Asignar
             </Button>
             <Button colorScheme="red" onClick={cerrar}>
