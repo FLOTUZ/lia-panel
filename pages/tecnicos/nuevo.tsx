@@ -257,13 +257,13 @@ function UsuarioNuevo() {
                   w={"100%"}
                   m={2}
                   padding={5}
-                  paddingTop={5}
+                  paddingTop={10}
                   borderRadius={10}
                   boxShadow="lg"
                   p="6"
                   rounded="md"
                   bg={"white"}
-                  paddingTop={10}
+                  
                 >
                   <Text fontWeight="bold">Datos Básicos del Técnico</Text>
 

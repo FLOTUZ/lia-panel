@@ -236,6 +236,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
               id="titulo_ticket"
               placeholder="Descripción Corta"
               borderColor="twitter.100"
+              value={ticket.titulo_ticket}
             />
           </FormControl>
         </Center>
@@ -295,7 +296,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
           </FormControl>
         </SimpleGrid>
         <SimpleGrid columns={[1, 1, 4]} spacing={4}>
-          <FormControl isRequired paddingTop={15}>
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="modelo_del_carro">Modelo del Carro</FormLabel>
             <Input
               variant="unstyled"
@@ -305,7 +306,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
             ></Input>
           </FormControl>
 
-          <FormControl isRequired paddingTop={15}>
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="placas">Placas</FormLabel>
             <Input
               variant="unstyled"
@@ -315,7 +316,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
             ></Input>
           </FormControl>
 
-          <FormControl isRequired paddingTop={15}>
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="color">Color</FormLabel>
             <Input
               variant="unstyled"
@@ -327,7 +328,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
             />
           </FormControl>
 
-          <FormControl isRequired paddingTop={15}>
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="marca">Marca</FormLabel>
             <Input
               variant="unstyled"
@@ -387,8 +388,21 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
           </FormControl>
         </Center>
 
-        <SimpleGrid paddingTop={10} columns={[1, 1, 4]} spacing="40px">
-          <FormControl>
+        <SimpleGrid columns={[1, 1, 3]} spacing="40px">
+          <FormControl  paddingTop={15}>
+            <FormLabel htmlFor="calle">Carretera</FormLabel>
+            <Input
+              variant="unstyled"
+              isReadOnly
+              id="calle"
+              min={0}
+              placeholder="Carretera"
+              borderColor="twitter.100"
+              value={ticket.calle}
+            />
+          </FormControl>
+
+          <FormControl  paddingTop={15}>
             <FormLabel htmlFor="kilometraje">Kilómetros a Recorrer</FormLabel>
             <InputGroup>
               <InputLeftAddon
@@ -409,7 +423,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
             </InputGroup>
           </FormControl>
 
-          <FormControl>
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="costoPorKilometro">
               Costo por Kilómetro
             </FormLabel>
@@ -431,8 +445,10 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
               />
             </InputGroup>
           </FormControl>
+        </SimpleGrid>
 
-          <FormControl>
+        <SimpleGrid  columns={[1, 1, 2]} spacing="40px">
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="casetas">Número de Casetas</FormLabel>
             <Input
               variant="unstyled"
@@ -445,7 +461,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
             />
           </FormControl>
 
-          <FormControl>
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="costoPorCaseta">Costo por Caseta</FormLabel>
             <InputGroup>
               <InputLeftAddon
@@ -467,8 +483,8 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
           </FormControl>
         </SimpleGrid>
 
-        <SimpleGrid paddingTop={5} columns={[1, 2, 4]} spacing="40px">
-          <FormControl isRequired paddingTop={15}>
+        <SimpleGrid  columns={[1, 2, 4]} spacing="40px">
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="deducible">Deducible</FormLabel>
             <InputGroup>
               <InputLeftAddon
@@ -560,6 +576,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
             </InputGroup>
           </FormControl>
         </SimpleGrid>
+        
         <FormControl paddingTop={15}>
           <FormLabel htmlFor="cotizacion_gpo_lias">
             Cotización de Grupo Lías (Información Adicional)

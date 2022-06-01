@@ -404,8 +404,8 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
           </FormControl>
         </Center>
 
-        <SimpleGrid paddingTop={10} columns={[1, 1, 4]} spacing="40px">
-          <FormControl>
+        <SimpleGrid  columns={[1, 1, 4]} spacing="40px">
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="kilometraje">Kilómetros a Recorrer</FormLabel>
             <InputGroup>
               <InputLeftAddon
@@ -426,7 +426,7 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
             </InputGroup>
           </FormControl>
 
-          <FormControl>
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="costoPorKilometro">
               Costo por Kilómetro
             </FormLabel>
@@ -450,8 +450,8 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
           </FormControl>
         </SimpleGrid>
 
-        <SimpleGrid paddingTop={5} columns={[1, 2, 4]} spacing="40px">
-          <FormControl isRequired paddingTop={15}>
+        <SimpleGrid  columns={[1, 2, 4]} spacing="40px">
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="deducible">Deducible</FormLabel>
             <InputGroup>
               <InputLeftAddon

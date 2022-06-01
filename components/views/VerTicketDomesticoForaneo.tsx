@@ -33,8 +33,8 @@ import { useEffect, useState } from "react";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";
 import { CiudadesService } from "@/services/ciudades.service";
-import { EstadosService } from "@/services/estados.service";
 import { AsesoresService } from "@/services/asesores.service";
+import { EstadosService } from "@/services/estados.service";
 
 interface VerTicketDomesticoForaneoProps {
   ticket: ITicket;
@@ -469,7 +469,7 @@ export function VerTicketDomesticoForaneo({ ticket }: VerTicketDomesticoForaneoP
         </SimpleGrid>
 
         <SimpleGrid paddingTop={5} columns={[1, 2, 4]} spacing="40px">
-          <FormControl isRequired paddingTop={15}>
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="deducible">Deducible</FormLabel>
             <InputGroup>
               <InputLeftAddon

@@ -202,7 +202,7 @@ const NuevoTicket = () => {
       setCalculoTotalSalida(totalSalida);
       setCalculoMontoTotal(montoTotal);
 
-      
+
     };
 
     calcular();
@@ -448,12 +448,12 @@ const NuevoTicket = () => {
               >
                 {aseguradorasList?.length !== 0
                   ? aseguradorasList?.map((aseguradora, index) => {
-                      return (
-                        <option key={index} value={Number(aseguradora.id)}>
-                          {aseguradora.nombre}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={index} value={Number(aseguradora.id)}>
+                        {aseguradora.nombre}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
             </FormControl>
@@ -478,12 +478,12 @@ const NuevoTicket = () => {
               >
                 {asistenciasList.length !== 0
                   ? asistenciasList.map((asistencia, index) => {
-                      return (
-                        <option key={index} value={Number(asistencia.id)}>
-                          {asistencia.nombre}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={index} value={Number(asistencia.id)}>
+                        {asistencia.nombre}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
             </FormControl>
@@ -540,12 +540,12 @@ const NuevoTicket = () => {
                 >
                   {aseguradorasList?.length !== 0
                     ? aseguradorasList?.map((aseguradora, index) => {
-                        return (
-                          <option key={index} value={Number(aseguradora.id)}>
-                            {aseguradora.nombre}
-                          </option>
-                        );
-                      })
+                      return (
+                        <option key={index} value={Number(aseguradora.id)}>
+                          {aseguradora.nombre}
+                        </option>
+                      );
+                    })
                     : null}
                 </Select>
               </FormControl>
@@ -601,12 +601,12 @@ const NuevoTicket = () => {
               >
                 {asesorList.length !== 0
                   ? asesorList.map((asesor, index) => {
-                      return (
-                        <option key={index} value={Number(asesor.id)}>
-                          {asesor.nombre}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={index} value={Number(asesor.id)}>
+                        {asesor.nombre}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
             </FormControl>
@@ -671,16 +671,16 @@ const NuevoTicket = () => {
             <SimpleGrid padding={5} minChildWidth="120px" spacing="40px">
               {serviciosList?.length !== 0
                 ? serviciosList.map((servicio, index) => {
-                    return (
-                      <Checkbox
-                        key={index}
-                        id={servicio.nombre}
-                        value={servicio.id?.toString()}
-                      >
-                        {servicio.nombre}
-                      </Checkbox>
-                    );
-                  })
+                  return (
+                    <Checkbox
+                      key={index}
+                      id={servicio.nombre}
+                      value={servicio.id?.toString()}
+                    >
+                      {servicio.nombre}
+                    </Checkbox>
+                  );
+                })
                 : null}
             </SimpleGrid>
           </CheckboxGroup>
@@ -732,9 +732,9 @@ const NuevoTicket = () => {
               </Flex>
             ) : null}
           </FormControl>
+
           <FormControl paddingTop={2} paddingLeft={2}>
             <FormLabel htmlFor="asistencia_vial">Servicio Vial</FormLabel>
-
             <Switch
               id="asistencia_vial"
               size="lg"
@@ -800,12 +800,12 @@ const NuevoTicket = () => {
             >
               {estadosList?.length !== 0
                 ? estadosList?.map((estado, index) => {
-                    return (
-                      <option key={index} value={estado.id}>
-                        {estado.nombre}
-                      </option>
-                    );
-                  })
+                  return (
+                    <option key={index} value={estado.id}>
+                      {estado.nombre}
+                    </option>
+                  );
+                })
                 : null}
             </Select>
           </FormControl>
@@ -828,12 +828,12 @@ const NuevoTicket = () => {
             >
               {ciudadesList?.length !== 0
                 ? ciudadesList?.map((ciudad, index) => {
-                    return (
-                      <option key={index} value={ciudad.id}>
-                        {ciudad.nombre}
-                      </option>
-                    );
-                  })
+                  return (
+                    <option key={index} value={ciudad.id}>
+                      {ciudad.nombre}
+                    </option>
+                  );
+                })
                 : null}
             </Select>
           </FormControl>
@@ -953,8 +953,22 @@ const NuevoTicket = () => {
           </FormControl>
         </Center>
 
-        <SimpleGrid paddingTop={10} columns={[1, 1, 4]} spacing="40px">
-          <FormControl isRequired>
+        <SimpleGrid columns={[1, 1, 3]} spacing={4}>
+          {formTicket.values.asistencia_vial === true ? (
+            <FormControl paddingTop={15} isRequired>
+              <FormLabel htmlFor="calle">Carretera</FormLabel>
+              <Input
+                variant="filled"
+                id="calle"
+                placeholder="Carretera"
+                borderColor="twitter.100"
+                onChange={formTicket.handleChange}
+                value={formTicket.values.calle}
+              />
+            </FormControl>
+          ) : null}
+
+          <FormControl paddingTop={15} isRequired>
             <FormLabel htmlFor="kilometraje">Kilómetros a Recorrer</FormLabel>
             <InputGroup>
               <InputLeftAddon
@@ -977,7 +991,7 @@ const NuevoTicket = () => {
             </InputGroup>
           </FormControl>
 
-          <FormControl isRequired>
+          <FormControl paddingTop={15} isRequired>
             <FormLabel htmlFor="costoPorKilometro">
               Costo por Kilómetro
             </FormLabel>
@@ -1005,9 +1019,11 @@ const NuevoTicket = () => {
               />
             </InputGroup>
           </FormControl>
+         </SimpleGrid> 
 
+         <SimpleGrid columns={[1, 1, 2]} spacing={4}>
           {formTicket.values.is_servicio_foraneo === true ? (
-            <FormControl>
+            <FormControl paddingTop={15}>
               <FormLabel htmlFor="casetas">Número de Casetas</FormLabel>
               <Input
                 variant="filled"
@@ -1025,7 +1041,7 @@ const NuevoTicket = () => {
           ) : null}
 
           {formTicket.values.is_servicio_foraneo === true ? (
-            <FormControl>
+            <FormControl paddingTop={15}>
               <FormLabel htmlFor="costoPorCaseta">Costo por Caseta</FormLabel>
               <InputGroup>
                 <InputLeftAddon
@@ -1228,8 +1244,8 @@ const NuevoTicket = () => {
                 borderColor="twitter.100"
                 fontWeight={"bold"}
                 textColor={"red"}
-                onChange={(e)=>{
-                  
+                onChange={(e) => {
+
                   formTicket.handleChange(e.target.value);
                 }}
                 value={calculoMontoTotal}

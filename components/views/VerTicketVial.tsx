@@ -281,7 +281,7 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
         </SimpleGrid>
 
         <SimpleGrid columns={[1, 1, 4]} spacing={4}>
-          <FormControl isRequired paddingTop={15}>
+          <FormControl  paddingTop={15}>
             <FormLabel htmlFor="modelo_del_carro">Modelo del Carro</FormLabel>
             <Input
               variant="unstyled"
@@ -293,7 +293,7 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
             />
           </FormControl>
 
-          <FormControl isRequired paddingTop={15}>
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="placas">Placas</FormLabel>
             <Input
               variant="unstyled"
@@ -305,7 +305,7 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
             />
           </FormControl>
 
-          <FormControl isRequired paddingTop={15}>
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="color">Color</FormLabel>
             <Input
               variant="unstyled"
@@ -317,7 +317,7 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
             />
           </FormControl>
 
-          <FormControl isRequired paddingTop={15}>
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="marca">Marca</FormLabel>
             <Input
               variant="unstyled"
@@ -377,8 +377,21 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
           </FormControl>
         </Center>
 
-        <SimpleGrid paddingTop={10} columns={[1, 1, 4]} spacing="40px">
-          <FormControl>
+        <SimpleGrid columns={[1, 1, 3]} spacing={4}>
+        <FormControl paddingTop={15}>
+              <FormLabel htmlFor="calle">Carretera</FormLabel>
+              <Input
+                variant="unstyled"
+                isReadOnly
+                id="calle"
+                min={0}
+                placeholder="Carretera"
+                borderColor="twitter.100"
+                value={ticket.calle}
+              />
+            </FormControl>
+
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="kilometraje">Kilómetros a Recorrer</FormLabel>
             <InputGroup>
               <InputLeftAddon
@@ -399,7 +412,7 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
             </InputGroup>
           </FormControl>
 
-          <FormControl>
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="costoPorKilometro">
               Costo por Kilómetro
             </FormLabel>
@@ -423,8 +436,8 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
           </FormControl>
         </SimpleGrid>
 
-        <SimpleGrid paddingTop={5} columns={[1, 2, 4]} spacing="40px">
-          <FormControl isRequired paddingTop={15}>
+        <SimpleGrid  columns={[1, 2, 4]} spacing="40px">
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="deducible">Deducible</FormLabel>
             <InputGroup>
               <InputLeftAddon
