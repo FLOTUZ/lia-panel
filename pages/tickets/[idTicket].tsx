@@ -38,12 +38,14 @@ import { VerTicketVialForaneo } from "@/views/VerTicketVialForaneo";
 import { VerTicketVial } from "@/views/VerTicketVial";
 import { VerTicketDomestico } from "@/views/VerTicketDomestico";
 import { VerTicketDomesticoForaneo } from "@/views/VerTicketDomesticoForaneo";
+import TicketImprimible from "components/imprimibles/ticket.imprimible";
+import Printer from "components/printer/printer";
 
 function TicketVer() {
   const router = useRouter();
   const toast = useToast();
   const { isOpen: abierto, onOpen: abrir, onClose: cerrar } = useDisclosure();
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [ticket, setTicket] = useState<ITicket>();
   const [aseguradora, setAseguradora] = useState<IAseguradora>();
   const [asistencia, setAsistencia] = useState<IAsistencia>();
@@ -54,6 +56,7 @@ function TicketVer() {
   const [tipoVista, setTipoVista] = useState<JSX.Element>();
 
   const { idTicket } = router.query;
+
   /*Obtener aseguradora*/
   const getAseguradora = async () => {
     const service = new AseguradoraService();
@@ -145,6 +148,10 @@ function TicketVer() {
     }
   };
 
+  const dataTicket = {
+    titulo: "Mecanico para JOE",
+  };
+
   return (
     <DesktopLayout>
       <Box
@@ -188,14 +195,29 @@ function TicketVer() {
           height={"60px"}
           leftIcon={<BsPrinter />}
           id="imprimirTicket"
-          type="submit"
           colorScheme="telegram"
           borderColor="twitter.100"
           size="lg"
-        >
-          Imprimir
-        </Button>
+          onClick={onOpen}
+        />
+      
       </Box>
+
+      <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Impresion</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+          <Printer doc={<TicketImprimible ticket={ticket}  />} />         
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={onClose}>Cerrar</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+
 
       {tipoVista}
       {/* ASIGNAR TÉCNICO */}

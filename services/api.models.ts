@@ -141,3 +141,19 @@ export interface IEstado {
   createdAt?: string | null;
   updatedAt?: string | null;
 }
+
+export interface IAcuerdoConformidad{
+  id?: number;
+  fecha_acuerdo: Date;
+  descripcion_problema: string;
+  direccion: string;
+  observaciones: string | null;
+  actividades_realizadas: string;
+  hora_recepcion_servicio: Date;
+  hora_llegada_servicio: Date;
+  hora_finalizacion_servicio: Date;
+  acuerdo_firmado: string | null;
+  usuarioFinalId: number | null;
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
+}
