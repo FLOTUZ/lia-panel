@@ -248,7 +248,6 @@ function UsuarioNuevo() {
               />
               <FormHelperText>Mínimo 8 Caracteres</FormHelperText>
             </FormControl>
-            <FormLabel htmlFor="rol">Seleccione Rol</FormLabel>
 
 
             {/* //----------------------------FORMULARIO NUEVO TECNICO------------------------------------ */}
@@ -258,6 +257,7 @@ function UsuarioNuevo() {
                   w={"100%"}
                   m={2}
                   padding={5}
+                  paddingTop={5}
                   borderRadius={10}
                   boxShadow="lg"
                   p="6"
