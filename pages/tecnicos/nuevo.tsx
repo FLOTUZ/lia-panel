@@ -24,6 +24,7 @@ import {
   Text,
   Checkbox,
   FormHelperText,
+  Link,
 } from "@chakra-ui/react";
 //import { useFormik } from "formik";
 
@@ -193,7 +194,7 @@ function UsuarioNuevo() {
   };
 
   useEffect(() => {
-   
+
 
     consultarEstados();
     consultarCiudades();
@@ -237,15 +238,15 @@ function UsuarioNuevo() {
             />
 
             <FormControl isRequired>
-            <FormLabel htmlFor="password">Contraseña</FormLabel>
-            <Input
-              variant="filled"
-              id="password"
-              type={"password"}
-              isRequired={true}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-            <FormHelperText>Mínimo 8 Caracteres</FormHelperText>
+              <FormLabel htmlFor="password">Contraseña</FormLabel>
+              <Input
+                variant="filled"
+                id="password"
+                type={"password"}
+                isRequired={true}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+              <FormHelperText>Mínimo 8 Caracteres</FormHelperText>
             </FormControl>
             <FormLabel htmlFor="rol">Seleccione Rol</FormLabel>
 
@@ -297,8 +298,8 @@ function UsuarioNuevo() {
 
                   <Center>
                     <Divider orientation="vertical" />
-                    
-                    <FormControl isRequired  paddingTop={15}>
+
+                    <FormControl isRequired paddingTop={15}>
                       <FormLabel htmlFor="apellidoMaterno">
                         Apellido Materno
                       </FormLabel>
@@ -324,32 +325,32 @@ function UsuarioNuevo() {
                         }}
                       />
                     </FormControl>
-                    
+
                   </Center>
 
                   <Center>
                     <Divider orientation="vertical" />
-                    
-                    <FormControl isRequired  paddingTop={15}>
+
+                    <FormControl isRequired paddingTop={15}>
                       <FormLabel htmlFor="estado">Estado</FormLabel>
                       <Select
                         id="estado"
                         placeholder="Selecciona el Estado"
                         variant="filled"
                         onChange={(e) => {
-                           setestadoId(Number(e.target.value));
-                           setIdEstado(Number(e.target.value));
+                          setestadoId(Number(e.target.value));
+                          setIdEstado(Number(e.target.value));
                         }}
-                        
+
                       >
                         {estadosList?.length !== 0
                           ? estadosList?.map((estado, index) => {
-                              return (
-                                <option key={index} value={estado.id}>
-                                  {estado.nombre}
-                                </option>
-                              );
-                            })
+                            return (
+                              <option key={index} value={estado.id}>
+                                {estado.nombre}
+                              </option>
+                            );
+                          })
                           : null}
                       </Select>
                     </FormControl>
@@ -361,7 +362,7 @@ function UsuarioNuevo() {
                         placeholder="Selecciona la Ciudad"
                         variant="filled"
                         onChange={(e) => {
-                           setciudadId(Number(e.target.value));
+                          setciudadId(Number(e.target.value));
                         }}
                         onFocus={(e) => {
                           consultarCiudades();
@@ -369,12 +370,12 @@ function UsuarioNuevo() {
                       >
                         {ciudadesList?.length !== 0
                           ? ciudadesList?.map((ciudad, index) => {
-                              return (
-                                <option key={index} value={ciudad.id}>
-                                  {ciudad.nombre}
-                                </option>
-                              );
-                            })
+                            return (
+                              <option key={index} value={ciudad.id}>
+                                {ciudad.nombre}
+                              </option>
+                            );
+                          })
                           : null}
                       </Select>
                     </FormControl>
@@ -409,15 +410,17 @@ function UsuarioNuevo() {
 
             <HStack spacing={4} w={"100%"} mt={"12rem"}>
               <Spacer />
-              <Button
-                id="guardar"
-                colorScheme="blue"
-                variant="solid"
-                type="submit"
-                isLoading={cargando}
-              >
-                Agregar
-              </Button>
+              <Link href={"/usuarios/index"}>
+                <Button
+                  id="guardar"
+                  colorScheme="blue"
+                  variant="solid"
+                  type="submit"
+                //isLoading={cargando}
+                >
+                  Agregar
+                </Button>
+              </Link>
 
               <Button
                 colorScheme="red"
