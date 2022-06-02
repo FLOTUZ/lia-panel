@@ -6,6 +6,7 @@ import {
   IAsesor,
   IAsistencia,
   ICiudad,
+  ICotizacionTecnico,
   IEstado,
   ITicket,
 } from "@/services/api.models";
@@ -30,6 +31,8 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
   const [ciudad, setCiudad] = useState<ICiudad>();
   const [estado, setEstado] = useState<IEstado>();
   const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>();
+  const [cotizacionTecnico, setCotizacionTecnico] = useState<ICotizacionTecnico>();
+
   useEffect(() => {
     /*Obtener aseguradora*/
     const getAseguradora = async () => {
@@ -71,11 +74,20 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
       setAsesorAseguradora(data);
     };
 
+    /*Obtener cotización del técnico*/
+    const getCotizacionTecnico = async () => {
+      const service = new CotizacionTecnicoService();
+      const respuesta = await service.getAll();
+      const data = respuesta.data as ICotizacionTecnico;
+      setCotizacionTecnico(data);
+    };
+
     getAseguradora();
     getAsistencia();
     getCiudad();
     getEstado();
     getAsesorAseguradora();
+    getCotizacionTecnico();
   }, [ticket]);
 
   const styleTitulo = {
@@ -101,49 +113,44 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
           borderColor: "black",
         }}
       >
-        {/* CABECERA DE LA ESTRUCTURA */}
-        <div style={{  height: "80px" }}>
-          <div
-            className="logo"
-            style={{ width: "15%",  float: "left" }}
-          >
-            <Image
-              src={LiasIMG}
-              height={80}
-              width={80}
-              alt="Logo de Grupo Lias"
-            />
-          </div>
 
-         
-            <div style={{ width: "40%", height: "20%", float: "left" }}>
-              <h2 >ORDEN DE SERVICIO </h2>
-            </div>
-            <div
-              style={{ width: "20%", height: "20%", display: "inline-block", paddingTop: "15px" }}
-            >
-              <p >FECHA: </p>
-            </div>
-            <div
-              style={{ width: "20%", height: "20%", display: "inline-block", paddingTop: "15px" }}
-            >
-              <p >TIEMPO:</p>
-            </div>
-            <div style={{ width: "20%", height: "100%", float: "right", paddingTop: "15px" }}>
-              <p >VISITA:</p>
-            </div>
-            </div>
-       
-        <div style={{ width: "30%",  paddingLeft:"10px", paddingTop:"15px" }}>
+        <div style={{float: "left", paddingLeft:"10px" }}>
+          <Image
+            src={LiasIMG}
+            height={80}
+            width={80}
+            alt="Logo de Grupo Lias"
+          />
+        </div>
+
+        <div style={{ width: "20%", height: "0%", float: "left", paddingTop: "30px" }}>
+          <h2 >ORDEN DE SERVICIO </h2>
+        </div>
+        <div
+          style={{ width: "30%", height: "0%", float: "left", paddingTop: "30px" }}
+        >
+          <p >FECHA: {ticket?.fecha_llamada}</p>
+        </div>
+        <div
+          style={{ width: "30%", height: "0%", float: "left", paddingTop: "30px" }}
+        >
+          <p >TIEMPO:</p>
+        </div>
+        <div style={{ width: "60%", height: "0%", paddingTop: "70px", paddingLeft:"250px" }}>
+          <p >VISITA:</p>
+        </div>
+
+
+        <div style={{ width: "30%", paddingLeft: "10px", paddingTop: "90px" }}>
           <p>EXPEDIENTE: {ticket?.num_expediente}</p>
         </div>
-        <div style={{ width: "30%",  paddingLeft:"50px", float: "right" }}>
+        <div style={{ width: "30%", paddingLeft: "50px", float: "right" }}>
           <p>KM: {ticket?.kilometraje}</p>
         </div>
-        <div style={{ width: "30%",   paddingLeft:"60px", float: "right" }}>
+        <div style={{ width: "30%", paddingLeft: "60px", float: "right" }}>
           <p >CASETAS: {ticket?.casetas}</p>
         </div>
-       
+
 
         <div
           style={{
@@ -162,7 +169,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             width: "35%",
             height: "22%",
             float: "right",
-            paddingTop: "30px",
+            paddingTop: "0px",
           }}
         >
           <div>
@@ -177,7 +184,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
           </div>
           <div>
             <p style={{ paddingTop: "0", paddingLeft: "80px" }}>
-              $SEGURO {aseguradora?.nombre}
+              $SEGURO {ticket?.cobertura}
             </p>
           </div>
           <div>
@@ -252,6 +259,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             height: "5%",
             float: "left",
             paddingLeft: "15px",
+            paddingTop:"20px"
           }}
         >
           <p>ASISTENCIA {asistencia?.nombre}</p>
@@ -266,12 +274,13 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
         >
           <p>CUBRE SEGURO {ticket?.cobertura} </p>
         </div>
+
         <div
           style={{
             width: "35%",
             height: "5%",
             float: "left",
-            paddingLeft: "25px",
+            paddingLeft: "10px",
           }}
         >
           <p>ASESOR {asesorAseguradora?.nombre}</p>
@@ -295,7 +304,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             paddingLeft: "15px",
           }}
         >
-          <p>TÉCNICO {} </p>
+          <p>TÉCNICO { } </p>
         </div>
 
         <div
@@ -306,7 +315,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             paddingLeft: "15px",
           }}
         >
-          <p>HORA DE CONTACTO {}</p>
+          <p>HORA DE CONTACTO { }</p>
         </div>
         <div
           style={{
@@ -335,7 +344,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
               colSpan={3}
               style={{ border: "1px solid", verticalAlign: "15px" }}
             >
-              SOLUCION DEL TECNICO
+              SOLUCION DEL TECNICO {cotizacionTecnico?.solucion_tecnico}
             </td>
             <td
               colSpan={2}
@@ -345,9 +354,9 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             </td>
           </tr>
           <tr>
-            <td style={{ verticalAlign: "15px", height: "10px" }}>$MO</td>
-            <td style={{ verticalAlign: "15px", height: "10px" }}>$MAT</td>
-            <td style={{ verticalAlign: "15px", height: "10px" }}>$TÉCNICO</td>
+            <td style={{ verticalAlign: "15px", height: "10px" }}>$MO {cotizacionTecnico?.costo_mano_obra}</td>
+            <td style={{ verticalAlign: "15px", height: "10px" }}>$MAT {cotizacionTecnico?.costo_materiales}</td>
+            <td style={{ verticalAlign: "15px", height: "10px" }}>$TÉCNICO {cotizacionTecnico?.total_cotizacion}</td>
             <td style={{ verticalAlign: "15px", height: "10px" }}>$MO</td>
             <td style={{ verticalAlign: "15px", height: "10px" }}>$MAT</td>
           </tr>
@@ -355,36 +364,31 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
 
         <br />
 
-        <div className="cita" style={{ width: "100%", height: "30px" }}>
+        <div className="cita" style={{ width: "100%", height: "30px"}}>
           <div
-            className="expediente"
             style={{ width: "25%", height: "100%", float: "left" }}
           >
-            <p style={{ paddingTop: "0", paddingLeft: "40px" }}>CITA</p>
+            <p style={{ paddingTop: "0", paddingLeft: "40px" }}>CITA 1</p>
           </div>
         </div>
-        <div className="fecha" style={{ width: "100%", height: "30px" }}>
+        <div  style={{ width: "100%", height: "30px" }}>
           <div
-            className="expediente"
-            style={{ width: "25%", height: "100%", float: "left" }}
+            style={{ width: "25%", height: "100%", float: "left", border: "1px solid" }}
           >
             <p style={{ paddingTop: "0", paddingLeft: "40px" }}>FECHA</p>
           </div>
           <div
-            className="hora"
-            style={{ width: "25%", height: "100%", display: "inline-block" }}
+            style={{ width: "25%", height: "100%", display: "inline-block", border: "1px solid" }}
           >
             <p style={{ paddingTop: "0", paddingLeft: "40px" }}>HORA</p>
           </div>
           <div
-            className="inicio"
-            style={{ width: "25%", height: "100%", display: "inline-block" }}
+            style={{ width: "25%", height: "100%", display: "inline-block", border: "1px solid" }}
           >
             <p style={{ paddingTop: "0", paddingLeft: "40px" }}>INICIO</p>
           </div>
           <div
-            className="termino"
-            style={{ width: "25%", height: "100%", display: "inline-block" }}
+            style={{ width: "25%", height: "100%", display: "inline-block", border: "1px solid" }}
           >
             <p style={{ paddingTop: "0", paddingLeft: "40px" }}>TERMINO</p>
           </div>
@@ -392,34 +396,30 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
 
         <div className="cita" style={{ width: "100%", height: "30px" }}>
           <div
-            className="expediente"
+          
             style={{ width: "25%", height: "100%", float: "left" }}
           >
-            <p style={{ paddingTop: "0", paddingLeft: "40px" }}>CITA</p>
+            <p style={{ paddingTop: "0", paddingLeft: "40px" }}>CITA 2</p>
           </div>
         </div>
         <div className="fecha" style={{ width: "100%", height: "30px" }}>
           <div
-            className="expediente"
-            style={{ width: "25%", height: "100%", float: "left" }}
+            style={{ width: "25%", height: "100%", float: "left", border: "1px solid" }}
           >
             <p style={{ paddingTop: "0", paddingLeft: "40px" }}>FECHA</p>
           </div>
           <div
-            className="hora"
-            style={{ width: "25%", height: "100%", display: "inline-block" }}
+            style={{ width: "25%", height: "100%", display: "inline-block", border: "1px solid" }}
           >
             <p style={{ paddingTop: "0", paddingLeft: "40px" }}>HORA</p>
           </div>
           <div
-            className="inicio"
-            style={{ width: "25%", height: "100%", display: "inline-block" }}
+            style={{ width: "25%", height: "100%", display: "inline-block", border: "1px solid" }}
           >
             <p style={{ paddingTop: "0", paddingLeft: "40px" }}>INICIO</p>
           </div>
           <div
-            className="termino"
-            style={{ width: "25%", height: "100%", display: "inline-block" }}
+            style={{ width: "25%", height: "100%", display: "inline-block", border: "1px solid" }}
           >
             <p style={{ paddingTop: "0", paddingLeft: "40px" }}>TERMINO</p>
           </div>
@@ -456,27 +456,15 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             <td style={{ border: "1px solid", height: "30px" }}></td>
             <td style={{ border: "1px solid", height: "30px" }}></td>
           </tr>
-          <tr>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-          </tr>
-          <tr>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-          </tr>
         </table>
       </div>
-      <style jsx global>{`
+      {/*<style jsx global>{`
         * {
           border-width: 1px;
           border-style: solid;
           border-color: red;
         }
-      `}</style>
+      `}</style>*/}
     </div>
   );
 };

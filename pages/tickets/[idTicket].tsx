@@ -26,6 +26,7 @@ import {
   Box,
   color,
   Center,
+  Stack,
 } from "@chakra-ui/react";
 
 import { useRouter } from "next/router";
@@ -148,7 +149,7 @@ function TicketVer() {
     }
   };
 
-  
+
   const dataTicket = {
     titulo: "Mecanico para JOE",
   };
@@ -194,26 +195,33 @@ function TicketVer() {
           justifySelf="end"
           width={"150px"}
           height={"60px"}
-          leftIcon={<BsPrinter size={"30px"}/>}
+          leftIcon={<BsPrinter size={"30px"} />}
           id="imprimirTicket"
           colorScheme="telegram"
           borderColor="twitter.100"
           size="lg"
           onClick={onOpen}
         />
-      
+
       </Box>
 
       <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Impresion</ModalHeader>
+          <ModalHeader>Impresión</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-          <Printer doc={<TicketImprimible ticket={ticket}  />} />         
+            <Printer doc={<TicketImprimible ticket={ticket} />} />
           </ModalBody>
           <ModalFooter>
-            <Button onClick={onClose}>Cerrar</Button>
+            <Stack
+              align="center"
+              paddingLeft={"60%"}
+              spacing={4}
+              direction="row"
+            >
+              <Button paddingLeft={10} paddingRight={10} colorScheme="red" variant="outline" onClick={onClose}>Cerrar</Button>
+            </Stack>
           </ModalFooter>
         </ModalContent>
       </Modal>

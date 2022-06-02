@@ -1,5 +1,6 @@
 import {
   Button,
+  Stack,
   useDisclosure,
 } from "@chakra-ui/react";
 import React, { useEffect, useRef, useState } from "react";
@@ -21,7 +22,19 @@ function Printer({ doc }: PrinterProps) {
   return (
     <>
       <>{doc}</>
-      <Button onClick={() => imprimirDoc(doc)}>Imprimir</Button>
+      <Stack
+        paddingTop={10}
+        align="center"
+        paddingLeft={"50%"}
+        spacing={4}
+        direction="row"
+      >
+        <Button
+          paddingLeft={10} paddingRight={10}
+          colorScheme="whatsapp"
+          variant="solid"
+          onClick={() => imprimirDoc(doc)}>Imprimir</Button>
+      </Stack>
     </>
   );
 }
