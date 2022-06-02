@@ -13,12 +13,12 @@ function TicketsListado() {
         <Header title="Tickets" />
 
         <Box>
-          <SimpleGrid columns={[1, 2, 5]} spacing='10px'>
+          <SimpleGrid margin={"20px"} columns={[1, 2, 5]} spacing='10px'>
             <Button
               leftIcon={<ViewIcon />}
               colorScheme="facebook"
               variant="solid"
-              width={150}
+              width={250}
               onClick={() => {
                 router.push("/tickets/listadoTickets");
               }}
@@ -30,7 +30,7 @@ function TicketsListado() {
               leftIcon={<AddIcon />}
               colorScheme="facebook"
               variant="solid"
-              width={150}
+              width={250}
               onClick={() => {
                 router.push("/tickets/nuevo");
               }}

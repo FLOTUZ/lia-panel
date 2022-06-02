@@ -165,6 +165,7 @@ function TicketVer() {
   };
 
 
+
   const dataTicket = {
     titulo: "Mecanico para JOE",
   };
@@ -190,6 +191,8 @@ function TicketVer() {
           color: "black",
         }}
         onClick={abrir}
+
+
       >
         <Center marginTop={"3.5"}>
           <IoAdd size={40} />
@@ -214,11 +217,15 @@ function TicketVer() {
           color: "white",
         }}
         onClick={onOpenCotizacionT}
+
       >
         <Center marginTop={"3.5"}>
           <FaFileSignature size={40} />
         </Center>
       </Box>
+
+
+
       <Box
         margin={"1%"}
         justifyContent={"center"}

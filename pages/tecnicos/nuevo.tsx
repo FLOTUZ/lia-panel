@@ -319,6 +319,7 @@ function UsuarioNuevo() {
                         variant="filled"
                         id="telefono"
                         placeholder="Teléfono"
+                        maxLength={10}
                         type={"tel"}
                         onChange={(e) => {
                           setTelefono(e.target.value);

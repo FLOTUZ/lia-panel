@@ -9,6 +9,13 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
   SimpleGrid,
   Tab,
   Table,
@@ -24,6 +31,7 @@ import {
   Th,
   Thead,
   Tr,
+  useDisclosure,
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
@@ -37,7 +45,7 @@ export const CrearCotizacionTecnico = ({
 }: CrearCotizacionTecnicoProps) => {
   const [imagen, setImagen] = useState<IImagen>();
   const [uploadImage, setUploadImage] = useState<string>("");
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const getImagen = async () => {
     const service = new ImagenesService();
     const respuesta = await service.getById(cotizacion.preSolucionId);
@@ -86,7 +94,7 @@ export const CrearCotizacionTecnico = ({
             placeholder="Solución y Cotización del Técnico"
             id="solucion_cotizacion_del_tecnico"
             borderColor="twitter.100"
-            // value={cotizacion.solucion_tecnico}
+            value={cotizacion.solucion_tecnico}
           />
         </FormControl>
 
@@ -101,7 +109,7 @@ export const CrearCotizacionTecnico = ({
               placeholder="Fecha y Hora de Contacto"
               id="hora_de_contacto"
               borderColor="twitter.100"
-              //value={}
+              value={cotizacion.fecha_contacto}
             />
           </FormControl>
 
@@ -113,7 +121,7 @@ export const CrearCotizacionTecnico = ({
               placeholder="Hora de Cierre"
               id="hora_de_cierre"
               borderColor="twitter.100"
-              //value={}
+              value={cotizacion.checkInId}
             />
           </FormControl>
         </SimpleGrid>
@@ -129,7 +137,7 @@ export const CrearCotizacionTecnico = ({
               placeholder="Costo de Mano de Obra"
               id="costo_de_mano_de_obra"
               borderColor="twitter.100"
-              //value={}
+              value={cotizacion.costo_mano_obra}
             />
           </FormControl>
 
@@ -143,7 +151,7 @@ export const CrearCotizacionTecnico = ({
               placeholder="Costo de Materiale"
               id="costo_de_materiales"
               borderColor="twitter.100"
-              //value={}
+              value={cotizacion.costo_materiales}
             />
           </FormControl>
         </SimpleGrid>
@@ -162,13 +170,44 @@ export const CrearCotizacionTecnico = ({
             width={200}
             paddingLeft={10}
           >
-            <img height={200} src={uploadImage} alt="Evidencia 2" />
+            <img
+              height={200}
+              src={uploadImage}
+              alt="Evidencia 2"
+              onClick={onOpen}
+            />
           </Box>
-        </Center> 
-        
-        <Button  variant='outline' colorScheme={"green"} > Aprobar</Button>
-        <Button colorScheme={"red"}> Rechazar</Button>
+        </Center>
+
+        <Box marginTop={"40px"} margin={"50px"} height="80px">
+          <Button margin={"50px"} colorScheme={"green"}>
+            Aprobar
+          </Button>
+
+          <Button variant="outline" colorScheme={"red"}>
+            Rechazar
+          </Button>
         </Box>
+      </Box>
+
+
+      
+      <Modal onClose={onClose} isOpen={isOpen} isCentered>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalCloseButton />
+          <ModalBody>
+          <img
+              
+              height={"250px"}
+              src={uploadImage}
+              alt="Evidencia 2"
+            />
+          </ModalBody>
+          <ModalFooter>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </div>
   );
 };
