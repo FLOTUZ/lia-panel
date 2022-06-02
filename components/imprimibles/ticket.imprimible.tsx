@@ -18,6 +18,7 @@ import { EstadosService } from "@/services/estados.service";
 import { CrearCotizacionTecnico } from "@/forms/CotizacionTecnicoForm";
 import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
 import { TecnicoService } from "@/services/tecnicos.service";
+import { color } from "@chakra-ui/react";
 
 interface TicketImprimibleProp {
   ticket?: ITicket;
@@ -62,7 +63,6 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
       setEstado(data);
     };
 
-   
     /*Obtener asesor de aseguradora*/
     const getAsesorAseguradora = async () => {
       const service = new AsesoresService();
@@ -78,12 +78,18 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
     getAsesorAseguradora();
   }, [ticket]);
 
+  const styleTitulo = {
+    margin: "0.5em",
+    color: "black",
+  };
+
   return (
     <div>
       <meta charSet="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
       <title>Orden de Servicio</title>
 
       <div
@@ -96,10 +102,10 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
         }}
       >
         {/* CABECERA DE LA ESTRUCTURA */}
-        <div className="cabecera" style={{ width: "100%", height: "80px" }}>
+        <div style={{  height: "80px" }}>
           <div
             className="logo"
-            style={{ width: "15%", height: "100%", float: "left" }}
+            style={{ width: "15%",  float: "left" }}
           >
             <Image
               src={LiasIMG}
@@ -108,265 +114,211 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
               alt="Logo de Grupo Lias"
             />
           </div>
-          {/* AQUI VAN EL TEXTO Y LOS PRIMEROS TRES RECUADROS */}
-          <div
-            className="orden"
-            style={{ width: "85%", height: "100%", float: "right" }}
-          >
-            <div
-              className="textoPrincipal"
-              style={{ width: "40%", height: "100%", float: "left" }}
-            >
-              <h2>ORDEN DE SERVICIO </h2>
-            </div>
-            <div
-              className="fecha"
-              style={{ width: "20%", height: "100%", display: "inline-block" }}
-            >
-              <p style={{ paddingTop: "15px" }}>FECHA: </p>
-            </div>
-            <div
-              className="fecha"
-              style={{ width: "20%", height: "100%", display: "inline-block" }}
-            >
-              <p style={{ paddingTop: "15px" }}>TIEMPO:</p>
-            </div>
-            <div
-              className="fecha"
-              style={{ width: "20%", height: "100%", float: "right" }}
-            >
-              <p style={{ paddingTop: "15px" }}>VISITA:</p>:
-            </div>
-          </div>
-        </div>
 
-        {/* INICIA LA LINEA 2 */}
-        <div className="linea2" style={{ width: "100%", height: "50px" }}>
-          <div
-            className="expediente"
-            style={{ width: "30%", height: "100%", display: "inline-block" }}
-          >
-            <p style={{ paddingTop: "0", paddingLeft: "80px" }}>
-              EXPEDIENTE: {ticket?.num_expediente}
-            </p>
-          </div>
-          <div
-            className="km"
-            style={{ width: "33%", height: "100%", float: "left" }}
-          >
-            <p style={{ paddingTop: "0", paddingLeft: "80px" }}>
-              KM: {ticket?.kilometraje}
-            </p>
-          </div>
-          <div
-            className="casetas"
-            style={{ width: "33%", height: "100%", float: "left" }}
-          >
-            <p style={{ paddingTop: "0", paddingLeft: "80px" }}>
-              CASETAS: {ticket?.casetas}
-            </p>
-          </div>
-        </div>
-        {/* INICIA LA LINEA 3 */}
-        <div className="linea3" style={{ width: "100%", height: "80px" }}>
-          <div
-            className="problema"
-            style={{ width: "35%", height: "100%", display: "inline-block" }}
-          >
-            <p style={{ paddingTop: "0", paddingLeft: "80px" }}>
-              PROBLEMA: {ticket?.problematica}
-            </p>
-          </div>
          
+            <div style={{ width: "40%", height: "20%", float: "left" }}>
+              <h2 >ORDEN DE SERVICIO </h2>
+            </div>
+            <div
+              style={{ width: "20%", height: "20%", display: "inline-block", paddingTop: "15px" }}
+            >
+              <p >FECHA: </p>
+            </div>
+            <div
+              style={{ width: "20%", height: "20%", display: "inline-block", paddingTop: "15px" }}
+            >
+              <p >TIEMPO:</p>
+            </div>
+            <div style={{ width: "20%", height: "100%", float: "right", paddingTop: "15px" }}>
+              <p >VISITA:</p>
+            </div>
+            </div>
+       
+        <div style={{ width: "30%",  paddingLeft:"10px", paddingTop:"15px" }}>
+          <p>EXPEDIENTE: {ticket?.num_expediente}</p>
         </div>
-        {/* INICIA LA LINEA 4 */}
-        <div className="linea4" style={{ width: "100%", height: "25px" }}>
-          
+        <div style={{ width: "30%",  paddingLeft:"50px", float: "right" }}>
+          <p>KM: {ticket?.kilometraje}</p>
+        </div>
+        <div style={{ width: "30%",   paddingLeft:"60px", float: "right" }}>
+          <p >CASETAS: {ticket?.casetas}</p>
+        </div>
+       
 
         <div
-            className="problema"
-            style={{ width: "30%", height: "100%", float: "left" }}
-          >
-            <p style={{ paddingTop: "15%", paddingLeft: "80px" }}>
-              USUARIO {ticket?.nombre_usuario_final}
-            </p>
-          </div>
-          <div
-            className="casetas"
-            style={{ width: "35%", height: "100%", float: "right" }}
-          >
-            <p style={{ paddingTop: "0", paddingLeft: "80px" }}>
-              BANDERAZO {ticket?.banderazo}
-            </p>
-          </div>
+          style={{
+            width: "60%",
+            height: "10%",
+            display: "inline-block",
+            paddingLeft: "15px",
+            paddingTop: "20px",
+          }}
+        >
+          <p>PROBLEMA: {ticket?.problematica}</p>
         </div>
-        {/* INICIA LINEA 5 */}
-        <div className="linea5" style={{ width: "100%", height: "25px" }}>
-          <div
-            className="casetas"
-            style={{ width: "35%", height: "100%", float: "right" }}
-          >
-            <p style={{ paddingTop: "5%", paddingLeft: "80px" }}>
-              TOTAL DE SALIDA {ticket?.total_salida}
-            </p>
-          </div>
-        </div>
-        <div className="linea5" style={{ width: "100%", height: "25px" }}>
-          <div
-            className="casetas"
-            style={{ width: "35%", height: "100%", float: "right" }}
-          >
-            <p style={{ paddingTop: "20%", paddingLeft: "80px" }}>
-              SEGURO {aseguradora?.nombre}
-            </p>
-          </div>
-        </div>
-        <div className="linea5" style={{ width: "100%", height: "25px" }}>
-          <div
-            className="casetas"
-            style={{ width: "35%", height: "100%", float: "right" }}
-          >
-            <p style={{ paddingTop: "25%", paddingLeft: "80px" }}>
-              DEDUCIBLE {ticket?.deducible}
-            </p>
-          </div>
-        </div>
-        {/* LINEA COMBINADA */}
-        <div className="linea2" style={{ width: "100%", height: "50px" }}>
-     
-       
-       
-        </div>
-        {/* COMBINADA SIN CELDA CENTRAL */}
-        <div className="colonia" style={{ width: "100%", height: "30px" }}>
+
         <div
-            className="km"
-            style={{ width: "50%", height: "100%", display: "inline-block" }}
-          >
-            <p style={{ paddingTop: "0", paddingLeft: "100px" }}>
-              CIUDAD {ciudad?.nombre}
-            </p>
-          </div>
-          
-          <div
-            className="expediente"
-            style={{ width: "33%", height: "100%", float: "left" }}
-          >
+          style={{
+            width: "35%",
+            height: "22%",
+            float: "right",
+            paddingTop: "30px",
+          }}
+        >
+          <div>
             <p style={{ paddingTop: "0", paddingLeft: "80px" }}>
-              COLONIA {ticket?.colonia}
+              $BANDERAZO {ticket?.banderazo}
             </p>
           </div>
-          <div
-            className="espacio"
-            style={{ width: "33%", height: "100%", display: "inline-block" }}
-          >
-            <p style={{ paddingTop: "0", paddingLeft: "80px" }}></p>
-          </div>
-        
-        </div>
-        {/* COMBINADA SIN CELDA CENTRAL */}
-        <div className="colonia" style={{ width: "100%", height: "30px" }}>
-          <div
-            className="expediente"
-            style={{ width: "30%", height: "100%", float: "left" }}
-          >
-            <p style={{ paddingTop: "20%", paddingLeft: "80px" }}>
-              CALLE Y NO. {ticket?.calle} {ticket?.numero_domicilio}{" "}
+          <div>
+            <p style={{ paddingTop: "0", paddingLeft: "80px" }}>
+              $TOTAL DE SALIDA {ticket?.total_salida}
             </p>
           </div>
-          <div
-            className="casetas"
-            style={{ width: "40%", height: "100%", float:"left", display: "inline-block" }}
-          >
-            <p style={{ paddingTop: "10%", paddingLeft: "100px" }}>
+          <div>
+            <p style={{ paddingTop: "0", paddingLeft: "80px" }}>
+              $SEGURO {aseguradora?.nombre}
+            </p>
+          </div>
+          <div>
+            <p
+              style={{
+                paddingTop: "5%",
+                paddingLeft: "80px",
+              }}
+            >
+              $DEDUCIBLE {ticket?.deducible}
+            </p>
+          </div>
+          <div>
+            <p style={{ paddingTop: "5%", paddingLeft: "80px" }}>
               COSTO GPOLIAS {ticket?.costo_gpo_lias}
             </p>
           </div>
-          <div
-            className="total"
-            style={{ width: "30%", height: "100%", display: "inline-block" }}
-          >
-            <p style={{ paddingTop: "15%", paddingLeft: "70px" }}>
-              TOTAL {ticket?.total}
+          <div>
+            <p style={{ paddingTop: "5%", paddingLeft: "80px" }}>
+              $TOTAL {ticket?.total}
             </p>
           </div>
-          <div
-            className="espacio"
-            style={{ width: "35%", height: "100%", display: "inline-block" }}
-          >
-            <p style={{ paddingTop: "10%", paddingLeft: "80px" }}></p>
-          </div>
-          <div
-            className="total"
-            style={{ width: "30%", height: "100%", float: "right" }}
-          >
-            <p style={{ paddingTop: "0%", paddingLeft: "40px" }}>
+          <div>
+            <p style={{ paddingTop: "5%", paddingLeft: "80px" }}>
               60% DE ANTICIPO {ticket?.anticipo}
             </p>
           </div>
         </div>
-        {/* COMBINADA */}
-        <div className="asistencia" style={{ width: "100%", height: "30px" }}>
-          <div
-            className="expediente"
-            style={{ width: "45%", height: "100%", float: "left" }}
-          >
-            <p style={{ paddingTop: "15%", paddingLeft: "80px" }}>
-              ASISTENCIA {asistencia?.nombre}
-            </p>
-          </div>
-          <div
-            className="cubreseguro"
-            style={{ width: "25%", height: "100%", display: "inline-block" }}
-          >
-            <p style={{ paddingTop: "10%", paddingLeft: "80px" }}>
-              CUBRE SEGURO {ticket?.cobertura}{" "}
-            </p>
-          </div>
-          <div
-            className="asesor"
-            style={{ width: "40%", height: "100%", display: "inline-block" }}
-          >
-            <p style={{ paddingTop: "10%", paddingLeft: "80px" }}>
-              ASESOR {asesorAseguradora?.nombre}
-            </p>
-          </div>
+
+        <div
+          style={{
+            width: "30%",
+            height: "5%",
+            float: "left",
+            paddingLeft: "15px",
+          }}
+        >
+          <p>USUARIO {ticket?.nombre_usuario_final}</p>
         </div>
-        {/* COMBINADA DE 4 CELDAS */}
-        <div className="asistencia" style={{ width: "100%", height: "30px" }}>
-          <div
-            className="expediente"
-            style={{ width: "25%", height: "100%", float: "left" }}
-          >
-            <p style={{ paddingTop: "0", paddingLeft: "80px" }}>
-              HORA DE LLAMADA {ticket?.fecha_llamada}
-            </p>
-          </div>
-          <div
-            className="cubreseguro"
-            style={{ width: "30%", height: "100%", display: "inline-block" }}
-          >
-            <p style={{ paddingTop: "15%", paddingLeft: "130px" }}>
-              TÉCNICO {}{" "}
-            </p>
-          </div>
-          <div
-            className="asesor"
-            style={{ width: "40%", height: "100%", display: "inline-block" }}
-          >
-            <p style={{ paddingTop: "10%", paddingLeft: "80px" }}>
-              HORA DE CONTACTO
-            </p>
-          </div>
-          <div
-            className="asesor"
-            style={{ width: "40%", height: "100%", display: "inline-block" }}
-          >
-            <p style={{ paddingTop: "10%", paddingLeft: "80px" }}>
-              HORA DE TERMINO
-            </p>
-          </div>
+
+        <div style={{ width: "30%", height: "5%", float: "right" }}>
+          <p>CIUDAD {ciudad?.nombre}</p>
         </div>
+
+        <div
+          style={{
+            width: "30%",
+            height: "7%",
+            float: "left",
+            paddingLeft: "15px",
+          }}
+        >
+          <p> COLONIA {ticket?.colonia}</p>
+        </div>
+
+        <div
+          style={{
+            width: "30%",
+            height: "7%",
+            float: "left",
+            paddingLeft: "15px",
+          }}
+        >
+          <p>
+            CALLE Y NO. {ticket?.calle} {ticket?.numero_domicilio}{" "}
+          </p>
+        </div>
+
+        <div
+          style={{
+            width: "30%",
+            height: "5%",
+            float: "left",
+            paddingLeft: "15px",
+          }}
+        >
+          <p>ASISTENCIA {asistencia?.nombre}</p>
+        </div>
+        <div
+          style={{
+            width: "30%",
+            height: "5%",
+            float: "left",
+            paddingLeft: "25px",
+          }}
+        >
+          <p>CUBRE SEGURO {ticket?.cobertura} </p>
+        </div>
+        <div
+          style={{
+            width: "35%",
+            height: "5%",
+            float: "left",
+            paddingLeft: "25px",
+          }}
+        >
+          <p>ASESOR {asesorAseguradora?.nombre}</p>
+        </div>
+
+        <div
+          style={{
+            width: "30%",
+            height: "5%",
+            float: "left",
+            paddingLeft: "15px",
+          }}
+        >
+          <p>HORA DE LLAMADA {ticket?.fecha_llamada}</p>
+        </div>
+        <div
+          style={{
+            width: "30%",
+            height: "5%",
+            float: "left",
+            paddingLeft: "15px",
+          }}
+        >
+          <p>TÉCNICO {} </p>
+        </div>
+
+        <div
+          style={{
+            width: "30%",
+            height: "5%",
+            float: "left",
+            paddingLeft: "15px",
+          }}
+        >
+          <p>HORA DE CONTACTO {}</p>
+        </div>
+        <div
+          style={{
+            width: "30%",
+            height: "5%",
+            float: "left",
+            paddingLeft: "15px",
+          }}
+        >
+          <p>HORA DE TERMINO</p>
+        </div>
+
         <br />
         <br />
 
@@ -518,6 +470,13 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
           </tr>
         </table>
       </div>
+      <style jsx global>{`
+        * {
+          border-width: 1px;
+          border-style: solid;
+          border-color: red;
+        }
+      `}</style>
     </div>
   );
 };

@@ -202,7 +202,7 @@ const NuevoTicket = () => {
       setCalculoTotalSalida(totalSalida);
       setCalculoMontoTotal(montoTotal);
 
-
+      
     };
 
     calcular();
@@ -1244,8 +1244,8 @@ const NuevoTicket = () => {
                 borderColor="twitter.100"
                 fontWeight={"bold"}
                 textColor={"red"}
-                onChange={(e) => {
-
+                onChange={(e)=>{
+                  
                   formTicket.handleChange(e.target.value);
                 }}
                 value={calculoMontoTotal}
