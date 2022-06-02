@@ -192,12 +192,13 @@ const NuevoTicket = () => {
 
       let montoTotal = 0;
       if (deducible < 0) {
-        montoTotal = totalSalida + costoGPOLIAS + Math.abs(deducible);
+        deducible = Math.abs(deducible);
+        montoTotal = totalSalida + costoGPOLIAS + deducible;
+        setCalculoDeducible(deducible);
       } else {
         montoTotal = totalSalida + costoGPOLIAS;
       }
 
-      setCalculoDeducible(deducible);
       setCalculoAnticipo(anticipo);
       setCalculoTotalSalida(totalSalida);
       setCalculoMontoTotal(montoTotal);
