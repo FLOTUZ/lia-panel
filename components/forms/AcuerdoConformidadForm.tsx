@@ -13,13 +13,18 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalFooter,
+  ModalHeader,
   ModalOverlay,
   SimpleGrid,
+  Stack,
   Text,
   Textarea,
   useDisclosure,
 } from "@chakra-ui/react";
+import AcuerdoConformidad from "components/imprimibles/acuerdo-conformidad.imprimible";
+import Printer from "components/printer/printer";
 import { useState, useEffect } from "react";
+import { BsPrinter } from "react-icons/bs";
 
 interface IAcuerdoConformidadForm {
   acuerdoconformidad: IAcuerdoConformidad;
@@ -181,7 +186,9 @@ export const AcuerdoConformidadForm = ({
           </Box>
         </Center>
 
+        <SimpleGrid columns={[2, null, 3]} spacing='40px'>
         <Box marginTop={"40px"} margin={"50px"} height="80px">
+
           <Button margin={"50px"} colorScheme={"green"}>
             Aprobar
           </Button>
@@ -190,6 +197,20 @@ export const AcuerdoConformidadForm = ({
             Rechazar
           </Button>
         </Box>
+
+          <Box marginTop={"40px"} margin={"50px"}  height='80px'></Box>
+          <Button
+          variant='outline'
+          justifySelf="end"
+          width={"150px"}
+          height={"60px"}
+          leftIcon={<BsPrinter size={"30px"} />}
+          id="imprimirAcuerdoConformidad"
+          colorScheme="red"
+          size="lg"
+          onClick={onOpen}
+        />
+        </SimpleGrid>
       </Box>
 
       <Modal onClose={onClose} isOpen={isOpen} isCentered>
@@ -213,6 +234,31 @@ export const AcuerdoConformidadForm = ({
           <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
+
+      <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Impresión</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Printer doc={<AcuerdoConformidad />} />
+          </ModalBody>
+          <ModalFooter>
+            <Stack
+              align="center"
+              paddingLeft={"60%"}
+              spacing={4}
+              direction="row"
+            >
+              <Button paddingLeft={10} paddingRight={10} colorScheme="red" variant="outline" onClick={onClose}>Cerrar</Button>
+            </Stack>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+
+
+
     </div>
   );
 };

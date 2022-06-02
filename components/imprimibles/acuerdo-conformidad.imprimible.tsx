@@ -7,7 +7,7 @@ interface AcuerdoConformidadProps {
   acuerdo?: IAcuerdoConformidad;
   ticket?:ITicket;
 }
-function AcuerdoConformidad({ acuerdo }: AcuerdoConformidadProps) {
+function AcuerdoConformidad({ acuerdo, }: AcuerdoConformidadProps) {
   return (
     <>
       <div>
