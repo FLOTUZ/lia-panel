@@ -148,6 +148,7 @@ function TicketVer() {
     }
   };
 
+  
   const dataTicket = {
     titulo: "Mecanico para JOE",
   };
@@ -193,7 +194,7 @@ function TicketVer() {
           justifySelf="end"
           width={"150px"}
           height={"60px"}
-          leftIcon={<BsPrinter />}
+          leftIcon={<BsPrinter size={"30px"}/>}
           id="imprimirTicket"
           colorScheme="telegram"
           borderColor="twitter.100"
@@ -251,7 +252,7 @@ function TicketVer() {
               </Select>
             </FormControl>
             <FormControl paddingTop={15}>
-              <FormLabel htmlFor="tecnicoId">Nombre del Técnico y Número de Teléfono</FormLabel>
+              <FormLabel htmlFor="tecnicoId">Técnico</FormLabel>
               <Select
                 id="tecnicoId"
                 placeholder="Selecciona el Técnico"
@@ -266,8 +267,6 @@ function TicketVer() {
                     return (
                       <option key={tecnico.id} value={tecnico.id}>
                         {tecnico.nombre}
-                        {"   "}
-                        {tecnico.telefono}
                       </option>
                     );
                   })

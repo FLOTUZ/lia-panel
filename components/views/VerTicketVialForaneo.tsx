@@ -47,6 +47,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
   const [estado, setEstado] = useState<IEstado>();
   const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>();
   const [cotizacion, setCotizacion] = useState<ICotizacionTecnico>();
+  const [mostrarCotizacion, setMostrarCotizacion] = useState(false);
 
   useEffect(() => {
     /*Obtener aseguradora*/
@@ -95,8 +96,11 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
 
       const data = respuesta.data as ICotizacionTecnico;
       setCotizacion(data);
-    };
+    
+ 
 
+      data ? setMostrarCotizacion(true) : setMostrarCotizacion(false);
+    };
     getAseguradora();
     getAsistencia();
     getCiudad();
@@ -591,8 +595,8 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
           />
         </FormControl>
       </Box>
-      <CrearCotizacionTecnico />
-      <SeguimientoForm />
+      {mostrarCotizacion ? <CrearCotizacionTecnico cotizacion={cotizacion!} /> : null}
+
     </>
   );
 }

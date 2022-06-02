@@ -22,6 +22,7 @@ import {
   IAsesor,
   IAsistencia,
   ICiudad,
+  ICotizacionTecnico,
   IEstado,
   ITicket,
 } from "@/services/api.models";
@@ -34,6 +35,7 @@ import { AsistenciasService } from "@/services/asistencias.service";
 import { CiudadesService } from "@/services/ciudades.service";
 import { EstadosService } from "@/services/estados.service";
 import { AsesoresService } from "@/services/asesores.service";
+import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
 
 interface VerTicketVialProps {
   ticket: ITicket;
@@ -44,6 +46,8 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
   const [ciudad, setCiudad] = useState<ICiudad>();
   const [estado, setEstado] = useState<IEstado>();
   const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>()
+  const [cotizacion, setCotizacion] = useState<ICotizacionTecnico>();
+  const [mostrarCotizacion, setMostrarCotizacion] = useState(false);
 
   useEffect(() => {
     /*Obtener aseguradora*/
@@ -88,7 +92,17 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
 
     
 
+    const getCotizacionTecnico = async () => {
+      const service = new CotizacionTecnicoService();
+      const respuesta = await service.cotizacionByTicket(ticket.id!);
 
+      const data = respuesta.data as ICotizacionTecnico;
+
+      setCotizacion(data);
+      console.log(data);
+
+      data ? setMostrarCotizacion(true) : setMostrarCotizacion(false);
+    };
     getAseguradora();
     getAsistencia();
     getCiudad();
@@ -545,8 +559,8 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
         </FormControl>
       </Box>
 
-      <CrearCotizacionTecnico />
-      <SeguimientoForm />
+      {mostrarCotizacion ? <CrearCotizacionTecnico cotizacion={cotizacion!} /> : null}
+
     </>
   );
 }

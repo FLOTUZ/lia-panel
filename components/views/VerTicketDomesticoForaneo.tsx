@@ -24,6 +24,7 @@ import {
   IAsesor,
   IAsistencia,
   ICiudad,
+  ICotizacionTecnico,
   IEstado,
   ITicket,
 } from "@/services/api.models";
@@ -40,13 +41,16 @@ interface VerTicketDomesticoForaneoProps {
   ticket: ITicket;
 }
 
-
-export function VerTicketDomesticoForaneo({ ticket }: VerTicketDomesticoForaneoProps) {
+export function VerTicketDomesticoForaneo({
+  ticket,
+}: VerTicketDomesticoForaneoProps) {
   const [aseguradora, setAseguradora] = useState<IAseguradora>();
   const [asistencia, setAsistencia] = useState<IAsistencia>();
   const [ciudad, setCiudad] = useState<ICiudad>();
   const [estado, setEstado] = useState<IEstado>();
-  const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>()
+  const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>();
+  const [cotizacion, setCotizacion] = useState<ICotizacionTecnico>();
+  const [mostrarCotizacion, setMostrarCotizacion] = useState(false);
 
   useEffect(() => {
     /*Obtener aseguradora*/
@@ -87,6 +91,18 @@ export function VerTicketDomesticoForaneo({ ticket }: VerTicketDomesticoForaneoP
       const respuesta = await service.getById(ticket.asesorId);
       const data = respuesta.data as IAsesor;
       setAsesorAseguradora(data);
+    };
+
+    const getCotizacionTecnico = async () => {
+      const service = new CotizacionTecnicoService();
+      const respuesta = await service.cotizacionByTicket(ticket.id!);
+
+      const data = respuesta.data as ICotizacionTecnico;
+
+      setCotizacion(data);
+      console.log(data);
+
+      data ? setMostrarCotizacion(true) : setMostrarCotizacion(false);
     };
 
     getAseguradora();
@@ -576,8 +592,9 @@ export function VerTicketDomesticoForaneo({ ticket }: VerTicketDomesticoForaneoP
           />
         </FormControl>
       </Box>
-      <CrearCotizacionTecnico />
-      <SeguimientoForm />
+      {mostrarCotizacion ? (
+        <CrearCotizacionTecnico cotizacion={cotizacion!} />
+      ) : null}
     </>
   );
 }

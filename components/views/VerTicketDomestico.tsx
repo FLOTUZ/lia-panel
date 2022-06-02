@@ -47,7 +47,7 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
   const [estado, setEstado] = useState<IEstado>();
   const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>();
   const [cotizacion, setCotizacion] = useState<ICotizacionTecnico>();
-
+  const [mostrarCotizacion, setMostrarCotizacion] = useState(false);
   useEffect(() => {
     /*Obtener aseguradora*/
     const getAseguradora = async () => {
@@ -92,15 +92,10 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
     const getCotizacionTecnico = async () => {
       const service = new CotizacionTecnicoService();
       const respuesta = await service.cotizacionByTicket(ticket.id!);
-      const data = respuesta.data as ICotizacionTecnico;
-      setCotizacion(data);
-      console.log(cotizacion);
 
-      if (cotizacion == undefined) {
-        console.log(false);
-      } else {
-        console.log(true);
-      }
+      const data = respuesta.data as ICotizacionTecnico;
+
+      setCotizacion(data);
     };
 
     getAseguradora();
@@ -544,8 +539,8 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
           </FormControl>
         </SimpleGrid>
       </Box>
-      <CrearCotizacionTecnico />
-      <SeguimientoForm />
+
+      <CrearCotizacionTecnico cotizacion={cotizacion!} />
     </>
   );
 }

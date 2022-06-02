@@ -106,7 +106,7 @@ export interface ICiudad {
   estadoId?: number | null;
   latitud?: number | null;
   longitud?: number | null;
-  Estado?: IEstado ;
+  Estado?: IEstado;
   createdAt?: string | null;
   updatedAt?: string | null;
 }
@@ -142,7 +142,7 @@ export interface IEstado {
   updatedAt?: string | null;
 }
 
-export interface IAcuerdoConformidad{
+export interface IAcuerdoConformidad {
   id?: number;
   fecha_acuerdo: Date;
   descripcion_problema: string;
@@ -156,4 +156,12 @@ export interface IAcuerdoConformidad{
   usuarioFinalId: number | null;
   createdAt?: Date | null;
   updatedAt?: Date | null;
+}
+
+export interface IImagen {
+  id?: number;
+  url: string;
+  descripcion: string;
+  createdAt?: Date ;
+  updatedAt?: Date;
 }
