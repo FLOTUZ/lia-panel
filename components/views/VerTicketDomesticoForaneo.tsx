@@ -36,6 +36,7 @@ import { AsistenciasService } from "@/services/asistencias.service";
 import { CiudadesService } from "@/services/ciudades.service";
 import { AsesoresService } from "@/services/asesores.service";
 import { EstadosService } from "@/services/estados.service";
+import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
 
 interface VerTicketDomesticoForaneoProps {
   ticket: ITicket;

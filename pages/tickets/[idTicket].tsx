@@ -2,6 +2,7 @@ import DesktopLayout from "@/layouts/DesktopLayout";
 import {
   IAseguradora,
   IAsistencia,
+  ICotizacionTecnico,
   IServicio,
   ITicket,
 } from "@/services/api.models";
@@ -33,6 +34,7 @@ import { useRouter } from "next/router";
 
 import React, { useEffect, useState } from "react";
 import { IoAdd } from "react-icons/io5";
+import {FaFileSignature} from "react-icons/fa"
 import { BsPrinter } from "react-icons/bs";
 import { TicketsService } from "@/services/tickets.service";
 import { VerTicketVialForaneo } from "@/views/VerTicketVialForaneo";
@@ -41,15 +43,19 @@ import { VerTicketDomestico } from "@/views/VerTicketDomestico";
 import { VerTicketDomesticoForaneo } from "@/views/VerTicketDomesticoForaneo";
 import TicketImprimible from "components/imprimibles/ticket.imprimible";
 import Printer from "components/printer/printer";
+import { CrearCotizacionTecnicoManual } from "@/forms/CotizacionTecnicoManualForm ";
+import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
 
 function TicketVer() {
   const router = useRouter();
   const toast = useToast();
   const { isOpen: abierto, onOpen: abrir, onClose: cerrar } = useDisclosure();
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen:isOpenCotizacionT, onOpen:onOpenCotizacionT, onClose:onCloseCotizacionT } = useDisclosure();
   const [ticket, setTicket] = useState<ITicket>();
   const [aseguradora, setAseguradora] = useState<IAseguradora>();
   const [asistencia, setAsistencia] = useState<IAsistencia>();
+  const [cotizacion, setCotizacion] = useState<ICotizacionTecnico>();
 
   const [serviciosList, setServiciosList] = useState<IServicio[]>([]);
   const [tecnicosByServicios, setTecnicosByServicios] = useState<IServicio>();
@@ -117,6 +123,15 @@ function TicketVer() {
 
   };
 
+
+  const getCotizacionTecnico = async () => {
+    const service = new CotizacionTecnicoService();
+    const respuesta = await service.cotizacionByTicket(ticket?.id!);
+
+    const data = respuesta.data as ICotizacionTecnico;
+
+    setCotizacion(data);
+  };
   /*Obtener ticket*/
 
   useEffect(() => {
@@ -181,6 +196,30 @@ function TicketVer() {
         </Center>
       </Box>
       <Box
+        justifyContent={"center"}
+        alignItems={"center"}
+        position="fixed"
+        width={"80px"}
+        height={"80px"}
+        bottom="120px"
+        right={["16px", "84px"]}
+        zIndex={1}
+        borderWidth={1}
+        bgColor={" #0C6A7D"}
+        color={"white"}
+        borderRadius={100}
+        _hover={{
+          boxShadow: "10px 10px 5px #DDD9D9",
+          bgColor: " #618CF0",
+          color: "white",
+        }}
+        onClick={onOpenCotizacionT}
+      >
+        <Center marginTop={"3.5"}>
+          <FaFileSignature size={40} />
+        </Center>
+      </Box>
+      <Box
         margin={"1%"}
         justifyContent={"center"}
         alignItems={"center"}
@@ -222,6 +261,20 @@ function TicketVer() {
             >
               <Button paddingLeft={10} paddingRight={10} colorScheme="red" variant="outline" onClick={onClose}>Cerrar</Button>
             </Stack>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+      <Modal onClose={onCloseCotizacionT} size={"full"} isOpen={isOpenCotizacionT}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Cotizaciòn de Tecnico Seleccionado</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <CrearCotizacionTecnicoManual cotizacion={cotizacion!} />
+          </ModalBody>
+          <ModalFooter>
+            <Button onClick={onCloseCotizacionT}>Cancelar</Button>
+            <Button variant='green'>Guardar</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>

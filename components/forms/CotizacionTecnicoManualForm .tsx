@@ -28,13 +28,13 @@ import {
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import Logo from "../../public/vercel.svg";
-interface CrearCotizacionTecnicoProps {
+interface CrearCotizacionTecnicoManualProps {
   cotizacion: ICotizacionTecnico;
 }
 
-export const CrearCotizacionTecnico = ({
+export const CrearCotizacionTecnicoManual = ({
   cotizacion,
-}: CrearCotizacionTecnicoProps) => {
+}: CrearCotizacionTecnicoManualProps) => {
   const [imagen, setImagen] = useState<IImagen>();
   const [uploadImage, setUploadImage] = useState<string>("");
 
@@ -81,8 +81,7 @@ export const CrearCotizacionTecnico = ({
             Solución y Cotización del Técnico
           </FormLabel>
           <Input
-            variant="unstyled"
-            isReadOnly
+            variant="filled"
             placeholder="Solución y Cotización del Técnico"
             id="solucion_cotizacion_del_tecnico"
             borderColor="twitter.100"
@@ -96,8 +95,7 @@ export const CrearCotizacionTecnico = ({
               Fecha y Hora de Contacto
             </FormLabel>
             <Input
-              variant="unstyled"
-              isReadOnly
+              variant="filled"
               placeholder="Fecha y Hora de Contacto"
               id="hora_de_contacto"
               borderColor="twitter.100"
@@ -108,8 +106,7 @@ export const CrearCotizacionTecnico = ({
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="Hora de Cierre">Hora de Cierre</FormLabel>
             <Input
-              variant="unstyled"
-              isReadOnly
+              variant="filled"
               placeholder="Hora de Cierre"
               id="hora_de_cierre"
               borderColor="twitter.100"
@@ -124,8 +121,7 @@ export const CrearCotizacionTecnico = ({
               Costo de Mano de Obra
             </FormLabel>
             <Input
-              variant="unstyled"
-              isReadOnly
+              variant="filled"
               placeholder="Costo de Mano de Obra"
               id="costo_de_mano_de_obra"
               borderColor="twitter.100"
@@ -138,8 +134,7 @@ export const CrearCotizacionTecnico = ({
               Costo de Materiale
             </FormLabel>
             <Input
-              variant="unstyled"
-              isReadOnly
+              variant="filled"
               placeholder="Costo de Materiale"
               id="costo_de_materiales"
               borderColor="twitter.100"
@@ -148,27 +143,20 @@ export const CrearCotizacionTecnico = ({
           </FormControl>
         </SimpleGrid>
 
-        <Center>
-          <Divider orientation="vertical" paddingTop={30} />
-
-          <Box
-            m={2}
-            bgColor="white"
-            padding={5}
-            borderRadius={10}
-            boxShadow="2xl"
-            p="6"
-            height={200}
-            width={200}
-            paddingLeft={10}
-          >
-            <img height={200} src={uploadImage} alt="Evidencia 2" />
-          </Box>
-        </Center> 
-        
-        <Button  variant='outline' colorScheme={"green"} > Aprobar</Button>
-        <Button colorScheme={"red"}> Rechazar</Button>
-        </Box>
+        <SimpleGrid minChildWidth="120px" columns={2} spacing={10}>
+          <Center marginTop={"30px"} h="100px" color="white">
+            <Box margin={"50px"} height="80px">
+              <Button colorScheme={"green"}>Aprobar</Button>
+            </Box>
+            <Box margin={"50px"} height="80px">
+              <Button variant="outline" colorScheme={"red"}>
+            
+                Rechazar
+              </Button>
+            </Box>
+          </Center>
+        </SimpleGrid>
+      </Box>
     </div>
   );
 };
