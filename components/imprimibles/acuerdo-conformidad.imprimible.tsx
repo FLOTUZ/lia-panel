@@ -1,5 +1,5 @@
-import WhatsIMG from "../../assets/logoDeWhats.png";
-import LiasIMG from "../../assets/logo.jpeg";
+import WhatsIMG from "../../public/logoDeWhats.png";
+import LiasIMG from "../../public/logo.jpeg";
 import Image from "next/image";
 import { IAcuerdoConformidad, ITicket } from "@/services/api.models";
 
