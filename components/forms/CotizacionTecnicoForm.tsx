@@ -27,7 +27,7 @@ import {
 } from "@chakra-ui/react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import Logo from "../../public/vercel.svg";
+
 interface CrearCotizacionTecnicoProps {
   cotizacion: ICotizacionTecnico;
 }
