@@ -39,7 +39,7 @@ const Kanban = ({}: IKanban) => {
   });
 
   const enProceso: ITicket[] = ticketsList.filter((e: any) => {
-    return e.estado === "PROCESO";
+    return e.estado === "EN PROCESO";
   });
 
   const aCerrar: ITicket[] = ticketsList.filter((e: any) => {

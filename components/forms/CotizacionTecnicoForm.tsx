@@ -1,6 +1,8 @@
 import ViewText from "@/common/ViewText";
-import { ICotizacionTecnico, IImagen } from "@/services/api.models";
+import { ICotizacionTecnico, IImagen, ITicket } from "@/services/api.models";
+import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
 import { ImagenesService } from "@/services/imagenes.service";
+import { TicketsService } from "@/services/tickets.service";
 import {
   Box,
   Button,
@@ -60,6 +62,37 @@ export const CrearCotizacionTecnico = ({
 
     setUploadImage(data);
   };
+
+  const aprobarCotizacion = async () => {
+    //TODO: Obtener el id del usuario de la sesion
+    const payloadCotizacion = {
+      isAprobado: true,
+      aprobado_por_usuarioId: 1,
+    } as ICotizacionTecnico;
+
+    const serviceCotizacion = new CotizacionTecnicoService();
+    const respuestaCotizacion = await serviceCotizacion.update(
+      payloadCotizacion,
+      cotizacion.id!
+    );
+    const dataCotizacion = respuestaCotizacion.data as ICotizacionTecnico;
+
+    console.log(respuestaCotizacion);
+
+    const payloadTicket = {
+      estado: "EN PROCESO",
+    } as ITicket;
+
+    const serviceTicket = new TicketsService();
+    const respuestaTicket = await serviceTicket.update(
+      payloadTicket,
+      cotizacion.ticketId!
+    );
+    const dataTicket = respuestaTicket.data as ICotizacionTecnico;
+
+    console.log(respuestaTicket);
+  };
+
   useEffect(() => {
     getImagen();
   }, []);
@@ -121,7 +154,7 @@ export const CrearCotizacionTecnico = ({
               placeholder="Hora de Cierre"
               id="hora_de_cierre"
               borderColor="twitter.100"
-              value={cotizacion.checkInId}
+              //value={cotizacion.checkInId}
             />
           </FormControl>
         </SimpleGrid>
@@ -180,7 +213,11 @@ export const CrearCotizacionTecnico = ({
         </Center>
 
         <Box marginTop={"40px"} margin={"50px"} height="80px">
-          <Button margin={"50px"} colorScheme={"green"}>
+          <Button
+            margin={"50px"}
+            colorScheme={"green"}
+            onClick={aprobarCotizacion}
+          >
             Aprobar
           </Button>
 
@@ -190,22 +227,14 @@ export const CrearCotizacionTecnico = ({
         </Box>
       </Box>
 
-
-      
       <Modal onClose={onClose} isOpen={isOpen} isCentered>
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-          <img
-              
-              height={"250px"}
-              src={uploadImage}
-              alt="Evidencia 2"
-            />
+            <img height={"250px"} src={uploadImage} alt="Evidencia 2" />
           </ModalBody>
-          <ModalFooter>
-          </ModalFooter>
+          <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>
     </div>

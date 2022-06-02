@@ -112,8 +112,7 @@ export interface ICiudad {
 }
 
 export interface ICotizacionTecnico {
-  id: number;
-  checkInId: number;
+  id?: number;
   diagnostico_problema: string;
   solucion_tecnico: string;
   fecha_contacto: string;
@@ -123,8 +122,10 @@ export interface ICotizacionTecnico {
   ticketId: number;
   tecnicoId: number;
   preSolucionId: number;
-  createdAt: string | null;
-  updatedAt: string | null;
+  isAprobado?: boolean;
+  aprobado_por_usuarioId: number;
+  createdAt?: string | null;
+  updatedAt?: string | null;
 }
 
 export interface IAsesor {
@@ -162,6 +163,6 @@ export interface IImagen {
   id?: number;
   url: string;
   descripcion: string;
-  createdAt?: Date ;
+  createdAt?: Date;
   updatedAt?: Date;
 }
