@@ -59,8 +59,8 @@ export interface ITecnico {
   apellido_materno: string;
   calificacion?: number;
   telefono: string;
-  usuarioId: number;
-  ciudadId: number;
+  usuarioId?: number;
+  ciudadId?: number;
   ViveEn?: ICiudad;
   Servicio?: IServicio[];
   Ciudad?: ICiudad[];

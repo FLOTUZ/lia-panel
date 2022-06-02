@@ -196,6 +196,7 @@ function UsuarioNuevo() {
 
     setCiudadesList(data);
   };
+  
 
   useEffect(() => {
     consultarEstados();
@@ -258,7 +259,7 @@ function UsuarioNuevo() {
                   w={"100%"}
                   m={2}
                   padding={5}
-                  paddingTop={10}
+                  paddingTop={5}
                   borderRadius={10}
                   boxShadow="lg"
                   p="6"

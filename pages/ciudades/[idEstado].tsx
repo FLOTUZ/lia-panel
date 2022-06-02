@@ -38,6 +38,12 @@ import { useFormik } from "formik";
 
 function EstadoVer() {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const {
+    isOpen: isOpenEdit,
+    onOpen: onOpenEdit,
+    onClose: onCloseEdit
+  } = useDisclosure();
   const toast = useToast();
 
   const [nombreCiudad, setNombreCiudad] = useState("");
@@ -270,7 +276,7 @@ function EstadoVer() {
                 Nueva Ciudad
               </Button>
             </Stack>
-
+                    
             <Modal
               closeOnOverlayClick={false}
               isOpen={isOpen}
@@ -325,7 +331,7 @@ function EstadoVer() {
                     })
                   ) : (
                     <Tr>
-                      <Td>NO DATA</Td>
+                      <Td> NO DATA </Td>
                     </Tr>
                   )}
                 </Tbody>
@@ -338,4 +344,6 @@ function EstadoVer() {
   );
 }
 
+
 export default EstadoVer;
+

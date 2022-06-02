@@ -87,7 +87,7 @@ function TenicosListado() {
                 <Th>Estado</Th>
                 <Th>Ciudad</Th>
                 <Th>Telefono</Th>
-                <Th>Opciones</Th>
+               {/* <Th>Opciones</Th> **/}
               </Tr>
             </Thead>
             <Tbody>
@@ -100,7 +100,7 @@ function TenicosListado() {
                       <Td>{t.ViveEn?.Estado?.nombre}</Td>
                       <Td>{t.ViveEn?.nombre}</Td>
                       <Td>{t.telefono}</Td>
-                      <Td>
+                 {/*     <Td>
                         <Link href={`/tecnicos/${t.id}`}>
                           <a>
                             <IconButton
@@ -110,7 +110,7 @@ function TenicosListado() {
                             />{" "}
                           </a>
                         </Link>
-                      </Td>
+                  </Td>**/}
                     </Tr>
                   );
                 })
