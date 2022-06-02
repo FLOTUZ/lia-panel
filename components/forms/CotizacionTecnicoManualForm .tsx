@@ -1,5 +1,5 @@
 import ViewText from "@/common/ViewText";
-import { ICotizacionTecnico, IImagen } from "@/services/api.models";
+import { ICotizacionTecnico, IImagen, ITicket } from "@/services/api.models";
 import { ImagenesService } from "@/services/imagenes.service";
 import {
   Box,
@@ -29,36 +29,14 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import Logo from "../../public/vercel.svg";
 interface CrearCotizacionTecnicoManualProps {
-  cotizacion: ICotizacionTecnico;
+  ticket: ITicket;
 }
 
 export const CrearCotizacionTecnicoManual = ({
-  cotizacion,
+  ticket,
 }: CrearCotizacionTecnicoManualProps) => {
-  const [imagen, setImagen] = useState<IImagen>();
-  const [uploadImage, setUploadImage] = useState<string>("");
+ 
 
-  const getImagen = async () => {
-    const service = new ImagenesService();
-    const respuesta = await service.getById(cotizacion.preSolucionId);
-    const data = respuesta.data as IImagen;
-    setImagen(data);
-  };
-
-  const getImagenUpload = async () => {
-    const service = new ImagenesService();
-    const respuesta = await service.getUploadImage(1);
-    const data = respuesta;
-
-    setUploadImage(data);
-  };
-  useEffect(() => {
-    getImagen();
-  }, []);
-
-  useEffect(() => {
-    getImagenUpload();
-  }, [imagen]);
 
   return (
     <div>
@@ -85,7 +63,7 @@ export const CrearCotizacionTecnicoManual = ({
             placeholder="Solución y Cotización del Técnico"
             id="solucion_cotizacion_del_tecnico"
             borderColor="twitter.100"
-            // value={cotizacion.solucion_tecnico}
+          
           />
         </FormControl>
 
@@ -99,7 +77,7 @@ export const CrearCotizacionTecnicoManual = ({
               placeholder="Fecha y Hora de Contacto"
               id="hora_de_contacto"
               borderColor="twitter.100"
-              //value={}
+              
             />
           </FormControl>
 

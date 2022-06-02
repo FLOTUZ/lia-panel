@@ -20,6 +20,7 @@ import { BsPrinter } from "react-icons/bs";
 import { MdAdd, MdOutlineAttachMoney } from "react-icons/md";
 import { IoFlag, IoSpeedometerOutline } from "react-icons/io5";
 import {
+  IAcuerdoConformidad,
   IAseguradora,
   IAsesor,
   IAsistencia,
@@ -37,7 +38,7 @@ import { CiudadesService } from "@/services/ciudades.service";
 import { AsesoresService } from "@/services/asesores.service";
 import { EstadosService } from "@/services/estados.service";
 import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
-import AcuerdoConformidad from "components/imprimibles/acuerdo-conformidad.imprimible";
+import { AcuerdoConformidadView } from "@/forms/AcuerdoConformidadForm";
 
 interface VerTicketDomesticoForaneoProps {
   ticket: ITicket;
@@ -53,6 +54,8 @@ export function VerTicketDomesticoForaneo({
   const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>();
   const [cotizacion, setCotizacion] = useState<ICotizacionTecnico>();
   const [mostrarCotizacion, setMostrarCotizacion] = useState(false);
+  const [acuerdoconformidad, setAcuerdoConformidad] = useState<IAcuerdoConformidad>();
+
 
   /*Obtener aseguradora*/
   const getAseguradora = async () => {
@@ -596,7 +599,7 @@ export function VerTicketDomesticoForaneo({
           />
         </FormControl>
       </Box>
-      <AcuerdoConformidad/>
+      <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
       {mostrarCotizacion ? (
         <CrearCotizacionTecnico cotizacion={cotizacion!} />
       ) : null}
