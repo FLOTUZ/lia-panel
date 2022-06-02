@@ -36,8 +36,8 @@ import { EstadosService } from "@/services/estados.service";
 import { CiudadesService } from "@/services/ciudades.service";
 import { AsesoresService } from "@/services/asesores.service";
 import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
-import AcuerdoConformidad from "components/imprimibles/acuerdo-conformidad.imprimible";
 import { AcuerdoConformidadService } from "@/services/acuerdo-conformidad.service";
+import { AcuerdoConformidadView } from "@/forms/AcuerdoConformidadForm";
 
 interface VerTicketDomesticoProps {
   ticket: ITicket;
@@ -554,7 +554,7 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
         </SimpleGrid>
 
       </Box>
-      <AcuerdoConformidad/>
+      <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
       {cotizacion ? <CrearCotizacionTecnico cotizacion={cotizacion!} /> : null}
     </>
   );

@@ -18,6 +18,7 @@ import {
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { IoSpeedometerOutline } from "react-icons/io5";
 import {
+  IAcuerdoConformidad,
   IAseguradora,
   IAsesor,
   IAsistencia,
@@ -36,6 +37,7 @@ import { CiudadesService } from "@/services/ciudades.service";
 import { EstadosService } from "@/services/estados.service";
 import { AsesoresService } from "@/services/asesores.service";
 import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
+import { AcuerdoConformidadView } from "@/forms/AcuerdoConformidadForm";
 
 interface VerTicketVialProps {
   ticket: ITicket;
@@ -48,6 +50,8 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
   const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>();
   const [cotizacion, setCotizacion] = useState<ICotizacionTecnico>();
   const [mostrarCotizacion, setMostrarCotizacion] = useState(false);
+  const [acuerdoconformidad, setAcuerdoConformidad] = useState<IAcuerdoConformidad>();
+
 
   /*Obtener aseguradora*/
   const getAseguradora = async () => {
@@ -560,7 +564,7 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
           />
         </FormControl>
       </Box>
-
+      <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
       {mostrarCotizacion ? (
         <CrearCotizacionTecnico cotizacion={cotizacion!} />
       ) : null}

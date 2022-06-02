@@ -7,7 +7,7 @@ interface AcuerdoConformidadProps {
   acuerdo?: IAcuerdoConformidad;
   ticket?:ITicket;
 }
-function AcuerdoConformidad({ acuerdo, }: AcuerdoConformidadProps) {
+export function AcuerdoConformidadImprimible({ acuerdo, }: AcuerdoConformidadProps) {
   return (
     <>
       <div>
@@ -175,4 +175,4 @@ function AcuerdoConformidad({ acuerdo, }: AcuerdoConformidadProps) {
   );
 }
 
-export default AcuerdoConformidad;
+

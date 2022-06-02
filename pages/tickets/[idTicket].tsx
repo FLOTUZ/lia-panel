@@ -34,7 +34,7 @@ import { useRouter } from "next/router";
 
 import React, { useEffect, useState } from "react";
 import { IoAdd } from "react-icons/io5";
-import {FaFileSignature} from "react-icons/fa"
+import { FaFileSignature } from "react-icons/fa";
 import { BsPrinter } from "react-icons/bs";
 import { TicketsService } from "@/services/tickets.service";
 import { VerTicketVialForaneo } from "@/views/VerTicketVialForaneo";
@@ -51,7 +51,11 @@ function TicketVer() {
   const toast = useToast();
   const { isOpen: abierto, onOpen: abrir, onClose: cerrar } = useDisclosure();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isOpen:isOpenCotizacionT, onOpen:onOpenCotizacionT, onClose:onCloseCotizacionT } = useDisclosure();
+  const {
+    isOpen: isOpenCot,
+    onOpen: onOpenCotizacionT,
+    onClose: onCloseCotizacionT,
+  } = useDisclosure();
   const [ticket, setTicket] = useState<ITicket>();
   const [aseguradora, setAseguradora] = useState<IAseguradora>();
   const [asistencia, setAsistencia] = useState<IAsistencia>();
@@ -96,7 +100,6 @@ function TicketVer() {
     const data = respuesta.data as IServicio[];
 
     setServiciosList(data);
-
   };
 
   const consultarTecnicosByServicio = async (id: number) => {
@@ -120,9 +123,7 @@ function TicketVer() {
       duration: 9000,
       isClosable: true,
     });
-
   };
-
 
   const getCotizacionTecnico = async () => {
     const service = new CotizacionTecnicoService();
@@ -136,7 +137,6 @@ function TicketVer() {
 
   useEffect(() => {
     getTicket();
-
   }, []);
 
   useEffect(() => {
@@ -144,27 +144,24 @@ function TicketVer() {
     getAseguradora();
     getVista();
     consultarServicios();
-
   }, [ticket]);
 
   const getVista = () => {
     if (ticket?.asistencia_vial && ticket?.is_servicio_foraneo) {
       setTipoVista(<VerTicketVialForaneo ticket={ticket} />);
-      console.log("Es vial con foraneo")
+      console.log("Es vial con foraneo");
     } else if (ticket?.is_servicio_domestico && ticket?.is_servicio_foraneo) {
       setTipoVista(<VerTicketDomesticoForaneo ticket={ticket} />);
-      console.log("Es domestico Foraneo")
+      console.log("Es domestico Foraneo");
     } else if (ticket?.asistencia_vial) {
       setTipoVista(<VerTicketVial ticket={ticket} />);
     } else if (ticket?.is_servicio_domestico) {
       setTipoVista(<VerTicketDomestico ticket={ticket} />);
-      console.log("Es solo domestico")
+      console.log("Es solo domestico");
     } else {
       setTipoVista(<></>);
     }
   };
-
-
 
   const dataTicket = {
     titulo: "Mecanico para JOE",
@@ -191,8 +188,6 @@ function TicketVer() {
           color: "black",
         }}
         onClick={abrir}
-
-
       >
         <Center marginTop={"3.5"}>
           <IoAdd size={40} />
@@ -217,14 +212,11 @@ function TicketVer() {
           color: "white",
         }}
         onClick={onOpenCotizacionT}
-
       >
         <Center marginTop={"3.5"}>
           <FaFileSignature size={40} />
         </Center>
       </Box>
-
-
 
       <Box
         margin={"1%"}
@@ -248,7 +240,6 @@ function TicketVer() {
           size="lg"
           onClick={onOpen}
         />
-
       </Box>
 
       <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
@@ -266,27 +257,34 @@ function TicketVer() {
               spacing={4}
               direction="row"
             >
-              <Button paddingLeft={10} paddingRight={10} colorScheme="red" variant="outline" onClick={onClose}>Cerrar</Button>
+              <Button
+                paddingLeft={10}
+                paddingRight={10}
+                colorScheme="red"
+                variant="outline"
+                onClick={onClose}
+              >
+                Cerrar
+              </Button>
             </Stack>
           </ModalFooter>
         </ModalContent>
       </Modal>
-      <Modal onClose={onCloseCotizacionT} size={"full"} isOpen={isOpenCotizacionT}>
+
+      <Modal onClose={onCloseCotizacionT} size={"full"} isOpen={isOpenCot}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Cotizaciòn de Tecnico Seleccionado</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <CrearCotizacionTecnicoManual cotizacion={cotizacion!} />
+            <CrearCotizacionTecnicoManual ticket={ticket!} />
           </ModalBody>
           <ModalFooter>
             <Button onClick={onCloseCotizacionT}>Cancelar</Button>
-            <Button variant='green'>Guardar</Button>
+            <Button variant="green">Guardar</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
-
-
 
       {tipoVista}
       {/* ASIGNAR TÉCNICO */}
@@ -310,12 +308,12 @@ function TicketVer() {
               >
                 {serviciosList.length !== 0
                   ? serviciosList.map((servicio) => {
-                    return (
-                      <option key={servicio.id} value={Number(servicio.id)}>
-                        {servicio.nombre}
-                      </option>
-                    );
-                  })
+                      return (
+                        <option key={servicio.id} value={Number(servicio.id)}>
+                          {servicio.nombre}
+                        </option>
+                      );
+                    })
                   : null}
               </Select>
             </FormControl>
@@ -326,25 +324,29 @@ function TicketVer() {
                 placeholder="Selecciona el Técnico"
                 variant="filled"
                 borderColor="twitter.100"
-                onChange={e => {
+                onChange={(e) => {
                   console.log(e);
                 }}
               >
                 {tecnicosByServicios?.Tecnico?.length !== 0
                   ? tecnicosByServicios?.Tecnico?.map((tecnico) => {
-                    return (
-                      <option key={tecnico.id} value={tecnico.id}>
-                        {tecnico.nombre}
-                      </option>
-                    );
-                  })
+                      return (
+                        <option key={tecnico.id} value={tecnico.id}>
+                          {tecnico.nombre}
+                        </option>
+                      );
+                    })
                   : null}
               </Select>
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="green" mr={3} onClick={getAsignarTicketATecnico}>
+            <Button
+              colorScheme="green"
+              mr={3}
+              onClick={getAsignarTicketATecnico}
+            >
               Asignar
             </Button>
             <Button colorScheme="red" onClick={cerrar}>
