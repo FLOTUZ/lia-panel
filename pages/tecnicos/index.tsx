@@ -26,23 +26,25 @@ function TenicosListado() {
 
   const [listadoTecnicos, setListadoTenicos] = useState<ITecnico[]>([]);
 
+  const consultarTecnicos = async () => {
+    const service = new TecnicoService();
+    const respuesta = await service.getAll();
+    console.log(respuesta);
+
+    if (respuesta.status == 200) {
+      const data = respuesta.data as ITecnico[];
+      setListadoTenicos(data);
+      console.log(data);
+    }
+  };
   useEffect(() => {
-    const consultarTecnicos = async () => {
-      const service = new TecnicoService();
-      const respuesta = await service.getAll();
-      console.log(respuesta);
-
-      if (respuesta.status == 200) {
-        const data = respuesta.data as ITecnico[];
-        setListadoTenicos(data);
-        console.log(data);
-        
-      }
-    };
-
     consultarTecnicos();
   }, []);
-  
+
+  useEffect(() => {
+    console.log(listadoTecnicos[0].ViveEn?.Estado);
+    
+  }, [listadoTecnicos]);
 
   return (
     <DesktopLayout>
@@ -105,13 +107,13 @@ function TenicosListado() {
                       <Td>{t.telefono}</Td>
                       <Td>
                         <Link href={`/tecnicos/${t.id}`}>
-                        <a>
-                        <IconButton
-                          variant="ghost"
-                          aria-label="edit"
-                          icon={<EditIcon />}
-                        />{" "}
-                        </a>
+                          <a>
+                            <IconButton
+                              variant="ghost"
+                              aria-label="edit"
+                              icon={<EditIcon />}
+                            />{" "}
+                          </a>
                         </Link>
                       </Td>
                     </Tr>
