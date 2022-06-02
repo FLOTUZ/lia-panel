@@ -1,4 +1,4 @@
-import ViewText from "@/common/ViewText";
+
 import { ICotizacionTecnico, IImagen, ITicket } from "@/services/api.models";
 import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
 import { ImagenesService } from "@/services/imagenes.service";
@@ -16,26 +16,11 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalFooter,
-  ModalHeader,
   ModalOverlay,
   SimpleGrid,
-  Tab,
-  Table,
-  TableCaption,
-  TableContainer,
-  TabList,
-  TabPanel,
-  TabPanels,
-  Tabs,
-  Tbody,
-  Td,
   Text,
-  Th,
-  Thead,
-  Tr,
   useDisclosure,
 } from "@chakra-ui/react";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 
 interface CrearCotizacionTecnicoProps {

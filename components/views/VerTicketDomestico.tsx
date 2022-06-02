@@ -18,6 +18,7 @@ import {
 import { MdAdd, MdOutlineAttachMoney } from "react-icons/md";
 import { IoFlag, IoSpeedometerOutline } from "react-icons/io5";
 import {
+  IAcuerdoConformidad,
   IAseguradora,
   IAsesor,
   IAsistencia,
@@ -35,6 +36,8 @@ import { EstadosService } from "@/services/estados.service";
 import { CiudadesService } from "@/services/ciudades.service";
 import { AsesoresService } from "@/services/asesores.service";
 import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
+import AcuerdoConformidad from "components/imprimibles/acuerdo-conformidad.imprimible";
+import { AcuerdoConformidadService } from "@/services/acuerdo-conformidad.service";
 
 interface VerTicketDomesticoProps {
   ticket: ITicket;
@@ -47,6 +50,7 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
   const [estado, setEstado] = useState<IEstado>();
   const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>();
   const [cotizacion, setCotizacion] = useState<ICotizacionTecnico>();
+  const [acuerdoconformidad, setAcuerdoConformidad] = useState<IAcuerdoConformidad>();
   const [mostrarCotizacion, setMostrarCotizacion] = useState(false);
   /*Obtener aseguradora*/
   const getAseguradora = async () => {
@@ -95,12 +99,22 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
     const data = respuesta.data as ICotizacionTecnico;
     setCotizacion(data);
   };
+ /* const getAcuerdoConformidad = async () => {
+    const service = new AcuerdoConformidadService();
+    const respuesta = await service.cotizacionByTicket(2);
+
+    const data = respuesta.data as IAcuerdoConformidad
+    setAcuerdoConformidad(data);
+  };
+*/
+
   useEffect(() => {
     getAseguradora();
     getAsistencia();
     getCiudad();
     getAsesorAseguradora();
     getCotizacionTecnico();
+   // getAcuerdoConformidad();
   }, []);
   useEffect(() => {
     getEstado();
@@ -538,8 +552,9 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
             </InputGroup>
           </FormControl>
         </SimpleGrid>
-      </Box>
 
+      </Box>
+      <AcuerdoConformidad/>
       {cotizacion ? <CrearCotizacionTecnico cotizacion={cotizacion!} /> : null}
     </>
   );

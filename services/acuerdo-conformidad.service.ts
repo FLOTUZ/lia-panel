@@ -33,6 +33,9 @@ export class AcuerdoConformidadService {
     const respuesta = await Consultar(`${this.url}/count`, usuario);
     return respuesta;
   }
-
+  async acuerdoConformidadByTicket(idTicket: number) {
+    const respuesta: any = await Consultar(`${this.url}/ticket/${idTicket}`);
+    return respuesta;
+  }
 
 }
