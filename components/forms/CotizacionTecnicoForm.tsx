@@ -231,7 +231,7 @@ export const CrearCotizacionTecnico = ({
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />
-          <ModalBody>
+          <ModalBody padding={"5%"}>
             <img height={"250px"} src={uploadImage} alt="Evidencia 2" />
           </ModalBody>
           <ModalFooter></ModalFooter>
