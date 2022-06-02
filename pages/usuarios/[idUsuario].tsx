@@ -185,7 +185,7 @@ function UsuarioVer() {
               >
                 <HStack spacing="1rem">
                   <Radio size={"lg"} value="USUARIO">
-                    Usuario Comun
+                    Usuario
                   </Radio>
 
                   <Radio size={"lg"} value="CAPTURISTA">

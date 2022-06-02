@@ -124,12 +124,13 @@ function UsuariosListado() {
                             />
                           </a>
                         </Link>
-                        <IconButton
+
+                        {/*<IconButton
                           variant="ghost"
                           aria-label="delet"
                           colorScheme={"red"}
                           icon={<AttachmentIcon color={"gray"} />}
-                        />
+                        />*/}
                         
                       </Td>
                     </Tr>
