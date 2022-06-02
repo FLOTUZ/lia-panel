@@ -55,7 +55,7 @@ export const CrearCotizacionTecnico = ({
 
   const getImagenUpload = async () => {
     const service = new ImagenesService();
-    const respuesta = await service.getUploadImage(1);
+    const respuesta = await service.getUploadImage(cotizacion.preSolucionId);
     const data = respuesta;
 
     setUploadImage(data);

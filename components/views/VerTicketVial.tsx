@@ -109,6 +109,7 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
 
   useEffect(() => {
     getEstado();
+    getCotizacionTecnico();
   }, [ciudad]);
 
   return (
