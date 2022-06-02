@@ -45,70 +45,71 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
   const [asistencia, setAsistencia] = useState<IAsistencia>();
   const [ciudad, setCiudad] = useState<ICiudad>();
   const [estado, setEstado] = useState<IEstado>();
-  const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>()
+  const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>();
   const [cotizacion, setCotizacion] = useState<ICotizacionTecnico>();
   const [mostrarCotizacion, setMostrarCotizacion] = useState(false);
 
+  /*Obtener aseguradora*/
+  const getAseguradora = async () => {
+    const service = new AseguradoraService();
+    const respuesta = await service.getById(Number(ticket?.aseguradoraId));
+    const data = respuesta.data as IAseguradora;
+    setAseguradora(data);
+  };
+
+  /*Obtener asistencia*/
+  const getAsistencia = async () => {
+    const service = new AsistenciasService();
+    const respuesta = await service.getById(Number(ticket?.asistenciaId));
+    const data = respuesta.data as IAsistencia;
+    setAsistencia(data);
+  };
+
+  /*Obtener ciudad*/
+  const getCiudad = async () => {
+    const service = new CiudadesService();
+    const respuesta = await service.getById(Number(ticket?.ciudadId));
+    const data = respuesta.data as IEstado;
+    setCiudad(data);
+  };
+
+  /*Obtener estado*/
+  const getEstado = async () => {
+    const service = new EstadosService();
+    const respuesta = await service.getById(ciudad?.estadoId!);
+    const data = respuesta.data as IEstado;
+    setEstado(data);
+  };
+
+  /*Obtener asesor de aseguradora*/
+  const getAsesorAseguradora = async () => {
+    const service = new AsesoresService();
+    const respuesta = await service.getById(ticket.asesorId);
+    const data = respuesta.data as IAsesor;
+    setAsesorAseguradora(data);
+  };
+
+  const getCotizacionTecnico = async () => {
+    const service = new CotizacionTecnicoService();
+    const respuesta = await service.cotizacionByTicket(ticket.id!);
+
+    const data = respuesta.data as ICotizacionTecnico;
+
+    setCotizacion(data);
+    console.log(data);
+
+    data ? setMostrarCotizacion(true) : setMostrarCotizacion(false);
+  };
   useEffect(() => {
-    /*Obtener aseguradora*/
-    const getAseguradora = async () => {
-      const service = new AseguradoraService();
-      const respuesta = await service.getById(Number(ticket?.aseguradoraId));
-      const data = respuesta.data as IAseguradora;
-      setAseguradora(data);
-    };
-
-    /*Obtener asistencia*/
-    const getAsistencia = async () => {
-      const service = new AsistenciasService();
-      const respuesta = await service.getById(Number(ticket?.asistenciaId));
-      const data = respuesta.data as IAsistencia;
-      setAsistencia(data);
-    };
-
-    /*Obtener ciudad*/
-    const getCiudad = async () => {
-      const service = new CiudadesService();
-      const respuesta = await service.getById(Number(ticket?.ciudadId));
-      const data = respuesta.data as IEstado;
-      setCiudad(data);
-    };
-
-    /*Obtener estado*/
-    const getEstado = async () => {
-      const service = new EstadosService();
-      const respuesta = await service.getById(ciudad?.estadoId!);
-      const data = respuesta.data as IEstado;
-      setEstado(data);
-    };
-
-    /*Obtener asesor de aseguradora*/
-    const getAsesorAseguradora = async () => {
-      const service = new AsesoresService();
-      const respuesta = await service.getById(ticket.asesorId);
-      const data = respuesta.data as IAsesor;
-      setAsesorAseguradora(data);
-    };
-
-    
-
-    const getCotizacionTecnico = async () => {
-      const service = new CotizacionTecnicoService();
-      const respuesta = await service.cotizacionByTicket(ticket.id!);
-
-      const data = respuesta.data as ICotizacionTecnico;
-
-      setCotizacion(data);
-      console.log(data);
-
-      data ? setMostrarCotizacion(true) : setMostrarCotizacion(false);
-    };
     getAseguradora();
     getAsistencia();
     getCiudad();
-    getEstado();
     getAsesorAseguradora();
   }, [ticket]);
+
+  useEffect(() => {
+    getEstado();
+  }, [ciudad]);
 
   return (
     <>
@@ -295,7 +296,7 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
         </SimpleGrid>
 
         <SimpleGrid columns={[1, 1, 4]} spacing={4}>
-          <FormControl  paddingTop={15}>
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="modelo_del_carro">Modelo del Carro</FormLabel>
             <Input
               variant="unstyled"
@@ -392,18 +393,18 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
         </Center>
 
         <SimpleGrid columns={[1, 1, 3]} spacing={4}>
-        <FormControl paddingTop={15}>
-              <FormLabel htmlFor="calle">Carretera</FormLabel>
-              <Input
-                variant="unstyled"
-                isReadOnly
-                id="calle"
-                min={0}
-                placeholder="Carretera"
-                borderColor="twitter.100"
-                value={ticket.calle}
-              />
-            </FormControl>
+          <FormControl paddingTop={15}>
+            <FormLabel htmlFor="calle">Carretera</FormLabel>
+            <Input
+              variant="unstyled"
+              isReadOnly
+              id="calle"
+              min={0}
+              placeholder="Carretera"
+              borderColor="twitter.100"
+              value={ticket.calle}
+            />
+          </FormControl>
 
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="kilometraje">Kilómetros a Recorrer</FormLabel>
@@ -450,7 +451,7 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
           </FormControl>
         </SimpleGrid>
 
-        <SimpleGrid  columns={[1, 2, 4]} spacing="40px">
+        <SimpleGrid columns={[1, 2, 4]} spacing="40px">
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="deducible">Deducible</FormLabel>
             <InputGroup>
@@ -559,8 +560,9 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
         </FormControl>
       </Box>
 
-      {mostrarCotizacion ? <CrearCotizacionTecnico cotizacion={cotizacion!} /> : null}
-
+      {mostrarCotizacion ? (
+        <CrearCotizacionTecnico cotizacion={cotizacion!} />
+      ) : null}
     </>
   );
 }

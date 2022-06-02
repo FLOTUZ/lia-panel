@@ -99,11 +99,12 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
     getAseguradora();
     getAsistencia();
     getCiudad();
-    getEstado();
     getAsesorAseguradora();
     getCotizacionTecnico();
-    console.log(cotizacion);
   }, []);
+  useEffect(() => {
+    getEstado();
+  }, [ciudad]);
 
   return (
     <>

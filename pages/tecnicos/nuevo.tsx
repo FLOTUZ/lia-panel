@@ -29,7 +29,13 @@ import {
 //import { useFormik } from "formik";
 
 import { FormEvent, useState, useEffect } from "react";
-import { ITecnico, IUsuario, IServicio, ICiudad, IEstado } from "@/services/api.models";
+import {
+  ITecnico,
+  IUsuario,
+  IServicio,
+  ICiudad,
+  IEstado,
+} from "@/services/api.models";
 import { UsuariosService } from "@/services/usuarios.service";
 import { TecnicoService } from "@/services/tecnicos.service";
 import { ServiciosService } from "@/services/servicios.service";
@@ -61,6 +67,13 @@ function UsuarioNuevo() {
 
   const allChecked = checkedItems.every(Boolean);
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
+
+  // consulta de la tabla de servicios
+
+  const [listadoServicios, setListadoServicios] = useState<IServicio[]>([]);
+
+  // ciudades por Estado
+  const [IdEstado, setIdEstado] = useState(0);
 
   const toast = useToast();
 
@@ -157,16 +170,7 @@ function UsuarioNuevo() {
     Router.back();
   };
 
-  // consulta de la tabla de servicios
-
-  const [listadoServicios, setListadoServicios] = useState<IServicio[]>([]);
-
-  // ciudades por Estado
-  const [IdEstado, setIdEstado] = useState(0);
-
-  // consultas
-
-  const consultarTecnicos = async () => {
+  const consultarServicios = async () => {
     const service = new ServiciosService();
     const respuesta = await service.getAll();
 
@@ -194,16 +198,14 @@ function UsuarioNuevo() {
   };
 
   useEffect(() => {
-
-
     consultarEstados();
     consultarCiudades();
-    consultarTecnicos();
+    consultarServicios();
   }, []);
 
   return (
     <DesktopLayout>
-      <Header title={"Nuevo Usuario"} />
+      <Header title={"Nuevo Tecnico"} />
       <form onSubmit={(e) => altaUsuario(e)}>
         <FormControl isRequired>
           <VStack
@@ -249,7 +251,6 @@ function UsuarioNuevo() {
               <FormHelperText>Mínimo 8 Caracteres</FormHelperText>
             </FormControl>
 
-
             {/* //----------------------------FORMULARIO NUEVO TECNICO------------------------------------ */}
             {rol === "TECNICO" ? (
               <>
@@ -263,7 +264,6 @@ function UsuarioNuevo() {
                   p="6"
                   rounded="md"
                   bg={"white"}
-                  
                 >
                   <Text fontWeight="bold">Datos Básicos del Técnico</Text>
 
@@ -294,7 +294,6 @@ function UsuarioNuevo() {
                         }}
                       />
                     </FormControl>
-
                   </Center>
 
                   <Center>
@@ -326,7 +325,6 @@ function UsuarioNuevo() {
                         }}
                       />
                     </FormControl>
-
                   </Center>
 
                   <Center>
@@ -342,16 +340,15 @@ function UsuarioNuevo() {
                           setestadoId(Number(e.target.value));
                           setIdEstado(Number(e.target.value));
                         }}
-
                       >
                         {estadosList?.length !== 0
                           ? estadosList?.map((estado, index) => {
-                            return (
-                              <option key={index} value={estado.id}>
-                                {estado.nombre}
-                              </option>
-                            );
-                          })
+                              return (
+                                <option key={index} value={estado.id}>
+                                  {estado.nombre}
+                                </option>
+                              );
+                            })
                           : null}
                       </Select>
                     </FormControl>
@@ -371,12 +368,12 @@ function UsuarioNuevo() {
                       >
                         {ciudadesList?.length !== 0
                           ? ciudadesList?.map((ciudad, index) => {
-                            return (
-                              <option key={index} value={ciudad.id}>
-                                {ciudad.nombre}
-                              </option>
-                            );
-                          })
+                              return (
+                                <option key={index} value={ciudad.id}>
+                                  {ciudad.nombre}
+                                </option>
+                              );
+                            })
                           : null}
                       </Select>
                     </FormControl>
@@ -414,7 +411,7 @@ function UsuarioNuevo() {
                         colorScheme="whatsapp"
                         variant="solid"
                         type="submit"
-                      //isLoading={cargando}
+                        //isLoading={cargando}
                       >
                         Agregar
                       </Button>
@@ -431,8 +428,6 @@ function UsuarioNuevo() {
                 </Box>
               </>
             ) : null}
-
-
           </VStack>
         </FormControl>
       </form>
