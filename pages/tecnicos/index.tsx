@@ -41,11 +41,6 @@ function TenicosListado() {
     consultarTecnicos();
   }, []);
 
-  useEffect(() => {
-    console.log(listadoTecnicos[0].ViveEn?.Estado);
-    
-  }, [listadoTecnicos]);
-
   return (
     <DesktopLayout>
       <Header title={"Técnicos "} />
