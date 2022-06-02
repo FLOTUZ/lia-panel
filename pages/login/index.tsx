@@ -98,15 +98,18 @@ export default function Home(): JSX.Element {
                     <FormHelperText textAlign="right"></FormHelperText>
                   </FormControl>
 
-                  <Button
-                    borderRadius={0}
-                    type="submit"
-                    variant="solid"
-                    colorScheme="facebook"
-                    width="50"
-                  >
-                    Ingresar
-                  </Button>
+
+                  <Link href={"/tickets"}>
+                    <Button
+                      borderRadius={0}
+                      type="submit"
+                      variant="solid"
+                      colorScheme="facebook"
+                      width="50"
+                    >
+                      Ingresar
+                    </Button>
+                  </Link>
                 </Stack>
               </form>
             </Box>
