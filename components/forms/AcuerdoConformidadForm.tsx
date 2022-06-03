@@ -1,5 +1,6 @@
 import { IAcuerdoConformidad, IImagen } from "@/services/api.models";
 import { ImagenesService } from "@/services/imagenes.service";
+import { TicketsService } from "@/services/tickets.service";
 import {
   Box,
   Button,
@@ -42,6 +43,7 @@ export const AcuerdoConformidadView = ({
     onOpen: onOpenFirma,
     onClose: onCloseFirma,
   } = useDisclosure();
+
   return (
     <div>
       <Box

@@ -119,11 +119,11 @@ export interface ICotizacionTecnico {
   costo_mano_obra: number;
   costo_materiales: number;
   total_cotizacion: number;
-  ticketId: number;
-  tecnicoId: number;
-  preSolucionId: number;
+  ticketId?: number;
+  tecnicoId?: number;
+  preSolucionId?: number;
   isAprobado?: boolean;
-  aprobado_por_usuarioId: number;
+  aprobado_por_usuarioId?: number;
   createdAt?: string | null;
   updatedAt?: string | null;
 }

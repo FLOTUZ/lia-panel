@@ -399,7 +399,7 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
 
         <SimpleGrid columns={[1, 1, 3]} spacing={4}>
           <FormControl paddingTop={15}>
-            <FormLabel htmlFor="calle">Carretera</FormLabel>
+            <FormLabel htmlFor="calle">Cordenadas</FormLabel>
             <Input
               variant="unstyled"
               isReadOnly
@@ -407,7 +407,7 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
               min={0}
               placeholder="Carretera"
               borderColor="twitter.100"
-              value={ticket.calle}
+              //value={ticket.}
             />
           </FormControl>
 
@@ -564,10 +564,12 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
           />
         </FormControl>
       </Box>
-      <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
       {mostrarCotizacion ? (
         <CrearCotizacionTecnico cotizacion={cotizacion!} />
       ) : null}
+
+      <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
+
     </>
   );
 }

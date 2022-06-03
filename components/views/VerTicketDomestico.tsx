@@ -554,8 +554,9 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
         </SimpleGrid>
 
       </Box>
-      <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
       {cotizacion ? <CrearCotizacionTecnico cotizacion={cotizacion!} /> : null}
+      <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
+
     </>
   );
 }

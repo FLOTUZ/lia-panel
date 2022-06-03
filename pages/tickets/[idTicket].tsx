@@ -274,10 +274,10 @@ function TicketVer() {
       <Modal onClose={onCloseCotizacionT} size={"full"} isOpen={isOpenCot}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Cotizaciòn de Tecnico Seleccionado</ModalHeader>
+          <ModalHeader>Crear Cotizacion de Tecnico</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <CrearCotizacionTecnicoManual ticket={ticket!} />
+            <CrearCotizacionTecnicoManual ticket={ticket!} cotizacion={cotizacion!} />
           </ModalBody>
           <ModalFooter>
             <Button onClick={onCloseCotizacionT}>Cancelar</Button>

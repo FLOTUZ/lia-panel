@@ -50,6 +50,9 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
   const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>();
   const [cotizacion, setCotizacion] = useState<ICotizacionTecnico>();
   const [mostrarCotizacion, setMostrarCotizacion] = useState(false);
+  const [mostrarAcuerdoConformidad, setMostrarAcuerdoConformidad] = useState(false);
+
+
   const [acuerdoconformidad, setAcuerdoConformidad] = useState<IAcuerdoConformidad>();
 
   /*Obtener aseguradora*/
@@ -599,10 +602,16 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
           />
         </FormControl>
       </Box>
-      <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
       {mostrarCotizacion ? (
         <CrearCotizacionTecnico cotizacion={cotizacion!} />
       ) : null}
+      
+      {
+        mostrarAcuerdoConformidad? (
+          <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
+
+        ): null }
+
     </>
   );
 }

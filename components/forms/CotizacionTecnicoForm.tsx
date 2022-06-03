@@ -19,7 +19,9 @@ import {
   ModalOverlay,
   SimpleGrid,
   Text,
+  toast,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
@@ -30,6 +32,7 @@ interface CrearCotizacionTecnicoProps {
 export const CrearCotizacionTecnico = ({
   cotizacion,
 }: CrearCotizacionTecnicoProps) => {
+  const toast = useToast();
   const [imagen, setImagen] = useState<IImagen>();
   const [uploadImage, setUploadImage] = useState<string>("");
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -76,6 +79,27 @@ export const CrearCotizacionTecnico = ({
     const dataTicket = respuestaTicket.data as ICotizacionTecnico;
 
     console.log(respuestaTicket);
+
+
+    
+    if (respuestaCotizacion.status === 201) {
+      onClose();
+      toast({
+        title: "Se acepto cotizacion Con exito",
+        description: "Se aprobo cotizacion con exito",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Oops.. Algo salio mal",
+        description: respuestaCotizacion.message,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
   };
 
   useEffect(() => {
