@@ -86,7 +86,7 @@ export const CrearCotizacionTecnicoManual = ({
 
   const aprobarCotizacion = async () => {
     const payloadCotizacion = {
-      IsAprobado: true,
+      isAprobado: true,
     } as ICotizacionTecnico;
 
     const serviceCotizacion = new CotizacionTecnicoService();

@@ -38,14 +38,14 @@ export const CrearCotizacionTecnico = ({
   const { isOpen, onOpen, onClose } = useDisclosure();
   const getImagen = async () => {
     const service = new ImagenesService();
-    const respuesta = await service.getById(cotizacion.preSolucionId);
+    const respuesta = await service.getById(cotizacion.preSolucionId!);
     const data = respuesta.data as IImagen;
     setImagen(data);
   };
 
   const getImagenUpload = async () => {
     const service = new ImagenesService();
-    const respuesta = await service.getUploadImage(cotizacion.preSolucionId);
+    const respuesta = await service.getUploadImage(cotizacion.preSolucionId!);
     const data = respuesta;
 
     setUploadImage(data);
