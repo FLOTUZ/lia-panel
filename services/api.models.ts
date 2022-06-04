@@ -123,7 +123,7 @@ export interface ICotizacionTecnico {
   tecnicoId?: number;
   preSolucionId?: number;
   isAprobado?: boolean;
-  aprobado_por_usuarioId?: number;
+  aprobado_por_usuarioId: number;
   createdAt?: string | null;
   updatedAt?: string | null;
 }
@@ -154,6 +154,8 @@ export interface IAcuerdoConformidad {
   hora_llegada_servicio: Date;
   hora_finalizacion_servicio: Date;
   acuerdo_firmado: string | null;
+  isAprobado?: boolean;
+  ticketId: number ;
   usuarioFinalId: number | null;
   createdAt?: Date | null;
   updatedAt?: Date | null;

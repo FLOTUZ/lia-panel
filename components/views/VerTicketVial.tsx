@@ -38,6 +38,7 @@ import { EstadosService } from "@/services/estados.service";
 import { AsesoresService } from "@/services/asesores.service";
 import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
 import { AcuerdoConformidadView } from "@/forms/AcuerdoConformidadForm";
+import { AcuerdoConformidadService } from "@/services/acuerdo-conformidad.service";
 
 interface VerTicketVialProps {
   ticket: ITicket;
@@ -50,8 +51,10 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
   const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>();
   const [cotizacion, setCotizacion] = useState<ICotizacionTecnico>();
   const [mostrarCotizacion, setMostrarCotizacion] = useState(false);
-  const [acuerdoconformidad, setAcuerdoConformidad] = useState<IAcuerdoConformidad>();
-
+  const [acuerdoconformidad, setAcuerdoConformidad] =
+    useState<IAcuerdoConformidad>();
+  const [mostrarAcuerdoConformidad, setMostrarAcuerdoConformidad] =
+    useState(false);
 
   /*Obtener aseguradora*/
   const getAseguradora = async () => {
@@ -104,11 +107,28 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
 
     data ? setMostrarCotizacion(true) : setMostrarCotizacion(false);
   };
+
+  const getAcuerdo = async () => {
+    const service = new AcuerdoConformidadService();
+    const respuesta = await service.acuerdoConformidadByTicket(ticket.id!);
+
+    const data = respuesta.data as IAcuerdoConformidad;
+
+    setAcuerdoConformidad(data);
+    console.log("-----------------------------------");
+    
+    console.log(respuesta);
+
+    data
+      ? setMostrarAcuerdoConformidad(true)
+      : setMostrarAcuerdoConformidad(false);
+  };
   useEffect(() => {
     getAseguradora();
     getAsistencia();
     getCiudad();
     getAsesorAseguradora();
+    getAcuerdo();
   }, [ticket]);
 
   useEffect(() => {
@@ -569,7 +589,6 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
       ) : null}
 
       <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
-
     </>
   );
 }

@@ -1,4 +1,5 @@
-import { IAcuerdoConformidad, IImagen } from "@/services/api.models";
+import { AcuerdoConformidadService } from "@/services/acuerdo-conformidad.service";
+import { IAcuerdoConformidad, IImagen, ITicket } from "@/services/api.models";
 import { ImagenesService } from "@/services/imagenes.service";
 import { TicketsService } from "@/services/tickets.service";
 import {
@@ -21,6 +22,7 @@ import {
   Text,
   Textarea,
   useDisclosure,
+  useToast,
 } from "@chakra-ui/react";
 import { AcuerdoConformidadImprimible } from "components/imprimibles/acuerdo-conformidad.imprimible";
 import Printer from "components/printer/printer";
@@ -34,6 +36,7 @@ interface IAcuerdoConformidadForm {
 export const AcuerdoConformidadView = ({
   acuerdoconformidad,
 }: IAcuerdoConformidadForm) => {
+  const toast = useToast();
   const [imagen, setImagen] = useState<IImagen>();
   const [uploadImage, setUploadImage] = useState<string>("");
   const [uploadFirma, setUploadFirma] = useState<string>("");
@@ -43,6 +46,63 @@ export const AcuerdoConformidadView = ({
     onOpen: onOpenFirma,
     onClose: onCloseFirma,
   } = useDisclosure();
+
+
+  const aprobarAcuerdoConformidad = async () => {
+    //TODO: Obtener el id del usuario de la sesion
+    const payloadAcuerdoConformidad = {
+      isAprobado: true,
+    } as IAcuerdoConformidad;
+
+    const serviceAcuerdo = new AcuerdoConformidadService();
+    const respuestaAcuerdo = await serviceAcuerdo.update(
+      payloadAcuerdoConformidad,
+      acuerdoconformidad.id!
+    );
+
+    
+
+    console.log(respuestaAcuerdo);
+
+    const payloadTicket = {
+      estado: "FINALIZADO",
+    } as ITicket;
+
+    const serviceTicket = new TicketsService();
+    const respuestaTicket = await serviceTicket.update(
+      payloadTicket,
+      acuerdoconformidad.ticketId!
+    );
+    const dataTicket = respuestaTicket.data as IAcuerdoConformidad;
+
+    console.log(respuestaTicket);
+
+
+    
+    if (respuestaAcuerdo.status === 201) {
+      onClose();
+      toast({
+        title: "Se acepto cotizacion Con exito",
+        description: "Se aprobo cotizacion con exito",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Oops.. Algo salio mal",
+        description: respuestaAcuerdo.message,
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  };
+
+
+
+
+
 
   return (
     <div>
@@ -216,7 +276,8 @@ export const AcuerdoConformidadView = ({
         <SimpleGrid columns={[2, 2, null, 1]} spacing='70px'>
         <Box marginTop={"40px"} margin={"50px"} >
 
-          <Button margin={"50px"} colorScheme={"green"}>
+          <Button margin={"50px"} colorScheme={"green"}
+            onClick={aprobarAcuerdoConformidad}>
             Aprobar
           </Button>
 

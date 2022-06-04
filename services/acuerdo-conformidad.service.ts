@@ -34,6 +34,8 @@ export class AcuerdoConformidadService {
     return respuesta;
   }
   async acuerdoConformidadByTicket(idTicket: number) {
+    console.log(`${this.url}/ticket/${idTicket}`);
+    
     const respuesta: any = await Consultar(`${this.url}/ticket/${idTicket}`);
     return respuesta;
   }

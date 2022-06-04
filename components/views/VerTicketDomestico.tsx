@@ -50,8 +50,8 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
   const [estado, setEstado] = useState<IEstado>();
   const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>();
   const [cotizacion, setCotizacion] = useState<ICotizacionTecnico>();
+  const [mostrarAcuerdoConformidad, setMostrarAcuerdoConformidad] = useState(false);
   const [acuerdoconformidad, setAcuerdoConformidad] = useState<IAcuerdoConformidad>();
-  const [mostrarCotizacion, setMostrarCotizacion] = useState(false);
   /*Obtener aseguradora*/
   const getAseguradora = async () => {
     const service = new AseguradoraService();
@@ -555,8 +555,11 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
 
       </Box>
       {cotizacion ? <CrearCotizacionTecnico cotizacion={cotizacion!} /> : null}
-      <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
+      {
+        mostrarAcuerdoConformidad? (
+          <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
 
+        ): null }
     </>
   );
 }

@@ -43,7 +43,7 @@ const Kanban = ({}: IKanban) => {
   });
 
   const aCerrar: ITicket[] = ticketsList.filter((e: any) => {
-    return e.estado === "CERRAR";
+    return e.estado === "A CERRAR";
   });
 
   const finalizados: ITicket[] = ticketsList.filter((e: any) => {

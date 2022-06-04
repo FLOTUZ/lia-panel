@@ -63,7 +63,6 @@ export const CrearCotizacionTecnico = ({
       payloadCotizacion,
       cotizacion.id!
     );
-    const dataCotizacion = respuestaCotizacion.data as ICotizacionTecnico;
 
     console.log(respuestaCotizacion);
 
