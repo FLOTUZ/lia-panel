@@ -47,7 +47,6 @@ export const AcuerdoConformidadView = ({
     onClose: onCloseFirma,
   } = useDisclosure();
 
-
   const aprobarAcuerdoConformidad = async () => {
     //TODO: Obtener el id del usuario de la sesion
     const payloadAcuerdoConformidad = {
@@ -59,8 +58,6 @@ export const AcuerdoConformidadView = ({
       payloadAcuerdoConformidad,
       acuerdoconformidad.id!
     );
-
-    
 
     console.log(respuestaAcuerdo);
 
@@ -77,9 +74,7 @@ export const AcuerdoConformidadView = ({
 
     console.log(respuestaTicket);
 
-
-    
-    if (respuestaAcuerdo.status === 201) {
+    if (respuestaAcuerdo.status == 200) {
       onClose();
       toast({
         title: "Se acepto cotizacion Con exito",
@@ -98,11 +93,6 @@ export const AcuerdoConformidadView = ({
       });
     }
   };
-
-
-
-
-
 
   return (
     <div>
@@ -123,13 +113,12 @@ export const AcuerdoConformidadView = ({
         <FormControl paddingTop={15}>
           <FormLabel htmlFor="fecha de acuerdo">Fecha</FormLabel>
           <Input
-              readOnly
-              variant="unstyled"
+            readOnly
+            variant="unstyled"
             placeholder="Fecha"
             id="fecha_acuerdo"
             borderColor="twitter.100"
-            value={Number(acuerdoconformidad?.fecha_acuerdo)}
-
+            value={acuerdoconformidad?.fecha_acuerdo}
           />
         </FormControl>
 
@@ -145,8 +134,7 @@ export const AcuerdoConformidadView = ({
                 placeholder="Hora de llegada"
                 id="hora_de_llegada"
                 borderColor="twitter.100"
-                value={Number(acuerdoconformidad?.hora_llegada_servicio)}
-
+                value={acuerdoconformidad?.hora_llegada_servicio}
               />
             </FormControl>
 
@@ -155,26 +143,24 @@ export const AcuerdoConformidadView = ({
                 hora de finalizacion del servicio
               </FormLabel>
               <Input
-                  readOnly
-                  variant="unstyled"
+                readOnly
+                variant="unstyled"
                 placeholder="hora_finalizacion_servicio"
                 id="hora_finalizacion_servicios"
                 borderColor="twitter.100"
-                value={Number(acuerdoconformidad?.hora_finalizacion_servicio)}
-
+                value={acuerdoconformidad?.hora_finalizacion_servicio.toString()}
               />
             </FormControl>
           </SimpleGrid>
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="direccion">Domicilio</FormLabel>
             <Input
-                readOnly
-                variant="unstyled"
+              readOnly
+              variant="unstyled"
               placeholder="direccion"
               id="domicilio"
               borderColor="twitter.100"
               value={acuerdoconformidad?.direccion}
-
             />
           </FormControl>
         </SimpleGrid>
@@ -185,25 +171,23 @@ export const AcuerdoConformidadView = ({
               Descripcion del problema
             </FormLabel>
             <Textarea
-                readOnly
-                variant="unstyled"
+              readOnly
+              variant="unstyled"
               placeholder="Descripcion del Problema"
               id="hora_de_contacto"
               borderColor="twitter.100"
               value={acuerdoconformidad?.descripcion_problema}
-
             />
           </FormControl>
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="observaciones">Observaciones</FormLabel>
             <Textarea
-                readOnly
-                variant="unstyled"
+              readOnly
+              variant="unstyled"
               placeholder="Observaciones"
               id="observaciones"
               borderColor="twitter.100"
-              value={Number(acuerdoconformidad?.observaciones)}
-
+              value={acuerdoconformidad?.observaciones?.toString()}
             />
           </FormControl>
 
@@ -212,8 +196,8 @@ export const AcuerdoConformidadView = ({
               Actividad Realizada
             </FormLabel>
             <Input
-                readOnly
-                variant="unstyled"
+              readOnly
+              variant="unstyled"
               placeholder="actividades_realizadas"
               id="actividades_realizadas"
               borderColor="twitter.100"
@@ -273,30 +257,35 @@ export const AcuerdoConformidadView = ({
         </SimpleGrid>
         */}
 
-        <SimpleGrid columns={[2, 2, null, 1]} spacing='70px'>
-        <Box marginTop={"40px"} margin={"50px"} >
+        <SimpleGrid columns={[2, 2, 1]} spacing="70px">
+          <Box marginTop={"40px"} margin={"50px"}>
+            {acuerdoconformidad.isAprobado ? null : (
+              <Button
+                margin={"50px"}
+                colorScheme={"green"}
+                onClick={aprobarAcuerdoConformidad}
+              >
+                Aprobar
+              </Button>
+            )}
 
-          <Button margin={"50px"} colorScheme={"green"}
-            onClick={aprobarAcuerdoConformidad}>
-            Aprobar
-          </Button>
-
-          <Button variant="outline" colorScheme={"red"}>
-            Rechazar
-          </Button>
-          <Button
-          marginLeft={"50%"}
-          variant='outline'
-          leftIcon={<BsPrinter size={"30px"} />}
-          id="imprimirAcuerdoConformidad"
-          colorScheme="red"
-          onClick={onOpen}
-        >Imprimir acuerdo</Button>
-        </Box>
+            <Button variant="outline" colorScheme={"red"}>
+              Rechazar
+            </Button>
+            <Button
+              marginLeft={"50%"}
+              variant="outline"
+              leftIcon={<BsPrinter size={"30px"} />}
+              id="imprimirAcuerdoConformidad"
+              colorScheme="red"
+              onClick={onOpen}
+            >
+              Imprimir acuerdo
+            </Button>
+          </Box>
         </SimpleGrid>
       </Box>
 
-      
       {/*
          <Modal onClose={onClose} isOpen={isOpen} isCentered>
         <ModalOverlay />
@@ -308,7 +297,6 @@ export const AcuerdoConformidadView = ({
           <ModalFooter></ModalFooter>
         </ModalContent>
       </Modal>*/}
-   
 
       {/*
       <Modal onClose={onCloseFirma} isOpen={isOpenFirma} isCentered>
@@ -329,7 +317,7 @@ export const AcuerdoConformidadView = ({
           <ModalHeader>Impresión</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Printer doc={<AcuerdoConformidadImprimible/>} />
+            <Printer doc={<AcuerdoConformidadImprimible />} />
           </ModalBody>
           <ModalFooter>
             <Stack
@@ -338,15 +326,19 @@ export const AcuerdoConformidadView = ({
               spacing={4}
               direction="row"
             >
-              <Button paddingLeft={10} paddingRight={10} colorScheme="red" variant="outline" onClick={onClose}>Cerrar</Button>
+              <Button
+                paddingLeft={10}
+                paddingRight={10}
+                colorScheme="red"
+                variant="outline"
+                onClick={onClose}
+              >
+                Cerrar
+              </Button>
             </Stack>
           </ModalFooter>
         </ModalContent>
       </Modal>
-
-
-
-
     </div>
   );
 };

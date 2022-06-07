@@ -1,4 +1,3 @@
-
 import { ICotizacionTecnico, IImagen, ITicket } from "@/services/api.models";
 import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
 import { ImagenesService } from "@/services/imagenes.service";
@@ -7,16 +6,20 @@ import {
   Box,
   Button,
   Center,
+  CircularProgress,
   Divider,
   FormControl,
   FormLabel,
   Input,
+  InputGroup,
+  InputLeftAddon,
   Modal,
   ModalBody,
   ModalCloseButton,
   ModalContent,
   ModalFooter,
   ModalOverlay,
+  Progress,
   SimpleGrid,
   Text,
   toast,
@@ -24,6 +27,7 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import { MdOutlineAttachMoney } from "react-icons/md";
 
 interface CrearCotizacionTecnicoProps {
   cotizacion: ICotizacionTecnico;
@@ -44,11 +48,13 @@ export const CrearCotizacionTecnico = ({
   };
 
   const getImagenUpload = async () => {
-    const service = new ImagenesService();
-    const respuesta = await service.getUploadImage(cotizacion.preSolucionId!);
-    const data = respuesta;
+    if (imagen) {
+      const service = new ImagenesService();
+      const respuesta = await service.getUploadImage(cotizacion.preSolucionId!);
+      const data = respuesta;
 
-    setUploadImage(data);
+      setUploadImage(data);
+    }
   };
 
   const aprobarCotizacion = async () => {
@@ -75,13 +81,8 @@ export const CrearCotizacionTecnico = ({
       payloadTicket,
       cotizacion.ticketId!
     );
-    const dataTicket = respuestaTicket.data as ICotizacionTecnico;
 
-    console.log(respuestaTicket);
-
-
-    
-    if (respuestaCotizacion.status === 201) {
+    if (respuestaTicket.status === 200) {
       onClose();
       toast({
         title: "Se acepto cotizacion Con exito",
@@ -93,7 +94,7 @@ export const CrearCotizacionTecnico = ({
     } else {
       toast({
         title: "Oops.. Algo salio mal",
-        description: respuestaCotizacion.message,
+        description: respuestaTicket.message,
         status: "error",
         duration: 9000,
         isClosable: true,
@@ -154,7 +155,7 @@ export const CrearCotizacionTecnico = ({
             />
           </FormControl>
 
-          <FormControl paddingTop={15}>
+          {/*<FormControl paddingTop={15}>
             <FormLabel htmlFor="Hora de Cierre">Hora de Cierre</FormLabel>
             <Input
               variant="unstyled"
@@ -164,7 +165,7 @@ export const CrearCotizacionTecnico = ({
               borderColor="twitter.100"
               //value={cotizacion.checkInId}
             />
-          </FormControl>
+          </FormControl>*/}
         </SimpleGrid>
 
         <SimpleGrid columns={[1, 1, 2]} spacing={5}>
@@ -172,28 +173,40 @@ export const CrearCotizacionTecnico = ({
             <FormLabel htmlFor="Costo de Mano de Obra">
               Costo de Mano de Obra
             </FormLabel>
-            <Input
-              variant="unstyled"
-              isReadOnly
-              placeholder="Costo de Mano de Obra"
-              id="costo_de_mano_de_obra"
-              borderColor="twitter.100"
-              value={cotizacion.costo_mano_obra}
-            />
+            <InputGroup>
+              <InputLeftAddon
+                pointerEvents="none"
+                children={<MdOutlineAttachMoney />}
+              />
+              <Input
+                variant="unstyled"
+                isReadOnly
+                placeholder="Costo de Mano de Obra"
+                id="costo_de_mano_de_obra"
+                borderColor="twitter.100"
+                value={cotizacion.costo_mano_obra}
+              />
+            </InputGroup>
           </FormControl>
 
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="Costo de Materiale">
-              Costo de Materiale
+              Costo de Materiales
             </FormLabel>
-            <Input
-              variant="unstyled"
-              isReadOnly
-              placeholder="Costo de Materiale"
-              id="costo_de_materiales"
-              borderColor="twitter.100"
-              value={cotizacion.costo_materiales}
-            />
+            <InputGroup>
+              <InputLeftAddon
+                pointerEvents="none"
+                children={<MdOutlineAttachMoney />}
+              />
+              <Input
+                variant="unstyled"
+                isReadOnly
+                placeholder="Costo de Materiale"
+                id="costo_de_materiales"
+                borderColor="twitter.100"
+                value={cotizacion.costo_materiales}
+              />
+            </InputGroup>
           </FormControl>
         </SimpleGrid>
 
@@ -211,27 +224,36 @@ export const CrearCotizacionTecnico = ({
             width={200}
             paddingLeft={10}
           >
-            <img
-              height={200}
-              src={uploadImage}
-              alt="Evidencia 2"
-              onClick={onOpen}
-            />
+            {uploadImage ? (
+              <img
+                height={200}
+                src={uploadImage}
+                alt="Evidencia 2"
+                onClick={onOpen}
+              />
+            ) : (
+              <CircularProgress />
+            )}
           </Box>
         </Center>
 
         <Box marginTop={"40px"} margin={"50px"} height="80px">
-          <Button
-            margin={"50px"}
-            colorScheme={"green"}
-            onClick={aprobarCotizacion}
-          >
-            Aprobar
-          </Button>
+          {console.log(cotizacion)}
+          {cotizacion.isAprobado ? null : (
+            <Button
+              margin={"50px"}
+              colorScheme={"green"}
+              paddingLeft={8}
+              paddingRight={8}
+              onClick={aprobarCotizacion}
+            >
+              Aprobar
+            </Button>
+          )}
 
-          <Button variant="outline" colorScheme={"red"}>
+          {/*<Button variant="outline" colorScheme={"red"}>
             Rechazar
-          </Button>
+        </Button>*/}
         </Box>
       </Box>
 

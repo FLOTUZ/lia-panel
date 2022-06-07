@@ -45,6 +45,7 @@ import TicketImprimible from "components/imprimibles/ticket.imprimible";
 import Printer from "components/printer/printer";
 import { CrearCotizacionTecnicoManual } from "@/forms/CotizacionTecnicoManualForm ";
 import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
+import Link from "next/link";
 
 function TicketVer() {
   const router = useRouter();
@@ -63,6 +64,7 @@ function TicketVer() {
 
   const [serviciosList, setServiciosList] = useState<IServicio[]>([]);
   const [tecnicosByServicios, setTecnicosByServicios] = useState<IServicio>();
+  const [tecnicoId, setTecnicoId] = useState(0);
 
   const [tipoVista, setTipoVista] = useState<JSX.Element>();
 
@@ -110,11 +112,11 @@ function TicketVer() {
     setTecnicosByServicios(data);
   };
 
-  const getAsignarTicketATecnico = async () => {
-    const data = { estado: "TOMADO" };
+  const asignarTecnicoWithId = async () => {
+    const data = { estado: "TOMADO", tecnicoId: tecnicoId } as ITicket;
     const service = new TicketsService();
-    //TODO: Agregar el ID del ticket
     const respuesta = await service.update(data, ticket?.id || 0);
+    
 
     toast({
       title: "Técnico Asignado.",
@@ -124,16 +126,6 @@ function TicketVer() {
       isClosable: true,
     });
   };
-
-  const getCotizacionTecnico = async () => {
-    const service = new CotizacionTecnicoService();
-    const respuesta = await service.cotizacionByTicket(ticket?.id!);
-
-    const data = respuesta.data as ICotizacionTecnico;
-
-    setCotizacion(data);
-  };
-  /*Obtener ticket*/
 
   useEffect(() => {
     getTicket();
@@ -169,7 +161,35 @@ function TicketVer() {
 
   return (
     <DesktopLayout>
-      <Box
+      {ticket?.estado === "NUEVO" ? (
+        <Box
+          justifyContent={"center"}
+          alignItems={"center"}
+          position="fixed"
+          width={"80px"}
+          height={"80px"}
+          bottom="20px"
+          right={["16px", "84px"]}
+          zIndex={1}
+          borderWidth={1}
+          bgColor={"black"}
+          color={"white"}
+          borderRadius={100}
+          _hover={{
+            boxShadow: "10px 10px 5px #DDD9D9",
+            bgColor: " #98A7C9",
+            color: "black",
+          }}
+          onClick={abrir}
+        >
+          <Center marginTop={"3.5"}>
+            <IoAdd size={40} />
+          </Center>
+        </Box>
+      ) : null}
+
+      {ticket?.estado === "TOMADO" ? (
+        <Box
         justifyContent={"center"}
         alignItems={"center"}
         position="fixed"
@@ -177,70 +197,49 @@ function TicketVer() {
         height={"80px"}
         bottom="20px"
         right={["16px", "84px"]}
-        zIndex={1}
-        borderWidth={1}
-        bgColor={"black"}
-        color={"white"}
-        borderRadius={100}
-        _hover={{
-          boxShadow: "10px 10px 5px #DDD9D9",
-          bgColor: " #98A7C9",
-          color: "black",
-        }}
-        onClick={abrir}
-      >
-        <Center marginTop={"3.5"}>
-          <IoAdd size={40} />
-        </Center>
-      </Box>
-      <Box
-        justifyContent={"center"}
-        alignItems={"center"}
-        position="fixed"
-        width={"80px"}
-        height={"80px"}
-        bottom="120px"
-        right={["16px", "84px"]}
-        zIndex={1}
-        borderWidth={1}
-        bgColor={" #0C6A7D"}
-        color={"white"}
-        borderRadius={100}
-        _hover={{
-          boxShadow: "10px 10px 5px #DDD9D9",
-          bgColor: " #618CF0",
-          color: "white",
-        }}
-        onClick={onOpenCotizacionT}
-      >
-        <Center marginTop={"3.5"}>
-          <FaFileSignature size={40} />
-        </Center>
-      </Box>
+          zIndex={1}
+          borderWidth={1}
+          bgColor={" #0C6A7D"}
+          color={"white"}
+          borderRadius={100}
+          _hover={{
+            boxShadow: "10px 10px 5px #DDD9D9",
+            bgColor: " #618CF0",
+            color: "white",
+          }}
+          onClick={onOpenCotizacionT}
+        >
+          <Center marginTop={"3.5"}>
+            <FaFileSignature size={40} />
+          </Center>
+        </Box>
+      ) : null}
 
-      <Box
-        margin={"1%"}
-        justifyContent={"center"}
-        alignItems={"center"}
-        position="fixed"
-        width={"80px"}
-        height={"80px"}
-        right={["16px", "84px"]}
-        zIndex={1}
-      >
-        <Button
-          padding={"2%"}
-          justifySelf="end"
-          width={"150px"}
-          height={"60px"}
-          leftIcon={<BsPrinter size={"30px"} />}
-          id="imprimirTicket"
-          colorScheme="telegram"
-          borderColor="twitter.100"
-          size="lg"
-          onClick={onOpen}
-        />
-      </Box>
+      {ticket?.estado === "FINALIZADO" ? (
+        <Box
+          margin={"1%"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          position="fixed"
+          width={"80px"}
+          height={"80px"}
+          right={["16px", "84px"]}
+          zIndex={1}
+        >
+          <Button
+            padding={"2%"}
+            justifySelf="end"
+            width={"150px"}
+            height={"60px"}
+            leftIcon={<BsPrinter size={"30px"} />}
+            id="imprimirTicket"
+            colorScheme="telegram"
+            borderColor="twitter.100"
+            size="lg"
+            onClick={onOpen}
+          />
+        </Box>
+      ) : null}
 
       <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
         <ModalOverlay />
@@ -277,7 +276,10 @@ function TicketVer() {
           <ModalHeader>Crear Cotizacion de Tecnico</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <CrearCotizacionTecnicoManual ticket={ticket!} cotizacion={cotizacion!} />
+            <CrearCotizacionTecnicoManual
+              ticket={ticket!}
+              cotizacion={cotizacion!}
+            />
           </ModalBody>
           <ModalFooter>
             <Button onClick={onCloseCotizacionT}>Cancelar</Button>
@@ -287,6 +289,7 @@ function TicketVer() {
       </Modal>
 
       {tipoVista}
+
       {/* ASIGNAR TÉCNICO */}
       <Modal closeOnOverlayClick={false} isOpen={abierto} onClose={cerrar}>
         <ModalOverlay />
@@ -325,7 +328,7 @@ function TicketVer() {
                 variant="filled"
                 borderColor="twitter.100"
                 onChange={(e) => {
-                  console.log(e);
+                  setTecnicoId(Number(e.target.value));
                 }}
               >
                 {tecnicosByServicios?.Tecnico?.length !== 0
@@ -342,13 +345,12 @@ function TicketVer() {
           </ModalBody>
 
           <ModalFooter>
-            <Button
-              colorScheme="green"
-              mr={3}
-              onClick={getAsignarTicketATecnico}
-            >
+          <Link href={`/tickets`}>
+            <Button colorScheme="green" mr={3} onClick={asignarTecnicoWithId}>
               Asignar
             </Button>
+            </Link>
+          
             <Button colorScheme="red" onClick={cerrar}>
               Cancelar
             </Button>

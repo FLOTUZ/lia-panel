@@ -48,6 +48,7 @@ export interface ITicket {
   marca_carro?: string | null;
   is_servicio_domestico?: boolean | null;
   is_servicio_foraneo?: boolean | null;
+  tecnicoId?: number | null,
   createdAt?: string | null;
   updatedAt?: string | null;
 }
@@ -145,13 +146,13 @@ export interface IEstado {
 
 export interface IAcuerdoConformidad {
   id?: number;
-  fecha_acuerdo: Date;
+  fecha_acuerdo: string;
   descripcion_problema: string;
   direccion: string;
   observaciones: string | null;
   actividades_realizadas: string;
-  hora_recepcion_servicio: Date;
-  hora_llegada_servicio: Date;
+  hora_recepcion_servicio: string;
+  hora_llegada_servicio: string;
   hora_finalizacion_servicio: Date;
   acuerdo_firmado: string | null;
   isAprobado?: boolean;

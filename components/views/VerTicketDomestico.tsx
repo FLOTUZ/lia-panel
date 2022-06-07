@@ -50,8 +50,10 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
   const [estado, setEstado] = useState<IEstado>();
   const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>();
   const [cotizacion, setCotizacion] = useState<ICotizacionTecnico>();
-  const [mostrarAcuerdoConformidad, setMostrarAcuerdoConformidad] = useState(false);
-  const [acuerdoconformidad, setAcuerdoConformidad] = useState<IAcuerdoConformidad>();
+  const [mostrarAcuerdoConformidad, setMostrarAcuerdoConformidad] =
+    useState(false);
+  const [acuerdoconformidad, setAcuerdoConformidad] =
+    useState<IAcuerdoConformidad>();
   /*Obtener aseguradora*/
   const getAseguradora = async () => {
     const service = new AseguradoraService();
@@ -94,19 +96,25 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
 
   const getCotizacionTecnico = async () => {
     const service = new CotizacionTecnicoService();
-    const respuesta = await service.cotizacionByTicket(2);
+    const respuesta = await service.cotizacionByTicket(ticket.id!);
 
     const data = respuesta.data as ICotizacionTecnico;
     setCotizacion(data);
   };
- /* const getAcuerdoConformidad = async () => {
-    const service = new AcuerdoConformidadService();
-    const respuesta = await service.cotizacionByTicket(2);
 
-    const data = respuesta.data as IAcuerdoConformidad
+  const getAcuerdoConformidad = async () => {
+    const service = new AcuerdoConformidadService();
+    const respuesta = await service.acuerdoConformidadByTicket(ticket.id!);
+
+    const data = respuesta.data as IAcuerdoConformidad;
+
     setAcuerdoConformidad(data);
+    console.log(data);
+
+    data
+      ? setMostrarAcuerdoConformidad(true)
+      : setMostrarAcuerdoConformidad(false);
   };
-*/
 
   useEffect(() => {
     getAseguradora();
@@ -114,10 +122,10 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
     getCiudad();
     getAsesorAseguradora();
     getCotizacionTecnico();
-   // getAcuerdoConformidad();
-  }, []);
+  }, [ticket]);
   useEffect(() => {
     getEstado();
+    getAcuerdoConformidad();
   }, [ciudad]);
 
   return (
@@ -552,14 +560,11 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
             </InputGroup>
           </FormControl>
         </SimpleGrid>
-
       </Box>
       {cotizacion ? <CrearCotizacionTecnico cotizacion={cotizacion!} /> : null}
-      {
-        mostrarAcuerdoConformidad? (
-          <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
-
-        ): null }
+      {mostrarAcuerdoConformidad ? (
+        <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
+      ) : null}
     </>
   );
 }

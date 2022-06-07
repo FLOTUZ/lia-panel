@@ -22,7 +22,7 @@ import {
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { MdAttachMoney } from "react-icons/md";
-import { AiOutlineSolution } from "react-icons/ai"
+import { AiOutlineSolution } from "react-icons/ai";
 import Logo from "../../public/vercel.svg";
 import { CrearCotizacionTecnico } from "./CotizacionTecnicoForm";
 interface CrearCotizacionTecnicoManualProps {
@@ -37,34 +37,45 @@ export const CrearCotizacionTecnicoManual = ({
   const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [crearCotizacion, setCrearCotizacion] = useState<ICotizacionTecnico>();
-  const [DiagnosticoProblema, setDiagnosticoproblema] = useState("");
-  const [SolucionTecnico, setSolucionTecnico] = useState("");
-  const [FechaCotizacionTecnico, setFechaCotizacionTecnico] = useState("");
-  const [CostoManoObra, setCostoManoObra] = useState<number>(0);
-  const [CostoMateriales, setCostoMateriales] = useState<number>(0);
-  const [TotalCotizacion, setTotalCotizacion] = useState<number>(0);
-  const [IsAprobado, setIsAprobado] = useState(false);
-  const [IdAprobado, setIdAprobado] = useState<number>(0);
-
+  const [diagnosticoProblema, setDiagnosticoproblema] = useState("");
+  const [solucionTecnico, setSolucionTecnico] = useState("");
+  const [fechaCotizacionTecnico, setFechaCotizacionTecnico] = useState("");
+  const [costoManoObra, setCostoManoObra] = useState<number>(0);
+  const [costoMateriales, setCostoMateriales] = useState<number>(0);
+  const [totalCotizacion, setTotalCotizacion] = useState<number>(0);
+  const [isAprobado, setIsAprobado] = useState(false);
+  const [idAprobado, setIdAprobado] = useState<number>(0);
 
   const CrearCotizacionDeTecnico = async () => {
     const data: ICotizacionTecnico = {
-      diagnostico_problema: DiagnosticoProblema,
-      solucion_tecnico: SolucionTecnico,
-      fecha_contacto: FechaCotizacionTecnico,
-      costo_mano_obra: CostoManoObra,
-      costo_materiales: CostoMateriales,
-      total_cotizacion: TotalCotizacion,
-      isAprobado: IsAprobado,
-      aprobado_por_usuarioId: IdAprobado,
+      diagnostico_problema: diagnosticoProblema,
+      solucion_tecnico: solucionTecnico,
+      fecha_contacto: new Date().toISOString(),
+      costo_mano_obra: costoManoObra,
+      costo_materiales: costoMateriales,
+      total_cotizacion: totalCotizacion,
+      isAprobado: isAprobado,
+      tecnicoId: ticket.tecnicoId!,
+      ticketId: ticket.id,
+      aprobado_por_usuarioId: 1, //TODO: Sacar id de usuario desde la sesion
     };
 
     const service = new CotizacionTecnicoService();
     const response = await service.create(data);
     const cotizacion = response.data as ICotizacionTecnico;
-    setCrearCotizacion(cotizacion);
 
+    setCrearCotizacion(cotizacion);
+    console.log(data);
     if (response.status === 201) {
+      const ticketPayload = { estado: "COTIZADO" } as ITicket;
+      const serviceTicket = new TicketsService();
+      const responseTicket = await serviceTicket.update(
+        ticketPayload,
+        ticket.id!
+      );
+      const ticketData = response.data as ITicket;
+      console.log(responseTicket);
+      
       onClose();
       toast({
         title: "Se creo Cotizacion Con exito",
@@ -95,8 +106,6 @@ export const CrearCotizacionTecnicoManual = ({
       cotizacion.id!
     );
 
-    const dataCotizacion = respuestaCotizacion as ICotizacionTecnico;
-
     const playloadTicket = {
       estado: "EN PROCESO",
     } as ITicket;
@@ -107,9 +116,7 @@ export const CrearCotizacionTecnicoManual = ({
       cotizacion.ticketId!
     );
 
-    const dataTicket = respuestaTicket.data as ICotizacionTecnico;
-
-    if (respuestaCotizacion.status === 201) {
+    if (respuestaCotizacion.status === 200) {
       onClose();
       toast({
         title: "Se acepto cotizacion Con exito",
@@ -127,9 +134,7 @@ export const CrearCotizacionTecnicoManual = ({
         isClosable: true,
       });
     }
-  }
-
-
+  };
 
   return (
     <div>
@@ -148,17 +153,32 @@ export const CrearCotizacionTecnicoManual = ({
         </Text>
 
         <FormControl paddingTop={15}>
+          <FormLabel htmlFor="Diagnostico del problema">
+            Diagnostico del problema
+          </FormLabel>
+          <InputGroup>
+            <Textarea
+              variant="filled"
+              id="diagnostico_problema"
+              borderColor="twitter.100"
+              onChange={(e) => {
+                setDiagnosticoproblema(e.target.value);
+              }}
+            />
+          </InputGroup>
+        </FormControl>
+        <FormControl paddingTop={15}>
           <FormLabel htmlFor="Solución y Cotización del Técnico">
             Solución y Cotización del Técnico
           </FormLabel>
           <InputGroup>
             <InputLeftElement
-              pointerEvents='none'
-              children={<AiOutlineSolution color='gray.300' />}
+              pointerEvents="none"
+              children={<AiOutlineSolution color="gray.300" />}
             />
             <Textarea
               variant="filled"
-              id="solucion_cotizacion_del_tecnico"
+              id="solucion_tecnico"
               borderColor="twitter.100"
               onChange={(e) => {
                 setSolucionTecnico(e.target.value);
@@ -172,19 +192,16 @@ export const CrearCotizacionTecnicoManual = ({
             <FormLabel htmlFor="fecha_llamada">Fecha de la Llamada</FormLabel>
             <Input
               w={"fit-content"}
-              id="fecha_llamada"
+              id="fecha_contacto"
               variant="filled"
               type="datetime-local"
               borderColor="twitter.100"
-              value={FechaCotizacionTecnico}
+              value={fechaCotizacionTecnico}
               onChange={(e) => {
                 setFechaCotizacionTecnico(e.target.value);
               }}
             />
           </FormControl>
-
-
-
         </SimpleGrid>
 
         <SimpleGrid columns={[1, 1, 2]} spacing={5}>
@@ -194,16 +211,16 @@ export const CrearCotizacionTecnicoManual = ({
             </FormLabel>
             <InputGroup>
               <InputLeftElement
-                pointerEvents='none'
-                children={<MdAttachMoney color='gray.300' />}
+                pointerEvents="none"
+                children={<MdAttachMoney color="gray.300" />}
               />
               <Input
                 variant="filled"
                 placeholder="Costo de Mano de Obra"
-                id="costo_de_mano_de_obra"
+                id="costo_mano_obra"
                 borderColor="twitter.100"
                 onChange={(e) => {
-                  setCostoManoObra(e.target.valueAsNumber);
+                  setCostoManoObra(Number(e.target.value));
                 }}
               />
             </InputGroup>
@@ -215,16 +232,35 @@ export const CrearCotizacionTecnicoManual = ({
             </FormLabel>
             <InputGroup>
               <InputLeftElement
-                pointerEvents='none'
-                children={<MdAttachMoney color='gray.300' />}
+                pointerEvents="none"
+                children={<MdAttachMoney color="gray.300" />}
               />
               <Input
                 variant="filled"
                 placeholder="Costo de Materiale"
-                id="costo_de_materiales"
+                id="costo_materiales"
                 borderColor="twitter.100"
                 onChange={(e) => {
-                  setCostoMateriales(e.target.valueAsNumber);
+                  setCostoMateriales(Number(e.target.value));
+                }}
+              />
+            </InputGroup>
+          </FormControl>
+
+          <FormControl paddingTop={15}>
+            <FormLabel htmlFor="Total cotizacion">Total cotizacion</FormLabel>
+            <InputGroup>
+              <InputLeftElement
+                pointerEvents="none"
+                children={<MdAttachMoney color="gray.300" />}
+              />
+              <Input
+                variant="filled"
+                placeholder="Total cotizacion"
+                id="total_cotizacion"
+                borderColor="twitter.100"
+                onChange={(e) => {
+                  setTotalCotizacion(Number(e.target.value));
                 }}
               />
             </InputGroup>
@@ -235,19 +271,22 @@ export const CrearCotizacionTecnicoManual = ({
           <Center marginTop={"30px"} h="100px" color="white">
             <Box margin={"50px"} height="80px">
               <Button
-                colorScheme={"green"}
-                onClick={aprobarCotizacion}
+                variant="outline"
+                colorScheme={"red"}
+                onClick={CrearCotizacionDeTecnico}
               >
-                Aprobar
+                Guardar
               </Button>
             </Box>
             <Box margin={"50px"} height="80px">
-              <Button variant="outline"
-               colorScheme={"red"}
-                  onClick={CrearCotizacionDeTecnico}
+              <Button
+                margin={"50px"}
+                colorScheme={"green"}
+                paddingLeft={8}
+                paddingRight={8}
+                onClick={aprobarCotizacion}
               >
-
-                Guardar
+                Aprobar
               </Button>
             </Box>
           </Center>

@@ -39,6 +39,7 @@ import { AsesoresService } from "@/services/asesores.service";
 import { EstadosService } from "@/services/estados.service";
 import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
 import { AcuerdoConformidadView } from "@/forms/AcuerdoConformidadForm";
+import { AcuerdoConformidadService } from "@/services/acuerdo-conformidad.service";
 
 interface VerTicketDomesticoForaneoProps {
   ticket: ITicket;
@@ -54,10 +55,11 @@ export function VerTicketDomesticoForaneo({
   const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>();
   const [cotizacion, setCotizacion] = useState<ICotizacionTecnico>();
   const [mostrarCotizacion, setMostrarCotizacion] = useState(false);
-  const [mostrarAcuerdoConformidad, setMostrarAcuerdoConformidad] = useState(false);
+  const [mostrarAcuerdoConformidad, setMostrarAcuerdoConformidad] =
+    useState(false);
 
-  const [acuerdoconformidad, setAcuerdoConformidad] = useState<IAcuerdoConformidad>();
-
+  const [acuerdoconformidad, setAcuerdoConformidad] =
+    useState<IAcuerdoConformidad>();
 
   /*Obtener aseguradora*/
   const getAseguradora = async () => {
@@ -110,15 +112,32 @@ export function VerTicketDomesticoForaneo({
 
     data ? setMostrarCotizacion(true) : setMostrarCotizacion(false);
   };
+
+  const getAcuerdoConformidad = async () => {
+    const service = new AcuerdoConformidadService();
+    const respuesta = await service.acuerdoConformidadByTicket(ticket.id!);
+
+    const data = respuesta.data as IAcuerdoConformidad;
+
+    setAcuerdoConformidad(data);
+    console.log({acuerdo: data});
+
+    data
+      ? setMostrarAcuerdoConformidad(true)
+      : setMostrarAcuerdoConformidad(false);
+  };
+
   useEffect(() => {
     getAseguradora();
     getAsistencia();
     getCiudad();
     getAsesorAseguradora();
   }, [ticket]);
-  
+
   useEffect(() => {
     getEstado();
+    getCotizacionTecnico();
+    getAcuerdoConformidad();
   }, [ciudad]);
 
   return (
@@ -604,11 +623,9 @@ export function VerTicketDomesticoForaneo({
       {mostrarCotizacion ? (
         <CrearCotizacionTecnico cotizacion={cotizacion!} />
       ) : null}
-  {
-        mostrarAcuerdoConformidad? (
-          <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
-
-        ): null }
+      {mostrarAcuerdoConformidad ? (
+        <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
+      ) : null}
     </>
   );
 }

@@ -37,6 +37,7 @@ import { EstadosService } from "@/services/estados.service";
 import { AsesoresService } from "@/services/asesores.service";
 import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
 import { AcuerdoConformidadView } from "@/forms/AcuerdoConformidadForm";
+import { AcuerdoConformidadService } from "@/services/acuerdo-conformidad.service";
 
 interface VerTicketVialForaneoProps {
   ticket: ITicket;
@@ -101,19 +102,37 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
 
     const data = respuesta.data as ICotizacionTecnico;
     setCotizacion(data);
+    console.log(data);
+    
 
     data ? setMostrarCotizacion(true) : setMostrarCotizacion(false);
+  };
+
+  const getAcuerdo = async () => {
+    const service = new AcuerdoConformidadService();
+    const respuesta = await service.acuerdoConformidadByTicket(ticket.id!);
+
+    const data = respuesta.data as IAcuerdoConformidad;
+    console.log(respuesta);
+    
+
+    setAcuerdoConformidad(data);
+
+    data
+      ? setMostrarAcuerdoConformidad(true)
+      : setMostrarAcuerdoConformidad(false);
   };
   useEffect(() => {
     getAseguradora();
     getAsistencia();
     getCiudad();
     getAsesorAseguradora();
-    getCotizacionTecnico();
   }, [ticket]);
-
+  
   useEffect(() => {
     getEstado();
+    getCotizacionTecnico();
+    getAcuerdo();
   }, [ciudad]);
 
   return (

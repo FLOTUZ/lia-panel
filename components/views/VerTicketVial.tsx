@@ -115,9 +115,6 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
     const data = respuesta.data as IAcuerdoConformidad;
 
     setAcuerdoConformidad(data);
-    console.log("-----------------------------------");
-    
-    console.log(respuesta);
 
     data
       ? setMostrarAcuerdoConformidad(true)
@@ -587,8 +584,9 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
       {mostrarCotizacion ? (
         <CrearCotizacionTecnico cotizacion={cotizacion!} />
       ) : null}
-
-      <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
+      {mostrarAcuerdoConformidad ? (
+        <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
+      ) : null}
     </>
   );
 }
