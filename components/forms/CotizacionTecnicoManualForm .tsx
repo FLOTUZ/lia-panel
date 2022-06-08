@@ -140,6 +140,14 @@ export const CrearCotizacionTecnicoManual = ({
     }
   };
 
+  useEffect(() => {
+    const calcular = () => {
+      let montoTotal = costoManoObra + costoMateriales;
+  
+      setTotalCotizacion(montoTotal);
+    };
+    calcular();
+  });
   return (
     <div>
       <Box
@@ -223,6 +231,7 @@ export const CrearCotizacionTecnicoManual = ({
                 placeholder="Costo de Mano de Obra"
                 id="costo_mano_obra"
                 borderColor="twitter.100"
+                fontWeight={"bold"}
                 onChange={(e) => {
                   setCostoManoObra(Number(e.target.value));
                 }}
@@ -244,6 +253,7 @@ export const CrearCotizacionTecnicoManual = ({
                 placeholder="Costo de Materiale"
                 id="costo_materiales"
                 borderColor="twitter.100"
+                fontWeight={"bold"}
                 onChange={(e) => {
                   setCostoMateriales(Number(e.target.value));
                 }}
@@ -263,9 +273,12 @@ export const CrearCotizacionTecnicoManual = ({
                 placeholder="Total cotizacion"
                 id="total_cotizacion"
                 borderColor="twitter.100"
+                fontWeight={"bold"}
+                textColor={"red"}
                 onChange={(e) => {
                   setTotalCotizacion(Number(e.target.value));
                 }}
+                value={totalCotizacion}
               />
             </InputGroup>
           </FormControl>
@@ -277,14 +290,15 @@ export const CrearCotizacionTecnicoManual = ({
               <Button
                 variant="outline"
                 colorScheme={"red"}
+                paddingLeft={8}
+                paddingRight={8}
                 onClick={CrearCotizacionDeTecnico}
               >
                 Guardar
               </Button>
             </Box>
-            <Box margin={"50px"} height="80px">
+            <Box height="80px">
               <Button
-                margin={"50px"}
                 colorScheme={"green"}
                 paddingLeft={8}
                 paddingRight={8}

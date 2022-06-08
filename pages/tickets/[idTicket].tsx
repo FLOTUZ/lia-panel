@@ -113,20 +113,24 @@ function TicketVer() {
   };
 
   const asignarTecnicoWithId = async () => {
-    const data = { estado: "TOMADO", tecnicoId: tecnicoId } as ITicket;
+    const data = { estado: "TOMADO" } as ITicket;
     const service = new TicketsService();
     const respuesta = await service.update(data, ticket?.id || 0);
-    
+    console.log(data)
+
 
     toast({
       title: "Técnico Asignado.",
-      position:"bottom-right",
-      description: "Se Asigno el servicio al Técnico",
+      position: "bottom-right",
+      description: "Se Asigno el Servicio al Técnico",
       status: "success",
       duration: 9000,
       isClosable: true,
     });
+    router.push("/tickets");
   };
+
+
 
   useEffect(() => {
     getTicket();
@@ -191,13 +195,13 @@ function TicketVer() {
 
       {ticket?.estado === "TOMADO" ? (
         <Box
-        justifyContent={"center"}
-        alignItems={"center"}
-        position="fixed"
-        width={"80px"}
-        height={"80px"}
-        bottom="20px"
-        right={["16px", "84px"]}
+          justifyContent={"center"}
+          alignItems={"center"}
+          position="fixed"
+          width={"80px"}
+          height={"80px"}
+          bottom="20px"
+          right={["16px", "84px"]}
           zIndex={1}
           borderWidth={1}
           bgColor={" #0C6A7D"}
@@ -283,8 +287,12 @@ function TicketVer() {
             />
           </ModalBody>
           <ModalFooter>
-            <Button onClick={onCloseCotizacionT}>Cancelar</Button>
-            <Button variant="green">Guardar</Button>
+            <Box paddingRight={10} >
+              <Button colorScheme={"red"} variant="outline" onClick={onCloseCotizacionT}>Cancelar</Button>
+            </Box>
+            <Box>
+              <Button colorScheme={"green"} variant="outline">Guardar</Button>
+            </Box>
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -293,6 +301,7 @@ function TicketVer() {
 
       {/* ASIGNAR TÉCNICO */}
       <Modal closeOnOverlayClick={false} isOpen={abierto} onClose={cerrar}>
+
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Asignar Técnico</ModalHeader>
@@ -312,12 +321,12 @@ function TicketVer() {
               >
                 {serviciosList.length !== 0
                   ? serviciosList.map((servicio) => {
-                      return (
-                        <option key={servicio.id} value={Number(servicio.id)}>
-                          {servicio.nombre}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={servicio.id} value={Number(servicio.id)}>
+                        {servicio.nombre}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
             </FormControl>
@@ -334,24 +343,24 @@ function TicketVer() {
               >
                 {tecnicosByServicios?.Tecnico?.length !== 0
                   ? tecnicosByServicios?.Tecnico?.map((tecnico) => {
-                      return (
-                        <option key={tecnico.id} value={tecnico.id}>
-                          {tecnico.nombre}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={tecnico.id} value={tecnico.id}>
+                        {tecnico.nombre}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-          <Link href={`/tickets`}>
+
             <Button colorScheme="green" mr={3} onClick={asignarTecnicoWithId}>
               Asignar
             </Button>
-            </Link>
-          
+
+
             <Button colorScheme="red" onClick={cerrar}>
               Cancelar
             </Button>
