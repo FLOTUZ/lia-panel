@@ -77,7 +77,7 @@ function UsuarioVer() {
     enableReinitialize: true,
 
     onSubmit: async (values: IUsuario) => {
-      const actualizaUsuario = async () => {
+     // const actualizaUsuario = async () => {
         const data = {
           ...values,
         };
@@ -103,7 +103,7 @@ function UsuarioVer() {
             description: `${respuesta.usuario} guardado`,
           });
         }
-      };
+    //  };
     },
   });
 
@@ -186,9 +186,6 @@ function UsuarioVer() {
                 }}
               >
                 <HStack spacing="1rem">
-                  <Radio size={"lg"} value="USUARIO">
-                    Usuario
-                  </Radio>
 
                   <Radio size={"lg"} value="CAPTURISTA">
                     Capturista
