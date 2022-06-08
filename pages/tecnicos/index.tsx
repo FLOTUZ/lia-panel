@@ -103,7 +103,7 @@ function TenicosListado() {
                       <Td>{t.ViveEn?.nombre}</Td>
                       <Td>{t.telefono}</Td>
                       
-                 {/*     <Td>
+                    <Td>
                         <Link href={`/tecnicos/${t.id}`}>
                           <a>
                             <IconButton
@@ -113,7 +113,7 @@ function TenicosListado() {
                             />{" "}
                           </a>
                         </Link>
-                  </Td>**/}
+                  </Td>
                     </Tr>
                   );
                 })

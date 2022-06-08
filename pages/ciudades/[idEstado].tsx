@@ -27,8 +27,9 @@ import {
   useToast,
   Divider,
   Link,
+  IconButton,
 } from "@chakra-ui/react";
-import { AddIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { AddIcon, ViewOffIcon, EditIcon } from "@chakra-ui/icons";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { EstadosService } from "@/services/estados.service";
@@ -42,8 +43,9 @@ function EstadoVer() {
   const {
     isOpen: isOpenEdit,
     onOpen: onOpenEdit,
-    onClose: onCloseEdit
+    onClose: onCloseEdit,
   } = useDisclosure();
+
   const toast = useToast();
 
   const [nombreCiudad, setNombreCiudad] = useState("");
@@ -57,10 +59,26 @@ function EstadoVer() {
   const { idEstado } = router.query;
 
   /*CONSULTA de Ciudades  */
+  const [idCiudad, setIdCiudad] = useState();
+
+  const CID = 0;
 
   const [listadoCiudades, setListadoCiudades] = useState<ICiudad[]>([]);
 
+  const [dataCiudad, setDataCiudad ] = useState<ICiudad>();
+
   /*  AGREGAR CIUDAD AL ESTADO*/
+  const consultarCiudad = async () => {
+    const city = new CiudadesService();
+    const response: any = await city.getById(Number());
+    const data = response.data as ICiudad;
+
+    if (response.status == 200) {
+      setDataCiudad(data);
+    } else {
+      console.log(response);
+    }
+  };
 
   const consultarCiudades = async () => {
     const city = new CiudadesService();
@@ -89,7 +107,6 @@ function EstadoVer() {
       toast({
         title: "Ciudad Nueva Agregado con Exito.",
         description: "La Asistencia se Agrego con Exito.",
-        position:"bottom-right",
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -97,7 +114,6 @@ function EstadoVer() {
     } else {
       toast({
         title: "Oops.. Algo salio mal",
-        position:"bottom-right",
         description: response.message,
         status: "error",
         duration: 9000,
@@ -170,12 +186,47 @@ function EstadoVer() {
     },
   });
 
+  /*ACTUALIZAR LA CIUDAD  SELECCIONADO FORMIK */
+
+  const formCiudad = useFormik({
+    initialValues: {
+      nombre: dataCiudad?.nombre || "",
+    },
+    enableReinitialize: true,
+
+    onSubmit: async (values: ICiudad) => {
+      const dataCiudad = {
+        ...values,
+      };
+
+      const service = new CiudadesService();
+      const respuesta = await service.update(dataCiudad, Number());
+
+      const dataUpdate = respuesta.data as ICiudad;
+      setData(dataUpdate);
+
+      if (respuesta.status !== 200) {
+        toast({
+          title: "Error",
+          status: "error",
+          description: `Error al actualizar, verifique sus campos`,
+        });
+        setCargando(false);
+      } else {
+        toast({
+          title: "Guardado",
+          status: "success",
+          description: `${respuesta.Estado} guardado`,
+        });
+      }
+    },
+  });
+
   return (
     <div>
       <DesktopLayout>
         <Header title={"Editar Estado"} />
         <form onSubmit={formEstado.handleSubmit}>
-
           <Box
             m={2}
             bgColor="white"
@@ -247,12 +298,12 @@ function EstadoVer() {
               </Button>
             </Stack>
           </Box>
+        </form>
 
+        <form onSubmit={formCiudad.handleSubmit}>
           <Box
             m={2}
             bgColor="white"
-            padding={10}
-            borderRadius={10}
             boxShadow="2xl"
             p="6"
             rounded="md"
@@ -278,7 +329,7 @@ function EstadoVer() {
                 Nueva Ciudad
               </Button>
             </Stack>
-                    
+
             <Modal
               closeOnOverlayClick={false}
               isOpen={isOpen}
@@ -320,6 +371,7 @@ function EstadoVer() {
                 <Thead>
                   <Tr>
                     <Th>Nombre</Th>
+                    <Th>Opción</Th>
                   </Tr>
                 </Thead>
                 <Tbody>
@@ -328,6 +380,50 @@ function EstadoVer() {
                       return (
                         <Tr key={index}>
                           <Td>{t.nombre}</Td>
+                          <Td>
+                            <IconButton
+                              variant="ghost"
+                              aria-label="edit"
+                              icon={<EditIcon />}
+                              onClick={onOpenEdit}                           
+                            />
+
+                            <Modal
+                              closeOnOverlayClick={false}
+                              isOpen={isOpenEdit}
+                              onClose={onCloseEdit}
+                            >
+                              <ModalOverlay />
+                              <ModalContent>
+                                <ModalHeader>
+                                  Editar Ciudad
+                                </ModalHeader>
+                                <ModalCloseButton />
+                                <ModalBody pb={6}>
+                                  <FormControl mt={4}>
+                                    <FormLabel>Nombre de la Ciudad</FormLabel>
+                                    <Input
+                                      placeholder="Nombre de la Asistencia"
+                                      defaultValue={dataCiudad?.nombre}
+                                      onChange={formCiudad.handleChange}
+                                    />
+                                  </FormControl>
+                                </ModalBody>
+
+                                <ModalFooter>
+                                  <Button
+                                    colorScheme="blue"
+                                    mr={3}
+                                    type="submit"
+                                    isLoading={cargando}
+                                  >
+                                    Guardar
+                                  </Button>
+                                  <Button onClick={onCloseEdit}>Cancelar</Button>
+                                </ModalFooter>
+                              </ModalContent>
+                            </Modal>
+                          </Td>
                         </Tr>
                       );
                     })
@@ -346,6 +442,4 @@ function EstadoVer() {
   );
 }
 
-
 export default EstadoVer;
-
