@@ -120,6 +120,7 @@ function TicketVer() {
 
     toast({
       title: "Técnico Asignado.",
+      position:"bottom-right",
       description: "Se Asigno el servicio al Técnico",
       status: "success",
       duration: 9000,

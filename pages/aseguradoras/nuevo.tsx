@@ -108,6 +108,7 @@ function AseguradoraNueva() {
       toast({
         title: "Asistencia Nueva Agregado con Exito.",
         description: "La Asistencia se Agrego con Exito.",
+        position:"bottom-right",
         status: "success",
         duration: 9000,
         isClosable: true,

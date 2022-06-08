@@ -74,6 +74,7 @@ function ServiciosListado() {
       toast({
         title: "Servicio nuevo agregado con exito",
         description: "El servicio de agrego con exito",
+        position:"bottom-right",
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -82,6 +83,7 @@ function ServiciosListado() {
       toast({
         title: "Oops.. Algo salio mal",
         description: response.message,
+        position:"bottom-right",
         status: "error",
         duration: 9000,
         isClosable: true,

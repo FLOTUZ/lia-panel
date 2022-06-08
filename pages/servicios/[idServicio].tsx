@@ -68,12 +68,14 @@ function ServicioVer() {
         toast({
           title: "Error",
           status: "error",
+          position:"bottom-right",
           description: `Error al actualizar, verifique sus campos`,
         });
         setCargando(false);
       } else {
         toast({
           title: "Guardado",
+          position:"bottom-right",
           status: "success",
           description: `${respuesta.Ciudad} guardado`,
         });

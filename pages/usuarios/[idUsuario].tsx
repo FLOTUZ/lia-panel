@@ -91,12 +91,14 @@ function UsuarioVer() {
           toast({
             title: "Error",
             status: "error",
+            position:"bottom-right",
             description: `Error al dar de alta, verifique sus campos`,
           });
           setCargando(false);
         } else {
           toast({
             title: "Guardado",
+            position:"bottom-right",
             status: "success",
             description: `${respuesta.usuario} guardado`,
           });

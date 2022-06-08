@@ -77,6 +77,7 @@ function EstadoNuevo() {
       toast({
         title: "Asistencia Nueva Agregado con Exito.",
         description: "La Asistencia se Agrego con Exito.",
+        position:"bottom-right",
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -84,6 +85,7 @@ function EstadoNuevo() {
     } else {
       toast({
         title: "Oops.. Algo salio mal",
+        position:"bottom-right",
         description: response.message,
         status: "error",
         duration: 9000,

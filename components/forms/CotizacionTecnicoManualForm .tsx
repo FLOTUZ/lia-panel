@@ -80,6 +80,7 @@ export const CrearCotizacionTecnicoManual = ({
       toast({
         title: "Se creo Cotizacion Con exito",
         description: "Se creo Cotizacion con exito",
+        position:"bottom-right",
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -88,6 +89,7 @@ export const CrearCotizacionTecnicoManual = ({
       toast({
         title: "Oops.. Algo salio mal",
         description: response.message,
+        position:"bottom-right",
         status: "error",
         duration: 9000,
         isClosable: true,
@@ -121,6 +123,7 @@ export const CrearCotizacionTecnicoManual = ({
       toast({
         title: "Se acepto cotizacion Con exito",
         description: "Se aprobo cotizacion con exito",
+        position:"bottom-right",
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -129,6 +132,7 @@ export const CrearCotizacionTecnicoManual = ({
       toast({
         title: "Oops.. Algo salio mal",
         description: respuestaCotizacion.message,
+        position:"bottom-right",
         status: "error",
         duration: 9000,
         isClosable: true,

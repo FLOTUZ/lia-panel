@@ -100,6 +100,7 @@ function UsuarioNuevo() {
       setCargando(false);
       toast({
         title: "Error",
+        position:"bottom-right",
         status: "error",
         description: `Error al dar de alta, verifique sus campos de usuario`,
       });
@@ -107,6 +108,7 @@ function UsuarioNuevo() {
     if (respuestaUsuario.status == 201) {
       toast({
         title: "Guardado",
+        position:"bottom-right",
         status: "success",
         description: `Se guardo el usuario `,
       });

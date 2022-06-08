@@ -5,8 +5,6 @@ import { TicketsService } from "@/services/tickets.service";
 import {
   Box,
   Button,
-  Center,
-  Divider,
   FormControl,
   FormLabel,
   Input,
@@ -74,11 +72,12 @@ export const AcuerdoConformidadView = ({
 
     console.log(respuestaTicket);
 
-    if (respuestaAcuerdo.status == 200) {
+    if (respuestaAcuerdo.status == 202) {
       onClose();
       toast({
         title: "Se acepto cotizacion Con exito",
         description: "Se aprobo cotizacion con exito",
+        position:"bottom-right",
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -87,6 +86,7 @@ export const AcuerdoConformidadView = ({
       toast({
         title: "Oops.. Algo salio mal",
         description: respuestaAcuerdo.message,
+        position:"bottom-right",
         status: "error",
         duration: 9000,
         isClosable: true,
