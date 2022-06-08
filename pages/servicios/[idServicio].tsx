@@ -13,6 +13,7 @@ import {
   useToast,
   Radio,
   RadioGroup,
+  HStack,
 } from "@chakra-ui/react";
 import { Form, Formik, useFormik } from "formik";
 import { link } from "fs";
@@ -140,17 +141,8 @@ function ServicioVer() {
                 </FormControl>
 
                 <footer>
-                  <Box
-                    m={2}
-                    bgColor="white"
-                    padding={5}
-                    borderRadius={10}
-                    boxShadow="2xl"
-                    p="6"
-                    rounded="md"
-                    bg="white"
-                  >
-
+                  <HStack
+                  spacing={[1, 5]}>
                     <Button
                       id="guardar"
                       type="submit"
@@ -169,7 +161,7 @@ function ServicioVer() {
                     >
                       Cancelar
                     </Button>
-                  </Box>
+                  </HStack>
                 </footer>
               </Stack>
             </Box>

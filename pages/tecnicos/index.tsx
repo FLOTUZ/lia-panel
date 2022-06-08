@@ -30,6 +30,7 @@ function TenicosListado() {
     const service = new TecnicoService();
     const respuesta = await service.getAll();
     console.log(respuesta);
+    
 
     if (respuesta.status == 200) {
       const data = respuesta.data as ITecnico[];
@@ -86,7 +87,8 @@ function TenicosListado() {
                 <Th>Apellido Paterno</Th>
                 <Th>Estado</Th>
                 <Th>Ciudad</Th>
-                <Th>Telefono</Th>
+                <Th>Teléfono</Th>
+                <Th>Servicio que Ofrece</Th>
                {/* <Th>Opciones</Th> **/}
               </Tr>
             </Thead>
@@ -100,6 +102,7 @@ function TenicosListado() {
                       <Td>{t.ViveEn?.Estado?.nombre}</Td>
                       <Td>{t.ViveEn?.nombre}</Td>
                       <Td>{t.telefono}</Td>
+                      
                  {/*     <Td>
                         <Link href={`/tecnicos/${t.id}`}>
                           <a>

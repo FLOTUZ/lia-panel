@@ -957,11 +957,11 @@ const NuevoTicket = () => {
         <SimpleGrid columns={[1, 1, 3]} spacing={4}>
           {formTicket.values.asistencia_vial === true ? (
             <FormControl paddingTop={15} isRequired>
-              <FormLabel htmlFor="calle">Carretera</FormLabel>
+              <FormLabel htmlFor="calle">Coordenadas</FormLabel>
               <Input
                 variant="filled"
                 id="calle"
-                placeholder="Carretera"
+                placeholder="Coordenadas"
                 borderColor="twitter.100"
                 onChange={formTicket.handleChange}
                 value={formTicket.values.calle}

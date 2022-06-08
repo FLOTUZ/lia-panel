@@ -420,13 +420,13 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
 
         <SimpleGrid columns={[1, 1, 3]} spacing="40px">
           <FormControl paddingTop={15}>
-            <FormLabel htmlFor="calle">Carretera</FormLabel>
+            <FormLabel htmlFor="calle">Coordenadas</FormLabel>
             <Input
               variant="unstyled"
               isReadOnly
               id="calle"
               min={0}
-              placeholder="Carretera"
+              placeholder="Coordenadas"
               borderColor="twitter.100"
               value={ticket.calle}
             />

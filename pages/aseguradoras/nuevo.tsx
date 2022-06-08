@@ -413,7 +413,7 @@ function AseguradoraNueva() {
               </ModalBody>
 
               <ModalFooter>
-                <Button colorScheme="blue" mr={3} onClick={guardarAsistencia}>
+                <Button colorScheme="whatsapp" mr={3} onClick={guardarAsistencia}>
                   Guardar
                 </Button>
                 <Button onClick={onClose}>Cancelar</Button>

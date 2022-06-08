@@ -416,15 +416,15 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
 
         <SimpleGrid columns={[1, 1, 3]} spacing={4}>
           <FormControl paddingTop={15}>
-            <FormLabel htmlFor="calle">Cordenadas</FormLabel>
+            <FormLabel htmlFor="calle">Coordenadas</FormLabel>
             <Input
               variant="unstyled"
               isReadOnly
               id="calle"
               min={0}
-              placeholder="Carretera"
+              placeholder="Coordenadas"
               borderColor="twitter.100"
-              //value={ticket.}
+              value={ticket.calle}
             />
           </FormControl>
 

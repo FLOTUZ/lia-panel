@@ -118,7 +118,6 @@ export default function ListadoTickets() {
                 <Th>Título del Ticket</Th>
                 <Th>Nombre del Técnico</Th>
                 <Th>Fecha de Llamada</Th>
-                <Th>Hora de Cierre</Th>
                 <Th>Problematica</Th>
                 <Th></Th>
               </Tr>
@@ -132,7 +131,6 @@ export default function ListadoTickets() {
                       <Td>{ticket.titulo_ticket}</Td>
                       <Td>{ticket.nombre_usuario_final}</Td>
                       <Td>{ticket.fecha_llamada}</Td>
-                      <Td>{ticket.hora_cierre}</Td>
                       <Td>{ticket.problematica}</Td>
                       <Td>
                         <Link href={`/tickets/${ticket.id}`}>
