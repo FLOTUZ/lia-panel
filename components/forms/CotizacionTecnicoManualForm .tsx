@@ -184,10 +184,11 @@ export const CrearCotizacionTecnicoManual = ({
             Solución y Cotización del Técnico
           </FormLabel>
           <InputGroup>
-            <InputLeftElement
+            {/*<InputLeftElement
               pointerEvents="none"
+              marginRight={20}
               children={<AiOutlineSolution color="gray.300" />}
-            />
+            />*/}
             <Textarea
               variant="filled"
               id="solucion_tecnico"

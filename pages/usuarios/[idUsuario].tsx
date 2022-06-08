@@ -18,12 +18,12 @@ import {
   Flex,
 } from "@chakra-ui/react";
 import { Form, Formik, useFormik } from "formik";
-
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 function UsuarioVer() {
-  
+
   const [servicios, setServicios] = useState<string[]>([]);
   const filtradoServicios = (t: IServicio) => {
     const id = t.id || 0;
@@ -77,33 +77,36 @@ function UsuarioVer() {
     enableReinitialize: true,
 
     onSubmit: async (values: IUsuario) => {
-     // const actualizaUsuario = async () => {
-        const data = {
-          ...values,
-        };
+      // const actualizaUsuario = async () => {
+      const data = {
+        ...values,
+      };
 
-        const service = new UsuariosService();
-        const respuesta = await service.update(data, Number(idUsuario));
-        const dataUpdate = respuesta.data as IUsuario;
-        setData(dataUpdate);
+      const service = new UsuariosService();
+      const respuesta = await service.update(data, Number(idUsuario));
+      const dataUpdate = respuesta.data as IUsuario;
+      setData(dataUpdate);
 
-        if (respuesta === undefined) {
-          toast({
-            title: "Error",
-            status: "error",
-            position:"bottom-right",
-            description: `Error al dar de alta, verifique sus campos`,
-          });
-          setCargando(false);
-        } else {
-          toast({
-            title: "Guardado",
-            position:"bottom-right",
-            status: "success",
-            description: `${respuesta.usuario} guardado`,
-          });
-        }
-    //  };
+      if (respuesta.status != 200) {
+        toast({
+          title: "Error",
+          status: "error",
+          position: "bottom-right",
+          description: `Error al dar de alta, verifique sus campos`,
+        });
+        setCargando(false);
+      } else {
+        toast({
+          title: "Guardado",
+          position: "bottom-right",
+          status: "success",
+          description: `${respuesta.usuario} guardado`,
+
+        });
+
+        router.back();
+      }
+      //  };
     },
   });
 
@@ -199,15 +202,17 @@ function UsuarioVer() {
 
               <HStack marginTop={50} spacing={4} w={"100%"}>
                 <Spacer />
-                <Button
-                  id="guardar"
-                  type="submit"
-                  colorScheme="blue"
-                  variant="solid"
-                  isLoading={cargando}
-                >
-                  Actualizar
-                </Button>
+                
+                  <Button
+                    id="guardar"
+                    type="submit"
+                    colorScheme="whatsapp"
+                    variant="solid"
+                    isLoading={cargando}
+                  >
+                    Actualizar
+                  </Button>
+                
 
                 <Button
                   colorScheme="red"

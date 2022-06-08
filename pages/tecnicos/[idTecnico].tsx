@@ -240,7 +240,7 @@ console.log(datos );
 
   return (
     <DesktopLayout>
-      <Header title={"Nuevo Usuario"} />
+      <Header title={"Editar Usuario"} />
       <form onSubmit={formUsuario.handleSubmit}>
         <FormControl isRequired>
           <VStack
@@ -289,7 +289,7 @@ console.log(datos );
               <Spacer />
               <Button
                 id="guardar"
-                colorScheme="blue"
+                colorScheme="whatsapp"
                 variant="solid"
                 type="submit"
                 isLoading={cargando}
@@ -465,12 +465,12 @@ console.log(datos );
               <Spacer />
               <Button
                 id="guardar"
-                colorScheme="blue"
+                colorScheme="whatsapp"
                 variant="solid"
                 type="submit"
                 isLoading={cargando}
               >
-                Agregar
+                Guardar
               </Button>
 
               <Button

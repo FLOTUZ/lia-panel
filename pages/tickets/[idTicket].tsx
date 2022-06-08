@@ -331,7 +331,7 @@ function TicketVer() {
               </Select>
             </FormControl>
             <FormControl paddingTop={15}>
-              <FormLabel htmlFor="tecnicoId">Técnico</FormLabel>
+              <FormLabel htmlFor="tecnicoId">Técnico y Número Teléfonico</FormLabel>
               <Select
                 id="tecnicoId"
                 placeholder="Selecciona el Técnico"
@@ -345,7 +345,9 @@ function TicketVer() {
                   ? tecnicosByServicios?.Tecnico?.map((tecnico) => {
                     return (
                       <option key={tecnico.id} value={tecnico.id}>
-                        {tecnico.nombre}
+                        {tecnico.nombre},
+                        {" "}
+                        {tecnico.telefono}
                       </option>
                     );
                   })

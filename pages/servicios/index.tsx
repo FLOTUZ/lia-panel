@@ -53,7 +53,8 @@ function ServiciosListado() {
 
   const [nombreServicio, setNombreServicio] = useState("");
   const [tipoServicio, setTipoServicio] = useState("");
-
+  const [listadoServicios, setListadoServicios] = useState<IServicio[]>([]);
+  
   const router = useRouter();
 
   const [cargando, setCargando] = useState(false);
@@ -71,6 +72,8 @@ function ServiciosListado() {
       onClose();
       setNombreServicio("");
       setTipoServicio("");
+
+      consultarServicios();
       toast({
         title: "Servicio nuevo agregado con exito",
         description: "El servicio de agrego con exito",
@@ -79,6 +82,7 @@ function ServiciosListado() {
         duration: 9000,
         isClosable: true,
       });
+      
     } else {
       toast({
         title: "Oops.. Algo salio mal",
@@ -93,20 +97,20 @@ function ServiciosListado() {
 
   /*CONSULTA EN TABLA DE SERVICIOS*/
 
-  const [listadoServicios, setListadoServicios] = useState<IServicio[]>([]);
+  const consultarServicios = async () => {
+    const service = new ServiciosService();
+    const respuesta = await service.getAll();
+    const data = respuesta.data as IServicio[];
+
+    if (respuesta.status == 200) {
+      setListadoServicios(data);
+    } else {
+      console.log(respuesta);
+    }
+  };
 
   useEffect(() => {
-    const consultarServicios = async () => {
-      const service = new ServiciosService();
-      const respuesta = await service.getAll();
-      const data = respuesta.data as IServicio[];
-
-      if (respuesta.status == 200) {
-        setListadoServicios(data);
-      } else {
-        console.log(respuesta);
-      }
-    };
+  
 
     consultarServicios();
   }, []);
@@ -306,7 +310,7 @@ function ServiciosListado() {
                     }}
                     value="VIAL"
                   >
-                    Automovilístico
+                    Vial
                   </Radio>
                 </Stack>
               </RadioGroup>

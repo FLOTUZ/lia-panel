@@ -35,7 +35,7 @@ function TenicosListado() {
     if (respuesta.status == 200) {
       const data = respuesta.data as ITecnico[];
       setListadoTenicos(data);
-      console.log(data);
+      
     }
   };
   useEffect(() => {
@@ -88,8 +88,9 @@ function TenicosListado() {
                 <Th>Estado</Th>
                 <Th>Ciudad</Th>
                 <Th>Teléfono</Th>
-                <Th>Servicio que Ofrece</Th>
-               {/* <Th>Opciones</Th> **/}
+                <Th>Servicio Principal</Th>
+                <Th>Opciones</Th>
+                
               </Tr>
             </Thead>
             <Tbody>
@@ -102,6 +103,7 @@ function TenicosListado() {
                       <Td>{t.ViveEn?.Estado?.nombre}</Td>
                       <Td>{t.ViveEn?.nombre}</Td>
                       <Td>{t.telefono}</Td>
+                      <Td>{t.Servicio[0]?.nombre}</Td>
                       
                     <Td>
                         <Link href={`/tecnicos/${t.id}`}>

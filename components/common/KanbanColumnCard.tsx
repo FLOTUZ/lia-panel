@@ -53,7 +53,7 @@ const KanbanColumnCard = ({
           }}
         >
           <HStack>
-            <Text fontWeight={"bold"}>N. Expediente:</Text>
+            <Text fontWeight={"bold"}>Expediente:</Text>
             <Text>{ticket.num_expediente}</Text>
           </HStack>
 
@@ -74,13 +74,9 @@ const KanbanColumnCard = ({
             <Text>{aseguradora?.nombre}</Text>
           </HStack>
 
-          <HStack>
-            <Text fontWeight={"bold"}>Asesor Gpo. Lías:</Text>
-            <Text>{ticket.nombre_asesor_gpo_lias}</Text>
-          </HStack>
 
           <HStack>
-            <Text fontWeight={"bold"}>Usuario a Brindar Servicio:</Text>
+            <Text fontWeight={"bold"}>Usuario:</Text>
             <Text>{ticket.nombre_usuario_final}</Text>
           </HStack>
 
