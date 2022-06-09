@@ -9,7 +9,7 @@ import {
   ITicket,
 } from "@/services/api.models";
 import { FaBeer, FaMoneyBill, FaUserShield } from "react-icons/fa";
-import {RiGpsLine} from "react-icons/ri"
+import { RiGpsLine } from "react-icons/ri";
 import { RiFileUserFill } from "react-icons/ri";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";
@@ -66,9 +66,7 @@ import { IoFlag, IoSpeedometerOutline } from "react-icons/io5";
 import { EstadosService } from "@/services/estados.service";
 
 const NuevoTicket = () => {
-  {
-    /* Asignar Técnico*/
-  }
+
   const { isOpen: abierto, onOpen: abrir, onClose: cerrar } = useDisclosure();
   const btnRef = React.useRef();
 
@@ -95,7 +93,7 @@ const NuevoTicket = () => {
     []
   );
 
-  const [tecnicosByServicios, setTecnicosByServicios] = useState<IServicio>();
+  const [ServiciosByTipo, setServiciosByTipo] = useState<IServicio>();
 
   const [fecha, setFecha] = useState("");
 
@@ -159,9 +157,9 @@ const NuevoTicket = () => {
     setServiciosList(data);
   };
 
-  const consultarTecnicosByServicio = async (id: number) => {
+  const consultarServiciosByTipo = async (id: number) => {
     const servicio = new ServiciosService();
-    const respuesta = await servicio.getTecnicosByServicio(id);
+    const respuesta = await servicio.getServiciosByTipo(id);
     const data = respuesta.data as IServicio;
 
     setTecnicosByServicios(data);
@@ -674,11 +672,11 @@ const NuevoTicket = () => {
               setServiciosSeleccionados(e as string[]);
             }}
           >
-            <SimpleGrid padding={5} minChildWidth="120px" spacing="40px">
+            <SimpleGrid  padding={5} minChildWidth="120px" spacing="40px">
               {serviciosList?.length !== 0
                 ? serviciosList.map((servicio, index) => {
                     return (
-                      <Checkbox
+                      <Checkbox                      
                         key={index}
                         id={servicio.nombre}
                         value={servicio.id?.toString()}
@@ -722,7 +720,7 @@ const NuevoTicket = () => {
                   ? formTicket.setFieldValue("asistencia_vial", false)
                   : null;
 
-                  formTicket.values.is_servicio_foraneo == true
+                formTicket.values.is_servicio_foraneo == true
                   ? formTicket.setFieldValue("is_servicio_foraneo", false)
                   : null;
               }}
@@ -771,33 +769,58 @@ const NuevoTicket = () => {
             ) : null}
           </FormControl>
 
-          <FormControl paddingTop={2} paddingLeft={2}>
-            <FormLabel htmlFor="servicio_foraneo">Servicio Foráneo</FormLabel>
-            <Switch
-              id="is_servicio_foraneo"
-              size="lg"
-              onChange={(e) => {
-                formTicket.handleChange(e);
-                formTicket.values.is_servicio_domestico == false
-                
-              }}
-
-              isChecked={formTicket.values.is_servicio_foraneo}
-            />
-            {formTicket.values.is_servicio_foraneo ? (
-              <Flex
-                w={"100%"}
-                padding={1}
-                bgColor={"green"}
-                justifyContent="center"
-                borderRadius={"2xl"}
-              >
-                <Text color={"white"} fontWeight="bold">
-                  Servicio Foráneo Activado
-                </Text>
-              </Flex>
-            ) : null}
-          </FormControl>
+          {formTicket.values.is_servicio_domestico === true ? (
+            <FormControl paddingTop={2} paddingLeft={2}>
+              <FormLabel htmlFor="servicio_foraneo">Servicio Foráneo</FormLabel>
+              <Switch
+                id="is_servicio_foraneo"
+                size="lg"
+                onChange={(e) => {
+                  formTicket.handleChange(e);
+                }}
+                isChecked={formTicket.values.is_servicio_foraneo}
+              />
+              {formTicket.values.is_servicio_foraneo ? (
+                <Flex
+                  w={"100%"}
+                  padding={1}
+                  bgColor={"green"}
+                  justifyContent="center"
+                  borderRadius={"2xl"}
+                >
+                  <Text color={"white"} fontWeight="bold">
+                    Servicio Foráneo Activado
+                  </Text>
+                </Flex>
+              ) : null}
+            </FormControl>
+          ) : null}
+          {formTicket.values.asistencia_vial === true ? (
+            <FormControl paddingTop={2} paddingLeft={2}>
+              <FormLabel htmlFor="servicio_foraneo">Servicio Foráneo</FormLabel>
+              <Switch
+                id="is_servicio_foraneo"
+                size="lg"
+                onChange={(e) => {
+                  formTicket.handleChange(e);
+                }}
+                isChecked={formTicket.values.is_servicio_foraneo}
+              />
+              {formTicket.values.is_servicio_foraneo ? (
+                <Flex
+                  w={"100%"}
+                  padding={1}
+                  bgColor={"green"}
+                  justifyContent="center"
+                  borderRadius={"2xl"}
+                >
+                  <Text color={"white"} fontWeight="bold">
+                    Servicio Foráneo Activado
+                  </Text>
+                </Flex>
+              ) : null}
+            </FormControl>
+          ) : null}
         </FormControl>
 
         <SimpleGrid columns={[1, 1, 2]} spacing={5}>
@@ -967,26 +990,20 @@ const NuevoTicket = () => {
           </FormControl>
         </Center>
 
-
-       
         <SimpleGrid columns={[1, 1, 3]} spacing={4}>
-          {formTicket.values.asistencia_vial  === true?(
+          {formTicket.values.asistencia_vial === true ? (
             <FormControl paddingTop={15} isRequired>
-
               <FormLabel htmlFor="calle">Coordenadas</FormLabel>
               <InputGroup>
-              <InputLeftAddon
-                  pointerEvents="none"
-                  children={<RiGpsLine />}
+                <InputLeftAddon pointerEvents="none" children={<RiGpsLine />} />
+                <Input
+                  variant="filled"
+                  id="calle"
+                  placeholder="Coordenadas"
+                  borderColor="twitter.100"
+                  onChange={formTicket.handleChange}
+                  value={formTicket.values.calle}
                 />
-              <Input
-                variant="filled"
-                id="calle"
-                placeholder="Coordenadas"
-                borderColor="twitter.100"
-                onChange={formTicket.handleChange}
-                value={formTicket.values.calle}
-              />
               </InputGroup>
             </FormControl>
           ) : null}
@@ -1013,7 +1030,6 @@ const NuevoTicket = () => {
               />
             </InputGroup>
           </FormControl>
-
 
           <FormControl paddingTop={15} isRequired>
             <FormLabel htmlFor="costoPorKilometro">
@@ -1152,7 +1168,8 @@ const NuevoTicket = () => {
         {/*SERVICIOS FORANEOS */}
 
         <SimpleGrid paddingTop={5} columns={[1, 2, 4]} spacing="40px">
-        {formTicket.values.asistencia_vial && formTicket.values.is_servicio_foraneo=== true ? (
+          {formTicket.values.asistencia_vial &&
+          formTicket.values.is_servicio_foraneo === true ? (
             <FormControl paddingTop={15}>
               <FormLabel htmlFor="banderazo">Banderazo</FormLabel>
               <InputGroup>
