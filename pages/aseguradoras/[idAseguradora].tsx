@@ -281,7 +281,7 @@ function AseguradoraVer() {
                       />
                       <Input
                         isRequired
-                        id="phone"
+                        id="telefono"
                         variant="filled"
                         defaultValue={data?.telefono}
                         onChange={formAseguradora.handleChange}
@@ -306,7 +306,7 @@ function AseguradoraVer() {
                           children={<IoSpeedometerOutline color="gray.300" />}
                         />
                         <Input
-                          id="kilometraje"
+                          id="kilometraje_permitido"
                           variant="filled"
                           defaultValue={data?.kilometraje_permitido}
                           onChange={formAseguradora.handleChange}
@@ -356,7 +356,7 @@ function AseguradoraVer() {
                           children={<MdOutlineHomeMax color="gray.300" />}
                         />
                         <Input
-                          id="telefono_servicio_domestico"
+                          id="telefono_domestico"
                           variant="filled"
                           defaultValue={data?.telefono_domestico}
                           onChange={formAseguradora.handleChange}
@@ -379,7 +379,7 @@ function AseguradoraVer() {
                         />
 
                         <Input
-                          id="telefono_servicio_vial"
+                          id="telefono_vial"
                           variant="filled"
                           defaultValue={data?.telefono_vial}
                           onChange={formAseguradora.handleChange}
