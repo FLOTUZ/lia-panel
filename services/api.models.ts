@@ -87,7 +87,8 @@ export interface IAseguradora {
   telefono_vial?: string;
   telefono_whats?: string;
   kilometraje_permitido?: number;
-  costo_por_kilometro?: number;
+  costo_por_kilometro: number | null;
+    costo_por_kilometro_foraneo: number | null;
   Asistencia?: IAsistencia[] | null;
   createdAt?: string | null;
   updatedAt?: string | null;

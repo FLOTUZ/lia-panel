@@ -30,13 +30,9 @@ import {
   useToast,
   SimpleGrid,
   Divider,
-  IconButton
+  IconButton,
 } from "@chakra-ui/react";
-import {
-  AddIcon,
-  EditIcon,
-  PhoneIcon,
-} from "@chakra-ui/icons";
+import { AddIcon, EditIcon, PhoneIcon } from "@chakra-ui/icons";
 import React, { useEffect, useState } from "react";
 import {
   MdCarRepair,
@@ -108,7 +104,7 @@ function AseguradoraVer() {
       toast({
         title: "Asistencia Nueva Agregado con Exito.",
         description: "La Asistencia se Agrego con Exito.",
-        position:"bottom-right",
+        position: "bottom-right",
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -117,7 +113,7 @@ function AseguradoraVer() {
       toast({
         title: "Oops.. Algo salio mal",
         description: response.message,
-        position:"bottom-right",
+        position: "bottom-right",
         status: "error",
         duration: 9000,
         isClosable: true,
@@ -160,7 +156,8 @@ function AseguradoraVer() {
       nombre: data?.nombre || "",
       telefono: data?.telefono || "",
       kilometraje_permitido: data?.kilometraje_permitido,
-      costo_por_kilometro: data?.costo_por_kilometro,
+      costo_por_kilometro: data?.costo_por_kilometro!,
+      costo_por_kilometro_foraneo: data?.costo_por_kilometro_foraneo!,
       telefono_domestico: data?.telefono_domestico || "",
       telefono_vial: data?.telefono_vial || "",
       telefono_whats: data?.telefono_whats || "",
@@ -174,6 +171,9 @@ function AseguradoraVer() {
 
       const service = new AseguradoraService();
       const respuesta = await service.update(data, Number(idAseguradora));
+
+      console.log(respuesta);
+      
 
       const dataUpdate = respuesta.data as IAseguradora;
       setData(dataUpdate);
@@ -299,7 +299,9 @@ function AseguradoraVer() {
                 <SimpleGrid columns={2} spacing={5}>
                   <InputGroup>
                     <FormControl isRequired>
-                      <FormLabel htmlFor="kilometraje">Kilometraje maximo</FormLabel>
+                      <FormLabel htmlFor="kilometraje">
+                        Kilometraje maximo
+                      </FormLabel>
                       <InputGroup>
                         <InputLeftElement
                           pointerEvents="none"
@@ -330,8 +332,9 @@ function AseguradoraVer() {
                         <Input
                           id="costo_por_kilometro"
                           variant="filled"
-                          defaultValue={data?.costo_por_kilometro}
+                          defaultValue={data?.costo_por_kilometro!}
                           onChange={formAseguradora.handleChange}
+                          step={"any"}
                           type="number"
                           placeholder="costo por kilometro"
                         />
@@ -440,108 +443,99 @@ function AseguradoraVer() {
                 </Button>
               </Stack>
             </Box>
-            </FormControl>
-          </form>
+          </FormControl>
+        </form>
 
-          <form onSubmit={formAsistencia.handleSubmit}>
-            <Box
-              m={2}
-              bgColor="white"
-              padding={5}
-              borderRadius={10}
-              boxShadow="2xl"
-              p="6"
-              rounded="md"
-              bg="white"
+        <form onSubmit={formAsistencia.handleSubmit}>
+          <Box
+            m={2}
+            bgColor="white"
+            padding={5}
+            borderRadius={10}
+            boxShadow="2xl"
+            p="6"
+            rounded="md"
+            bg="white"
+          >
+            <Heading marginTop={30} as="h5" size="md">
+              Asistencia de Aseguradora
+            </Heading>
+
+            <Stack
+              marginTop={5}
+              paddingLeft={960}
+              direction="row"
+              spacing={4}
+              align="center"
             >
-              <Heading marginTop={30} as="h5" size="md">
-                Asistencia de Aseguradora
-              </Heading>
-
-              <Stack
-                marginTop={5}
-                paddingLeft={960}
-                direction="row"
-                spacing={4}
-                align="center"
+              <Button
+                leftIcon={<AddIcon />}
+                colorScheme="facebook"
+                variant="solid"
+                onClick={onOpen}
               >
-                <Button
-                  leftIcon={<AddIcon />}
-                  colorScheme="facebook"
-                  variant="solid"
-                  onClick={onOpen}
-                >
-                  Nueva Asistencia
-                </Button>
-              </Stack>
-              <Modal
-                closeOnOverlayClick={false}
-                isOpen={isOpen}
-                onClose={onClose}
+                Nueva Asistencia
+              </Button>
+            </Stack>
+            <Modal
+              closeOnOverlayClick={false}
+              isOpen={isOpen}
+              onClose={onClose}
+            >
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader>Crea una Nueva Asistencia</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody pb={6}>
+                  <FormControl mt={4}>
+                    <FormLabel>Nombre del Servicio</FormLabel>
+                    <Input
+                      onChange={(e) => {
+                        setNombreAsistencia(e.target.value);
+                      }}
+                      placeholder="Nombre del Servicio"
+                    />
+                  </FormControl>
+                </ModalBody>
+
+                <ModalFooter>
+                  <Button colorScheme="blue" mr={3} onClick={guardarAsistencia}>
+                    Guardar
+                  </Button>
+                  <Button onClick={onClose}>Cancelar</Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
+
+            <TableContainer>
+              <Table
+                marginTop={50}
+                size="md"
+                variant="simple"
+                colorScheme="teal"
               >
-                <ModalOverlay />
-                <ModalContent>
-                  <ModalHeader>Crea una Nueva Asistencia</ModalHeader>
-                  <ModalCloseButton />
-                  <ModalBody pb={6}>
-                    <FormControl mt={4}>
-                      <FormLabel>Nombre del Servicio</FormLabel>
-                      <Input
-                        onChange={(e) => {
-                          setNombreAsistencia(e.target.value);
-                        }}
-                        placeholder="Nombre del Servicio"
-                      />
-                    </FormControl>
-                  </ModalBody>
-
-                  <ModalFooter>
-                    <Button
-                      colorScheme="blue"
-                      mr={3}
-                      onClick={guardarAsistencia}
-                    >
-                      Guardar
-                    </Button>
-                    <Button 
-                    onClick={onClose}
-                    >
-                      Cancelar
-                      </Button>
-                  </ModalFooter>
-                </ModalContent>
-              </Modal>
-              
-
-              <TableContainer>
-                <Table
-                  marginTop={50}
-                  size="md"
-                  variant="simple"
-                  colorScheme="teal"
-                >
-                  <Thead>
+                <Thead>
+                  <Tr>
+                    <Th>Nombre</Th>
+                    <Th>Opción</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {listaAsistencias.length == 0 ? (
                     <Tr>
-                      <Th>Nombre</Th>
-                      <Th>Opción</Th>
+                      <Td>NO DATA</Td>
                     </Tr>
-                  </Thead>
-                  <Tbody>
-                    {listaAsistencias.length == 0 ? (
-                      <Tr>
-                        <Td>NO DATA</Td>
-                      </Tr>
-                    ) : (
-                      listaAsistencias.map((asistencias, index) => {
-                        return (
-                          <Tr key={index}>
-                            <Td> {asistencias.nombre} </Td>
-                            <Td>
+                  ) : (
+                    listaAsistencias.map((asistencias, index) => {
+                      return (
+                        <Tr key={index}>
+                          <Td> {asistencias.nombre} </Td>
+                          <Td>
                             <IconButton
                               variant="ghost"
                               aria-label="edit"
                               icon={<EditIcon />}
-                              onClick={onOpenEdit}                           
+                              onClick={onOpenEdit}
                             />
 
                             <Modal
@@ -551,13 +545,13 @@ function AseguradoraVer() {
                             >
                               <ModalOverlay />
                               <ModalContent>
-                                <ModalHeader>
-                                  Editar Asistencia
-                                </ModalHeader>
+                                <ModalHeader>Editar Asistencia</ModalHeader>
                                 <ModalCloseButton />
                                 <ModalBody pb={6}>
                                   <FormControl mt={4}>
-                                    <FormLabel>Nombre de la Asistencia</FormLabel>
+                                    <FormLabel>
+                                      Nombre de la Asistencia
+                                    </FormLabel>
                                     <Input
                                       placeholder="Nombre de la Asistencia"
                                       defaultValue={dataA?.nombre}
@@ -575,20 +569,21 @@ function AseguradoraVer() {
                                   >
                                     Guardar
                                   </Button>
-                                  <Button onClick={onCloseEdit}>Cancelar</Button>
+                                  <Button onClick={onCloseEdit}>
+                                    Cancelar
+                                  </Button>
                                 </ModalFooter>
                               </ModalContent>
                             </Modal>
                           </Td>
-                          </Tr>
-                        );
-                      })
-                    )}
-                  </Tbody>
-                </Table>
-              </TableContainer>
-            </Box>
-          
+                        </Tr>
+                      );
+                    })
+                  )}
+                </Tbody>
+              </Table>
+            </TableContainer>
+          </Box>
         </form>
       </DesktopLayout>
     </div>
