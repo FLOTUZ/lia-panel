@@ -1,5 +1,6 @@
 import { ICotizacionTecnico, IImagen, ITicket } from "@/services/api.models";
 import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
+import Router from "next/router";
 import { ImagenesService } from "@/services/imagenes.service";
 import { TicketsService } from "@/services/tickets.service";
 import {
@@ -94,7 +95,8 @@ export const CrearCotizacionTecnico = ({
       });
  
     } else {
-    
+     
+
       toast({
         title: "Se acepto cotizacion Con exito",
         description: "Se aprobo cotizacion con exito",
@@ -104,6 +106,9 @@ export const CrearCotizacionTecnico = ({
         isClosable: true,
       });
     }
+
+    Router.back();
+
   };
 
   useEffect(() => {

@@ -1,6 +1,8 @@
 import { AcuerdoConformidadService } from "@/services/acuerdo-conformidad.service";
 import { IAcuerdoConformidad, IImagen, ITicket } from "@/services/api.models";
-import { ImagenesService } from "@/services/imagenes.service";
+import { ImagenesService } from "@/services/imagenes.service"
+import Router from "next/router";
+
 import { TicketsService } from "@/services/tickets.service";
 import {
   Box,
@@ -94,6 +96,8 @@ export const AcuerdoConformidadView = ({
         isClosable: true,
       });
     }
+    Router.back();
+
   };
 
   return (
