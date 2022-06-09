@@ -405,7 +405,11 @@ function EstadoVer() {
                                     <Input
                                       placeholder="Nombre de la Asistencia"
                                       defaultValue={dataCiudad?.nombre}
-                                      onChange={formCiudad.handleChange}
+                                      onChange={
+                                        (e) => {
+                                          const nombreM = e.target.value.toUpperCase();
+                                          formCiudad.setFieldValue("nombre", nombreM);
+                                        }}
                                     />
                                   </FormControl>
                                 </ModalBody>

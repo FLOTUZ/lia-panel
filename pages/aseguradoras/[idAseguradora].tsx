@@ -260,7 +260,10 @@ function AseguradoraVer() {
                       id="nombre"
                       variant="filled"
                       defaultValue={data?.nombre}
-                      onChange={formAseguradora.handleChange}
+                      onChange={(e) => {
+                        const nombreM = e.target.value.toUpperCase();
+                        formAseguradora.setFieldValue("nombre", nombreM);
+                      }}
                       type="Nombre"
                       placeholder="Aseguradora"
                     />
@@ -281,7 +284,7 @@ function AseguradoraVer() {
                       />
                       <Input
                         isRequired
-                        id="phone"
+                        id="telefono"
                         variant="filled"
                         defaultValue={data?.telefono}
                         onChange={formAseguradora.handleChange}
@@ -308,7 +311,7 @@ function AseguradoraVer() {
                           children={<IoSpeedometerOutline color="gray.300" />}
                         />
                         <Input
-                          id="kilometraje"
+                          id="kilometraje_permitido"
                           variant="filled"
                           defaultValue={data?.kilometraje_permitido}
                           onChange={formAseguradora.handleChange}
@@ -359,7 +362,7 @@ function AseguradoraVer() {
                           children={<MdOutlineHomeMax color="gray.300" />}
                         />
                         <Input
-                          id="telefono_servicio_domestico"
+                          id="telefono_domestico"
                           variant="filled"
                           defaultValue={data?.telefono_domestico}
                           onChange={formAseguradora.handleChange}
@@ -382,7 +385,7 @@ function AseguradoraVer() {
                         />
 
                         <Input
-                          id="telefono_servicio_vial"
+                          id="telefono_vial"
                           variant="filled"
                           defaultValue={data?.telefono_vial}
                           onChange={formAseguradora.handleChange}
@@ -555,7 +558,10 @@ function AseguradoraVer() {
                                     <Input
                                       placeholder="Nombre de la Asistencia"
                                       defaultValue={dataA?.nombre}
-                                      onChange={formAsistencia.handleChange}
+                                      onChange={(e) => {
+                                        const nombreM = e.target.value.toUpperCase();
+                                        formAsistencia.setFieldValue("nombre", nombreM);
+                                      }}
                                     />
                                   </FormControl>
                                 </ModalBody>
