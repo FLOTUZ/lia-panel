@@ -260,7 +260,10 @@ function AseguradoraVer() {
                       id="nombre"
                       variant="filled"
                       defaultValue={data?.nombre}
-                      onChange={formAseguradora.handleChange}
+                      onChange={(e) => {
+                        const nombreM = e.target.value.toUpperCase();
+                        formAseguradora.setFieldValue("nombre", nombreM);
+                      }}
                       type="Nombre"
                       placeholder="Aseguradora"
                     />
@@ -485,10 +488,11 @@ function AseguradoraVer() {
                   <ModalCloseButton />
                   <ModalBody pb={6}>
                     <FormControl mt={4}>
-                      <FormLabel>Nombre del Servicio</FormLabel>
+                      <FormLabel>Nombre de la Asistencia</FormLabel>
                       <Input
                         onChange={(e) => {
-                          setNombreAsistencia(e.target.value);
+                          const nombreM = e.target.value.toUpperCase();
+                          setNombreAsistencia(nombreM);
                         }}
                         placeholder="Nombre del Servicio"
                       />
@@ -561,7 +565,10 @@ function AseguradoraVer() {
                                     <Input
                                       placeholder="Nombre de la Asistencia"
                                       defaultValue={dataA?.nombre}
-                                      onChange={formAsistencia.handleChange}
+                                      onChange={(e) => {
+                                        const nombreM = e.target.value.toUpperCase();
+                                        formAsistencia.setFieldValue("nombre", nombreM);
+                                      }}
                                     />
                                   </FormControl>
                                 </ModalBody>
