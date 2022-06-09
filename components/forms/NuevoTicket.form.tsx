@@ -248,11 +248,11 @@ const NuevoTicket = () => {
     if (response.status == 200) {
       setAsesorList(data || []);
     } else {
-      console.log(response);
+      
     }
   };
   const guardarAsesor = async () => {
-    console.log(idAseguradora);
+    
 
     const data: IAsesor = {
       nombre: nombreAsesor,
@@ -341,7 +341,7 @@ const NuevoTicket = () => {
       ticket.anticipo = calculoAnticipo;
       ticket.total_salida = calculoTotalSalida;
       ticket.total = calculoMontoTotal;
-      console.log(ticket);
+      
 
       const servicio = new TicketsService();
       const respuestaTicketPost: any = await servicio.create(ticket);
@@ -772,10 +772,8 @@ const NuevoTicket = () => {
               size="lg"
               onChange={(e) => {
                 formTicket.handleChange(e);
-
                 formTicket.values.is_servicio_domestico == false
-                  ? formTicket.setFieldValue("is_servicio_domestico", true)
-                  : null;
+                
               }}
 
               isChecked={formTicket.values.is_servicio_foraneo}
@@ -831,7 +829,6 @@ const NuevoTicket = () => {
               onChange={(e) => {
                 setCiudadId(Number(e.target.value));
                 formTicket.setFieldValue("ciudadId", Number(e.target.value));
-                //console.log(e.target.value);
               }}
               onFocus={(e) => {
                 consultarCiudades();
@@ -927,7 +924,7 @@ const NuevoTicket = () => {
                 id="cobertura"
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 onChange={(e) => {
@@ -950,7 +947,7 @@ const NuevoTicket = () => {
                 variant="filled"
                 id="costo_gpo_lias"
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 min={0}
                 type="number"
                 borderColor="twitter.100"
@@ -1016,7 +1013,7 @@ const NuevoTicket = () => {
                 id="costo_de_kilometraje"
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 onChange={(e) => {
@@ -1172,13 +1169,12 @@ const NuevoTicket = () => {
                 children={<MdOutlineAttachMoney />}
               />
               <Input
-                //variant='unstyled'
                 isReadOnly
                 variant="filled"
                 id="deducible"
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 onChange={formTicket.handleChange}
@@ -1202,7 +1198,7 @@ const NuevoTicket = () => {
                 isReadOnly
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 fontWeight={"bold"}
@@ -1226,7 +1222,7 @@ const NuevoTicket = () => {
                 isReadOnly
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 fontWeight={"bold"}
@@ -1250,7 +1246,7 @@ const NuevoTicket = () => {
                 id="total"
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 fontWeight={"bold"}

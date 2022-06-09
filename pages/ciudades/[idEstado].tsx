@@ -28,6 +28,7 @@ import {
   Divider,
   Link,
   IconButton,
+  HStack,
 } from "@chakra-ui/react";
 import { AddIcon, ViewOffIcon, EditIcon } from "@chakra-ui/icons";
 import React, { useState, useEffect } from "react";
@@ -65,7 +66,7 @@ function EstadoVer() {
 
   const [listadoCiudades, setListadoCiudades] = useState<ICiudad[]>([]);
 
-  const [dataCiudad, setDataCiudad ] = useState<ICiudad>();
+  const [dataCiudad, setDataCiudad] = useState<ICiudad>();
 
   /*  AGREGAR CIUDAD AL ESTADO*/
   const consultarCiudad = async () => {
@@ -76,7 +77,6 @@ function EstadoVer() {
     if (response.status == 200) {
       setDataCiudad(data);
     } else {
-      console.log(response);
     }
   };
 
@@ -88,7 +88,6 @@ function EstadoVer() {
     if (response.status == 200) {
       setListadoCiudades(data);
     } else {
-      console.log(response);
     }
   };
 
@@ -111,6 +110,7 @@ function EstadoVer() {
         duration: 9000,
         isClosable: true,
       });
+
     } else {
       toast({
         title: "Oops.. Algo salio mal",
@@ -142,7 +142,6 @@ function EstadoVer() {
       if (response.status == 200) {
         setListadoCiudades(data || []);
       } else {
-        console.log(response);
       }
     };
 
@@ -182,6 +181,7 @@ function EstadoVer() {
           status: "success",
           description: `${respuesta.Estado} guardado`,
         });
+        router.push("/ciudades");
       }
     },
   });
@@ -237,7 +237,7 @@ function EstadoVer() {
             rounded="md"
             bg="white"
           >
-            <Stack paddingLeft={"63%"}>
+            <HStack spacing={4} w={"50%"}>
               <Link href={"/ciudades"}>
                 <Button
                   leftIcon={<ViewOffIcon />}
@@ -248,7 +248,7 @@ function EstadoVer() {
                   Ver Listado de Estados
                 </Button>
               </Link>
-            </Stack>
+            </HStack>
 
             <Stack spacing={4}>
               <InputGroup>
@@ -282,11 +282,11 @@ function EstadoVer() {
               <Button
                 id="guardar"
                 type="submit"
-                isLoading={cargando}
-                colorScheme="facebook"
+
+                colorScheme="whatsapp"
                 variant="solid"
               >
-                Acualizar
+                Actualizar
               </Button>
 
               <Button
@@ -385,7 +385,7 @@ function EstadoVer() {
                               variant="ghost"
                               aria-label="edit"
                               icon={<EditIcon />}
-                              onClick={onOpenEdit}                           
+                              onClick={onOpenEdit}
                             />
 
                             <Modal

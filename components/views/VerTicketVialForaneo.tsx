@@ -102,7 +102,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
 
     const data = respuesta.data as ICotizacionTecnico;
     setCotizacion(data);
-    console.log(data);
+    
     
 
     data ? setMostrarCotizacion(true) : setMostrarCotizacion(false);
@@ -113,7 +113,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
     const respuesta = await service.acuerdoConformidadByTicket(ticket.id!);
 
     const data = respuesta.data as IAcuerdoConformidad;
-    console.log(respuesta);
+    
     
 
     setAcuerdoConformidad(data);
@@ -387,7 +387,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 id="cobertura"
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 max={2}
                 borderColor="twitter.100"
@@ -408,7 +408,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 isReadOnly
                 id="costo_gpo_lias"
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 min={0}
                 type="number"
                 borderColor="twitter.100"
@@ -445,7 +445,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 id="kilometraje"
                 min={0}
                 placeholder="0"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 value={ticket.kilometraje}
@@ -468,7 +468,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 id="costo_de_kilometraje"
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 value={ticket.costo_de_kilometraje}
@@ -504,7 +504,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 id="costo_por_caseta"
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 value={ticket.costo_por_caseta}
@@ -527,7 +527,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 id="deducible"
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 fontWeight={"bold"}
@@ -550,7 +550,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 isReadOnly
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 fontWeight={"bold"}
@@ -573,7 +573,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 isReadOnly
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 fontWeight={"bold"}
@@ -596,7 +596,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 id="total"
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 fontWeight={"bold"}

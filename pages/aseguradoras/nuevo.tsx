@@ -88,7 +88,6 @@ function AseguradoraNueva() {
     if (respuesta.status == 200) {
       setListadoAsistencias(data.Asistencia || []);
     } else {
-      console.log(respuesta);
     }
   };
 

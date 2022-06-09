@@ -33,13 +33,10 @@ function UsuarioVer() {
     if (!found) {
       arr.push(String(id));
       setServicios(arr);
-      console.log(servicios);
     } else {
       for (let i = 0; i < arr.length; i++) {
         if (arr[i] == String(id)) {
           arr.splice(i, 1);
-
-          console.log(arr);
           setServicios(arr);
         }
       }

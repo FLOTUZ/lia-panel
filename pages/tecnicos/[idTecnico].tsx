@@ -172,11 +172,9 @@ function TecnicoNuevo() {
       const data = {
         ...values,
       };
-      console.log(data);
 
       const service = new TecnicoService();
       const respuesta = await service.update(data, Number(idTecnico));
-      console.log(respuesta);
       const dataUpdate = respuesta.data as ITecnico;
       setTecnico(dataUpdate);
 
@@ -214,8 +212,6 @@ function TecnicoNuevo() {
 
       const service = new UsuariosService();
       const respuesta = await service.update(datos, Number(usuarioId));
-console.log(respuesta );
-console.log(datos );
 
 
       const dataUpdate = respuesta.data as IUsuario;
@@ -445,7 +441,6 @@ console.log(datos );
                 <Stack pl={6} mt={1} spacing={1}>
                   <CheckboxGroup
                     onChange={(checks) => {
-                      console.log(checks);
                       formTecnico.setFieldValue("servicio", checks);
                     }}
                   >

@@ -108,7 +108,7 @@ export function VerTicketDomesticoForaneo({
     const data = respuesta.data as ICotizacionTecnico;
 
     setCotizacion(data);
-    console.log(data);
+    
 
     data ? setMostrarCotizacion(true) : setMostrarCotizacion(false);
   };
@@ -120,7 +120,7 @@ export function VerTicketDomesticoForaneo({
     const data = respuesta.data as IAcuerdoConformidad;
 
     setAcuerdoConformidad(data);
-    console.log({acuerdo: data});
+    
 
     data
       ? setMostrarAcuerdoConformidad(true)
@@ -170,7 +170,7 @@ export function VerTicketDomesticoForaneo({
           />
         </SimpleGrid>
 
-        <SimpleGrid columns={[1, 1, 1]} spacing="20px">
+        <SimpleGrid columns={[1, 1, 1]} >
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="fecha_llamada">Fecha de la Llamada</FormLabel>
             <Input
@@ -422,7 +422,7 @@ export function VerTicketDomesticoForaneo({
                 isReadOnly
                 id="costo_gpo_lias"
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 min={0}
                 type="number"
                 borderColor="twitter.100"
@@ -446,7 +446,7 @@ export function VerTicketDomesticoForaneo({
                 id="kilometraje"
                 min={0}
                 placeholder="0"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 value={ticket.kilometraje}
@@ -469,7 +469,7 @@ export function VerTicketDomesticoForaneo({
                 id="costo_de_kilometraje"
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 value={ticket.costo_de_kilometraje}
@@ -503,7 +503,7 @@ export function VerTicketDomesticoForaneo({
                 id="costo_por_caseta"
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 value={ticket.costo_por_caseta}
@@ -526,7 +526,7 @@ export function VerTicketDomesticoForaneo({
                 id="deducible"
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 fontWeight={"bold"}
@@ -549,7 +549,7 @@ export function VerTicketDomesticoForaneo({
                 isReadOnly
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 fontWeight={"bold"}
@@ -572,7 +572,7 @@ export function VerTicketDomesticoForaneo({
                 isReadOnly
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 fontWeight={"bold"}
@@ -595,7 +595,7 @@ export function VerTicketDomesticoForaneo({
                 id="total"
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 fontWeight={"bold"}

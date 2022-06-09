@@ -57,7 +57,7 @@ export const AcuerdoConformidadView = ({
       acuerdoconformidad.id!
     );
 
-    console.log(respuestaAcuerdo);
+    
 
     const payloadTicket = {
       estado: "FINALIZADO",
@@ -70,13 +70,13 @@ export const AcuerdoConformidadView = ({
     );
     const dataTicket = respuestaTicket.data as IAcuerdoConformidad;
 
-    console.log(respuestaTicket);
+    
 
     if (respuestaAcuerdo.status == 202) {
       onClose();
       toast({
-        title: "Se acepto cotizacion Con exito",
-        description: "Se aprobo cotizacion con exito",
+        title: "Se Aceptó Cotización Con Éxito",
+        description: "Se Aprobó Cotización con Éxito",
         position:"bottom-right",
         status: "success",
         duration: 9000,
@@ -84,7 +84,7 @@ export const AcuerdoConformidadView = ({
       });
     } else {
       toast({
-        title: "Oops.. Algo salio mal",
+        title: "Oops.. Algo Salio Mal",
         description: respuestaAcuerdo.message,
         position:"bottom-right",
         status: "error",
@@ -269,9 +269,9 @@ export const AcuerdoConformidadView = ({
               </Button>
             )}
 
-            <Button variant="outline" colorScheme={"red"}>
+            {/*<Button variant="outline" colorScheme={"red"}>
               Rechazar
-            </Button>
+            </Button>*/}
             <Button
               marginLeft={"50%"}
               variant="outline"
@@ -282,6 +282,7 @@ export const AcuerdoConformidadView = ({
             >
               Imprimir acuerdo
             </Button>
+
           </Box>
         </SimpleGrid>
       </Box>

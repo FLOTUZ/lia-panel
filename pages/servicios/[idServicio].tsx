@@ -59,7 +59,7 @@ function ServicioVer() {
 
       const service = new ServiciosService();
       const respuesta = await service.update(data, Number(idServicio));
-      console.log(data);
+      
 
       const dataUpdate = respuesta.data as IServicio;
       setData(dataUpdate);
@@ -116,7 +116,6 @@ function ServicioVer() {
                     colorScheme="green"
                     defaultValue={data?.tipo}
                     onChange={(checks) => {
-                      console.log(checks);
                       formServicio.setFieldValue(
                         'tipo',
                         checks

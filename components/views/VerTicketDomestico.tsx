@@ -109,7 +109,6 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
     const data = respuesta.data as IAcuerdoConformidad;
 
     setAcuerdoConformidad(data);
-    console.log(data);
 
     data
       ? setMostrarAcuerdoConformidad(true)
@@ -390,7 +389,7 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
                 id="cobertura"
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 max={2}
                 borderColor="twitter.100"
@@ -411,7 +410,7 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
                 isReadOnly
                 id="costo_gpo_lias"
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 min={0}
                 type="number"
                 borderColor="twitter.100"
@@ -435,7 +434,7 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
                 id="kilometraje"
                 min={0}
                 placeholder="0"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 value={ticket.kilometraje}
@@ -458,7 +457,7 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
                 id="costo_de_kilometraje"
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 value={ticket.costo_de_kilometraje}
@@ -481,7 +480,7 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
                 id="deducible"
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 fontWeight={"bold"}
@@ -504,7 +503,7 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
                 isReadOnly
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 fontWeight={"bold"}
@@ -527,7 +526,7 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
                 isReadOnly
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 fontWeight={"bold"}
@@ -550,7 +549,7 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
                 id="total"
                 min={0}
                 placeholder="0.00"
-                paddingLeft={8}
+                paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
                 fontWeight={"bold"}

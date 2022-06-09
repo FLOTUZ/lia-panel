@@ -12,25 +12,31 @@ import {
   Tbody,
   Box,
   Button,
-  Input,
-  InputLeftAddon,
-  InputGroup,
   IconButton,
   FormControl,
+  Modal,
+  useDisclosure,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalFooter,
+  ModalBody,
+  Stack,
 } from "@chakra-ui/react";
 import {
   AddIcon,
-  EditIcon,
-  SearchIcon,
-  ViewIcon,
 } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { ITicket } from "@/services/api.models";
 import { TicketsService } from "@/services/tickets.service";
+import { BsPrinter } from "react-icons/bs";
+import Printer from "components/printer/printer";
+import TicketImprimible from "components/imprimibles/ticket.imprimible";
 
 
 export default function ListadoTickets() {
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
   /*LISTADO PARA LOS TICKETS*/
   const [listadoTickets, setListadoTickets] = useState<ITicket[]>([])
   useEffect(() => {
@@ -42,7 +48,6 @@ export default function ListadoTickets() {
       if (respuesta.status == 200) {
         setListadoTickets(data);
       } else {
-        console.log(respuesta)
       }
     };
     consultaTickets();
@@ -89,26 +94,6 @@ export default function ListadoTickets() {
           </FormControl>
         </Box>
 
-        <Box marginLeft="25%" p={4}>
-          <InputGroup>
-            <InputLeftAddon>
-              <IconButton
-                disabled
-                aria-label="Search database"
-                icon={<SearchIcon />}
-              />{" "}
-            </InputLeftAddon>
-
-            <Input
-              htmlSize={60}
-              width="auto"
-              type="text"
-              placeholder="Buscar ticket..."
-              className="search"
-            />
-          </InputGroup>
-        </Box>
-
         <TableContainer>
           <Table variant="simple" colorScheme="teal">
             <TableCaption>Tickets</TableCaption>
@@ -133,16 +118,42 @@ export default function ListadoTickets() {
                       <Td>{ticket.fecha_llamada}</Td>
                       <Td>{ticket.problematica}</Td>
                       <Td>
-                        <Link href={`/tickets/${ticket.id}`}>
-                          <a>
-                            <IconButton
-                              variant="outline"
-                              aria-label="edit"
-                              icon={<ViewIcon/>}
-                            />
-                          </a>
-                        </Link>
 
+                        <IconButton
+                          variant="outline"
+                          aria-label="edit"
+                          icon={<BsPrinter />}
+                          onClick={onOpen}
+                        />
+
+                        <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
+                          <ModalOverlay/>
+                          <ModalContent>
+                            <ModalHeader>Impresión</ModalHeader>
+                            <ModalCloseButton />
+                            <ModalBody>
+                              <Printer doc={<TicketImprimible ticket={ticket} />} />
+                            </ModalBody>
+                            <ModalFooter>
+                              <Stack
+                                align="center"
+                                paddingLeft={"60%"}
+                                spacing={4}
+                                direction="row"
+                              >
+                                <Button
+                                  paddingLeft={10}
+                                  paddingRight={10}
+                                  colorScheme="red"
+                                  variant="outline"
+                                  onClick={onClose}
+                                >
+                                  Cerrar
+                                </Button>
+                              </Stack>
+                            </ModalFooter>
+                          </ModalContent>
+                        </Modal>
                       </Td>
                     </Tr>
                   )

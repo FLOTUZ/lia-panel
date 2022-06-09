@@ -28,6 +28,7 @@ import {
   Stack,
   Radio,
   useToast,
+  HStack,
 } from "@chakra-ui/react";
 import {
   AddIcon,
@@ -54,7 +55,7 @@ function ServiciosListado() {
   const [nombreServicio, setNombreServicio] = useState("");
   const [tipoServicio, setTipoServicio] = useState("");
   const [listadoServicios, setListadoServicios] = useState<IServicio[]>([]);
-  
+
   const router = useRouter();
 
   const [cargando, setCargando] = useState(false);
@@ -77,17 +78,17 @@ function ServiciosListado() {
       toast({
         title: "Servicio nuevo agregado con exito",
         description: "El servicio de agrego con exito",
-        position:"bottom-right",
+        position: "bottom-right",
         status: "success",
         duration: 9000,
         isClosable: true,
       });
-      
+
     } else {
       toast({
         title: "Oops.. Algo salio mal",
         description: response.message,
-        position:"bottom-right",
+        position: "bottom-right",
         status: "error",
         duration: 9000,
         isClosable: true,
@@ -105,12 +106,11 @@ function ServiciosListado() {
     if (respuesta.status == 200) {
       setListadoServicios(data);
     } else {
-      console.log(respuesta);
     }
   };
 
   useEffect(() => {
-  
+
 
     consultarServicios();
   }, []);
@@ -220,16 +220,17 @@ function ServiciosListado() {
           rounded="md"
           bg="white"
         >
-          {" "}
-          <Button
-            onClick={onOpen}
-            leftIcon={<AddIcon />}
-            colorScheme="facebook"
-            variant="solid"
-            marginLeft={"80%"}
-          >
-            Nuevo Servicio
-          </Button>
+          <HStack spacing={4} w={"50%"}>
+            <Button
+              onClick={onOpen}
+              leftIcon={<AddIcon />}
+              colorScheme="facebook"
+              variant="solid"
+            >
+              Nuevo Servicio
+            </Button>
+          </HStack>
+
         </Box>
 
         <Box marginLeft={"1%"}>
@@ -289,7 +290,7 @@ function ServiciosListado() {
                 }}
               />
               <FormLabel padding={1}>Tipo del Servicio</FormLabel>
-              
+
               <RadioGroup colorScheme="green">
                 <Stack
                   padding={2}
@@ -352,7 +353,6 @@ function ServiciosListado() {
                 <FormLabel padding={1} >Tipo del servicio</FormLabel>
                 <RadioGroup colorScheme='green'
                   onChange={(checks) => {
-                    console.log(checks);
                     formServicio.setFieldValue(
                       'tipo',
                       checks

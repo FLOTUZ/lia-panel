@@ -109,8 +109,6 @@ function UsuarioNuevo() {
     const respuestaUsuario = await serviceUsuario.create(dataUsuario);
     const usuarioGuardado = respuestaUsuario.data as IUsuario;
 
-    console.log(usuarioGuardado);
-
     if (respuestaUsuario.status != 201) {
       setCargando(false);
       toast({
@@ -143,7 +141,6 @@ function UsuarioNuevo() {
       const respuestaTecnico = await serviceTecnico.create(dataTecnico);
       const tecnicoGuardado = respuestaTecnico.data as ITecnico;
 
-      console.log(dataTecnico);
 
       if (respuestaTecnico.status != 201) {
         setCargando(false);
@@ -165,7 +162,6 @@ function UsuarioNuevo() {
           tecnicoGuardado.id || 0,
           servicios
         );
-        console.log(respuesta);
       }
     }
 

@@ -53,7 +53,7 @@ function EstadoNuevo() {
     if (respuesta.status == 200) {
       setListadoCiudades(data);
     } else {
-      console.log(respuesta);
+      
     }
   };
 
@@ -106,7 +106,7 @@ function EstadoNuevo() {
     const response = await estado.create(data);
     const estad = response.data as IEstado;
     setEstadoGuardado(estad);
-    console.log(data);
+    
 
 
     if (response.status === 201) {

@@ -65,7 +65,7 @@ export const CrearCotizacionTecnicoManual = ({
     const cotizacion = response.data as ICotizacionTecnico;
 
     setCrearCotizacion(cotizacion);
-    console.log(data);
+
     if (response.status === 201) {
       const ticketPayload = { estado: "COTIZADO" } as ITicket;
       const serviceTicket = new TicketsService();
@@ -74,7 +74,6 @@ export const CrearCotizacionTecnicoManual = ({
         ticket.id!
       );
       const ticketData = response.data as ITicket;
-      console.log(responseTicket);
       
       onClose();
       toast({

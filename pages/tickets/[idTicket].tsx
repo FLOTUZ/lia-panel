@@ -25,7 +25,6 @@ import {
   useDisclosure,
   useToast,
   Box,
-  color,
   Center,
   Stack,
 } from "@chakra-ui/react";
@@ -91,7 +90,6 @@ function TicketVer() {
     const service = new TicketsService();
     const respuesta = await service.getById(Number(idTicket));
     const data = respuesta.data as ITicket;
-    console.log(data);
 
     setTicket(data);
   };
@@ -116,8 +114,6 @@ function TicketVer() {
     const data = { estado: "TOMADO" } as ITicket;
     const service = new TicketsService();
     const respuesta = await service.update(data, ticket?.id || 0);
-    console.log(data)
-
 
     toast({
       title: "Técnico Asignado.",
@@ -146,15 +142,15 @@ function TicketVer() {
   const getVista = () => {
     if (ticket?.asistencia_vial && ticket?.is_servicio_foraneo) {
       setTipoVista(<VerTicketVialForaneo ticket={ticket} />);
-      console.log("Es vial con foraneo");
+      
     } else if (ticket?.is_servicio_domestico && ticket?.is_servicio_foraneo) {
       setTipoVista(<VerTicketDomesticoForaneo ticket={ticket} />);
-      console.log("Es domestico Foraneo");
+      
     } else if (ticket?.asistencia_vial) {
       setTipoVista(<VerTicketVial ticket={ticket} />);
     } else if (ticket?.is_servicio_domestico) {
       setTipoVista(<VerTicketDomestico ticket={ticket} />);
-      console.log("Es solo domestico");
+      
     } else {
       setTipoVista(<></>);
     }
@@ -316,7 +312,6 @@ function TicketVer() {
                 borderColor="twitter.100"
                 onChange={(e) => {
                   consultarTecnicosByServicio(Number(e.target.value));
-                  console.log(tecnicosByServicios?.nombre);
                 }}
               >
                 {serviciosList.length !== 0

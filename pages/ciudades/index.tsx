@@ -34,7 +34,6 @@ function EstadosListado() {
       if (respuesta.status == 200) {
         setListadoEstados(data);
       } else {
-        console.log(respuesta);
       }
     };
 

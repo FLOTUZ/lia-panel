@@ -22,6 +22,7 @@ import {
   Td,
   Badge,
   useToast,
+  HStack,
 } from "@chakra-ui/react";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -71,19 +72,20 @@ function UsuariosListado() {
           rounded="md"
           bg="white"
         >
-          <Link href={"/usuarios/nuevo"}>
-            <a>
-              {" "}
-              <Button
-                leftIcon={<MdPersonAdd />}
-                colorScheme="facebook"
-                variant="solid"
-                marginLeft={"80%"}
-              >
-                Nuevo Usuario
-              </Button>
-            </a>
-          </Link>
+          <HStack spacing={4} w={"50%"}>
+            <Link href={"/usuarios/nuevo"}>
+              <a>
+                {" "}
+                <Button
+                  leftIcon={<MdPersonAdd />}
+                  colorScheme="facebook"
+                  variant="solid"
+                >
+                  Nuevo Usuario
+                </Button>
+              </a>
+            </Link>
+          </HStack>
         </Box>
 
         <TableContainer>
@@ -131,7 +133,7 @@ function UsuariosListado() {
                           colorScheme={"red"}
                           icon={<AttachmentIcon color={"gray"} />}
                         />*/}
-                        
+
                       </Td>
                     </Tr>
                   );

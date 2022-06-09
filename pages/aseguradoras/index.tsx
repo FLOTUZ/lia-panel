@@ -18,6 +18,8 @@ import {
   IconButton,
   FormControl,
   Stack,
+  SimpleGrid,
+  HStack,
 } from "@chakra-ui/react";
 import { AddIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
@@ -38,7 +40,7 @@ export default function AseguradorasListado() {
       if (respuesta.status == 200) {
         setListadoAseguradoras(data);
       } else {
-        console.log(respuesta);
+
       }
     };
     consultaAseguradoras();
@@ -67,29 +69,10 @@ export default function AseguradorasListado() {
           bg="white"
         >
           <FormControl>
-            <Stack direction={["column", "row"]} spacing="24px">
-              <Box marginLeft="5%" >
-                <InputGroup>
-                  <InputLeftAddon>
-                    <IconButton
-                      disabled
-                      aria-label="Search database"
-                      icon={<SearchIcon />}
-                    />{" "}
-                  </InputLeftAddon>
-
-                  <Input
-                    htmlSize={60}
-                    width="auto"
-                    type="text"
-                    placeholder="Buscar aseguradoras..."
-                    className="search"
-                  />
-                </InputGroup>
-              </Box>
+            <HStack spacing={4} w={"50%"}>
               <Link href={"/aseguradoras/nuevo"}>
                 <Button
-                  marginLeft={10}
+
                   leftIcon={<AddIcon />}
                   colorScheme="facebook"
                   variant="solid"
@@ -97,7 +80,7 @@ export default function AseguradorasListado() {
                   Nueva Aseguradora
                 </Button>
               </Link>
-            </Stack>
+            </HStack>
           </FormControl>
         </Box>
 

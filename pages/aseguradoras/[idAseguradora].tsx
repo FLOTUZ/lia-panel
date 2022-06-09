@@ -89,7 +89,6 @@ function AseguradoraVer() {
     if (response.status == 200) {
       setListaAsistencias(data || []);
     } else {
-      console.log(response);
     }
   };
 
@@ -145,7 +144,6 @@ function AseguradoraVer() {
       if (response.status == 200) {
         setListaAsistencias(data || []);
       } else {
-        console.log(response);
       }
     };
 

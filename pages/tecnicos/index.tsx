@@ -13,6 +13,7 @@ import {
   Button,
   IconButton,
   useToast,
+  HStack,
 } from "@chakra-ui/react";
 import { AddIcon, EditIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
@@ -29,13 +30,11 @@ function TenicosListado() {
   const consultarTecnicos = async () => {
     const service = new TecnicoService();
     const respuesta = await service.getAll();
-    console.log(respuesta);
-    
 
     if (respuesta.status == 200) {
       const data = respuesta.data as ITecnico[];
       setListadoTenicos(data);
-      
+
     }
   };
   useEffect(() => {
@@ -64,19 +63,21 @@ function TenicosListado() {
           rounded="md"
           bg="white"
         >
-          <Link href={"/tecnicos/nuevo"}>
-            <a>
-              {" "}
-              <Button
-                leftIcon={<AddIcon />}
-                colorScheme="facebook"
-                variant="solid"
-                marginLeft={"80%"}
-              >
-                Nuevo Técnico
-              </Button>
-            </a>
-          </Link>
+          <HStack spacing={4} w={"50%"}>
+            <Link href={"/tecnicos/nuevo"}>
+              <a>
+                {" "}
+                <Button
+                  leftIcon={<AddIcon />}
+                  colorScheme="facebook"
+                  variant="solid"
+                  marginLeft={"80%"}
+                >
+                  Nuevo Técnico
+                </Button>
+              </a>
+            </Link>
+          </HStack>
         </Box>
 
         <TableContainer>
@@ -90,7 +91,7 @@ function TenicosListado() {
                 <Th>Teléfono</Th>
                 <Th>Servicio Principal</Th>
                 <Th>Opciones</Th>
-                
+
               </Tr>
             </Thead>
             <Tbody>
@@ -104,8 +105,8 @@ function TenicosListado() {
                       <Td>{t.ViveEn?.nombre}</Td>
                       <Td>{t.telefono}</Td>
                       <Td>{t.Servicio[0]?.nombre}</Td>
-                      
-                    <Td>
+
+                      <Td>
                         <Link href={`/tecnicos/${t.id}`}>
                           <a>
                             <IconButton
@@ -115,7 +116,7 @@ function TenicosListado() {
                             />{" "}
                           </a>
                         </Link>
-                  </Td>
+                      </Td>
                     </Tr>
                   );
                 })

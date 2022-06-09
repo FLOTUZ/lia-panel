@@ -70,7 +70,6 @@ export const CrearCotizacionTecnico = ({
       cotizacion.id!
     );
 
-    console.log(respuestaCotizacion);
 
     const payloadTicket = {
       estado: "EN PROCESO",
@@ -183,6 +182,7 @@ export const CrearCotizacionTecnico = ({
               <Input
                 variant="unstyled"
                 isReadOnly
+                paddingLeft={5}
                 placeholder="Costo de Mano de Obra"
                 id="costo_de_mano_de_obra"
                 borderColor="twitter.100"
@@ -203,6 +203,7 @@ export const CrearCotizacionTecnico = ({
               <Input
                 variant="unstyled"
                 isReadOnly
+                paddingLeft={5}
                 placeholder="Costo de Materiale"
                 id="costo_de_materiales"
                 borderColor="twitter.100"
@@ -240,7 +241,6 @@ export const CrearCotizacionTecnico = ({
         </Center>
 
         <Box marginTop={"40px"} margin={"50px"} height="80px">
-          {console.log(cotizacion)}
           {cotizacion.isAprobado ? null : (
             <Button
               margin={"50px"}
