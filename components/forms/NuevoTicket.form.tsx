@@ -660,7 +660,7 @@ const NuevoTicket = () => {
             value={formTicket.values.problematica}
           />
         </FormControl>
-
+        
         <FormControl paddingTop={15}>
           <FormLabel htmlFor="servicioId">
             Seleccione Servicios Relacionados:
@@ -672,7 +672,7 @@ const NuevoTicket = () => {
               setServiciosSeleccionados(e as string[]);
             }}
           >
-            <SimpleGrid  padding={5} minChildWidth="120px" spacing="40px">
+            <SimpleGrid  columns={[2, null, 3]}  minChildWidth="180px" spacing="50px">
               {serviciosList?.length !== 0
                 ? serviciosList.map((servicio, index) => {
                     return (
