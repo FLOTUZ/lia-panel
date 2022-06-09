@@ -9,6 +9,7 @@ import {
   ITicket,
 } from "@/services/api.models";
 import { FaBeer, FaMoneyBill, FaUserShield } from "react-icons/fa";
+import {RiGpsLine} from "react-icons/ri"
 import { RiFileUserFill } from "react-icons/ri";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";
@@ -267,6 +268,7 @@ const NuevoTicket = () => {
       toast({
         title: "Asesor Agregado con Exito.",
         description: "El asesor se Agrego con Exito.",
+        position: "bottom-right",
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -274,6 +276,7 @@ const NuevoTicket = () => {
     } else {
       toast({
         title: "Oops.. Algo salio mal",
+        position: "bottom-right",
         description: response.message,
         status: "error",
         duration: 9000,
@@ -290,6 +293,7 @@ const NuevoTicket = () => {
     toast({
       title: "Técnico Asignado.",
       description: "Se Asigno el servicio al Técnico",
+      position: "bottom-right",
       status: "success",
       duration: 9000,
       isClosable: true,
@@ -359,6 +363,7 @@ const NuevoTicket = () => {
           toast({
             id: "altaExitosa",
             title: "Ticket creado",
+            position: "bottom-right",
             description: "El ticket se ha creado correctamente",
             status: "success",
           });
@@ -367,6 +372,7 @@ const NuevoTicket = () => {
         toast({
           id: "altaError",
           title: "Error: ticket no se ha podido guardar",
+          position: "bottom-right",
           description: `El ticket no se ha podido guardar: ${respuestaTicketPost.message}`,
           status: "error",
         });
@@ -912,62 +918,20 @@ const NuevoTicket = () => {
           ) : null}
         </SimpleGrid>
 
-        <Center>
-          <FormControl isRequired paddingTop={15}>
-            <FormLabel htmlFor="cobertura">
-              Monto de Cobertura del Seguro
-            </FormLabel>
-            <InputGroup>
-              <InputLeftAddon
-                pointerEvents="none"
-                children={<MdOutlineAttachMoney />}
-              />
-              <Input
-                variant="filled"
-                id="cobertura"
-                min={0}
-                placeholder="0.00"
-                paddingLeft={8}
-                type="number"
-                borderColor="twitter.100"
-                onChange={(e) => {
-                  setCobertura(Number(e.target.value));
-                  formTicket.handleChange(e);
-                }}
-                value={formTicket.values.cobertura}
-              />
-            </InputGroup>
-          </FormControl>
 
-          <FormControl isRequired paddingTop={15} paddingLeft={5}>
-            <FormLabel htmlFor="costo_gpo_lias">Costo Grupo Lías</FormLabel>
-            <InputGroup>
-              <InputLeftAddon
-                pointerEvents="none"
-                children={<MdOutlineAttachMoney />}
-              />
-              <Input
-                variant="filled"
-                id="costo_gpo_lias"
-                placeholder="0.00"
-                paddingLeft={8}
-                min={0}
-                type="number"
-                borderColor="twitter.100"
-                onChange={(e) => {
-                  setCostoGPOLIAS(Number(e.target.value));
-                  formTicket.handleChange(e);
-                }}
-                value={formTicket.values.costo_gpo_lias}
-              />
-            </InputGroup>
-          </FormControl>
-        </Center>
 
+
+       
         <SimpleGrid columns={[1, 1, 3]} spacing={4}>
-          {formTicket.values.asistencia_vial === true ? (
+          {formTicket.values.asistencia_vial  === true?(
             <FormControl paddingTop={15} isRequired>
+
               <FormLabel htmlFor="calle">Coordenadas</FormLabel>
+              <InputGroup>
+              <InputLeftAddon
+                  pointerEvents="none"
+                  children={<RiGpsLine />}
+                />
               <Input
                 variant="filled"
                 id="calle"
@@ -976,6 +940,7 @@ const NuevoTicket = () => {
                 onChange={formTicket.handleChange}
                 value={formTicket.values.calle}
               />
+              </InputGroup>
             </FormControl>
           ) : null}
 
@@ -1001,6 +966,7 @@ const NuevoTicket = () => {
               />
             </InputGroup>
           </FormControl>
+
 
           <FormControl paddingTop={15} isRequired>
             <FormLabel htmlFor="costoPorKilometro">
@@ -1031,7 +997,6 @@ const NuevoTicket = () => {
             </InputGroup>
           </FormControl>
         </SimpleGrid>
-
         <SimpleGrid columns={[1, 1, 2]} spacing={4}>
           {formTicket.values.is_servicio_foraneo === true ? (
             <FormControl paddingTop={15}>
@@ -1138,8 +1103,9 @@ const NuevoTicket = () => {
         </SimpleGrid>
 
         {/*SERVICIOS FORANEOS */}
-        <SimpleGrid columns={[1, 1, 1]} spacing={4}>
-          {formTicket.values.asistencia_vial === true ? (
+
+        <SimpleGrid paddingTop={5} columns={[1, 2, 4]} spacing="40px">
+        {formTicket.values.asistencia_vial && formTicket.values.is_servicio_foraneo=== true ? (
             <FormControl paddingTop={15}>
               <FormLabel htmlFor="banderazo">Banderazo</FormLabel>
               <InputGroup>
@@ -1161,9 +1127,6 @@ const NuevoTicket = () => {
               </InputGroup>
             </FormControl>
           ) : null}
-        </SimpleGrid>
-
-        <SimpleGrid paddingTop={5} columns={[1, 2, 4]} spacing="40px">
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="deducible">Deducible</FormLabel>
             <InputGroup>
@@ -1189,29 +1152,31 @@ const NuevoTicket = () => {
             </InputGroup>
           </FormControl>
 
-          <FormControl isRequired paddingTop={15}>
-            <FormLabel htmlFor="anticipo">Anticipo 60%</FormLabel>
-            <InputGroup>
-              <InputLeftAddon
-                pointerEvents="none"
-                children={<MdOutlineAttachMoney />}
-              />
-              <Input
-                variant="filled"
-                id="anticipo"
-                isReadOnly
-                min={0}
-                placeholder="0.00"
-                paddingLeft={8}
-                type="number"
-                borderColor="twitter.100"
-                fontWeight={"bold"}
-                textColor={"red"}
-                onChange={formTicket.handleChange}
-                value={calculoAnticipo}
-              />
-            </InputGroup>
-          </FormControl>
+          {formTicket.values.asistencia_vial === false ? (
+            <FormControl isRequired paddingTop={15}>
+              <FormLabel htmlFor="anticipo">Anticipo 60%</FormLabel>
+              <InputGroup>
+                <InputLeftAddon
+                  pointerEvents="none"
+                  children={<MdOutlineAttachMoney />}
+                />
+                <Input
+                  variant="filled"
+                  id="anticipo"
+                  isReadOnly
+                  min={0}
+                  placeholder="0.00"
+                  paddingLeft={8}
+                  type="number"
+                  borderColor="twitter.100"
+                  fontWeight={"bold"}
+                  textColor={"red"}
+                  onChange={formTicket.handleChange}
+                  value={calculoAnticipo}
+                />
+              </InputGroup>
+            </FormControl>
+          ) : null}
 
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="total_salida">Total de Salida</FormLabel>

@@ -72,22 +72,24 @@ export const AcuerdoConformidadView = ({
 
     console.log(respuestaTicket);
 
-    if (respuestaAcuerdo.status == 202) {
+    if (respuestaTicket.status === 400) {
       onClose();
+      toast({
+        title: "Oops.. Algo salio mal",
+        description: respuestaTicket.message,
+        position:"bottom-right",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+ 
+    } else {
+    
       toast({
         title: "Se acepto cotizacion Con exito",
         description: "Se aprobo cotizacion con exito",
         position:"bottom-right",
         status: "success",
-        duration: 9000,
-        isClosable: true,
-      });
-    } else {
-      toast({
-        title: "Oops.. Algo salio mal",
-        description: respuestaAcuerdo.message,
-        position:"bottom-right",
-        status: "error",
         duration: 9000,
         isClosable: true,
       });
