@@ -108,6 +108,7 @@ function AseguradoraVer() {
         duration: 9000,
         isClosable: true,
       });
+
     } else {
       toast({
         title: "Oops.. Algo salio mal",
@@ -167,11 +168,11 @@ function AseguradoraVer() {
         ...values,
       };
 
+      console.log(data);
       const service = new AseguradoraService();
       const respuesta = await service.update(data, Number(idAseguradora));
 
-      console.log(respuesta);
-      
+
 
       const dataUpdate = respuesta.data as IAseguradora;
       setData(dataUpdate);
@@ -364,8 +365,12 @@ function AseguradoraVer() {
                           id="telefono_domestico"
                           variant="filled"
                           defaultValue={data?.telefono_domestico}
-                          onChange={formAseguradora.handleChange}
-                          type="phone"
+                          onChange={(e) => {
+                            formAseguradora.handleChange(e);
+                            console.log(formAseguradora.values.telefono_domestico);
+                            
+                          }}
+                          type="tel"
                           placeholder="Numero de Teléfono de servicio domestico"
                           value={formAseguradora.values.telefono_domestico}
                         />
@@ -504,7 +509,7 @@ function AseguradoraVer() {
                 </ModalBody>
 
                 <ModalFooter>
-                  <Button colorScheme="blue" mr={3} onClick={guardarAsistencia}>
+                  <Button colorScheme="whatsapp" mr={3} onClick={guardarAsistencia}>
                     Guardar
                   </Button>
                   <Button onClick={onClose}>Cancelar</Button>
@@ -570,7 +575,7 @@ function AseguradoraVer() {
 
                                 <ModalFooter>
                                   <Button
-                                    colorScheme="blue"
+                                    colorScheme="whatsapp"
                                     mr={3}
                                     type="submit"
                                     isLoading={cargando}
