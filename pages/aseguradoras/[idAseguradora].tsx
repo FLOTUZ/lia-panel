@@ -189,6 +189,7 @@ function AseguradoraVer() {
           status: "success",
           description: `${respuesta.Aseguradora} guardado`,
         });
+        router.push("/aseguradoras");
       }
     },
   });
@@ -245,7 +246,7 @@ function AseguradoraVer() {
               bg="white"
             >
               <Stack spacing={1}>
-                <FormControl>
+                <FormControl isRequired>
                   <FormLabel htmlFor="nombre">
                     Nombre de la aseguradora
                   </FormLabel>
@@ -273,7 +274,7 @@ function AseguradoraVer() {
                 </FormControl>
 
                 <InputGroup>
-                  <FormControl>
+                  <FormControl isRequired>
                     <FormLabel htmlFor="telefono">Teléfono</FormLabel>
                     <InputGroup>
                       <InputLeftElement
@@ -429,7 +430,7 @@ function AseguradoraVer() {
                   id="guardar"
                   type="submit"
                   isLoading={cargando}
-                  colorScheme="facebook"
+                  colorScheme="whatsapp"
                   variant="solid"
                 >
                   Actualizar
