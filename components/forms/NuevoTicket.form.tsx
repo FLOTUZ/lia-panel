@@ -157,14 +157,14 @@ const NuevoTicket = () => {
     setServiciosList(data);
   };
 
-  const consultarServiciosByTipo = async (id: number) => {
+  /*const consultarServiciosByTipo = async (id: number) => {
     const servicio = new ServiciosService();
     const respuesta = await servicio.getServiciosByTipo(id);
     const data = respuesta.data as IServicio;
 
-    setTecnicosByServicios(data);
+    setServiciosByTipo(data);
   };
-
+*/
   const consultarTecnicos = async () => {
     const servicio = new TecnicoService();
     const respuesta = await servicio.getAll();
@@ -247,11 +247,11 @@ const NuevoTicket = () => {
     if (response.status == 200) {
       setAsesorList(data || []);
     } else {
-      
+      console.log(response);
     }
   };
   const guardarAsesor = async () => {
-    
+    console.log(idAseguradora);
 
     const data: IAsesor = {
       nombre: nombreAsesor,
@@ -343,7 +343,7 @@ const NuevoTicket = () => {
       ticket.anticipo = calculoAnticipo;
       ticket.total_salida = calculoTotalSalida;
       ticket.total = calculoMontoTotal;
-      
+      console.log(ticket);
 
       const servicio = new TicketsService();
       const respuestaTicketPost: any = await servicio.create(ticket);
@@ -751,6 +751,10 @@ const NuevoTicket = () => {
                 formTicket.values.is_servicio_domestico == true
                   ? formTicket.setFieldValue("is_servicio_domestico", false)
                   : null;
+                  formTicket.values.is_servicio_foraneo == true
+                  ? formTicket.setFieldValue("is_servicio_foraneo", false)
+                  : null;
+                
               }}
               isChecked={formTicket.values.asistencia_vial}
             />
@@ -795,6 +799,9 @@ const NuevoTicket = () => {
               ) : null}
             </FormControl>
           ) : null}
+
+
+
           {formTicket.values.asistencia_vial === true ? (
             <FormControl paddingTop={2} paddingLeft={2}>
               <FormLabel htmlFor="servicio_foraneo">Servicio Foráneo</FormLabel>
@@ -858,6 +865,7 @@ const NuevoTicket = () => {
               onChange={(e) => {
                 setCiudadId(Number(e.target.value));
                 formTicket.setFieldValue("ciudadId", Number(e.target.value));
+                //console.log(e.target.value);
               }}
               onFocus={(e) => {
                 consultarCiudades();
@@ -1045,7 +1053,7 @@ const NuevoTicket = () => {
                 id="costo_de_kilometraje"
                 min={0}
                 placeholder="0.00"
-                paddingLeft={5}
+                paddingLeft={8}
                 type="number"
                 borderColor="twitter.100"
                 onChange={(e) => {
@@ -1199,12 +1207,13 @@ const NuevoTicket = () => {
                 children={<MdOutlineAttachMoney />}
               />
               <Input
+                //variant='unstyled'
                 isReadOnly
                 variant="filled"
                 id="deducible"
                 min={0}
                 placeholder="0.00"
-                paddingLeft={5}
+                paddingLeft={8}
                 type="number"
                 borderColor="twitter.100"
                 onChange={formTicket.handleChange}
@@ -1215,29 +1224,31 @@ const NuevoTicket = () => {
             </InputGroup>
           </FormControl>
 
-          <FormControl isRequired paddingTop={15}>
-            <FormLabel htmlFor="anticipo">Anticipo 60%</FormLabel>
-            <InputGroup>
-              <InputLeftAddon
-                pointerEvents="none"
-                children={<MdOutlineAttachMoney />}
-              />
-              <Input
-                variant="filled"
-                id="anticipo"
-                isReadOnly
-                min={0}
-                placeholder="0.00"
-                paddingLeft={5}
-                type="number"
-                borderColor="twitter.100"
-                fontWeight={"bold"}
-                textColor={"red"}
-                onChange={formTicket.handleChange}
-                value={calculoAnticipo}
-              />
-            </InputGroup>
-          </FormControl>
+          {formTicket.values.asistencia_vial === false ? (
+            <FormControl isRequired paddingTop={15}>
+              <FormLabel htmlFor="anticipo">Anticipo 60%</FormLabel>
+              <InputGroup>
+                <InputLeftAddon
+                  pointerEvents="none"
+                  children={<MdOutlineAttachMoney />}
+                />
+                <Input
+                  variant="filled"
+                  id="anticipo"
+                  isReadOnly
+                  min={0}
+                  placeholder="0.00"
+                  paddingLeft={8}
+                  type="number"
+                  borderColor="twitter.100"
+                  fontWeight={"bold"}
+                  textColor={"red"}
+                  onChange={formTicket.handleChange}
+                  value={calculoAnticipo}
+                />
+              </InputGroup>
+            </FormControl>
+          ) : null}
 
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="total_salida">Total de Salida</FormLabel>
@@ -1252,7 +1263,7 @@ const NuevoTicket = () => {
                 isReadOnly
                 min={0}
                 placeholder="0.00"
-                paddingLeft={5}
+                paddingLeft={8}
                 type="number"
                 borderColor="twitter.100"
                 fontWeight={"bold"}
@@ -1276,7 +1287,7 @@ const NuevoTicket = () => {
                 id="total"
                 min={0}
                 placeholder="0.00"
-                paddingLeft={5}
+                paddingLeft={8}
                 type="number"
                 borderColor="twitter.100"
                 fontWeight={"bold"}
