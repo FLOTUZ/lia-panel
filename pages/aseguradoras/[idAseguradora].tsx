@@ -367,6 +367,7 @@ function AseguradoraVer() {
                           onChange={formAseguradora.handleChange}
                           type="phone"
                           placeholder="Numero de Teléfono de servicio domestico"
+                          value={formAseguradora.values.telefono_domestico}
                         />
                       </InputGroup>
                     </FormControl>
@@ -388,6 +389,7 @@ function AseguradoraVer() {
                           variant="filled"
                           defaultValue={data?.telefono_vial}
                           onChange={formAseguradora.handleChange}
+                          value={formAseguradora.values.telefono_vial}
                           type="phone"
                           placeholder="Numero de Teléfono de servicio vial"
                         />
@@ -411,6 +413,7 @@ function AseguradoraVer() {
                           variant="filled"
                           defaultValue={data?.telefono_whats}
                           onChange={formAseguradora.handleChange}
+                          value={formAseguradora.values.telefono_whats}
                           type="phone"
                           placeholder="Numero de whatsapp"
                         />
