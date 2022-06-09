@@ -104,9 +104,9 @@ function TenicosListado() {
                       <Td>{t.ViveEn?.Estado?.nombre}</Td>
                       <Td>{t.ViveEn?.nombre}</Td>
                       <Td>{t.telefono}</Td>
-                      <Td>{t.Servicio[0]?.nombre}</Td>
-
-                      <Td>
+                      <Td>{t.Servicio![0]?.nombre}</Td>
+                      
+                    <Td>
                         <Link href={`/tecnicos/${t.id}`}>
                           <a>
                             <IconButton

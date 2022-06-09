@@ -1,5 +1,6 @@
 import { ICotizacionTecnico, IImagen, ITicket } from "@/services/api.models";
 import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
+import Router from "next/router";
 import { ImagenesService } from "@/services/imagenes.service";
 import { TicketsService } from "@/services/tickets.service";
 import {
@@ -81,17 +82,8 @@ export const CrearCotizacionTecnico = ({
       cotizacion.ticketId!
     );
 
-    if (respuestaTicket.status === 202) {
+    if (respuestaTicket.status === 400) {
       onClose();
-      toast({
-        title: "Se acepto cotizacion Con exito",
-        description: "Se aprobo cotizacion con exito",
-        position:"bottom-right",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-      });
-    } else {
       toast({
         title: "Oops.. Algo salio mal",
         description: respuestaTicket.message,
@@ -100,7 +92,22 @@ export const CrearCotizacionTecnico = ({
         duration: 9000,
         isClosable: true,
       });
+ 
+    } else {
+     
+
+      toast({
+        title: "Se acepto cotizacion Con exito",
+        description: "Se aprobo cotizacion con exito",
+        position:"bottom-right",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
     }
+
+    Router.back();
+
   };
 
   useEffect(() => {
