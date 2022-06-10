@@ -59,27 +59,25 @@ function AseguradoraNueva() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
 
-  const [nombreAseguradora, setNombreAseguradora] = useState("");
-  const [telefonoAseguradora, setTelefonoAseguradora] = useState("");
-  const [telefonoDomesticoAseguradora, setTelefonoDomesticoAseguradora] =
-    useState("");
-  const [telefonoVialAseguradora, setTelefonoVialAseguradora] = useState("");
-  const [telefonoWhatsAseguradora, setTelefonoWhatsAseguradora] = useState("");
+  const [nombre, setNombre] = useState("");
+  const [telefono, setTelefono] = useState("");
+  const [telefonoDomestico, setTelefonoDomestico] = useState("");
+  const [telefonoVial, setTelefonoVial] = useState("");
+  const [telefonoWhats, setTelefonoWhats] = useState("");
 
-  const [kilometrajeAseguradora, setKilometrajeAseguradora] =
-    useState<number>(0);
-  const [costoKilometroAseguradora, setCostoKilometroAseguradora] =
-    useState<number>(0);
+  const [kilometraje, setKilometraje] = useState<number>(0);
+  const [costoKilometro, setCostoKilometro] = useState<number>(0);
+  const [costoKilometroForaneo, setCostoKilometroForaneo] = useState<number>(0);
 
   const [nombreAsistencia, setNombreAsistencia] = useState("");
   const [aseguradoraGuardada, setAseguradoraGuardada] =
     useState<IAseguradora>();
 
-  /*CONSULTA de asistencias  */
   const [listadoAsistencias, setListadoAsistencias] = useState<IAsistencia[]>(
     []
   );
 
+  /*CONSULTA de asistencias  */
   const consultaAsistencias = async () => {
     const services = new AseguradoraService();
     const respuesta = await services.getById(aseguradoraGuardada?.id || 0);
@@ -107,7 +105,7 @@ function AseguradoraNueva() {
       toast({
         title: "Asistencia Nueva Agregado con Exito.",
         description: "La Asistencia se Agrego con Exito.",
-        position:"bottom-right",
+        position: "bottom-right",
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -128,13 +126,14 @@ function AseguradoraNueva() {
   /*AGREGAR ASEGURADORA*/
   const guardarAseguradora = async () => {
     const data: IAseguradora = {
-      nombre: nombreAseguradora,
-      telefono: telefonoAseguradora,
-      kilometraje_permitido: kilometrajeAseguradora,
-      costo_por_kilometro: costoKilometroAseguradora,
-      telefono_domestico: telefonoDomesticoAseguradora,
-      telefono_vial: telefonoVialAseguradora,
-      telefono_whats: telefonoWhatsAseguradora,
+      nombre: nombre,
+      telefono: telefono,
+      kilometraje_permitido: kilometraje,
+      costo_por_kilometro: costoKilometro,
+      telefono_domestico: telefonoDomestico,
+      telefono_vial: telefonoVial,
+      telefono_whats: telefonoWhats,
+      costo_por_kilometro_foraneo: costoKilometroForaneo,
     };
 
     const service = new AseguradoraService();
@@ -190,7 +189,7 @@ function AseguradoraNueva() {
                     type="Nombre"
                     placeholder="Aseguradora"
                     onChange={(e) => {
-                      setNombreAseguradora(e.target.value);
+                      setNombre(e.target.value);
                     }}
                   />
                 </InputGroup>
@@ -209,7 +208,7 @@ function AseguradoraNueva() {
                     minLength={8}
                     maxLength={12}
                     onChange={(e) => {
-                      setTelefonoAseguradora(e.target.value);
+                      setTelefono(e.target.value);
                     }}
                     type="phone"
                     placeholder="Numero de Teléfono"
@@ -218,7 +217,7 @@ function AseguradoraNueva() {
               </FormControl>
             </InputGroup>
 
-            <SimpleGrid columns={2} spacing={5}>
+            <SimpleGrid minChildWidth="200px" spacing={5}>
               <InputGroup>
                 <FormControl isRequired>
                   <FormLabel htmlFor="kilometraje">
@@ -235,7 +234,7 @@ function AseguradoraNueva() {
                       min={0}
                       max={100}
                       onChange={(e) => {
-                        setKilometrajeAseguradora(Number(e.target.value));
+                        setKilometraje(Number(e.target.value));
                       }}
                       type="number"
                       placeholder="Kilometraje"
@@ -246,7 +245,7 @@ function AseguradoraNueva() {
 
               <InputGroup>
                 <FormControl isRequired>
-                  <FormLabel htmlFor="costo por kilometraje">
+                  <FormLabel htmlFor="costo_kilometraje">
                     Costo por Kilometraje
                   </FormLabel>
                   <InputGroup>
@@ -256,12 +255,36 @@ function AseguradoraNueva() {
                     />
                     <Input
                       min={0}
-                      max={50}
+                      step={0.01}
                       onChange={(e) => {
-                        setCostoKilometroAseguradora(Number(e.target.value));
+                        setCostoKilometro(Number(e.target.value));
                       }}
                       type="number"
                       placeholder="Kilometraje"
+                    />
+                  </InputGroup>
+                </FormControl>
+              </InputGroup>
+
+              <InputGroup>
+                <FormControl isRequired>
+                  <FormLabel htmlFor="costo_kilometro_foraneo">
+                    Costo por Kilometraje Foraneo
+                  </FormLabel>
+                  <InputGroup>
+                    <InputLeftElement
+                      pointerEvents="none"
+                      children={<MdOutlineAttachMoney color="gray.300" />}
+                    />
+                    <Input
+                      id="costo_kilometro_foraneo"
+                      min={0}
+                      step={0.01}
+                      onChange={(e) => {
+                        setCostoKilometroForaneo(Number(e.target.value));
+                      }}
+                      type="number"
+                      placeholder="Kilometraje excedente"
                     />
                   </InputGroup>
                 </FormControl>
@@ -285,7 +308,7 @@ function AseguradoraNueva() {
                     />
                     <Input
                       onChange={(e) => {
-                        setTelefonoDomesticoAseguradora(e.target.value);
+                        setTelefonoDomestico(e.target.value);
                       }}
                       minLength={8}
                       maxLength={12}
@@ -310,7 +333,7 @@ function AseguradoraNueva() {
                       minLength={8}
                       maxLength={12}
                       onChange={(e) => {
-                        setTelefonoVialAseguradora(e.target.value);
+                        setTelefonoVial(e.target.value);
                       }}
                       type="phone"
                       placeholder="Número de Teléfono de Servicio Vial"
@@ -321,9 +344,7 @@ function AseguradoraNueva() {
 
               <InputGroup>
                 <FormControl>
-                  <FormLabel htmlFor="telefono">
-                    Teléfono de WhatsApp
-                  </FormLabel>
+                  <FormLabel htmlFor="telefono">Teléfono de WhatsApp</FormLabel>
                   <InputGroup>
                     <InputLeftElement
                       pointerEvents="none"
@@ -333,7 +354,7 @@ function AseguradoraNueva() {
                       minLength={8}
                       maxLength={12}
                       onChange={(e) => {
-                        setTelefonoWhatsAseguradora(e.target.value);
+                        setTelefonoWhats(e.target.value);
                       }}
                       type="phone"
                       placeholder="Numero de WhatsApp"
@@ -383,17 +404,16 @@ function AseguradoraNueva() {
             Asistencia de Aseguradora
           </Heading>
 
-            <Stack paddingLeft={"75%"}>
-              <Button
-                leftIcon={<AddIcon />}
-                colorScheme="facebook"
-                variant="solid"
-                onClick={onOpen}
-              >
-                Nueva Asistencia
-              </Button>
-            </Stack>
-          
+          <Stack paddingLeft={"75%"}>
+            <Button
+              leftIcon={<AddIcon />}
+              colorScheme="facebook"
+              variant="solid"
+              onClick={onOpen}
+            >
+              Nueva Asistencia
+            </Button>
+          </Stack>
 
           <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
             <ModalOverlay />
@@ -413,7 +433,11 @@ function AseguradoraNueva() {
               </ModalBody>
 
               <ModalFooter>
-                <Button colorScheme="whatsapp" mr={3} onClick={guardarAsistencia}>
+                <Button
+                  colorScheme="whatsapp"
+                  mr={3}
+                  onClick={guardarAsistencia}
+                >
                   Guardar
                 </Button>
                 <Button onClick={onClose}>Cancelar</Button>

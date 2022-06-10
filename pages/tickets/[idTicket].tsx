@@ -75,7 +75,9 @@ function TicketVer() {
     const respuesta = await service.getById(Number(ticket?.aseguradoraId));
 
     const data = respuesta.data as IAseguradora;
-    setAseguradora(data);
+    if (respuesta.status == 200) {
+      setAseguradora(data);
+    }
   };
 
   /*Obtener asistencias*/
@@ -83,7 +85,10 @@ function TicketVer() {
     const service = new AsistenciasService();
     const respuesta = await service.getById(Number(ticket?.asistenciaId));
     const data = respuesta.data as IAsistencia;
-    setAsistencia(data);
+
+    if (respuesta.status == 200) {
+      setAsistencia(data);
+    }
   };
 
   const getTicket = async () => {
@@ -91,7 +96,9 @@ function TicketVer() {
     const respuesta = await service.getById(Number(idTicket));
     const data = respuesta.data as ITicket;
 
-    setTicket(data);
+    if (respuesta.status == 200) {
+      setTicket(data);
+    }
   };
 
   const consultarServicios = async () => {
@@ -126,8 +133,6 @@ function TicketVer() {
     router.push("/tickets");
   };
 
-
-
   useEffect(() => {
     getTicket();
   }, []);
@@ -142,15 +147,12 @@ function TicketVer() {
   const getVista = () => {
     if (ticket?.asistencia_vial && ticket?.is_servicio_foraneo) {
       setTipoVista(<VerTicketVialForaneo ticket={ticket} />);
-      
     } else if (ticket?.is_servicio_domestico && ticket?.is_servicio_foraneo) {
       setTipoVista(<VerTicketDomesticoForaneo ticket={ticket} />);
-      
     } else if (ticket?.asistencia_vial) {
       setTipoVista(<VerTicketVial ticket={ticket} />);
     } else if (ticket?.is_servicio_domestico) {
       setTipoVista(<VerTicketDomestico ticket={ticket} />);
-      
     } else {
       setTipoVista(<></>);
     }
@@ -283,11 +285,19 @@ function TicketVer() {
             />
           </ModalBody>
           <ModalFooter>
-            <Box paddingRight={10} >
-              <Button colorScheme={"red"} variant="outline" onClick={onCloseCotizacionT}>Cancelar</Button>
+            <Box paddingRight={10}>
+              <Button
+                colorScheme={"red"}
+                variant="outline"
+                onClick={onCloseCotizacionT}
+              >
+                Cancelar
+              </Button>
             </Box>
             <Box>
-              <Button colorScheme={"green"} variant="outline">Guardar</Button>
+              <Button colorScheme={"green"} variant="outline">
+                Guardar
+              </Button>
             </Box>
           </ModalFooter>
         </ModalContent>
@@ -297,7 +307,6 @@ function TicketVer() {
 
       {/* ASIGNAR TÉCNICO */}
       <Modal closeOnOverlayClick={false} isOpen={abierto} onClose={cerrar}>
-
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Asignar Técnico</ModalHeader>
@@ -316,17 +325,19 @@ function TicketVer() {
               >
                 {serviciosList.length !== 0
                   ? serviciosList.map((servicio) => {
-                    return (
-                      <option key={servicio.id} value={Number(servicio.id)}>
-                        {servicio.nombre}
-                      </option>
-                    );
-                  })
+                      return (
+                        <option key={servicio.id} value={Number(servicio.id)}>
+                          {servicio.nombre}
+                        </option>
+                      );
+                    })
                   : null}
               </Select>
             </FormControl>
             <FormControl paddingTop={15}>
-              <FormLabel htmlFor="tecnicoId">Técnico y Número Teléfonico</FormLabel>
+              <FormLabel htmlFor="tecnicoId">
+                Técnico y Número Teléfonico
+              </FormLabel>
               <Select
                 id="tecnicoId"
                 placeholder="Selecciona el Técnico"
@@ -338,25 +349,21 @@ function TicketVer() {
               >
                 {tecnicosByServicios?.Tecnico?.length !== 0
                   ? tecnicosByServicios?.Tecnico?.map((tecnico) => {
-                    return (
-                      <option key={tecnico.id} value={tecnico.id}>
-                        {tecnico.nombre},
-                        {" "}
-                        {tecnico.telefono}
-                      </option>
-                    );
-                  })
+                      return (
+                        <option key={tecnico.id} value={tecnico.id}>
+                          {tecnico.nombre}, {tecnico.telefono}
+                        </option>
+                      );
+                    })
                   : null}
               </Select>
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-
             <Button colorScheme="green" mr={3} onClick={asignarTecnicoWithId}>
               Asignar
             </Button>
-
 
             <Button colorScheme="red" onClick={cerrar}>
               Cancelar

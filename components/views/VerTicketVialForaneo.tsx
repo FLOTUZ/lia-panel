@@ -51,10 +51,11 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
   const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>();
   const [cotizacion, setCotizacion] = useState<ICotizacionTecnico>();
   const [mostrarCotizacion, setMostrarCotizacion] = useState(false);
-  const [mostrarAcuerdoConformidad, setMostrarAcuerdoConformidad] = useState(false);
+  const [mostrarAcuerdoConformidad, setMostrarAcuerdoConformidad] =
+    useState(false);
 
-
-  const [acuerdoconformidad, setAcuerdoConformidad] = useState<IAcuerdoConformidad>();
+  const [acuerdoconformidad, setAcuerdoConformidad] =
+    useState<IAcuerdoConformidad>();
 
   /*Obtener aseguradora*/
   const getAseguradora = async () => {
@@ -85,7 +86,10 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
     const service = new EstadosService();
     const respuesta = await service.getById(ciudad?.estadoId!);
     const data = respuesta.data as IEstado;
-    setEstado(data);
+
+    if (respuesta.status == 200) {
+      setEstado(data);
+    }
   };
 
   /*Obtener asesor de aseguradora*/
@@ -102,8 +106,6 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
 
     const data = respuesta.data as ICotizacionTecnico;
     setCotizacion(data);
-    
-    
 
     data ? setMostrarCotizacion(true) : setMostrarCotizacion(false);
   };
@@ -113,8 +115,6 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
     const respuesta = await service.acuerdoConformidadByTicket(ticket.id!);
 
     const data = respuesta.data as IAcuerdoConformidad;
-    
-    
 
     setAcuerdoConformidad(data);
 
@@ -128,11 +128,11 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
     getCiudad();
     getAsesorAseguradora();
   }, [ticket]);
-  
+
   useEffect(() => {
-    getEstado();
     getCotizacionTecnico();
     getAcuerdo();
+    getEstado();
   }, [ciudad]);
 
   return (
@@ -624,13 +624,10 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
       {mostrarCotizacion ? (
         <CrearCotizacionTecnico cotizacion={cotizacion!} />
       ) : null}
-      
-      {
-        mostrarAcuerdoConformidad? (
-          <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
 
-        ): null }
-
+      {mostrarAcuerdoConformidad ? (
+        <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
+      ) : null}
     </>
   );
 }
