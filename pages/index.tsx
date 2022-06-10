@@ -6,7 +6,7 @@ export default function Home(): JSX.Element {
 
   useEffect(() => {
     router.push("/login");
-  }, []);
+  }, [router]);
 
   return <></>;
 }

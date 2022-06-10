@@ -19,11 +19,13 @@ import { AddIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { EstadosService } from "@/services/estados.service";
 import { IEstado } from "@/services/api.models";
+import { useRouter } from "next/router";
 
 function EstadosListado() {
   /*CONSULTA EN TABLA DE Estados*/
 
   const [listadoEstados, setListadoEstados] = useState<IEstado[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     const consultarEstados = async () => {
@@ -66,17 +68,16 @@ function EstadosListado() {
           bg="white"
         >
           {" "}
-          <Spacer/>
+          <Spacer />
           <Link href={"/ciudades/nuevo"}>
-             <Button
-                leftIcon={<AddIcon />}
-                marginLeft={"auto"}
-                colorScheme="facebook"
-                variant="solid"
-                
-             >
-                Agregar Nuevo Estado
-              </Button>
+            <Button
+              leftIcon={<AddIcon />}
+              marginLeft={"auto"}
+              colorScheme="facebook"
+              variant="solid"
+            >
+              Agregar Nuevo Estado
+            </Button>
           </Link>
         </Box>
         <Box marginLeft={"1%"}>
@@ -98,15 +99,14 @@ function EstadosListado() {
                         <Td>{estado.id}</Td>
                         <Td>{estado.nombre}</Td>
                         <Td>
-                          <Link href={`/ciudades/${estado.id}`}>
-                          <a>
-                            <IconButton
-                              variant="ghost"
-                              aria-label="edit"
-                              icon={<EditIcon />}
-                            />
-                            </a>
-                          </Link>
+                          <IconButton
+                            variant="ghost"
+                            aria-label="edit"
+                            icon={<EditIcon />}
+                            onClick={() => {
+                              router.push(`/ciudades/${estado.id}`);
+                            }}
+                          />
                         </Td>
                       </Tr>
                     );
