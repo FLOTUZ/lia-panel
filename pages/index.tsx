@@ -1,22 +1,12 @@
-import { LockIcon, Search2Icon } from "@chakra-ui/icons";
-import {
-  Avatar,
-  Box,
-  Button,
-  Flex,
-  FormControl,
-  FormHelperText,
-  Heading,
-  Input,
-  InputGroup,
-  InputLeftElement,
-  InputRightElement,
-  Stack,
-  Text,
-} from "@chakra-ui/react";
-import React from "react";
-import { IoMail } from "react-icons/io5";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
 
 export default function Home(): JSX.Element {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/login");
+  }, []);
+
   return <></>;
 }
