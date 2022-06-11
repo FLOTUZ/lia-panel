@@ -9,7 +9,7 @@ export default function Home(): JSX.Element {
 
   useEffect(() => {
     redirectToLogin();
-  }, []);
+  }, [router]);
 
   return <></>;
 }

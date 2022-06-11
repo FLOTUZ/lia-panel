@@ -19,6 +19,7 @@ import {
   ModalCloseButton,
   ModalContent,
   ModalFooter,
+  ModalHeader,
   ModalOverlay,
   Progress,
   SimpleGrid,
@@ -29,6 +30,8 @@ import {
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 import { MdOutlineAttachMoney } from "react-icons/md";
+import Image from "next/image";
+import { CloseIcon } from "@chakra-ui/icons";
 
 interface CrearCotizacionTecnicoProps {
   cotizacion: ICotizacionTecnico;
@@ -51,10 +54,15 @@ export const CrearCotizacionTecnico = ({
   const getImagenUpload = async () => {
     if (imagen) {
       const service = new ImagenesService();
-      const respuesta = await service.getUploadImage(cotizacion.preSolucionId!);
-      const data = respuesta;
+      const respuesta: any = await service.getUploadImage(
+        cotizacion.preSolucionId!
+      );
 
-      setUploadImage(data);
+      const data = respuesta.data as IImagen;
+
+      console.log(data);
+
+      setUploadImage(data.url);
     }
   };
 
@@ -71,7 +79,6 @@ export const CrearCotizacionTecnico = ({
       cotizacion.id!
     );
 
-
     const payloadTicket = {
       estado: "EN PROCESO",
     } as ITicket;
@@ -87,19 +94,16 @@ export const CrearCotizacionTecnico = ({
       toast({
         title: "Oops.. Algo salio mal",
         description: respuestaTicket.message,
-        position:"bottom-right",
+        position: "bottom-right",
         status: "error",
         duration: 9000,
         isClosable: true,
       });
- 
     } else {
-     
-
       toast({
         title: "Se acepto cotizacion Con exito",
         description: "Se aprobo cotizacion con exito",
-        position:"bottom-right",
+        position: "bottom-right",
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -107,7 +111,6 @@ export const CrearCotizacionTecnico = ({
     }
 
     Router.back();
-
   };
 
   useEffect(() => {
@@ -224,22 +227,25 @@ export const CrearCotizacionTecnico = ({
           <Divider orientation="vertical" paddingTop={30} />
 
           <Box
-            m={2}
+            mt={5}
+            p={3}
             bgColor="white"
-            padding={5}
             borderRadius={10}
             boxShadow="2xl"
-            p="6"
             height={200}
             width={200}
             paddingLeft={10}
           >
             {uploadImage ? (
-              <img
-                height={200}
+              <Image
                 src={uploadImage}
-                alt="Evidencia 2"
                 onClick={onOpen}
+                alt={`Imagen de prueba`}
+                unoptimized={true}
+                quality={100}
+                height={200}
+                width={200}
+                layout="responsive"
               />
             ) : (
               <CircularProgress />
@@ -266,14 +272,30 @@ export const CrearCotizacionTecnico = ({
         </Box>
       </Box>
 
-      <Modal onClose={onClose} isOpen={isOpen} isCentered>
-        <ModalOverlay />
+      <Modal onClose={onClose} isOpen={isOpen} isCentered size={"6xl"}>
+        <ModalOverlay backdropBlur="10px" />
         <ModalContent>
           <ModalCloseButton />
+          <ModalHeader>
+            <Text fontWeight="bold" fontSize="25px">
+              Problema antes de arreglar
+            </Text>
+          </ModalHeader>
           <ModalBody padding={"5%"}>
-            <img height={"250px"} src={uploadImage} alt="Evidencia 2" />
+            <Center>
+              <img src={uploadImage} alt={`Imagen de prueba`} width={500} />
+            </Center>
           </ModalBody>
-          <ModalFooter></ModalFooter>
+          <ModalFooter>
+            <Button
+              leftIcon={<CloseIcon />}
+              colorScheme="red"
+              variant="solid"
+              onClick={onClose}
+            >
+              Cerrar
+            </Button>
+          </ModalFooter>
         </ModalContent>
       </Modal>
     </div>

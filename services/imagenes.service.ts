@@ -36,15 +36,8 @@ export class ImagenesService {
   }
 
   async getUploadImage(idImagen: number) {
-    const imageBlob = (
-      await axios.get(
-        `${process.env.NEXT_PUBLIC_APIURL}/imagenes/uploads/${idImagen}`,
-        {
-          responseType: "blob",
-        }
-      )
-    ).data;
+    const respuesta = await Consultar(`${this.url}/${idImagen}`);
 
-    return URL.createObjectURL(imageBlob);
+    return respuesta;
   }
 }
