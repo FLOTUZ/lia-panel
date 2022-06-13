@@ -48,7 +48,7 @@ export interface ITicket {
   marca_carro?: string | null;
   is_servicio_domestico?: boolean | null;
   is_servicio_foraneo?: boolean | null;
-  tecnicoId?: number | null,
+  tecnicoId?: number | null;
   createdAt?: string | null;
   updatedAt?: string | null;
 }
@@ -88,7 +88,7 @@ export interface IAseguradora {
   telefono_whats?: string;
   kilometraje_permitido?: number;
   costo_por_kilometro: number | null;
-    costo_por_kilometro_foraneo: number | null;
+  costo_por_kilometro_foraneo: number | null;
   Asistencia?: IAsistencia[] | null;
   createdAt?: string | null;
   updatedAt?: string | null;
@@ -157,7 +157,7 @@ export interface IAcuerdoConformidad {
   hora_finalizacion_servicio: Date;
   acuerdo_firmado: string | null;
   isAprobado?: boolean;
-  ticketId: number ;
+  ticketId: number;
   usuarioFinalId: number | null;
   createdAt?: Date | null;
   updatedAt?: Date | null;
@@ -169,4 +169,13 @@ export interface IImagen {
   descripcion: string;
   createdAt?: Date;
   updatedAt?: Date;
+}
+
+export interface ILogin {
+  usuario: string;
+  password: string;
+}
+
+export interface ILoginResponse {
+  access_token: string;
 }

@@ -11,14 +11,12 @@ import { IoMdMap } from "react-icons/io";
 import Link from "next/link";
 import Image from "next/image";
 import Logo from "../../public/logo.jpeg";
+import { AuthService } from "@/services/auth.service";
+import { useRouter } from "next/router";
 
 const Navbar = (hideNabar: any, setHideNabar: Function) => {
+  const router = useRouter();
   const routes = [
-    // {
-    //   name: "Dashboard",
-    //   path: "/",
-    //   icon: <MdSpaceDashboard size={32} />,
-    // },
     {
       name: "Tickets",
       path: "/tickets",
@@ -48,11 +46,6 @@ const Navbar = (hideNabar: any, setHideNabar: Function) => {
       name: "Estados",
       path: "/ciudades",
       icon: <IoMdMap size={32} />,
-    },
-    {
-      name: "Salir",
-      path: "/login",
-      icon: <IoExit size={32} />,
     },
   ];
   return (
@@ -96,6 +89,29 @@ const Navbar = (hideNabar: any, setHideNabar: Function) => {
           </Link>
         );
       })}
+      <Button
+        h="3.5rem"
+        w="100%"
+        bgColor="white"
+        color="black"
+        borderColor="gray.200"
+        _hover={{
+          shadow: "xl",
+          borderColor: "gray",
+          bgColor: "black",
+          color: "white",
+        }}
+        onClick={() => {
+          const service = new AuthService();
+          service.logout();
+          router.push("/login");
+        }}
+      >
+        <IoExit size={32} />
+        <Spacer />
+        Salir
+        <Spacer />
+      </Button>
     </Stack>
   );
 };

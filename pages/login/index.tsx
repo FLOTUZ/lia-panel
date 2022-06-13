@@ -17,15 +17,36 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import React from "react";
+import React, { useState } from "react";
 import { IoMail } from "react-icons/io5";
 
 import Image from "next/image";
 import Logo from "../../public/logo.jpeg";
+import { useFormik } from "formik";
+import { AuthService } from "@/services/auth.service";
+import { ILogin } from "@/services/api.models";
+import Router, { useRouter } from "next/router";
 
 export default function Home(): JSX.Element {
-  const [show, setShow] = React.useState(false);
+  const [show, setShow] = useState(false);
+  const [showError, setShowError] = useState(false);
+
   const handleClick = () => setShow(!show);
+  const router = useRouter();
+
+  const formLogin = useFormik({
+    initialValues: {
+      usuario: "",
+      password: "",
+    },
+
+    onSubmit: async (credenciales: ILogin) => {
+      const service = new AuthService();
+      (await service.login(credenciales))
+        ? router.push("/tickets")
+        : setShowError(true);
+    },
+  });
   return (
     <>
       <Flex
@@ -60,7 +81,7 @@ export default function Home(): JSX.Element {
             />
 
             <Box minW={{ base: "90%", md: "468px" }}>
-              <form>
+              <form onSubmit={formLogin.handleSubmit}>
                 <Stack
                   spacing={4}
                   p="1rem"
@@ -74,10 +95,15 @@ export default function Home(): JSX.Element {
                         color="facebook.300"
                         children={<IoMail color="gray.300" />}
                       />
-                      <Input type="email" placeholder="Usuario" />
+                      <Input
+                        id="usuario"
+                        placeholder="Usuario"
+                        onChange={formLogin.handleChange}
+                        value={formLogin.values.usuario}
+                      />
                     </InputGroup>
                   </FormControl>
-                  <FormControl paddingEnd={5}>
+                  <FormControl>
                     <InputGroup size="md">
                       <InputLeftElement
                         pointerEvents="none"
@@ -85,9 +111,12 @@ export default function Home(): JSX.Element {
                         children={<LockIcon color="facebook.300" />}
                       />
                       <Input
+                        id="password"
                         pr="4.5rem"
                         type={show ? "text" : "password"}
                         placeholder="Ingresa tu contraseña"
+                        onChange={formLogin.handleChange}
+                        value={formLogin.values.password}
                       />
                       <InputRightElement width="4.5rem">
                         <Button h="1.75rem" size="sm" onClick={handleClick}>
@@ -98,8 +127,17 @@ export default function Home(): JSX.Element {
                     <FormHelperText textAlign="right"></FormHelperText>
                   </FormControl>
 
-
-                  <Link href={"/tickets"}>
+                  {showError ? (
+                    <Button
+                      borderRadius={0}
+                      type="submit"
+                      variant="solid"
+                      colorScheme="red"
+                      width="50"
+                    >
+                      Error en credenciales
+                    </Button>
+                  ) : (
                     <Button
                       borderRadius={0}
                       type="submit"
@@ -109,7 +147,7 @@ export default function Home(): JSX.Element {
                     >
                       Ingresar
                     </Button>
-                  </Link>
+                  )}
                 </Stack>
               </form>
             </Box>
