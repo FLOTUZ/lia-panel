@@ -4,6 +4,7 @@ const nextConfig = {
   images: {
     domains: [`${process.env.NEXT_PUBLIC_APIURL}`],
   },
+  swcMinify: false
 };
 
 module.exports = nextConfig;
