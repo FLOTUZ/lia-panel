@@ -32,3 +32,18 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## RUN on server with pm2
+```bash
+# INSTALL PM2
+npm install -g pm2
+#Register the lia-panel in pm2
+pm2 start npm --name "lia-panel" -- run "start"
+# Save the as a startup script
+pm2 startup
+# Save the as a startup script
+pm2 save
+
+# If not when restart the server
+pm2 resurrect
+```
