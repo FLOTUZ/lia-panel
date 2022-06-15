@@ -14,16 +14,22 @@ import {
   Button,
   IconButton,
   FormControl,
-  Stack,
-  SimpleGrid,
   HStack,
 } from "@chakra-ui/react";
 import { AddIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { IAseguradora } from "@/services/api.models";
 import { AseguradoraService } from "@/services/aseguradoras.service";
+import moment from 'moment';
+import Moment from 'react-moment'
+import 'moment-timezone'
+import 'moment/locale/es';
+import { constants } from "buffer";
+
+
 
 export default function AseguradorasListado() {
+   const date = new Date();
   /*CONSULTA EN TABLA DE LAS ASEGURADORAS CON ASISTENCIAS */
   const [listadoAseguradoras, setListadoAseguradoras] = useState<
     IAseguradora[]
@@ -105,7 +111,7 @@ export default function AseguradorasListado() {
                       <Td>{aseguradoras.telefono}</Td>
                       <Td>{aseguradoras.kilometraje_permitido}</Td>
                       <Td>{aseguradoras.costo_por_kilometro}</Td>
-                      <Td>{aseguradoras.createdAt}</Td>
+                      <Td>{moment(Date.parse(aseguradoras?.createdAt!)).format("LLLL")}</Td>
 
                       <Td>
                         <Link href={`/aseguradoras/${aseguradoras.id}`}>

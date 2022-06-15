@@ -21,6 +21,11 @@ import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service"
 import { TecnicoService } from "@/services/tecnicos.service";
 import { color } from "@chakra-ui/react";
 
+import moment from 'moment';
+moment.locale("es");
+import 'moment-timezone'
+import 'moment/locale/es';
+
 interface TicketImprimibleProp {
   ticket?: ITicket;
 }
@@ -129,7 +134,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
         <div
           style={{ width: "30%", height: "0%", float: "left", paddingTop: "30px" }}
         >
-          <p >FECHA: {ticket?.fecha_llamada}</p>
+          <p >FECHA: {moment(ticket?.fecha_llamada).format("LL")}</p>
         </div>
         <div
           style={{ width: "30%", height: "0%", float: "left", paddingTop: "30px" }}
@@ -294,7 +299,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             paddingLeft: "15px",
           }}
         >
-          <p>HORA DE LLAMADA {ticket?.fecha_llamada}</p>
+          <p>HORA DE LLAMADA {moment(ticket?.fecha_llamada).format("LTS")}</p>
         </div>
         <div
           style={{

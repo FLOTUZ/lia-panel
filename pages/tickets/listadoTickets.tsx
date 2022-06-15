@@ -34,6 +34,10 @@ import { BsPrinter } from "react-icons/bs";
 import Printer from "components/printer/printer";
 import TicketImprimible from "components/imprimibles/ticket.imprimible";
 
+import moment from 'moment';
+moment.locale("es");
+import 'moment-timezone'
+import 'moment/locale/es';
 
 export default function ListadoTickets() {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -115,7 +119,7 @@ export default function ListadoTickets() {
                       <Td>{ticket.num_expediente}</Td>
                       <Td>{ticket.titulo_ticket}</Td>
                       <Td>{ticket.nombre_usuario_final}</Td>
-                      <Td>{ticket.fecha_llamada}</Td>
+                      <Td>{moment(Date.parse(ticket.fecha_llamada)).format("LLLL")}</Td>
                       <Td>{ticket.problematica}</Td>
                       <Td>
 

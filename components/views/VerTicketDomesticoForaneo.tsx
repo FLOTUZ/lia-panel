@@ -41,6 +41,11 @@ import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service"
 import { AcuerdoConformidadView } from "@/forms/AcuerdoConformidadForm";
 import { AcuerdoConformidadService } from "@/services/acuerdo-conformidad.service";
 
+import moment from 'moment';
+moment.locale("es");
+import 'moment-timezone'
+import 'moment/locale/es';
+
 interface VerTicketDomesticoForaneoProps {
   ticket: ITicket;
 }
@@ -174,13 +179,12 @@ export function VerTicketDomesticoForaneo({
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="fecha_llamada">Fecha de la Llamada</FormLabel>
             <Input
-              w={"fit-content"}
               id="fecha_llamada"
               variant="unstyled"
               isReadOnly
               placeholder="Fecha de la Llamada"
               borderColor="twitter.100"
-              value={ticket.fecha_llamada}
+              value={moment(ticket.fecha_llamada).format("LLLL")}
             />
           </FormControl>
         </SimpleGrid>

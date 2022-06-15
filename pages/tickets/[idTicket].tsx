@@ -46,6 +46,11 @@ import { CrearCotizacionTecnicoManual } from "@/forms/CotizacionTecnicoManualFor
 import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
 import Link from "next/link";
 
+import moment from 'moment';
+import Moment from 'react-moment'
+import 'moment-timezone'
+import 'moment/locale/es';
+
 function TicketVer() {
   const router = useRouter();
   const toast = useToast();

@@ -90,7 +90,7 @@ export interface IAseguradora {
   costo_por_kilometro: number | null;
   costo_por_kilometro_foraneo: number | null;
   Asistencia?: IAsistencia[] | null;
-  createdAt?: string | null;
+  createdAt?: string | "";
   updatedAt?: string | null;
 }
 
