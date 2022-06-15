@@ -156,7 +156,7 @@ export interface IAcuerdoConformidad {
   hora_llegada_servicio: string;
   hora_finalizacion_servicio: Date;
   acuerdo_firmado: string | null;
-  isAprobado?: boolean;
+  is_aprobado?: boolean;
   ticketId: number;
   usuarioFinalId: number | null;
   createdAt?: Date | null;

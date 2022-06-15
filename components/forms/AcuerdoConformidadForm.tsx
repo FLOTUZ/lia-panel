@@ -1,7 +1,5 @@
 import { AcuerdoConformidadService } from "@/services/acuerdo-conformidad.service";
 import { IAcuerdoConformidad, IImagen, ITicket } from "@/services/api.models";
-import { ImagenesService } from "@/services/imagenes.service";
-import Router from "next/router";
 
 import { TicketsService } from "@/services/tickets.service";
 import {
@@ -24,11 +22,8 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import { AcuerdoConformidadImprimible } from "components/imprimibles/acuerdo-conformidad.imprimible";
-import Printer from "components/printer/printer";
-import { BsDownload, BsPrinter } from "react-icons/bs";
+import { BsDownload } from "react-icons/bs";
 import { useRouter } from "next/router";
-import Link from "next/link";
 
 interface IAcuerdoConformidadForm {
   acuerdoconformidad: IAcuerdoConformidad;
@@ -41,7 +36,6 @@ export const AcuerdoConformidadView = ({
 
   const router = useRouter();
 
-  const { isOpen, onOpen, onClose } = useDisclosure();
   const {
     isOpen: isOpenPDF,
     onOpen: onOpenPDF,
@@ -50,7 +44,7 @@ export const AcuerdoConformidadView = ({
 
   const aprobarAcuerdoConformidad = async () => {
     const payloadAcuerdoConformidad = {
-      isAprobado: true,
+      is_aprobado: true,
     } as IAcuerdoConformidad;
 
     const serviceAcuerdo = new AcuerdoConformidadService();
@@ -68,13 +62,11 @@ export const AcuerdoConformidadView = ({
       payloadTicket,
       acuerdoconformidad.ticketId!
     );
-    const dataTicket = respuestaTicket.data as IAcuerdoConformidad;
 
     if (respuestaTicket.status === 400) {
-      onClose();
       toast({
-        title: "Oops.. Algo salio mal",
-        description: respuestaTicket.message,
+        title: "Oops.. Algo salio mal: Error 400",
+        description: "No se pudo finalizar el ticket",
         position: "bottom-right",
         status: "error",
         duration: 9000,
@@ -83,14 +75,14 @@ export const AcuerdoConformidadView = ({
     } else {
       toast({
         title: "Oops.. Algo salio mal",
-        description: respuestaAcuerdo.message,
+        description: "Se finalizo el ticket",
         position: "bottom-right",
         status: "success",
         duration: 9000,
         isClosable: true,
       });
     }
-    Router.back();
+    router.back();
   };
 
   return (
@@ -211,27 +203,6 @@ export const AcuerdoConformidadView = ({
           minChildWidth="10rem"
           mt={"3rem"}
         >
-          {acuerdoconformidad.isAprobado ? null : (
-            <Button
-              h={"3rem"}
-              colorScheme={"green"}
-              onClick={aprobarAcuerdoConformidad}
-            >
-              Aprobar Cierre
-            </Button>
-          )}
-
-          <Button
-            h={"3rem"}
-            variant="outline"
-            leftIcon={<BsPrinter size={"30px"} />}
-            id="imprimirAcuerdoConformidad"
-            colorScheme="red"
-            onClick={onOpen}
-          >
-            Imprimir acuerdo
-          </Button>
-
           <Button
             h={"3rem"}
             variant="outline"
@@ -242,37 +213,17 @@ export const AcuerdoConformidadView = ({
           >
             Descargar Acuerdo
           </Button>
+          {acuerdoconformidad.is_aprobado ? null : (
+            <Button
+              h={"3rem"}
+              colorScheme={"green"}
+              onClick={aprobarAcuerdoConformidad}
+            >
+              Aprobar Cierre
+            </Button>
+          )}
         </SimpleGrid>
       </Box>
-
-      <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Impresión</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Printer doc={<AcuerdoConformidadImprimible />} />
-          </ModalBody>
-          <ModalFooter>
-            <Stack
-              align="center"
-              paddingLeft={"60%"}
-              spacing={4}
-              direction="row"
-            >
-              <Button
-                paddingLeft={10}
-                paddingRight={10}
-                colorScheme="red"
-                variant="outline"
-                onClick={onClose}
-              >
-                Cerrar
-              </Button>
-            </Stack>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
 
       <Modal onClose={onOpenPDF} size={"full"} isOpen={isOpenPDF}>
         <ModalOverlay />
