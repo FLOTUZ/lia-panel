@@ -1,6 +1,6 @@
 import { AcuerdoConformidadService } from "@/services/acuerdo-conformidad.service";
 import { IAcuerdoConformidad, IImagen, ITicket } from "@/services/api.models";
-import { ImagenesService } from "@/services/imagenes.service"
+import { ImagenesService } from "@/services/imagenes.service";
 import Router from "next/router";
 
 import { TicketsService } from "@/services/tickets.service";
@@ -26,8 +26,9 @@ import {
 } from "@chakra-ui/react";
 import { AcuerdoConformidadImprimible } from "components/imprimibles/acuerdo-conformidad.imprimible";
 import Printer from "components/printer/printer";
-import { useState, useEffect } from "react";
-import { BsPrinter } from "react-icons/bs";
+import { BsDownload, BsPrinter } from "react-icons/bs";
+import { useRouter } from "next/router";
+import Link from "next/link";
 
 interface IAcuerdoConformidadForm {
   acuerdoconformidad: IAcuerdoConformidad;
@@ -37,18 +38,17 @@ export const AcuerdoConformidadView = ({
   acuerdoconformidad,
 }: IAcuerdoConformidadForm) => {
   const toast = useToast();
-  const [imagen, setImagen] = useState<IImagen>();
-  const [uploadImage, setUploadImage] = useState<string>("");
-  const [uploadFirma, setUploadFirma] = useState<string>("");
+
+  const router = useRouter();
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
-    isOpen: isOpenFirma,
-    onOpen: onOpenFirma,
-    onClose: onCloseFirma,
+    isOpen: isOpenPDF,
+    onOpen: onOpenPDF,
+    onClose: onClosePDF,
   } = useDisclosure();
 
   const aprobarAcuerdoConformidad = async () => {
-    //TODO: Obtener el id del usuario de la sesion
     const payloadAcuerdoConformidad = {
       isAprobado: true,
     } as IAcuerdoConformidad;
@@ -58,8 +58,6 @@ export const AcuerdoConformidadView = ({
       payloadAcuerdoConformidad,
       acuerdoconformidad.id!
     );
-
-    
 
     const payloadTicket = {
       estado: "FINALIZADO",
@@ -72,32 +70,27 @@ export const AcuerdoConformidadView = ({
     );
     const dataTicket = respuestaTicket.data as IAcuerdoConformidad;
 
-    
-
     if (respuestaTicket.status === 400) {
       onClose();
       toast({
         title: "Oops.. Algo salio mal",
         description: respuestaTicket.message,
-        position:"bottom-right",
+        position: "bottom-right",
         status: "error",
         duration: 9000,
         isClosable: true,
       });
- 
     } else {
-    
       toast({
         title: "Oops.. Algo salio mal",
         description: respuestaAcuerdo.message,
-        position:"bottom-right",
+        position: "bottom-right",
         status: "success",
         duration: 9000,
         isClosable: true,
       });
     }
     Router.back();
-
   };
 
   return (
@@ -211,112 +204,46 @@ export const AcuerdoConformidadView = ({
             />
           </FormControl>
         </SimpleGrid>
-        {/*
-        <SimpleGrid>
-        <Center>
-          <FormLabel>
-              Firma cliente
-           </FormLabel>
-          <Box
-            m={2}
-            bgColor="white"
-            padding={5}
-            borderRadius={10}
-            boxShadow="2xl"
-            p="6"
-            height={200}
-            width={200}
-            paddingLeft={10}
-          >
-             
-            <img
-              height={200}
-              src={uploadImage}
-              alt="acuerdo_firmado"
-              onClick={onOpenFirma}
-            />
-          </Box>
-       
-        
-          <FormLabel>
-              Evidencia
-            </FormLabel>
-          <Box
-            m={2}
-            bgColor="white"
-            padding={5}
-            borderRadius={10}
-            boxShadow="2xl"
-            p="6"
-            height={200}
-            width={200}
-            paddingLeft={10}
-          >
-            <img
-              height={200}
-              src={uploadFirma}
-              alt="Evidencia 3"
-              onClick={onOpen}
-            />
-          </Box>
-        </Center>
-        </SimpleGrid>
-        */}
 
-        <SimpleGrid columns={[2, 2, 1]} spacing="70px">
-          <Box marginTop={"40px"} margin={"50px"}>
-            {acuerdoconformidad.isAprobado ? null : (
-              <Button
-                margin={"50px"}
-                colorScheme={"green"}
-                onClick={aprobarAcuerdoConformidad}
-              >
-                Aprobar
-              </Button>
-            )}
-
-            {/*<Button variant="outline" colorScheme={"red"}>
-              Rechazar
-            </Button>*/}
+        <SimpleGrid
+          columns={[1, 2, 3]}
+          spacing="20px"
+          minChildWidth="10rem"
+          mt={"3rem"}
+        >
+          {acuerdoconformidad.isAprobado ? null : (
             <Button
-              marginLeft={"50%"}
-              variant="outline"
-              leftIcon={<BsPrinter size={"30px"} />}
-              id="imprimirAcuerdoConformidad"
-              colorScheme="red"
-              onClick={onOpen}
+              h={"3rem"}
+              colorScheme={"green"}
+              onClick={aprobarAcuerdoConformidad}
             >
-              Imprimir acuerdo
+              Aprobar Cierre
             </Button>
+          )}
 
-          </Box>
+          <Button
+            h={"3rem"}
+            variant="outline"
+            leftIcon={<BsPrinter size={"30px"} />}
+            id="imprimirAcuerdoConformidad"
+            colorScheme="red"
+            onClick={onOpen}
+          >
+            Imprimir acuerdo
+          </Button>
+
+          <Button
+            h={"3rem"}
+            variant="outline"
+            leftIcon={<BsDownload size={"30px"} />}
+            id="imprimirAcuerdoConformidad"
+            colorScheme="black"
+            onClick={onOpenPDF}
+          >
+            Descargar Acuerdo
+          </Button>
         </SimpleGrid>
       </Box>
-
-      {/*
-         <Modal onClose={onClose} isOpen={isOpen} isCentered>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalCloseButton />
-          <ModalBody padding={"5%"}>
-            <img height={"250px"} src={uploadImage} alt="Evidencia 2" />
-          </ModalBody>
-          <ModalFooter></ModalFooter>
-        </ModalContent>
-      </Modal>*/}
-
-      {/*
-      <Modal onClose={onCloseFirma} isOpen={isOpenFirma} isCentered>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalCloseButton />
-          <ModalBody padding={"5%"}>
-            <img height={"250px"} src={uploadFirma} alt="Evidencia 2" />
-          </ModalBody>
-          <ModalFooter></ModalFooter>
-        </ModalContent>
-      </Modal>
-      */}
 
       <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
         <ModalOverlay />
@@ -339,6 +266,39 @@ export const AcuerdoConformidadView = ({
                 colorScheme="red"
                 variant="outline"
                 onClick={onClose}
+              >
+                Cerrar
+              </Button>
+            </Stack>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal onClose={onOpenPDF} size={"full"} isOpen={isOpenPDF}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Acuerdo firmado</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <iframe
+              height="800px"
+              width="1280px"
+              src={`${acuerdoconformidad.acuerdo_firmado}`}
+            />
+          </ModalBody>
+          <ModalFooter>
+            <Stack
+              align="center"
+              paddingLeft={"60%"}
+              spacing={4}
+              direction="row"
+            >
+              <Button
+                paddingLeft={10}
+                paddingRight={10}
+                colorScheme="red"
+                variant="outline"
+                onClick={onClosePDF}
               >
                 Cerrar
               </Button>

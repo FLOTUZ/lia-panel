@@ -1,4 +1,3 @@
-import DesktopLayout from "@/layouts/DesktopLayout";
 import Header from "@/common/Header";
 
 import {
@@ -103,7 +102,6 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
     const data = respuesta.data as ICotizacionTecnico;
 
     setCotizacion(data);
-    
 
     data ? setMostrarCotizacion(true) : setMostrarCotizacion(false);
   };
