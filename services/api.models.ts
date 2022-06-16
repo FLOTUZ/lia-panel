@@ -124,7 +124,7 @@ export interface ICotizacionTecnico {
   ticketId?: number;
   tecnicoId?: number;
   preSolucionId?: number;
-  isAprobado?: boolean;
+  is_aprobado?: boolean;
   aprobado_por_usuarioId: number;
   createdAt?: string | null;
   updatedAt?: string | null;

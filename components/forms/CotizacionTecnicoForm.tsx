@@ -69,7 +69,7 @@ export const CrearCotizacionTecnico = ({
   const aprobarCotizacion = async () => {
     //TODO: Obtener el id del usuario de la sesion
     const payloadCotizacion = {
-      isAprobado: true,
+      is_aprobado: true,
       aprobado_por_usuarioId: 1,
     } as ICotizacionTecnico;
 
@@ -254,7 +254,7 @@ export const CrearCotizacionTecnico = ({
         </Center>
 
         <Box marginTop={"40px"} margin={"50px"} height="80px">
-          {cotizacion.isAprobado ? null : (
+          {cotizacion.is_aprobado ? null : (
             <Button
               margin={"50px"}
               colorScheme={"green"}
