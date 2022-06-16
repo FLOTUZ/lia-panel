@@ -186,7 +186,7 @@ const NuevoTicket = () => {
       let montoTotal = 0;
       if (deducible < 0) {
         deducible = Math.abs(deducible);
-        montoTotal = totalSalida + costoGPOLIAS + deducible;
+        montoTotal = totalSalida + costoGPOLIAS + deducible + banderazo;
         setCalculoDeducible(deducible);
       } else {
         montoTotal = totalSalida + costoGPOLIAS;
@@ -199,7 +199,7 @@ const NuevoTicket = () => {
     };
 
     calcular();
-  }, [cobertura, costoGPOLIAS, costoPorKilometro, costoBanderazo]);
+  }, [cobertura, costoGPOLIAS, costoPorKilometro, costoBanderazo, calculoDeducible]);
 
   const asistenciaById = async () => {
     if (Number(formTicket.values.aseguradoraId) !== 0) {
