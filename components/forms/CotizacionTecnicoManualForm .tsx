@@ -54,7 +54,7 @@ export const CrearCotizacionTecnicoManual = ({
       costo_mano_obra: costoManoObra,
       costo_materiales: costoMateriales,
       total_cotizacion: totalCotizacion,
-      isAprobado: isAprobado,
+      is_aprobado: isAprobado,
       tecnicoId: ticket.tecnicoId!,
       ticketId: ticket.id,
       aprobado_por_usuarioId: 1, //TODO: Sacar id de usuario desde la sesion
@@ -98,7 +98,7 @@ export const CrearCotizacionTecnicoManual = ({
 
   const aprobarCotizacion = async () => {
     const payloadCotizacion = {
-      isAprobado: true,
+      is_aprobado: true,
     } as ICotizacionTecnico;
 
     const serviceCotizacion = new CotizacionTecnicoService();
