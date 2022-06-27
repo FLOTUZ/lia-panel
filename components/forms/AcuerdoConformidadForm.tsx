@@ -24,6 +24,7 @@ import {
 } from "@chakra-ui/react";
 import { BsDownload } from "react-icons/bs";
 import { useRouter } from "next/router";
+import moment from "moment";
 
 interface IAcuerdoConformidadForm {
   acuerdoconformidad: IAcuerdoConformidad;
@@ -101,59 +102,56 @@ export const AcuerdoConformidadView = ({
           Acuerdo de Conformidad
         </Text>
 
-        <FormControl paddingTop={15}>
-          <FormLabel htmlFor="fecha de acuerdo">Fecha</FormLabel>
-          <Input
-            readOnly
-            variant="unstyled"
-            placeholder="Fecha"
-            id="fecha_acuerdo"
-            borderColor="twitter.100"
-            value={acuerdoconformidad?.fecha_acuerdo}
-          />
-        </FormControl>
-
-        <SimpleGrid columns={[1, 1, 2]} spacing={5}>
-          <SimpleGrid columns={[1, 1, 2]} spacing={5}>
-            <FormControl paddingTop={15}>
-              <FormLabel htmlFor="hora_llegada_servicio">
-                Hora de llegada
-              </FormLabel>
-              <Input
-                readOnly
-                variant="unstyled"
-                placeholder="Hora de llegada"
-                id="hora_de_llegada"
-                borderColor="twitter.100"
-                value={acuerdoconformidad?.hora_llegada_servicio}
-              />
-            </FormControl>
-
-            <FormControl paddingTop={15}>
-              <FormLabel htmlFor="hora_finalizacion_servicio">
-                hora de finalizacion del servicio
-              </FormLabel>
-              <Input
-                readOnly
-                variant="unstyled"
-                placeholder="hora_finalizacion_servicio"
-                id="hora_finalizacion_servicios"
-                borderColor="twitter.100"
-                value={acuerdoconformidad?.hora_finalizacion_servicio.toString()}
-              />
-            </FormControl>
-          </SimpleGrid>
+        <SimpleGrid columns={[1, 1, 3]} spacing={5}>
+          
           <FormControl paddingTop={15}>
-            <FormLabel htmlFor="direccion">Domicilio</FormLabel>
+            <FormLabel htmlFor="hora_llegada_servicio">
+              Hora de llegada del tecnico
+            </FormLabel>
             <Input
               readOnly
               variant="unstyled"
-              placeholder="direccion"
-              id="domicilio"
+              placeholder="Hora de llegada"
+              id="hora_de_llegada"
               borderColor="twitter.100"
-              value={acuerdoconformidad?.direccion}
+              value={moment(acuerdoconformidad?.hora_llegada_servicio).format(
+                "LLL"
+              )}
             />
           </FormControl>
+
+          <FormControl paddingTop={15}>
+            <FormLabel htmlFor="hora_finalizacion_servicio">
+              Hora de finalizacion del servicio
+            </FormLabel>
+            <Input
+              readOnly
+              variant="unstyled"
+              placeholder="hora_finalizacion_servicio"
+              id="hora_finalizacion_servicios"
+              borderColor="twitter.100"
+              value={moment(
+                acuerdoconformidad?.hora_finalizacion_servicio.toString()
+              ).format("LLL")}
+            />
+          </FormControl>
+
+          <FormControl paddingTop={15}>
+            <FormLabel htmlFor="fecha de acuerdo">Fecha de firmado de acuerdo</FormLabel>
+            <Input
+              readOnly
+              variant="unstyled"
+              placeholder="Fecha"
+              id="fecha_acuerdo"
+              borderColor="twitter.100"
+              value={moment(acuerdoconformidad?.fecha_acuerdo).format("LLL")}
+            />
+          </FormControl>
+
+          <Stack paddingTop={15}>
+            <Text fontWeight={"bold"}>Domicilio</Text>
+            <Text>{acuerdoconformidad?.direccion}</Text>
+          </Stack>
         </SimpleGrid>
 
         <SimpleGrid columns={[1, 1, 2]} spacing={5}>
@@ -171,6 +169,20 @@ export const AcuerdoConformidadView = ({
             />
           </FormControl>
           <FormControl paddingTop={15}>
+            <FormLabel htmlFor="Actividades_realizadas">
+              Actividad Realizada
+            </FormLabel>
+
+            <Textarea
+              readOnly
+              variant="unstyled"
+              placeholder="Actividades Realizadas"
+              id="actividades_realizadas"
+              borderColor="twitter.100"
+              value={acuerdoconformidad?.actividades_realizadas}
+            />
+          </FormControl>
+          <FormControl paddingTop={15}>
             <FormLabel htmlFor="observaciones">Observaciones</FormLabel>
             <Textarea
               readOnly
@@ -179,20 +191,6 @@ export const AcuerdoConformidadView = ({
               id="observaciones"
               borderColor="twitter.100"
               value={acuerdoconformidad?.observaciones?.toString()}
-            />
-          </FormControl>
-
-          <FormControl paddingTop={15}>
-            <FormLabel htmlFor="Actividades_realizadas">
-              Actividad Realizada
-            </FormLabel>
-            <Input
-              readOnly
-              variant="unstyled"
-              placeholder="actividades_realizadas"
-              id="actividades_realizadas"
-              borderColor="twitter.100"
-              value={acuerdoconformidad?.actividades_realizadas}
             />
           </FormControl>
         </SimpleGrid>

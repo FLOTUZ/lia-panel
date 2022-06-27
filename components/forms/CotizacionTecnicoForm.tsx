@@ -32,6 +32,7 @@ import { useEffect, useState } from "react";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import Image from "next/image";
 import { CloseIcon } from "@chakra-ui/icons";
+import moment from "moment";
 
 interface CrearCotizacionTecnicoProps {
   cotizacion: ICotizacionTecnico;
@@ -162,7 +163,7 @@ export const CrearCotizacionTecnico = ({
               placeholder="Fecha y Hora de Contacto"
               id="hora_de_contacto"
               borderColor="twitter.100"
-              value={cotizacion.fecha_contacto}
+              value={moment(cotizacion.fecha_contacto).format("LLL")}
             />
           </FormControl>
 
