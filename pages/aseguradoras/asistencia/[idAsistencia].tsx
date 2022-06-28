@@ -14,53 +14,53 @@ import {
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { ICiudad } from "@/services/api.models";
-import { CiudadesService } from "@/services/ciudades.service";
+import { IAsistencia } from "@/services/api.models";
+import { AsistenciasService } from "@/services/asistencias.service";
 import { useFormik } from "formik";
 
-function CiudadVer() {
+function AsistenciaVer() {
 
   const toast = useToast();
 
-  const [data, setData] = useState<ICiudad>();
+  const [data, setData] = useState<IAsistencia>();
 
   const router = useRouter();
 
   const [cargando, setCargando] = useState(false);
 
-  const { idCiudad } = router.query;
+  const { idAsistencia } = router.query;
 
   /**ID ESTADO  */
 
   useEffect(() => {
     const getEstado = async () => {
-      const service = new CiudadesService();
-      const respuesta = await service.getById(Number(idCiudad));
+      const service = new AsistenciasService();
+      const respuesta = await service.getById(Number(idAsistencia));
       if (respuesta.status == 200) {
-        setData(respuesta.data as ICiudad);
+        setData(respuesta.data as IAsistencia);
       }
     };
 
     getEstado();
-  }, [idCiudad]);
+  }, [idAsistencia]);
 
   /*ACTUALIZAR EL ESTADO SELECCIONADO FORMIK */
 
-  const formCiudad = useFormik({
+  const formAsistencia = useFormik({
     initialValues: {
       nombre: data?.nombre || "",
     },
     enableReinitialize: true,
 
-    onSubmit: async (values: ICiudad) => {
+    onSubmit: async (values: IAsistencia) => {
       const data = {
         ...values,
       };
 
-      const service = new CiudadesService();
-      const respuesta = await service.update(data, Number(idCiudad));
+      const service = new AsistenciasService();
+      const respuesta = await service.update(data, Number(idAsistencia));
 
-      const dataUpdate = respuesta.data as ICiudad;
+      const dataUpdate = respuesta.data as IAsistencia;
       setData(dataUpdate);
 
       if (respuesta.status !== 200) {
@@ -84,8 +84,8 @@ function CiudadVer() {
   return (
     <div>
       <DesktopLayout>
-        <Header title={"Editar Ciudad"} />
-        <form onSubmit={formCiudad.handleSubmit}>
+        <Header title={"Editar Asistencia"} />
+        <form onSubmit={formAsistencia.handleSubmit}>
           <Box
            m={2}
            bgColor="white"
@@ -102,16 +102,16 @@ function CiudadVer() {
             <Stack spacing={4}>
               <InputGroup>
                 <FormControl isRequired>
-                  <FormLabel htmlFor="nombre">Nombre de la Ciudad</FormLabel>
+                  <FormLabel htmlFor="nombre">Nombre de la Asistencia</FormLabel>
                   <InputGroup>
                     <Input
                       id="nombre"
                       variant="filled"
                       defaultValue={data?.nombre}
-                      placeholder="Ciudad"
+                      placeholder="Asistencia"
                       onChange={(e) => {
                         const nombreM = e.target.value.toUpperCase();
-                        formCiudad.setFieldValue("nombre", nombreM);
+                        formAsistencia.setFieldValue("nombre", nombreM);
                       }}
                     />
                   </InputGroup>
@@ -152,4 +152,4 @@ function CiudadVer() {
     </div>
   );
 }
-export default CiudadVer;
+export default AsistenciaVer;

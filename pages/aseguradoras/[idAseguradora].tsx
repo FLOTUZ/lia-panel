@@ -48,13 +48,8 @@ import { useFormik } from "formik";
 import { IoLogoWhatsapp, IoSpeedometerOutline } from "react-icons/io5";
 
 function AseguradoraVer() {
-  const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const {
-    isOpen: isOpenEdit,
-    onOpen: onOpenEdit,
-    onClose: onCloseEdit,
-  } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   const toast = useToast();
 
@@ -67,12 +62,12 @@ function AseguradoraVer() {
   const [cargando, setCargando] = useState(false);
 
   const { idAseguradora } = router.query;
+
   /**CONSULTA DE ASISTENCIA DE LA ASEGURADORA */
 
   const [dataA, setDataA] = useState<IAsistencia>();
 
   const [listaAsistencias, setListaAsistencias] = useState<IAsistencia[]>([]);
-
   /**AGREGAR ASISTENCIA A LA ASEGURADORA */
 
   const consultaAsistencias = async () => {
@@ -130,6 +125,7 @@ function AseguradoraVer() {
         setData(respuesta.data as IAseguradora);
       }
     };
+
     const consultaAsistencias = async () => {
       const services = new AsistenciasService();
       const response: any = await services.getAsistenciasByIdAseguradora(
@@ -171,7 +167,6 @@ function AseguradoraVer() {
       const respuesta = await service.update(data, Number(idAseguradora));
 
       console.log(respuesta);
-      
 
       const dataUpdate = respuesta.data as IAseguradora;
       setData(dataUpdate);
@@ -194,41 +189,6 @@ function AseguradoraVer() {
     },
   });
 
-  /*ACTUALIZAR LA ASISTENCIA SELECCIONADA FORMIK */
-
-  const formAsistencia = useFormik({
-    initialValues: {
-      nombre: dataA?.nombre || "",
-    },
-    enableReinitialize: true,
-
-    onSubmit: async (values: IAsistencia) => {
-      const dataA = {
-        ...values,
-      };
-
-      const service = new AsistenciasService();
-      const respuesta = await service.update(dataA, Number());
-
-      const dataUpdate = respuesta.dataA as IAsistencia;
-      setDataA(dataUpdate);
-
-      if (respuesta.status !== 200) {
-        toast({
-          title: "Error",
-          status: "error",
-          description: `Error al actualizar, verifique sus campos`,
-        });
-        setCargando(false);
-      } else {
-        toast({
-          title: "Guardado",
-          status: "success",
-          description: `${respuesta.Aseguradora} guardado`,
-        });
-      }
-    },
-  });
   return (
     <div>
       <DesktopLayout>
@@ -449,9 +409,7 @@ function AseguradoraVer() {
               </Stack>
             </Box>
           </FormControl>
-        </form>
 
-        <form onSubmit={formAsistencia.handleSubmit}>
           <Box
             m={2}
             bgColor="white"
@@ -496,7 +454,8 @@ function AseguradoraVer() {
                     <FormLabel>Nombre del Servicio</FormLabel>
                     <Input
                       onChange={(e) => {
-                        setNombreAsistencia(e.target.value);
+                        const nombreM = e.target.value.toUpperCase();
+                        setNombreAsistencia(nombreM);
                       }}
                       placeholder="Nombre del Servicio"
                     />
@@ -526,11 +485,7 @@ function AseguradoraVer() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {listaAsistencias.length == 0 ? (
-                    <Tr>
-                      <Td>NO DATA</Td>
-                    </Tr>
-                  ) : (
+                  {listaAsistencias.length !== 0 ? (
                     listaAsistencias.map((asistencias, index) => {
                       return (
                         <Tr key={index}>
@@ -540,53 +495,18 @@ function AseguradoraVer() {
                               variant="ghost"
                               aria-label="edit"
                               icon={<EditIcon />}
-                              onClick={onOpenEdit}
+                              onClick={() => {
+                                router.push(`/aseguradoras/asistencia/${asistencias.id}`);
+                              }}
                             />
-
-                            <Modal
-                              closeOnOverlayClick={false}
-                              isOpen={isOpenEdit}
-                              onClose={onCloseEdit}
-                            >
-                              <ModalOverlay />
-                              <ModalContent>
-                                <ModalHeader>Editar Asistencia</ModalHeader>
-                                <ModalCloseButton />
-                                <ModalBody pb={6}>
-                                  <FormControl mt={4}>
-                                    <FormLabel>
-                                      Nombre de la Asistencia
-                                    </FormLabel>
-                                    <Input
-                                      placeholder="Nombre de la Asistencia"
-                                      defaultValue={dataA?.nombre}
-                                      onChange={(e) => {
-                                        const nombreM = e.target.value.toUpperCase();
-                                        formAsistencia.setFieldValue("nombre", nombreM);
-                                      }}
-                                    />
-                                  </FormControl>
-                                </ModalBody>
-
-                                <ModalFooter>
-                                  <Button
-                                    colorScheme="blue"
-                                    mr={3}
-                                    type="submit"
-                                    isLoading={cargando}
-                                  >
-                                    Guardar
-                                  </Button>
-                                  <Button onClick={onCloseEdit}>
-                                    Cancelar
-                                  </Button>
-                                </ModalFooter>
-                              </ModalContent>
-                            </Modal>
                           </Td>
                         </Tr>
                       );
                     })
+                  ) : (
+                    <Tr>
+                      <Td>NO DATA</Td>
+                    </Tr>
                   )}
                 </Tbody>
               </Table>
