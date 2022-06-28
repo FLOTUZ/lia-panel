@@ -55,8 +55,6 @@ function EstadoVer() {
 
   /*CONSULTA de Ciudades  */
 
-  const CID = 0;
-
   const [listadoCiudades, setListadoCiudades] = useState<ICiudad[]>([]);
 
   /*  AGREGAR CIUDAD AL ESTADO*/
