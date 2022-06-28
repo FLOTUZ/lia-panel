@@ -3,6 +3,7 @@ import {
   IAseguradora,
   IAsistencia,
   ICotizacionTecnico,
+  ISeguimiento,
   IServicio,
   ITicket,
 } from "@/services/api.models";
@@ -27,6 +28,16 @@ import {
   Box,
   Center,
   Stack,
+  HStack,
+  TableContainer,
+  Table,
+  TableCaption,
+  Thead,
+  Tr,
+  Th,
+  Td,
+  Tbody,
+  Input,
 } from "@chakra-ui/react";
 
 import { useRouter } from "next/router";
@@ -43,13 +54,10 @@ import { VerTicketDomesticoForaneo } from "@/views/VerTicketDomesticoForaneo";
 import TicketImprimible from "components/imprimibles/ticket.imprimible";
 import Printer from "components/printer/printer";
 import { CrearCotizacionTecnicoManual } from "@/forms/CotizacionTecnicoManualForm ";
-import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
-import Link from "next/link";
 
 import moment from 'moment';
-import Moment from 'react-moment'
-import 'moment-timezone'
-import 'moment/locale/es';
+import { AddIcon } from "@chakra-ui/icons";
+import { SeguimientosService } from "@/services/seguimientos.service";
 
 function TicketVer() {
   const router = useRouter();
@@ -60,6 +68,12 @@ function TicketVer() {
     isOpen: isOpenCot,
     onOpen: onOpenCotizacionT,
     onClose: onCloseCotizacionT,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenSeguimiento,
+    onOpen: onOpenSeguimiento,
+    onClose: onCloseSeguimiento,
+
   } = useDisclosure();
   const [ticket, setTicket] = useState<ITicket>();
   const [aseguradora, setAseguradora] = useState<IAseguradora>();
@@ -122,6 +136,66 @@ function TicketVer() {
     setTecnicosByServicios(data);
   };
 
+  const [asesor_gpo_lias, setAsesor_gpo_lias] = useState("");
+  const [seguimiento, setSeguimiento] = useState("");
+  const [asesor_seguro, setAsesor_seguro] = useState("");
+  const [fecha_hora, setFecha_hora] = useState("");
+  const [listadoSeguimientos, setListadoSeguimientos] = useState<ISeguimiento[]>([]);
+
+  const guardarSeguimiento = async () => {
+    const data: ISeguimiento = {
+      detalles: seguimiento,
+      nombre_asesor_seguro: asesor_seguro,
+      fecha_seguimiento: new Date(Date.now()).toISOString(),
+      ticketId: Number(idTicket),
+      usuarioId: 1 //TODO: Obtener el id del usuario logeado
+    };
+    console.log(data);
+
+
+    const service = new SeguimientosService();
+    const response = await service.create(data);
+
+    if (response.status === 201) {
+      onCloseSeguimiento();
+      await consultarSeguimientos();
+      toast({
+        title: "Seguimiento Nuevo Agregado con Éxito",
+        description: "El Seguimiento se Agrego con Éxito",
+        position: "bottom-right",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+
+    } else {
+      toast({
+        title: "Oops.. Algo salio mal",
+        description: response.message,
+        position: "bottom-right",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  };
+
+  /*CONSULTA DE LA TABLA DE SEGUIMIENTOS*/
+  const consultarSeguimientos = async () => {
+    const service = new SeguimientosService();
+    const respuesta = await service.getAll();
+    const data = respuesta.data as ISeguimiento[];
+
+    if (respuesta.status == 200) {
+      setListadoSeguimientos(data);
+    } else {
+    }
+  };
+
+  useEffect(() => {
+    consultarSeguimientos();
+  }, []);
+
   const asignarTecnicoWithId = async () => {
     const data = { estado: "TOMADO" } as ITicket;
     const service = new TicketsService();
@@ -163,6 +237,8 @@ function TicketVer() {
     }
   };
 
+
+
   const dataTicket = {
     titulo: "Mecanico para JOE",
   };
@@ -196,6 +272,7 @@ function TicketVer() {
         </Box>
       ) : null}
 
+{/*
       {ticket?.estado === "TOMADO" ? (
         <Box
           justifyContent={"center"}
@@ -222,6 +299,7 @@ function TicketVer() {
           </Center>
         </Box>
       ) : null}
+  */}
 
       {ticket?.estado === "FINALIZADO" ? (
         <Box
@@ -278,6 +356,7 @@ function TicketVer() {
         </ModalContent>
       </Modal>
 
+      {/*  
       <Modal onClose={onCloseCotizacionT} size={"full"} isOpen={isOpenCot}>
         <ModalOverlay />
         <ModalContent>
@@ -307,6 +386,7 @@ function TicketVer() {
           </ModalFooter>
         </ModalContent>
       </Modal>
+    */}
 
       {tipoVista}
 
@@ -330,12 +410,12 @@ function TicketVer() {
               >
                 {serviciosList.length !== 0
                   ? serviciosList.map((servicio) => {
-                      return (
-                        <option key={servicio.id} value={Number(servicio.id)}>
-                          {servicio.nombre}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={servicio.id} value={Number(servicio.id)}>
+                        {servicio.nombre}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
             </FormControl>
@@ -354,12 +434,12 @@ function TicketVer() {
               >
                 {tecnicosByServicios?.Tecnico?.length !== 0
                   ? tecnicosByServicios?.Tecnico?.map((tecnico) => {
-                      return (
-                        <option key={tecnico.id} value={tecnico.id}>
-                          {tecnico.nombre}, {tecnico.telefono}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={tecnico.id} value={tecnico.id}>
+                        {tecnico.nombre}, {tecnico.telefono}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
             </FormControl>
@@ -376,6 +456,125 @@ function TicketVer() {
           </ModalFooter>
         </ModalContent>
       </Modal>
+
+      {/* Seguimiento */}
+      <Box
+        m={2}
+        bgColor="white"
+        padding={5}
+        borderRadius={10}
+        p="6"
+        rounded="md"
+        bg="white"
+      >
+        <HStack spacing={4} w={"50%"}>
+          <Button
+            onClick={onOpenSeguimiento}
+            leftIcon={<AddIcon />}
+            colorScheme="facebook"
+            variant="solid"
+          >
+            Agregar Nuevo Seguimiento
+          </Button>
+        </HStack>
+
+        <Box marginLeft={"1%"} marginTop="20px">
+          <TableContainer>
+            <Table size={"md"} variant="simple" colorScheme="teal">
+              <TableCaption>Seguimientos</TableCaption>
+              <Thead>
+                <Tr>
+                  <Th>Asesor Gpo Lías</Th>
+                  <Th>Seguimiento</Th>
+                  <Th>Asesor Seguro</Th>
+                  <Th>Fecha y Hora</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {listadoSeguimientos.length != 0 ? (
+                  listadoSeguimientos.map((seguimiento, index) => {
+                    return (
+                      <Tr key={index}>
+                        <Td></Td>
+                        <Td>{seguimiento.detalles}</Td>
+                        <Td>{seguimiento.nombre_asesor_seguro}</Td>
+                        <Td>{moment(seguimiento.fecha_seguimiento).format("LLL")}</Td>
+                      </Tr>
+                    );
+                  })
+                ) : (
+                  <Tr>
+                    <Td>No hay data</Td>
+                  </Tr>
+                )}
+              </Tbody>
+
+            </Table>
+          </TableContainer>
+        </Box>
+      </Box>
+
+      <Modal closeOnOverlayClick={false} isOpen={isOpenSeguimiento} onClose={onCloseSeguimiento}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Crea un Nuevo Seguimiento</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody pb={6}>
+            <FormControl mt={4}>
+              <FormLabel padding={1}>Asesor de Gpo Lías</FormLabel>
+              <Input
+                paddingBottom={2}
+                placeholder="Asesor Gpo Lías"
+                onChange={(e) => {
+                  setAsesor_gpo_lias(e.target.value);
+
+                }}
+              />
+
+              <FormLabel padding={1}>Seguimiento</FormLabel>
+              <Input
+                paddingBottom={2}
+                placeholder="Seguimiento"
+                onChange={(e) => {
+                  setSeguimiento(e.target.value);
+
+
+                }}
+              />
+
+              <FormLabel padding={1}>Asesor Seguro</FormLabel>
+              <Input
+                paddingBottom={2}
+                placeholder="Asesor Seguro"
+                onChange={(e) => {
+                  setAsesor_seguro(e.target.value);
+                }}
+              />
+
+              <FormLabel>Fecha y Hora</FormLabel>
+              <Input
+                w={"fit-content"}
+                variant="filled"
+                type="datetime-local"
+                borderColor="twitter.100"
+                onChange={(e) => {
+                  setFecha_hora(e.target.value);
+
+                }}
+              />
+            </FormControl>
+          </ModalBody>
+
+          <ModalFooter>
+            <Button colorScheme="whatsapp"
+              variant="solid" mr={3} onClick={guardarSeguimiento}>
+              Guardar
+            </Button>
+            <Button onClick={onClose}>Cancelar</Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
     </DesktopLayout>
   );
 }

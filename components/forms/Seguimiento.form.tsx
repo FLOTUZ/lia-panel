@@ -16,7 +16,7 @@ import {
   Tr,
 } from "@chakra-ui/react";
 
-const SeguimientoForm = () => {
+const Seguimiento = () => {
   return (
     <div>
       <Box
@@ -151,4 +151,4 @@ const SeguimientoForm = () => {
   );
 };
 
-export default SeguimientoForm;
+export default Seguimiento;

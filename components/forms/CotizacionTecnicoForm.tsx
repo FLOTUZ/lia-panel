@@ -180,7 +180,7 @@ export const CrearCotizacionTecnico = ({
           </FormControl>*/}
         </SimpleGrid>
 
-        <SimpleGrid columns={[1, 1, 2]} spacing={5}>
+        <SimpleGrid columns={[1, 1, 3]} spacing={5}>
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="Costo de Mano de Obra">
               Costo de Mano de Obra
@@ -197,6 +197,8 @@ export const CrearCotizacionTecnico = ({
                 placeholder="Costo de Mano de Obra"
                 id="costo_de_mano_de_obra"
                 borderColor="twitter.100"
+                fontWeight={"bold"}
+                textColor={"red"}
                 value={cotizacion.costo_mano_obra}
               />
             </InputGroup>
@@ -218,10 +220,36 @@ export const CrearCotizacionTecnico = ({
                 placeholder="Costo de Materiale"
                 id="costo_de_materiales"
                 borderColor="twitter.100"
+                fontWeight={"bold"}
+                textColor={"red"}
                 value={cotizacion.costo_materiales}
               />
             </InputGroup>
           </FormControl>
+
+          <FormControl paddingTop={15}>
+            <FormLabel htmlFor="total">Monto Total</FormLabel>
+            <InputGroup>
+              <InputLeftAddon
+                pointerEvents="none"
+                children={<MdOutlineAttachMoney />}
+              />
+              <Input
+                isReadOnly
+                variant="unstyled"
+                id="total"
+                min={0}
+                placeholder="0.00"
+                paddingLeft={5}
+                type="number"
+                borderColor="twitter.100"
+                fontWeight={"bold"}
+                textColor={"red"}
+                value={cotizacion.total_cotizacion}
+              />
+            </InputGroup>
+          </FormControl>
+
         </SimpleGrid>
 
         <Center>

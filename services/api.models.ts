@@ -79,6 +79,18 @@ export interface IServicio {
   updatedAt?: string | null;
   tipo?: string;
 }
+
+export interface ISeguimiento {
+  id?: number;
+  nombre_asesor_seguro: string;
+  detalles: string;
+  fecha_seguimiento: string;
+  ticketId : number;
+  usuarioId: number;
+  createdAt?: string | null;
+  updatedAt?: string | null;
+}
+
 export interface IAseguradora {
   id?: number;
   nombre: string;

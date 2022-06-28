@@ -75,7 +75,6 @@ export default function AseguradorasListado() {
             <HStack spacing={4} w={"50%"}>
               <Link href={"/aseguradoras/nuevo"}>
                 <Button
-
                   leftIcon={<AddIcon />}
                   colorScheme="facebook"
                   variant="solid"

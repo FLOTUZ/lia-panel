@@ -8,6 +8,7 @@ import {
   ICiudad,
   ICotizacionTecnico,
   IEstado,
+  ISeguimiento,
   ITicket,
 } from "@/services/api.models";
 import { useEffect, useState } from "react";
@@ -25,6 +26,7 @@ import moment from 'moment';
 moment.locale("es");
 import 'moment-timezone'
 import 'moment/locale/es';
+import { SeguimientosService } from "@/services/seguimientos.service";
 
 interface TicketImprimibleProp {
   ticket?: ITicket;
@@ -37,6 +39,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
   const [estado, setEstado] = useState<IEstado>();
   const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>();
   const [cotizacionTecnico, setCotizacionTecnico] = useState<ICotizacionTecnico>();
+  const [seguimiento, setSeguimiento] = useState<ISeguimiento>();
 
   useEffect(() => {
     /*Obtener aseguradora*/
@@ -74,7 +77,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
     /*Obtener asesor de aseguradora*/
     const getAsesorAseguradora = async () => {
       const service = new AsesoresService();
-      const respuesta = await service.getById(ticket!.asesorId);
+      const respuesta = await service.getById(ticket?.asesorId!);
       const data = respuesta.data as IAsesor;
       setAsesorAseguradora(data);
     };
@@ -87,12 +90,21 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
       setCotizacionTecnico(data);
     };
 
+    /*Obtener Seguimiento*/
+    const getSeguimiento = async () => {
+      const service = new SeguimientosService();
+      const respuesta = await service.getAll();
+      const data = respuesta.data as ISeguimiento;
+      setSeguimiento(data);
+    };
+
     getAseguradora();
     getAsistencia();
     getCiudad();
     getEstado();
     getAsesorAseguradora();
     getCotizacionTecnico();
+    getSeguimiento();
   }, [ticket]);
 
   const styleTitulo = {
@@ -368,99 +380,19 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
         </table>
 
         <br />
-
-        <div className="cita" style={{ width: "100%", height: "30px"}}>
-          <div
-            style={{ width: "25%", height: "100%", float: "left" }}
-          >
-            <p style={{ paddingTop: "0", paddingLeft: "40px" }}>CITA 1</p>
-          </div>
-        </div>
-        <div  style={{ width: "100%", height: "30px" }}>
-          <div
-            style={{ width: "25%", height: "100%", float: "left", border: "1px solid" }}
-          >
-            <p style={{ paddingTop: "0", paddingLeft: "40px" }}>FECHA</p>
-          </div>
-          <div
-            style={{ width: "25%", height: "100%", display: "inline-block", border: "1px solid" }}
-          >
-            <p style={{ paddingTop: "0", paddingLeft: "40px" }}>HORA</p>
-          </div>
-          <div
-            style={{ width: "25%", height: "100%", display: "inline-block", border: "1px solid" }}
-          >
-            <p style={{ paddingTop: "0", paddingLeft: "40px" }}>INICIO</p>
-          </div>
-          <div
-            style={{ width: "25%", height: "100%", display: "inline-block", border: "1px solid" }}
-          >
-            <p style={{ paddingTop: "0", paddingLeft: "40px" }}>TERMINO</p>
-          </div>
-        </div>
-
-        <div className="cita" style={{ width: "100%", height: "30px" }}>
-          <div
-          
-            style={{ width: "25%", height: "100%", float: "left" }}
-          >
-            <p style={{ paddingTop: "0", paddingLeft: "40px" }}>CITA 2</p>
-          </div>
-        </div>
-        <div className="fecha" style={{ width: "100%", height: "30px" }}>
-          <div
-            style={{ width: "25%", height: "100%", float: "left", border: "1px solid" }}
-          >
-            <p style={{ paddingTop: "0", paddingLeft: "40px" }}>FECHA</p>
-          </div>
-          <div
-            style={{ width: "25%", height: "100%", display: "inline-block", border: "1px solid" }}
-          >
-            <p style={{ paddingTop: "0", paddingLeft: "40px" }}>HORA</p>
-          </div>
-          <div
-            style={{ width: "25%", height: "100%", display: "inline-block", border: "1px solid" }}
-          >
-            <p style={{ paddingTop: "0", paddingLeft: "40px" }}>INICIO</p>
-          </div>
-          <div
-            style={{ width: "25%", height: "100%", display: "inline-block", border: "1px solid" }}
-          >
-            <p style={{ paddingTop: "0", paddingLeft: "40px" }}>TERMINO</p>
-          </div>
-        </div>
-
-        <br />
         <br />
         <table style={{ width: "100%", border: "1px solid" }}>
-          <th>ASESOR DE GRUPO LIAS </th>
+          <th>ASESOR DE GRUPO LÍAS</th>
           <th>SEGUIMIENTO</th>
           <th>ASESOR DE SEGURO</th>
           <th>FECHA Y HORA</th>
           <tr>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
+            <td style={{ border: "1px solid", height: "30px" }} ></td>
+            <td style={{ border: "1px solid", height: "30px" }}> {seguimiento?.detalles}</td>
+            <td style={{ border: "1px solid", height: "30px" }}> {seguimiento?.nombre_asesor_seguro}</td>
+            <td style={{ border: "1px solid", height: "30px" }}> {seguimiento?.fecha_seguimiento}</td>
           </tr>
-          <tr>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-          </tr>
-          <tr>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-          </tr>
-          <tr>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-            <td style={{ border: "1px solid", height: "30px" }}></td>
-          </tr>
+          
         </table>
       </div>
       {/*<style jsx global>{`

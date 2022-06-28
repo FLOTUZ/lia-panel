@@ -27,8 +27,6 @@ import {
   IEstado,
   ITicket,
 } from "@/services/api.models";
-import SeguimientoForm from "@/forms/SeguimientoForm";
-import { BsPrinter } from "react-icons/bs";
 import { CrearCotizacionTecnico } from "@/forms/CotizacionTecnicoForm";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";
@@ -100,7 +98,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
   /*Obtener asesor de aseguradora*/
   const getAsesorAseguradora = async () => {
     const service = new AsesoresService();
-    const respuesta = await service.getById(ticket.asesorId);
+    const respuesta = await service.getById(Number(ticket.asesorId));
     const data = respuesta.data as IAsesor;
     setAsesorAseguradora(data);
   };
@@ -491,7 +489,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
               placeholder="0"
               type="number"
               borderColor="twitter.100"
-              value={ticket.casetas}
+              value={Number(ticket.casetas)}
             />
           </FormControl>
 
@@ -511,7 +509,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
-                value={ticket.costo_por_caseta}
+                value={Number(ticket.costo_por_caseta)}
               />
             </InputGroup>
           </FormControl>
