@@ -41,12 +41,6 @@ import { useFormik } from "formik";
 function EstadoVer() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const {
-    isOpen: isOpenEdit,
-    onOpen: onOpenEdit,
-    onClose: onCloseEdit,
-  } = useDisclosure();
-
   const toast = useToast();
 
   const [nombreCiudad, setNombreCiudad] = useState("");
@@ -60,25 +54,12 @@ function EstadoVer() {
   const { idEstado } = router.query;
 
   /*CONSULTA de Ciudades  */
-  const [idCiudad, setIdCiudad] = useState();
 
   const CID = 0;
 
   const [listadoCiudades, setListadoCiudades] = useState<ICiudad[]>([]);
 
-  const [dataCiudad, setDataCiudad] = useState<ICiudad>();
-
   /*  AGREGAR CIUDAD AL ESTADO*/
-  const consultarCiudad = async () => {
-    const city = new CiudadesService();
-    const response: any = await city.getById(Number());
-    const data = response.data as ICiudad;
-
-    if (response.status == 200) {
-      setDataCiudad(data);
-    } else {
-    }
-  };
 
   const consultarCiudades = async () => {
     const city = new CiudadesService();
@@ -186,42 +167,6 @@ function EstadoVer() {
     },
   });
 
-  /*ACTUALIZAR LA CIUDAD  SELECCIONADO FORMIK */
-
-  const formCiudad = useFormik({
-    initialValues: {
-      nombre: dataCiudad?.nombre || "",
-    },
-    enableReinitialize: true,
-
-    onSubmit: async (values: ICiudad) => {
-      const dataCiudad = {
-        ...values,
-      };
-
-      const service = new CiudadesService();
-      const respuesta = await service.update(dataCiudad, Number());
-
-      const dataUpdate = respuesta.data as ICiudad;
-      setData(dataUpdate);
-
-      if (respuesta.status !== 200) {
-        toast({
-          title: "Error",
-          status: "error",
-          description: `Error al actualizar, verifique sus campos`,
-        });
-        setCargando(false);
-      } else {
-        toast({
-          title: "Guardado",
-          status: "success",
-          description: `${respuesta.Estado} guardado`,
-        });
-      }
-    },
-  });
-
   return (
     <div>
       <DesktopLayout>
@@ -282,7 +227,6 @@ function EstadoVer() {
               <Button
                 id="guardar"
                 type="submit"
-
                 colorScheme="whatsapp"
                 variant="solid"
               >
@@ -298,9 +242,7 @@ function EstadoVer() {
               </Button>
             </Stack>
           </Box>
-        </form>
-
-        <form onSubmit={formCiudad.handleSubmit}>
+       
           <Box
             m={2}
             bgColor="white"
@@ -385,48 +327,12 @@ function EstadoVer() {
                               variant="ghost"
                               aria-label="edit"
                               icon={<EditIcon />}
-                              onClick={onOpenEdit}
+                              onClick={()=>{
+                                router.push(`/ciudades/ciudad/${t.id}`);
+                            }
+                              
+                              }
                             />
-
-                            <Modal
-                              closeOnOverlayClick={false}
-                              isOpen={isOpenEdit}
-                              onClose={onCloseEdit}
-                            >
-                              <ModalOverlay />
-                              <ModalContent>
-                                <ModalHeader>
-                                  Editar Ciudad
-                                </ModalHeader>
-                                <ModalCloseButton />
-                                <ModalBody pb={6}>
-                                  <FormControl mt={4}>
-                                    <FormLabel>Nombre de la Ciudad</FormLabel>
-                                    <Input
-                                      placeholder="Nombre de la Asistencia"
-                                      defaultValue={dataCiudad?.nombre}
-                                      onChange={
-                                        (e) => {
-                                          const nombreM = e.target.value.toUpperCase();
-                                          formCiudad.setFieldValue("nombre", nombreM);
-                                        }}
-                                    />
-                                  </FormControl>
-                                </ModalBody>
-
-                                <ModalFooter>
-                                  <Button
-                                    colorScheme="blue"
-                                    mr={3}
-                                    type="submit"
-                                    isLoading={cargando}
-                                  >
-                                    Guardar
-                                  </Button>
-                                  <Button onClick={onCloseEdit}>Cancelar</Button>
-                                </ModalFooter>
-                              </ModalContent>
-                            </Modal>
                           </Td>
                         </Tr>
                       );
