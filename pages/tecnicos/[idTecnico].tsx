@@ -24,7 +24,7 @@ import {
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 
-import { FormEvent, useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   ITecnico,
   IUsuario,

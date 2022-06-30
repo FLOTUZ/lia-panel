@@ -1,6 +1,4 @@
 import axios from "axios";
-import { IServicio } from "./api.models";
-import { Crear } from "./ApiCall";
 
 export class ServiciosToTecnicos {
   private url = process.env.NEXT_PUBLIC_APIURL + "/tecnicos";

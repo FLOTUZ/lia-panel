@@ -25,25 +25,19 @@ import {
   Th,
   Tbody,
   Td,
-  Spacer,
   Heading,
   useToast,
   Divider,
   SimpleGrid,
 } from "@chakra-ui/react";
-import { AddIcon, CheckIcon, EmailIcon, PhoneIcon } from "@chakra-ui/icons";
-import React, { useEffect, useState } from "react";
+import { AddIcon } from "@chakra-ui/icons";
+import React, { useState } from "react";
 import {
   MdCarRepair,
-  MdHomeFilled,
-  MdHomeRepairService,
-  MdMapsHomeWork,
   MdOutlineAttachMoney,
   MdOutlineHomeMax,
-  MdOutlineHomeMini,
   MdOutlineMapsHomeWork,
   MdVerifiedUser,
-  MdVideoLabel,
 } from "react-icons/md";
 import Link from "next/link";
 import { AseguradoraService } from "@/services/aseguradoras.service";
@@ -51,7 +45,6 @@ import { IAseguradora, IAsistencia } from "@/services/api.models";
 import { AsistenciasService } from "@/services/asistencias.service";
 import {
   IoLogoWhatsapp,
-  IoSpeedometer,
   IoSpeedometerOutline,
 } from "react-icons/io5";
 

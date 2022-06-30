@@ -1,4 +1,3 @@
-import WhatsIMG from "../../public/logoDeWhats.png";
 import LiasIMG from "../../public/logo.jpeg";
 import Image from "next/image";
 import {

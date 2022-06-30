@@ -1,4 +1,10 @@
 {
   "extends": "next/core-web-vitals",
   "react/no-children-prop": false
+  // "rules": {
+  //   "no-console": "error",
+  //   "unused-imports/no-unused-imports": "warn",
+  //   "react/no-unescaped-entities": "off"
+  // },
+  // "plugins": ["unused-imports"]
 }

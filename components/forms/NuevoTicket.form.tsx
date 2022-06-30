@@ -8,19 +8,16 @@ import {
   ITecnico,
   ITicket,
 } from "@/services/api.models";
-import { FaBeer, FaMoneyBill, FaUserShield } from "react-icons/fa";
+import { FaUserShield } from "react-icons/fa";
 import { RiGpsLine } from "react-icons/ri";
-import { RiFileUserFill } from "react-icons/ri";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";
 import { CiudadesService } from "@/services/ciudades.service";
 import { ServiciosService } from "@/services/servicios.service";
 import { TicketsService } from "@/services/tickets.service";
-import { AddIcon, ArrowUpIcon, EmailIcon } from "@chakra-ui/icons";
+import { ArrowUpIcon } from "@chakra-ui/icons";
 import {
   Box,
-  Stack,
-  Spacer,
   Divider,
   FormLabel,
   Input,
@@ -33,18 +30,10 @@ import {
   SimpleGrid,
   Checkbox,
   Switch,
-  InputLeftElement,
   Button,
   Flex,
-  Modal,
-  ModalOverlay,
-  ModalContent,
   ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
   useDisclosure,
-  toast,
   extendTheme,
   useToast,
   DrawerBody,
@@ -56,7 +45,7 @@ import {
   InputGroup,
   InputLeftAddon,
 } from "@chakra-ui/react";
-import { Formik, useFormik } from "formik";
+import { useFormik } from "formik";
 import React, { useState, useEffect } from "react";
 import { MdAdd, MdOutlineAttachMoney } from "react-icons/md";
 import { AsesoresService } from "@/services/asesores.service";

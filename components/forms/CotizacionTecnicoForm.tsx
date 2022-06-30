@@ -21,10 +21,8 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Progress,
   SimpleGrid,
   Text,
-  toast,
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";

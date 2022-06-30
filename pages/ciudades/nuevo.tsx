@@ -26,16 +26,13 @@ import {
   Heading,
   useToast,
   Divider,
-  SimpleGrid,
 } from "@chakra-ui/react";
 import { AddIcon, ViewOffIcon } from "@chakra-ui/icons";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Link from "next/link";
 import { EstadosService } from "@/services/estados.service";
 import { IEstado, ICiudad } from "@/services/api.models";
 import { CiudadesService } from "@/services/ciudades.service";
-import { route } from "next/dist/server/router";
-import { Router } from "next/router";
 
 function EstadoNuevo() {
 

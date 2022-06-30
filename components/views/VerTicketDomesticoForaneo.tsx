@@ -1,7 +1,5 @@
-import DesktopLayout from "@/layouts/DesktopLayout";
 import Header from "@/common/Header";
 
-import { useRouter } from "next/router";
 import {
   Box,
   Divider,
@@ -12,13 +10,11 @@ import {
   Textarea,
   Text,
   SimpleGrid,
-  Button,
   InputGroup,
   InputLeftAddon,
 } from "@chakra-ui/react";
-import { BsPrinter } from "react-icons/bs";
-import { MdAdd, MdOutlineAttachMoney } from "react-icons/md";
-import { IoFlag, IoSpeedometerOutline } from "react-icons/io5";
+import { MdOutlineAttachMoney } from "react-icons/md";
+import { IoSpeedometerOutline } from "react-icons/io5";
 import {
   IAcuerdoConformidad,
   IAseguradora,

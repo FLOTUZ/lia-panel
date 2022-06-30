@@ -1,4 +1,4 @@
-import { IAseguradora, IAsesor } from "./api.models";
+import { IAsesor } from "./api.models";
 import { Actualizar, Consultar, Crear, Eliminar } from "./ApiCall";
 
 export class AsesoresService {

@@ -2,7 +2,6 @@ import Header from "@/common/Header";
 
 import {
   Box,
-  Button,
   Center,
   Divider,
   FormControl,
@@ -27,7 +26,6 @@ import {
   ITicket,
 } from "@/services/api.models";
 import { CrearCotizacionTecnico } from "@/forms/CotizacionTecnicoForm";
-import { BsPrinter } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";

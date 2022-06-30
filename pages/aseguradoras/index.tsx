@@ -16,15 +16,13 @@ import {
   FormControl,
   HStack,
 } from "@chakra-ui/react";
-import { AddIcon, EditIcon, SearchIcon } from "@chakra-ui/icons";
+import { AddIcon, EditIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { IAseguradora } from "@/services/api.models";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import moment from 'moment';
-import Moment from 'react-moment'
 import 'moment-timezone'
 import 'moment/locale/es';
-import { constants } from "buffer";
 
 
 

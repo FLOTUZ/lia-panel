@@ -1,4 +1,4 @@
-import axios, { AxiosInstance } from "axios";
+import axios from "axios";
 import { ILogin, ILoginResponse } from "./api.models";
 import { Consultar, Crear } from "./ApiCall";
 

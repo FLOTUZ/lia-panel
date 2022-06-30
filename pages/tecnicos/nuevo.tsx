@@ -7,20 +7,16 @@ import {
   FormLabel,
   Input,
   FormControl,
-  RadioGroup,
   HStack,
   VStack,
-  Radio,
   Button,
   Spacer,
   useToast,
   Box,
   Center,
   Divider,
-  InputLeftElement,
   Select,
   Stack,
-  Switch,
   Text,
   Checkbox,
   FormHelperText,
@@ -41,7 +37,6 @@ import { TecnicoService } from "@/services/tecnicos.service";
 import { ServiciosService } from "@/services/servicios.service";
 import { ServiciosToTecnicos } from "@/services/serviciosToTecnicos.service";
 import { EstadosService } from "@/services/estados.service";
-import { Consultar } from "@/services/ApiCall";
 
 function UsuarioNuevo() {
   //------------------------ DATA USUARIO -------------------------------------

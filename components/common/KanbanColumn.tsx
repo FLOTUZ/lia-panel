@@ -1,7 +1,6 @@
 import {
   GridItem,
   Heading,
-  Box,
 } from "@chakra-ui/react";
 
 interface IKanbanColumn {

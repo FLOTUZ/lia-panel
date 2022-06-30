@@ -3,9 +3,6 @@ import DesktopLayout from "@/layouts/DesktopLayout";
 import { IUsuario } from "@/services/api.models";
 import { UsuariosService } from "@/services/usuarios.service";
 import {
-  AddIcon,
-  AttachmentIcon,
-  DeleteIcon,
   EditIcon,
 } from "@chakra-ui/icons";
 import {
@@ -14,7 +11,6 @@ import {
   IconButton,
   TableContainer,
   Table,
-  TableCaption,
   Thead,
   Tr,
   Th,

@@ -4,7 +4,6 @@ import type { AppProps } from "next/app";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { AuthService } from "@/services/auth.service";
-import { GetServerSideProps } from "next";
 
 const colors = {
   lias: {

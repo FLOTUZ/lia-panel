@@ -1,10 +1,8 @@
 import {
-  Box,
   Button,
-  Stack,
   useDisclosure,
 } from "@chakra-ui/react";
-import React, { useEffect, useRef, useState } from "react";
+import React from "react";
 import ReactDOMServer from "react-dom/server";
 
 interface PrinterProps {

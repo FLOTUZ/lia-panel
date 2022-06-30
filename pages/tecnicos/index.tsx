@@ -17,9 +17,8 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon, EditIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
-import { ITecnico, ICiudad } from "@/services/api.models";
+import { ITecnico } from "@/services/api.models";
 import { TecnicoService } from "@/services/tecnicos.service";
-import { CiudadesService } from "@/services/ciudades.service";
 
 function TenicosListado() {
   const toast = useToast();

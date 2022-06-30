@@ -1,6 +1,5 @@
 import { IImagen } from "./api.models";
 import { Actualizar, Consultar, Crear, Eliminar } from "./ApiCall";
-import axios from "axios";
 
 export class ImagenesService {
   private url = "/imagenes";

@@ -1,6 +1,6 @@
 import Header from "@/common/Header";
 import DesktopLayout from "@/layouts/DesktopLayout";
-import { IServicio, ITecnico, IUsuario } from "@/services/api.models";
+import { IServicio, IUsuario } from "@/services/api.models";
 import { UsuariosService } from "@/services/usuarios.service";
 import {
   Button,
@@ -17,8 +17,7 @@ import {
   Switch,
   Flex,
 } from "@chakra-ui/react";
-import { Form, Formik, useFormik } from "formik";
-import Link from "next/link";
+import { useFormik } from "formik";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 

@@ -1,9 +1,6 @@
-import ViewText from "@/common/ViewText";
-import { ICotizacionTecnico, IImagen, ITicket } from "@/services/api.models";
+import { ICotizacionTecnico, ITicket } from "@/services/api.models";
 import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
-import { ImagenesService } from "@/services/imagenes.service";
 import { TicketsService } from "@/services/tickets.service";
-import { PhoneIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
@@ -19,12 +16,8 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import Image from "next/image";
 import { useEffect, useState } from "react";
 import { MdAttachMoney } from "react-icons/md";
-import { AiOutlineSolution } from "react-icons/ai";
-import Logo from "../../public/vercel.svg";
-import { CrearCotizacionTecnico } from "./CotizacionTecnicoForm";
 interface CrearCotizacionTecnicoManualProps {
   ticket: ITicket;
   cotizacion: ICotizacionTecnico;

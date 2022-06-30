@@ -1,22 +1,16 @@
-import { LockIcon, Search2Icon } from "@chakra-ui/icons";
+import { LockIcon } from "@chakra-ui/icons";
 import {
-  Avatar,
   Box,
   Button,
-  Center,
   Flex,
   FormControl,
   FormHelperText,
-  Heading,
   Input,
   InputGroup,
   InputLeftElement,
   InputRightElement,
   Stack,
-  Wrap,
-  WrapItem,
 } from "@chakra-ui/react";
-import Link from "next/link";
 import React, { useState } from "react";
 import { IoMail } from "react-icons/io5";
 
@@ -25,7 +19,7 @@ import Logo from "../../public/logo.jpeg";
 import { useFormik } from "formik";
 import { AuthService } from "@/services/auth.service";
 import { ILogin } from "@/services/api.models";
-import Router, { useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 export default function Home(): JSX.Element {
   const [show, setShow] = useState(false);

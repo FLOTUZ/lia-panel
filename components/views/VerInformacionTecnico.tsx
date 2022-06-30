@@ -5,9 +5,6 @@ import { UsuariosService } from "@/services/usuarios.service";
 import {
   Avatar,
   Box,
-  Container,
-  Grid,
-  GridItem,
   Heading,
   HStack,
   IconButton,
@@ -20,7 +17,6 @@ import {
   SimpleGrid,
   Text,
   VStack,
-  Wrap,
   WrapItem,
 } from "@chakra-ui/react";
 import moment from "moment";

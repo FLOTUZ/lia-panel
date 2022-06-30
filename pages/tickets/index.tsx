@@ -1,7 +1,7 @@
 import Kanban from "@/layouts/Kanban";
 import DesktopLayout from "@/layouts/DesktopLayout";
 import Header from "@/common/Header";
-import { Button, HStack, Box, SimpleGrid, Spacer } from "@chakra-ui/react";
+import { Button, Box, SimpleGrid } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { AddIcon, ViewIcon } from "@chakra-ui/icons";
 

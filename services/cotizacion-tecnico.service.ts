@@ -1,4 +1,4 @@
-import { IAseguradora, ICotizacionTecnico } from "./api.models";
+import { ICotizacionTecnico } from "./api.models";
 import { Actualizar, Consultar, Crear, Eliminar } from "./ApiCall";
 
 export class CotizacionTecnicoService {

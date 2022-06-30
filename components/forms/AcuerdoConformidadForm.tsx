@@ -1,5 +1,4 @@
-import { AcuerdoConformidadService } from "@/services/acuerdo-conformidad.service";
-import { IAcuerdoConformidad, IImagen, ITicket } from "@/services/api.models";
+import { IAcuerdoConformidad, ITicket } from "@/services/api.models";
 
 import { TicketsService } from "@/services/tickets.service";
 import {

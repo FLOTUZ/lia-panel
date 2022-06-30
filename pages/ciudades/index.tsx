@@ -15,7 +15,7 @@ import {
   Link,
   Spacer,
 } from "@chakra-ui/react";
-import { AddIcon, DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { AddIcon, EditIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { EstadosService } from "@/services/estados.service";
 import { IEstado } from "@/services/api.models";
