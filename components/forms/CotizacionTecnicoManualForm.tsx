@@ -57,7 +57,9 @@ export const CrearCotizacionTecnicoManual = ({
       is_aprobado: isAprobado,
       tecnicoId: ticket.tecnicoId!,
       ticketId: ticket.id,
-      aprobado_por_usuarioId: 1, //TODO: Sacar id de usuario desde la sesion
+      aprobado_por_usuarioId: 1,
+      hora_llegada: "",
+      img_llegadaId: 0
     };
 
     const service = new CotizacionTecnicoService();

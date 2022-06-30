@@ -28,7 +28,6 @@ import {
   ITicket,
 } from "@/services/api.models";
 import { CrearCotizacionTecnico } from "@/forms/CotizacionTecnicoForm";
-import SeguimientoForm from "@/forms/SeguimientoForm";
 import { useEffect, useState } from "react";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";
@@ -94,7 +93,7 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
   /*Obtener asesor de aseguradora*/
   const getAsesorAseguradora = async () => {
     const service = new AsesoresService();
-    const respuesta = await service.getById(ticket.asesorId);
+    const respuesta = await service.getById(ticket?.asesorId!);
     const data = respuesta.data as IAsesor;
     setAsesorAseguradora(data);
   };
@@ -358,7 +357,7 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
               id="numero_domicilio"
               placeholder="N° de Domicilio Exterior"
               borderColor="twitter.100"
-              value={ticket.numero_domicilio}
+              value={ticket?.numero_domicilio!}
             />
           </FormControl>
 

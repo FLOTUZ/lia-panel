@@ -27,7 +27,6 @@ import {
   ITicket,
 } from "@/services/api.models";
 import { CrearCotizacionTecnico } from "@/forms/CotizacionTecnicoForm";
-import SeguimientoForm from "@/forms/SeguimientoForm";
 import { BsPrinter } from "react-icons/bs";
 import { useEffect, useState } from "react";
 import { AseguradoraService } from "@/services/aseguradoras.service";
@@ -96,7 +95,7 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
   /*Obtener asesor de aseguradora*/
   const getAsesorAseguradora = async () => {
     const service = new AsesoresService();
-    const respuesta = await service.getById(ticket.asesorId);
+    const respuesta = await service.getById(ticket?.asesorId!);
     const data = respuesta.data as IAsesor;
     setAsesorAseguradora(data);
   };

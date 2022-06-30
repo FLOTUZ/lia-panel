@@ -45,6 +45,7 @@ export const CrearCotizacionTecnico = ({
   const [imagen, setImagen] = useState<IImagen>();
   const [uploadImage, setUploadImage] = useState<string>("");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  
   const getImagen = async () => {
     const service = new ImagenesService();
     const respuesta = await service.getById(cotizacion.preSolucionId!);
