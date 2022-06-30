@@ -109,7 +109,7 @@ function TicketVer() {
     const service = new TicketsService();
     const respuesta = await service.update(payload, ticket?.id!);
 
-    if (respuesta.status == 200) {
+    if (respuesta.status == 200  && ticket?.is_facturado == false ) {
       const data = respuesta.data as ITicket;
       setTicket(data);
       toast({
@@ -125,7 +125,7 @@ function TicketVer() {
         title: "Se Desactivo la Factura",
         description: respuesta.message,
         position: "bottom-right",
-        status: "error",
+        status: "info",
         duration: 9000,
         isClosable: true,
       });
@@ -386,7 +386,7 @@ function TicketVer() {
               justifyContent={"center"}
               alignItems={"center"}
               position="fixed"
-              height={"60px"}
+              height={"50px"}
               right={["16px", "380px"]}
               zIndex={1}
               borderRadius="md"
@@ -437,7 +437,7 @@ function TicketVer() {
               alignItems={"center"}
               position="fixed"
               width={"190px"}
-              height={"80px"}
+              height={"50px"}
               right={["16px", "170px"]}
               zIndex={1}
             >
@@ -445,7 +445,6 @@ function TicketVer() {
                 padding={"2%"}
                 justifySelf="end"
                 width={"150px"}
-                height={"60px"}
                 leftIcon={<BsPrinter size={"30px"} />}
                 id="imprimirTicket"
                 colorScheme="telegram"
@@ -461,7 +460,7 @@ function TicketVer() {
               alignItems={"center"}
               position="fixed"
               width={"190px"}
-              height={"80px"}
+              height={"50px"}
               right={["0.2px"]}
               zIndex={1}
             >
