@@ -38,6 +38,14 @@ import {
   Td,
   Tbody,
   Input,
+  Switch,
+  SimpleGrid,
+  VStack,
+  Text,
+  Flex,
+  Badge,
+  Alert,
+  AlertIcon,
 } from "@chakra-ui/react";
 
 import { useRouter } from "next/router";
@@ -55,7 +63,7 @@ import TicketImprimible from "components/imprimibles/ticket.imprimible";
 import Printer from "components/printer/printer";
 import { CrearCotizacionTecnicoManual } from "@/forms/CotizacionTecnicoManualForm ";
 
-import moment from 'moment';
+import moment from "moment";
 import { AddIcon } from "@chakra-ui/icons";
 import { SeguimientosService } from "@/services/seguimientos.service";
 
@@ -73,7 +81,6 @@ function TicketVer() {
     isOpen: isOpenSeguimiento,
     onOpen: onOpenSeguimiento,
     onClose: onCloseSeguimiento,
-
   } = useDisclosure();
   const [ticket, setTicket] = useState<ITicket>();
   const [aseguradora, setAseguradora] = useState<IAseguradora>();
@@ -83,6 +90,8 @@ function TicketVer() {
   const [serviciosList, setServiciosList] = useState<IServicio[]>([]);
   const [tecnicosByServicios, setTecnicosByServicios] = useState<IServicio>();
   const [tecnicoId, setTecnicoId] = useState(0);
+
+  const [archivado, setArchivado] = useState<boolean>(false);
 
   const [tipoVista, setTipoVista] = useState<JSX.Element>();
 
@@ -117,6 +126,7 @@ function TicketVer() {
 
     if (respuesta.status == 200) {
       setTicket(data);
+      setArchivado(data.is_archivado!);
     }
   };
 
@@ -140,7 +150,9 @@ function TicketVer() {
   const [seguimiento, setSeguimiento] = useState("");
   const [asesor_seguro, setAsesor_seguro] = useState("");
   const [fecha_hora, setFecha_hora] = useState("");
-  const [listadoSeguimientos, setListadoSeguimientos] = useState<ISeguimiento[]>([]);
+  const [listadoSeguimientos, setListadoSeguimientos] = useState<
+    ISeguimiento[]
+  >([]);
 
   const guardarSeguimiento = async () => {
     const data: ISeguimiento = {
@@ -148,10 +160,9 @@ function TicketVer() {
       nombre_asesor_seguro: asesor_seguro,
       fecha_seguimiento: new Date(Date.now()).toISOString(),
       ticketId: Number(idTicket),
-      usuarioId: 1 //TODO: Obtener el id del usuario logeado
+      usuarioId: 1, //TODO: Obtener el id del usuario logeado
     };
     console.log(data);
-
 
     const service = new SeguimientosService();
     const response = await service.create(data);
@@ -167,7 +178,6 @@ function TicketVer() {
         duration: 9000,
         isClosable: true,
       });
-
     } else {
       toast({
         title: "Oops.. Algo salio mal",
@@ -189,6 +199,22 @@ function TicketVer() {
     if (respuesta.status == 200) {
       setListadoSeguimientos(data);
     } else {
+    }
+  };
+
+  const archivarTicket = async () => {
+    const payload = {
+      is_archivado: !archivado,
+    } as ITicket;
+    console.log(payload);
+
+    const service = new TicketsService();
+    const respuesta: any = await service.update(payload, ticket?.id!);
+
+    console.log(respuesta.data);
+    if (respuesta.status == 200) {
+      const t = respuesta.data as ITicket;
+      setArchivado(t.is_archivado!);
     }
   };
 
@@ -237,12 +263,6 @@ function TicketVer() {
     }
   };
 
-
-
-  const dataTicket = {
-    titulo: "Mecanico para JOE",
-  };
-
   return (
     <DesktopLayout>
       {ticket?.estado === "NUEVO" ? (
@@ -272,7 +292,7 @@ function TicketVer() {
         </Box>
       ) : null}
 
-{/*
+      {/*
       {ticket?.estado === "TOMADO" ? (
         <Box
           justifyContent={"center"}
@@ -324,6 +344,60 @@ function TicketVer() {
             size="lg"
             onClick={onOpen}
           />
+        </Box>
+      ) : null}
+
+      {ticket?.estado === "FINALIZADO" ? (
+        <Box>
+          <Box
+            margin={"1%"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            position="fixed"
+            width={"250px"}
+            height={"60px"}
+            right={["16px", "250px"]}
+            zIndex={1}
+            borderRadius="md"
+            bg="tomato"
+            color="white"
+          >
+            <FormControl
+              display="flex"
+              alignItems="center"
+              as={SimpleGrid}
+              columns={{ base: 1, lg: 4 }}
+            >
+              <FormLabel padding={3} htmlFor="isChecked">
+                Archivar ticket:
+              </FormLabel>
+
+              <Switch
+                isChecked={archivado}
+                size={"lg"}
+                onChange={() => {
+                  setArchivado(!archivado);
+                  archivarTicket();
+                }}
+              />
+            </FormControl>
+          </Box>
+
+          <Box
+            margin={"1%"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            bottom="20px"
+            right={["16px", "84px"]}
+            position="fixed"
+          >
+            {archivado ? (
+              <Alert variant='solid' status="info">
+                <AlertIcon />
+                Este ticket se encuentra archivado
+              </Alert>
+            ) : null}
+          </Box>
         </Box>
       ) : null}
 
@@ -410,12 +484,12 @@ function TicketVer() {
               >
                 {serviciosList.length !== 0
                   ? serviciosList.map((servicio) => {
-                    return (
-                      <option key={servicio.id} value={Number(servicio.id)}>
-                        {servicio.nombre}
-                      </option>
-                    );
-                  })
+                      return (
+                        <option key={servicio.id} value={Number(servicio.id)}>
+                          {servicio.nombre}
+                        </option>
+                      );
+                    })
                   : null}
               </Select>
             </FormControl>
@@ -434,12 +508,12 @@ function TicketVer() {
               >
                 {tecnicosByServicios?.Tecnico?.length !== 0
                   ? tecnicosByServicios?.Tecnico?.map((tecnico) => {
-                    return (
-                      <option key={tecnico.id} value={tecnico.id}>
-                        {tecnico.nombre}, {tecnico.telefono}
-                      </option>
-                    );
-                  })
+                      return (
+                        <option key={tecnico.id} value={tecnico.id}>
+                          {tecnico.nombre}, {tecnico.telefono}
+                        </option>
+                      );
+                    })
                   : null}
               </Select>
             </FormControl>
@@ -498,7 +572,9 @@ function TicketVer() {
                         <Td></Td>
                         <Td>{seguimiento.detalles}</Td>
                         <Td>{seguimiento.nombre_asesor_seguro}</Td>
-                        <Td>{moment(seguimiento.fecha_seguimiento).format("LLL")}</Td>
+                        <Td>
+                          {moment(seguimiento.fecha_seguimiento).format("LLL")}
+                        </Td>
                       </Tr>
                     );
                   })
@@ -508,13 +584,16 @@ function TicketVer() {
                   </Tr>
                 )}
               </Tbody>
-
             </Table>
           </TableContainer>
         </Box>
       </Box>
 
-      <Modal closeOnOverlayClick={false} isOpen={isOpenSeguimiento} onClose={onCloseSeguimiento}>
+      <Modal
+        closeOnOverlayClick={false}
+        isOpen={isOpenSeguimiento}
+        onClose={onCloseSeguimiento}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Crea un Nuevo Seguimiento</ModalHeader>
@@ -527,7 +606,6 @@ function TicketVer() {
                 placeholder="Asesor Gpo Lías"
                 onChange={(e) => {
                   setAsesor_gpo_lias(e.target.value);
-
                 }}
               />
 
@@ -537,8 +615,6 @@ function TicketVer() {
                 placeholder="Seguimiento"
                 onChange={(e) => {
                   setSeguimiento(e.target.value);
-
-
                 }}
               />
 
@@ -559,22 +635,24 @@ function TicketVer() {
                 borderColor="twitter.100"
                 onChange={(e) => {
                   setFecha_hora(e.target.value);
-
                 }}
               />
             </FormControl>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="whatsapp"
-              variant="solid" mr={3} onClick={guardarSeguimiento}>
+            <Button
+              colorScheme="whatsapp"
+              variant="solid"
+              mr={3}
+              onClick={guardarSeguimiento}
+            >
               Guardar
             </Button>
             <Button onClick={onClose}>Cancelar</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
-
     </DesktopLayout>
   );
 }

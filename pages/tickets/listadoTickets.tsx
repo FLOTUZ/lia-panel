@@ -23,26 +23,25 @@ import {
   ModalFooter,
   ModalBody,
   Stack,
+  Badge,
 } from "@chakra-ui/react";
-import {
-  AddIcon,
-} from "@chakra-ui/icons";
+import { AddIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { ITicket } from "@/services/api.models";
 import { TicketsService } from "@/services/tickets.service";
-import { BsPrinter } from "react-icons/bs";
+import { BsEye, BsPrinter } from "react-icons/bs";
 import Printer from "components/printer/printer";
 import TicketImprimible from "components/imprimibles/ticket.imprimible";
 
-import moment from 'moment';
+import moment from "moment";
 moment.locale("es");
-import 'moment-timezone'
-import 'moment/locale/es';
+import "moment-timezone";
+import "moment/locale/es";
 
 export default function ListadoTickets() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   /*LISTADO PARA LOS TICKETS*/
-  const [listadoTickets, setListadoTickets] = useState<ITicket[]>([])
+  const [listadoTickets, setListadoTickets] = useState<ITicket[]>([]);
   useEffect(() => {
     const consultaTickets = async () => {
       const services = new TicketsService();
@@ -57,7 +56,12 @@ export default function ListadoTickets() {
     consultaTickets();
   }, []);
 
-
+  const nuevosTickets: ITicket[] = listadoTickets.filter((e: any) => {
+    return e.estado === "NUEVO";
+  });
+  const finalizados: ITicket[] = listadoTickets.filter((e: any) => {
+    return e.estado === "FINALIZADO";
+  });
   return (
     <DesktopLayout>
       <Header title={"Tickets "} />
@@ -81,7 +85,6 @@ export default function ListadoTickets() {
           bg="white"
         >
           <FormControl>
-
             <Link href={"/tickets/nuevo"}>
               <a>
                 {" "}
@@ -105,9 +108,10 @@ export default function ListadoTickets() {
               <Tr>
                 <Th>Nº Expediente</Th>
                 <Th>Título del Ticket</Th>
-                <Th>Nombre del Técnico</Th>
+                <Th>Estado</Th>
+                <Th>Nombre del cliente</Th>
                 <Th>Fecha de Llamada</Th>
-                <Th>Problematica</Th>
+                <Th>Archivado</Th>
                 <Th></Th>
               </Tr>
             </Thead>
@@ -118,25 +122,92 @@ export default function ListadoTickets() {
                     <Tr key={index}>
                       <Td>{ticket.num_expediente}</Td>
                       <Td>{ticket.titulo_ticket}</Td>
-                      <Td>{ticket.nombre_usuario_final}</Td>
-                      <Td>{moment(Date.parse(ticket.fecha_llamada)).format("LLLL")}</Td>
-                      <Td>{ticket.problematica}</Td>
                       <Td>
+                      
+                      {ticket?.estado === "NUEVO" ? (
+                          
+                          <Badge colorScheme={"green"} key={index}>
+                            {ticket.estado}
+                          </Badge>
+                      ): ticket?.estado === "TOMADO"? (
+                        
+                        <Badge colorScheme={"purple"} key={index}>
+                           {ticket.estado}
 
+                        </Badge>
+                        
+                      ): ticket?.estado === "COTIZADO"? (
+                        
+                        <Badge colorScheme={"gray"} key={index}>
+                           {ticket.estado}
+
+                        </Badge>
+                      ): ticket?.estado === "EN PROCESO"? (
+                        
+                        <Badge colorScheme={"bisque"} key={index}>
+                           {ticket.estado}
+
+                        </Badge>
+                      ) : ticket?.estado === "A CERRAR"? (
+                        
+                        <Badge colorScheme={"blue"} key={index}>
+                           {ticket.estado}
+
+                        </Badge>
+                      ):ticket?.estado === "FINALIZADO"? (
+                        
+                        <Badge colorScheme={"red"} key={index}>
+                           {ticket.estado}
+
+                        </Badge>
+                      ):null}
+                            
+
+                       
+                      </Td>
+                      <Td>{ticket.nombre_usuario_final}</Td>
+                      <Td>
+                        {moment(Date.parse(ticket.fecha_llamada)).format(
+                          "LLLL"
+                        )}
+                      </Td>
+                      <Td>
+                        {ticket.is_archivado ? (
+                          <Badge  variant='outline' >Archivado</Badge>
+                        ) : (
+                          <Badge  variant='outline' colorScheme="blue">Sin archivar</Badge>
+                        )}
+                      </Td>
+                      <Td>
+                      <Link href={`/tickets/${ticket.id}`}>
+
+                      <IconButton
+                          variant="outline"
+                          aria-label="show"
+                          icon={<BsEye />}
+                
+                      ></IconButton>
+                      </Link>
+                      </Td>
+                      <Td>
                         <IconButton
                           variant="outline"
                           aria-label="edit"
                           icon={<BsPrinter />}
                           onClick={onOpen}
+                          
                         />
+                        
 
                         <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
-                          <ModalOverlay/>
+                          <ModalOverlay />
                           <ModalContent>
                             <ModalHeader>Impresión</ModalHeader>
                             <ModalCloseButton />
                             <ModalBody>
-                              <Printer doc={<TicketImprimible ticket={ticket} />} />
+                              <Printer
+                                doc={<TicketImprimible ticket={ticket} />}
+                              />
                             </ModalBody>
                             <ModalFooter>
                               <Stack
@@ -160,19 +231,17 @@ export default function ListadoTickets() {
                         </Modal>
                       </Td>
                     </Tr>
-                  )
+                  );
                 })
               ) : (
                 <Tr>
                   <Td>NO DATA</Td>
                 </Tr>
-              )
-              }
-
+              )}
             </Tbody>
           </Table>
         </TableContainer>
       </Box>
-    </DesktopLayout >
+    </DesktopLayout>
   );
 }

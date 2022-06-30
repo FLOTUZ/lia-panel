@@ -27,28 +27,31 @@ const Kanban = ({}: IKanban) => {
   }, []);
 
   const nuevosTickets: ITicket[] = ticketsList.filter((e: any) => {
-    return e.estado === "NUEVO";
+    return e.estado === "NUEVO" && e.is_archivado === false  ;
   });
 
   const tomadoPorTecnico: ITicket[] = ticketsList.filter((e: any) => {
-    return e.estado === "TOMADO";
+    return e.estado === "TOMADO" && e.is_archivado === false ;
   });
 
   const cotizado: ITicket[] = ticketsList.filter((e: any) => {
-    return e.estado === "COTIZADO";
+    return e.estado === "COTIZADO" && e.is_archivado === false ;
   });
 
   const enProceso: ITicket[] = ticketsList.filter((e: any) => {
-    return e.estado === "EN PROCESO";
+    return e.estado === "EN PROCESO" && e.is_archivado === false ;
   });
 
   const aCerrar: ITicket[] = ticketsList.filter((e: any) => {
-    return e.estado === "A CERRAR";
+    return e.estado === "A CERRAR" && e.is_archivado === false ;
   });
 
   const finalizados: ITicket[] = ticketsList.filter((e: any) => {
-    return e.estado === "FINALIZADO";
+    
+    return e.estado === "FINALIZADO" && e.is_archivado === false ;
   });
+
+
 
   return (
     <>

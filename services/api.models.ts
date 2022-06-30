@@ -48,6 +48,7 @@ export interface ITicket {
   marca_carro: string | null;
   is_servicio_domestico: boolean | null;
   is_servicio_foraneo: boolean | null;
+  is_archivado:boolean;
   tecnicoId: number | null;
   createdAt?: string | null;
   updatedAt?: string | null;

@@ -44,16 +44,6 @@ export const AcuerdoConformidadView = ({
   } = useDisclosure();
 
   const aprobarAcuerdoConformidad = async () => {
-    const payloadAcuerdoConformidad = {
-      is_aprobado: true,
-    } as IAcuerdoConformidad;
-
-    const serviceAcuerdo = new AcuerdoConformidadService();
-    const respuestaAcuerdo = await serviceAcuerdo.update(
-      payloadAcuerdoConformidad,
-      acuerdoconformidad.id!
-    );
-
     const payloadTicket = {
       estado: "FINALIZADO",
     } as ITicket;
@@ -64,21 +54,23 @@ export const AcuerdoConformidadView = ({
       acuerdoconformidad.ticketId!
     );
 
-    if (respuestaTicket.status === 400) {
+    console.log(respuestaTicket);
+    
+    if (respuestaTicket.status === 200) {
       toast({
-        title: "Oops.. Algo salio mal: Error 400",
-        description: "No se pudo finalizar el ticket",
+        title: "Ticket Finalizado",
+        description: "Se finalizo el ticket",
         position: "bottom-right",
-        status: "error",
+        status: "success",
         duration: 9000,
         isClosable: true,
       });
     } else {
       toast({
-        title: "Oops.. Algo salio mal",
-        description: "Se finalizo el ticket",
+        title: `Oops.. Algo salio mal ${respuestaTicket.status}`,
+        description: "No se pudo finalizar el ticket",
         position: "bottom-right",
-        status: "success",
+        status: "error",
         duration: 9000,
         isClosable: true,
       });
@@ -103,7 +95,6 @@ export const AcuerdoConformidadView = ({
         </Text>
 
         <SimpleGrid columns={[1, 1, 3]} spacing={5}>
-          
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="hora_llegada_servicio">
               Hora de llegada del tecnico
@@ -137,7 +128,9 @@ export const AcuerdoConformidadView = ({
           </FormControl>
 
           <FormControl paddingTop={15}>
-            <FormLabel htmlFor="fecha de acuerdo">Fecha de firmado de acuerdo</FormLabel>
+            <FormLabel htmlFor="fecha de acuerdo">
+              Fecha de firmado de acuerdo
+            </FormLabel>
             <Input
               readOnly
               variant="unstyled"
