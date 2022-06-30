@@ -62,6 +62,7 @@ import Printer from "components/printer/printer";
 import moment from 'moment';
 import { AddIcon } from "@chakra-ui/icons";
 import { SeguimientosService } from "@/services/seguimientos.service";
+import { VerInformacionTecnico } from "@/views/VerInformacionTecnico";
 
 function TicketVer() {
   const router = useRouter();
@@ -482,6 +483,7 @@ function TicketVer() {
 
 
 
+               
       <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
         <ModalOverlay />
         <ModalContent>
@@ -546,6 +548,11 @@ function TicketVer() {
     */}
 
       {tipoVista}
+  
+      <VerInformacionTecnico Itecnico={tecnicoId}/>
+   
+    
+     
 
 
 
