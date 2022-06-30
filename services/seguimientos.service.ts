@@ -29,4 +29,8 @@ export class SeguimientosService {
     return respuesta;
   }
 
+  public async getSeguiminetosByTicket(id: number) {
+    const respuesta: any = await Consultar(`${this.url}/ticket/${id}`);
+    return respuesta;
+  }
 }

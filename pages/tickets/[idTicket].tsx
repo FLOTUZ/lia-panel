@@ -228,7 +228,7 @@ function TicketVer() {
   /*CONSULTA DE LA TABLA DE SEGUIMIENTOS*/
   const consultarSeguimientos = async () => {
     const service = new SeguimientosService();
-    const respuesta = await service.getAll();
+    const respuesta = await service.getSeguiminetosByTicket(ticket?.id!);
     const data = respuesta.data as ISeguimiento[];
 
     if (respuesta.status == 200) {
@@ -267,10 +267,6 @@ function TicketVer() {
     }
   };
 
-  useEffect(() => {
-    consultarSeguimientos();
-  }, []);
-
   const asignarTecnicoWithId = async () => {
     const data = { estado: "TOMADO" } as ITicket;
     const service = new TicketsService();
@@ -299,6 +295,7 @@ function TicketVer() {
     consultarSeguimientos();
     setFacturado(ticket?.is_facturado!);
     consultarTecnico();
+    consultarSeguimientos();
   }, [ticket]);
 
   const getVista = () => {
