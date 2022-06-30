@@ -46,13 +46,15 @@ import {
   Badge,
   Alert,
   AlertIcon,
+  Switch,
+  Flex,
+  SimpleGrid,
 } from "@chakra-ui/react";
 
 import { useRouter } from "next/router";
 
 import React, { useEffect, useState } from "react";
 import { IoAdd } from "react-icons/io5";
-import { FaFileSignature } from "react-icons/fa";
 import { BsPrinter } from "react-icons/bs";
 import { TicketsService } from "@/services/tickets.service";
 import { VerTicketVialForaneo } from "@/views/VerTicketVialForaneo";
@@ -61,9 +63,10 @@ import { VerTicketDomestico } from "@/views/VerTicketDomestico";
 import { VerTicketDomesticoForaneo } from "@/views/VerTicketDomesticoForaneo";
 import TicketImprimible from "components/imprimibles/ticket.imprimible";
 import Printer from "components/printer/printer";
-import { CrearCotizacionTecnicoManual } from "@/forms/CotizacionTecnicoManualForm ";
 
 import moment from "moment";
+
+import moment from 'moment';
 import { AddIcon } from "@chakra-ui/icons";
 import { SeguimientosService } from "@/services/seguimientos.service";
 
@@ -93,9 +96,48 @@ function TicketVer() {
 
   const [archivado, setArchivado] = useState<boolean>(false);
 
+  const [facturado, setFacturado] = useState<boolean>(false);
+
   const [tipoVista, setTipoVista] = useState<JSX.Element>();
 
   const { idTicket } = router.query;
+
+  /** FACTURAR EL TICKET */
+  const facturarTicket = async () => {
+    //Se toma el estado del switch
+    //El estado se niega debido al comportamiento
+    // del Switch de chakra
+    const payload = {
+      is_facturado: !facturado,
+    } as ITicket;
+
+    const service = new TicketsService();
+    const respuesta = await service.update(payload, ticket?.id!);
+
+    if (respuesta.status == 200) {
+      const data = respuesta.data as ITicket;
+      console.log(data.is_facturado);
+      setTicket(data);
+      toast({
+        title: "Factura Realizada",
+        description: "La Factura se ah Realizado con Éxito",
+        position: "bottom-right",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+    }else {
+      toast({
+        title: "Oops.. Algo salio mal",
+        description: respuesta.message,
+        position: "bottom-right",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+
+  };
 
   /*Obtener aseguradora*/
   const getAseguradora = async () => {
@@ -222,6 +264,7 @@ function TicketVer() {
     consultarSeguimientos();
   }, []);
 
+
   const asignarTecnicoWithId = async () => {
     const data = { estado: "TOMADO" } as ITicket;
     const service = new TicketsService();
@@ -247,6 +290,8 @@ function TicketVer() {
     getAseguradora();
     getVista();
     consultarServicios();
+    consultarSeguimientos();
+    setFacturado(ticket?.is_facturado!);
   }, [ticket]);
 
   const getVista = () => {
@@ -293,6 +338,8 @@ function TicketVer() {
       ) : null}
 
       {/*
+
+      {/*
       {ticket?.estado === "TOMADO" ? (
         <Box
           justifyContent={"center"}
@@ -320,6 +367,7 @@ function TicketVer() {
         </Box>
       ) : null}
   */}
+
 
       {ticket?.estado === "FINALIZADO" ? (
         <Box>
@@ -400,8 +448,50 @@ function TicketVer() {
               </Alert>
             ) : null}
           </Box>
+        <Box
+          margin={"1%"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          position="fixed"
+          width={"180px"}
+          height={"80px"}
+          right={["16px", "84px"]}
+          zIndex={1}
+        >
+          <Button
+            padding={"2%"}
+            justifySelf="end"
+            width={"150px"}
+            height={"60px"}
+            leftIcon={<BsPrinter size={"30px"} />}
+            id="imprimirTicket"
+            colorScheme="telegram"
+            borderColor="twitter.100"
+            size="lg"
+            onClick={onOpen}
+          />
+
+          
+            <FormControl paddingTop={2} as={SimpleGrid} columns={{ base: 1, lg: 2 }}>
+              <FormLabel htmlFor="facturado" fontWeight={"bold"} color="blue.700">
+                Facturado
+              </FormLabel>
+              <Switch
+                id="facturar"
+                size="lg"
+                isChecked={facturado}
+                onChange={() => {
+                  setFacturado(!facturado)
+                  facturarTicket();
+                }}
+              />
+            </FormControl>
+          
         </Box>
+
       ) : null}
+
+
 
       <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
         <ModalOverlay />
@@ -431,6 +521,8 @@ function TicketVer() {
           </ModalFooter>
         </ModalContent>
       </Modal>
+
+
 
       {/*  
       <Modal onClose={onCloseCotizacionT} size={"full"} isOpen={isOpenCot}>
@@ -465,6 +557,9 @@ function TicketVer() {
     */}
 
       {tipoVista}
+
+
+
 
       {/* ASIGNAR TÉCNICO */}
       <Modal closeOnOverlayClick={false} isOpen={abierto} onClose={cerrar}>

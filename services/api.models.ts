@@ -52,6 +52,7 @@ export interface ITicket {
   tecnicoId: number | null;
   createdAt?: string | null;
   updatedAt?: string | null;
+  is_facturado?: boolean | null;
 }
 
 export interface ITecnico {
