@@ -119,7 +119,7 @@ function TicketVer() {
         duration: 9000,
         isClosable: true,
       });
-    }else {
+    } else {
       toast({
         title: "Oops.. Algo salio mal",
         description: respuesta.message,
@@ -365,38 +365,18 @@ function TicketVer() {
         <Box>
           <SimpleGrid
             position="fixed"
-            columns={2}
-            spacingX="40px"
+            columns={3}
+            spacingX="1000px"
             spacingY="20px"
           >
+
             <Box
               margin={"1%"}
               justifyContent={"center"}
               alignItems={"center"}
               position="fixed"
-              right={["16px", "84px"]}
-              zIndex={1}
-            >
-              <Button
-                padding={"2%"}
-                justifySelf="end"
-                width={"100px"}
-                height={"50px"}
-                leftIcon={<BsPrinter size={"30px"} />}
-                id="imprimirTicket"
-                colorScheme="telegram"
-                borderColor="twitter.100"
-                size="lg"
-                onClick={onOpen}
-              />
-            </Box>
-            <Box
-              margin={"1%"}
-              justifyContent={"center"}
-              alignItems={"center"}
-              position="fixed"
-              height={"50px"}
-              right={["16px", "250px"]}
+              height={"60px"}
+              right={["16px", "380px"]}
               zIndex={1}
               borderRadius="md"
               bg="tomato"
@@ -406,7 +386,7 @@ function TicketVer() {
                 display="flex"
                 alignItems="center"
                 as={SimpleGrid}
-                columns={{ base: 1, lg: 4 }}
+                columns={{ base: 1, lg: 2 }}
               >
                 <FormLabel padding={3} htmlFor="isChecked">
                   Archivar ticket:
@@ -423,66 +403,82 @@ function TicketVer() {
                 />
               </FormControl>
             </Box>
+
+            <Box
+              margin={"1%"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              bottom="20px"
+              right={["16px", "84px"]}
+              position="fixed"
+            >
+              {archivado ? (
+                <Alert variant="solid" status="info">
+                  <AlertIcon />
+                  Este ticket se encuentra archivado
+                </Alert>
+              ) : null}
+            </Box>
+
+            <Box
+              margin={"1%"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              position="fixed"
+              width={"190px"}
+              height={"80px"}
+              right={["16px", "170px"]}
+              zIndex={1}
+            >
+              <Button
+                padding={"2%"}
+                justifySelf="end"
+                width={"150px"}
+                height={"60px"}
+                leftIcon={<BsPrinter size={"30px"} />}
+                id="imprimirTicket"
+                colorScheme="telegram"
+                borderColor="twitter.100"
+                size="lg"
+                onClick={onOpen}
+              />
+            </Box>
+
+
+            <Box
+              margin={"1%"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              position="fixed"
+              width={"190px"}
+              height={"80px"}
+              right={["0.2px"]}
+              zIndex={1}
+            >
+              <FormControl paddingTop={2} as={SimpleGrid} columns={{ base: 1, lg: 2 }}>
+                <FormLabel htmlFor="facturado" fontWeight={"bold"} color="blue.700">
+                  Facturado:
+                </FormLabel>
+                <Switch
+                  id="facturar"
+                  size="lg"
+                  isChecked={facturado}
+                  onChange={() => {
+                    setFacturado(!facturado)
+                    facturarTicket();
+                  }}
+                />
+              </FormControl>
+
+            </Box>
           </SimpleGrid>
 
-          <Box
-            margin={"1%"}
-            justifyContent={"center"}
-            alignItems={"center"}
-            bottom="20px"
-            right={["16px", "84px"]}
-            position="fixed"
-          >
-            {archivado ? (
-              <Alert variant="solid" status="info">
-                <AlertIcon />
-                Este ticket se encuentra archivado
-              </Alert>
-            ) : null}
-          </Box>
-        <Box
-          margin={"1%"}
-          justifyContent={"center"}
-          alignItems={"center"}
-          position="fixed"
-          width={"180px"}
-          height={"80px"}
-          right={["16px", "84px"]}
-          zIndex={1}
-        >
-          <Button
-            padding={"2%"}
-            justifySelf="end"
-            width={"150px"}
-            height={"60px"}
-            leftIcon={<BsPrinter size={"30px"} />}
-            id="imprimirTicket"
-            colorScheme="telegram"
-            borderColor="twitter.100"
-            size="lg"
-            onClick={onOpen}
-          />
 
-          
-            <FormControl paddingTop={2} as={SimpleGrid} columns={{ base: 1, lg: 2 }}>
-              <FormLabel htmlFor="facturado" fontWeight={"bold"} color="blue.700">
-                Facturado
-              </FormLabel>
-              <Switch
-                id="facturar"
-                size="lg"
-                isChecked={facturado}
-                onChange={() => {
-                  setFacturado(!facturado)
-                  facturarTicket();
-                }}
-              />
-            </FormControl>
-          
-        </Box>
-        </Box>
 
-      ) : null}
+        </Box >
+
+      ) : null
+      }
 
 
 
@@ -574,12 +570,12 @@ function TicketVer() {
               >
                 {serviciosList.length !== 0
                   ? serviciosList.map((servicio) => {
-                      return (
-                        <option key={servicio.id} value={Number(servicio.id)}>
-                          {servicio.nombre}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={servicio.id} value={Number(servicio.id)}>
+                        {servicio.nombre}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
             </FormControl>
@@ -598,12 +594,12 @@ function TicketVer() {
               >
                 {tecnicosByServicios?.Tecnico?.length !== 0
                   ? tecnicosByServicios?.Tecnico?.map((tecnico) => {
-                      return (
-                        <option key={tecnico.id} value={tecnico.id}>
-                          {tecnico.nombre}, {tecnico.telefono}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={tecnico.id} value={tecnico.id}>
+                        {tecnico.nombre}, {tecnico.telefono}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
             </FormControl>
@@ -743,7 +739,7 @@ function TicketVer() {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </DesktopLayout>
+    </DesktopLayout >
   );
 }
 
