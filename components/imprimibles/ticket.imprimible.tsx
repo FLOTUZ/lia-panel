@@ -17,10 +17,7 @@ import { AsesoresService } from "@/services/asesores.service";
 import { AsistenciasService } from "@/services/asistencias.service";
 import { CiudadesService } from "@/services/ciudades.service";
 import { EstadosService } from "@/services/estados.service";
-import { CrearCotizacionTecnico } from "@/forms/CotizacionTecnicoForm";
 import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
-import { TecnicoService } from "@/services/tecnicos.service";
-import { color } from "@chakra-ui/react";
 
 import moment from 'moment';
 moment.locale("es");
@@ -153,9 +150,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
         >
           <p >TIEMPO:</p>
         </div>
-        <div style={{ width: "60%", height: "0%", paddingTop: "70px", paddingLeft:"250px" }}>
-          <p >VISITA:</p>
-        </div>
+        
 
 
         <div style={{ width: "30%", paddingLeft: "10px", paddingTop: "90px" }}>
@@ -239,12 +234,17 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             paddingLeft: "15px",
           }}
         >
-          <p>USUARIO {ticket?.nombre_usuario_final}</p>
+          <p>USUARIO: {ticket?.nombre_usuario_final}</p>
         </div>
 
         <div style={{ width: "30%", height: "5%", float: "right" }}>
-          <p>CIUDAD {ciudad?.nombre}</p>
+          <p>ESTADO: {estado?.nombre}</p>
         </div>
+
+        <div style={{ width: "30%", height: "5%", float: "right" }}>
+          <p>CIUDAD: {ciudad?.nombre}</p>
+        </div>
+
 
         <div
           style={{
@@ -254,7 +254,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             paddingLeft: "15px",
           }}
         >
-          <p> COLONIA {ticket?.colonia}</p>
+          <p> COLONIA: {ticket?.colonia}</p>
         </div>
 
         <div
@@ -279,7 +279,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             paddingTop:"20px"
           }}
         >
-          <p>ASISTENCIA {asistencia?.nombre}</p>
+          <p>ASISTENCIA: {asistencia?.nombre}</p>
         </div>
         <div
           style={{
@@ -289,7 +289,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             paddingLeft: "25px",
           }}
         >
-          <p>CUBRE SEGURO {ticket?.cobertura} </p>
+          <p>CUBRE SEGURO: {ticket?.cobertura} </p>
         </div>
 
         <div
@@ -300,7 +300,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             paddingLeft: "10px",
           }}
         >
-          <p>ASESOR {asesorAseguradora?.nombre}</p>
+          <p>ASESOR: {asesorAseguradora?.nombre}</p>
         </div>
 
         <div
@@ -311,7 +311,8 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             paddingLeft: "15px",
           }}
         >
-          <p>HORA DE LLAMADA {moment(ticket?.fecha_llamada).format("LTS")}</p>
+        
+          <p>HORA DE LLAMADA: {moment(ticket?.fecha_llamada).format("LLL")}</p>
         </div>
         <div
           style={{
@@ -321,7 +322,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             paddingLeft: "15px",
           }}
         >
-          <p>TÉCNICO { } </p>
+          <p>TÉCNICO: {cotizacionTecnico?.tecnicoId} </p>
         </div>
 
         <div
@@ -332,7 +333,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             paddingLeft: "15px",
           }}
         >
-          <p>HORA DE CONTACTO { }</p>
+          <p>HORA DE CONTACTO: { }</p>
         </div>
         <div
           style={{
@@ -342,8 +343,24 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             paddingLeft: "15px",
           }}
         >
-          <p>HORA DE TERMINO</p>
+          <p>HORA DE TERMINO: </p>
         </div>
+
+        <div style={{ width: "30%", height: "5%", float: "right" }}>
+          <p>COLOR: {ticket?.color_carro}</p>
+        </div>
+        <div style={{ width: "30%", height: "5%", float: "right" }}>
+          <p>PLACAS: {ticket?.placas_carro}</p>
+        </div>
+        <div style={{ width: "30%", height: "5%", float: "right" }}>
+          <p>MODELO DE CARRO: {ticket?.modelo_carro}</p>
+        </div>
+        <div style={{ width: "30%", height: "5%", float: "right" }}>
+          <p>MARCA: {ticket?.marca_carro}</p>
+        </div>
+        
+        
+       
 
         <br />
         <br />
@@ -361,21 +378,19 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
               colSpan={3}
               style={{ border: "1px solid", verticalAlign: "15px" }}
             >
-              SOLUCION DEL TECNICO {cotizacionTecnico?.solucion_tecnico}
+              SOLUCION DEL TÉCNICO: {cotizacionTecnico?.solucion_tecnico}
             </td>
             <td
               colSpan={2}
               style={{ border: "1px solid", verticalAlign: "15px" }}
             >
-              COTIZACION DE GPOLIAS {ticket?.cotizacion_gpo_lias}
+              COTIZACION DE GPOLIAS: {ticket?.cotizacion_gpo_lias}
             </td>
           </tr>
           <tr>
-            <td style={{ verticalAlign: "15px", height: "10px" }}>$MO {cotizacionTecnico?.costo_mano_obra}</td>
-            <td style={{ verticalAlign: "15px", height: "10px" }}>$MAT {cotizacionTecnico?.costo_materiales}</td>
-            <td style={{ verticalAlign: "15px", height: "10px" }}>$TÉCNICO {cotizacionTecnico?.total_cotizacion}</td>
-            <td style={{ verticalAlign: "15px", height: "10px" }}>$MO</td>
-            <td style={{ verticalAlign: "15px", height: "10px" }}>$MAT</td>
+            <td style={{ verticalAlign: "15px", height: "10px" }}>$MO: {cotizacionTecnico?.costo_mano_obra}</td>
+            <td style={{ verticalAlign: "15px", height: "10px" }}>$MAT: {cotizacionTecnico?.costo_materiales}</td>
+            <td style={{ verticalAlign: "15px", height: "10px" }}>$TÉCNICO: {cotizacionTecnico?.total_cotizacion}</td>
           </tr>
         </table>
 

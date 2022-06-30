@@ -109,7 +109,6 @@ function TicketVer() {
 
     if (respuesta.status == 200) {
       const data = respuesta.data as ITicket;
-      console.log(data.is_facturado);
       setTicket(data);
       toast({
         title: "Factura Realizada",
@@ -121,7 +120,7 @@ function TicketVer() {
       });
     } else {
       toast({
-        title: "Oops.. Algo salio mal",
+        title: "Se Desactivo la Factura",
         description: respuesta.message,
         position: "bottom-right",
         status: "error",
@@ -490,23 +489,18 @@ function TicketVer() {
           <ModalBody>
             <Printer doc={<TicketImprimible ticket={ticket} />} />
           </ModalBody>
-          <ModalFooter>
-            <Stack
-              align="center"
-              paddingLeft={"60%"}
-              spacing={4}
-              direction="row"
-            >
+          <ModalFooter position={"fixed"} right={["16px", "84px"]} paddingTop={10}>
               <Button
                 paddingLeft={10}
                 paddingRight={10}
                 colorScheme="red"
                 variant="outline"
+                position={"inherit"}
                 onClick={onClose}
               >
                 Cerrar
               </Button>
-            </Stack>
+            
           </ModalFooter>
         </ModalContent>
       </Modal>

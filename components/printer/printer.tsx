@@ -1,4 +1,5 @@
 import {
+  Box,
   Button,
   Stack,
   useDisclosure,
@@ -21,20 +22,18 @@ function Printer({ doc }: PrinterProps) {
 
   return (
     <>
-      <>{doc}</>
-      <Stack
-        paddingTop={10}
-        align="center"
-        paddingLeft={"50%"}
-        spacing={4}
-        direction="row"
-      >
-        <Button
-          paddingLeft={10} paddingRight={10}
+
+    <Button
+          position={"fixed"}
+          right={["30px", "105px"]}
+          width={"130px"}
+          height={"40px"}
           colorScheme="whatsapp"
           variant="solid"
           onClick={() => imprimirDoc(doc)}>Imprimir</Button>
-      </Stack>
+
+      <>{doc}</>
+     
     </>
   );
 }
