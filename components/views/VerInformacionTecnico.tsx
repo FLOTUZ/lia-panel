@@ -101,7 +101,6 @@ export function VerInformacionTecnico({ tecnico }: VerInformacionTecnicoProps) {
                     width="200px"
                     type="tel"
                     placeholder="Nombre"
-                    value={tecnico.nombre}
                   />
                 </InputGroup>
       
