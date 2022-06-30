@@ -173,7 +173,7 @@ export default function ListadoTickets() {
                       </Td>
                       <Td>
                         {ticket.is_archivado ? (
-                          <Badge  variant='outline' >Archivado</Badge>
+                          <Badge  variant='outline' colorScheme={"red"}>Archivado</Badge>
                         ) : (
                           <Badge  variant='outline' colorScheme="blue">Sin archivar</Badge>
                         )}
