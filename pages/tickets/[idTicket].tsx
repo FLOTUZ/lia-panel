@@ -38,11 +38,6 @@ import {
   Td,
   Tbody,
   Input,
-  Switch,
-  SimpleGrid,
-  VStack,
-  Text,
-  Flex,
   Badge,
   Alert,
   AlertIcon,
@@ -63,8 +58,6 @@ import { VerTicketDomestico } from "@/views/VerTicketDomestico";
 import { VerTicketDomesticoForaneo } from "@/views/VerTicketDomesticoForaneo";
 import TicketImprimible from "components/imprimibles/ticket.imprimible";
 import Printer from "components/printer/printer";
-
-import moment from "moment";
 
 import moment from 'moment';
 import { AddIcon } from "@chakra-ui/icons";
@@ -486,6 +479,7 @@ function TicketVer() {
               />
             </FormControl>
           
+        </Box>
         </Box>
 
       ) : null}
