@@ -337,7 +337,6 @@ function TicketVer() {
         </Box>
       ) : null}
 
-      {/*
 
       {/*
       {ticket?.estado === "TOMADO" ? (
