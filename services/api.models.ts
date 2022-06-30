@@ -138,6 +138,9 @@ export interface ICotizacionTecnico {
   preSolucionId?: number;
   is_aprobado?: boolean;
   aprobado_por_usuarioId: number;
+  hora_llegada: string;
+  img_llegadaId: number;
+  img_placas?: number | null;
   createdAt?: string | null;
   updatedAt?: string | null;
 }
@@ -171,6 +174,7 @@ export interface IAcuerdoConformidad {
   is_aprobado?: boolean;
   ticketId: number;
   usuarioFinalId: number | null;
+  img_solucionId?: number | null;
   createdAt?: Date | null;
   updatedAt?: Date | null;
 }
