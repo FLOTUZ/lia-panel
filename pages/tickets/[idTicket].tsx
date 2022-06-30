@@ -5,6 +5,7 @@ import {
   ICotizacionTecnico,
   ISeguimiento,
   IServicio,
+  ITecnico,
   ITicket,
 } from "@/services/api.models";
 import { AseguradoraService } from "@/services/aseguradoras.service";
@@ -59,10 +60,11 @@ import { VerTicketDomesticoForaneo } from "@/views/VerTicketDomesticoForaneo";
 import TicketImprimible from "components/imprimibles/ticket.imprimible";
 import Printer from "components/printer/printer";
 
-import moment from 'moment';
+import moment from "moment";
 import { AddIcon } from "@chakra-ui/icons";
 import { SeguimientosService } from "@/services/seguimientos.service";
 import { VerInformacionTecnico } from "@/views/VerInformacionTecnico";
+import { TecnicoService } from "@/services/tecnicos.service";
 
 function TicketVer() {
   const router = useRouter();
@@ -93,6 +95,8 @@ function TicketVer() {
   const [facturado, setFacturado] = useState<boolean>(false);
 
   const [tipoVista, setTipoVista] = useState<JSX.Element>();
+
+  const [tecnico, setTecnico] = useState<ITecnico>();
 
   const { idTicket } = router.query;
 
@@ -129,7 +133,6 @@ function TicketVer() {
         isClosable: true,
       });
     }
-
   };
 
   /*Obtener aseguradora*/
@@ -253,10 +256,23 @@ function TicketVer() {
     }
   };
 
+  /*************** CONSULTA DE TECNICOS ************** */
+
+  const consultarTecnico = async () => {
+    const service = new TecnicoService();
+    const respuesta = await service.getById(ticket?.tecnicoId!);
+    const data = respuesta.data as ITecnico;
+
+    console.log(data);
+
+    if (respuesta.status == 200) {
+      setTecnico(data);
+    }
+  };
+
   useEffect(() => {
     consultarSeguimientos();
   }, []);
-
 
   const asignarTecnicoWithId = async () => {
     const data = { estado: "TOMADO" } as ITicket;
@@ -285,6 +301,7 @@ function TicketVer() {
     consultarServicios();
     consultarSeguimientos();
     setFacturado(ticket?.is_facturado!);
+    consultarTecnico();
   }, [ticket]);
 
   const getVista = () => {
@@ -330,7 +347,6 @@ function TicketVer() {
         </Box>
       ) : null}
 
-
       {/*
       {ticket?.estado === "TOMADO" ? (
         <Box
@@ -360,7 +376,6 @@ function TicketVer() {
       ) : null}
   */}
 
-
       {ticket?.estado === "FINALIZADO" ? (
         <Box>
           <SimpleGrid
@@ -369,7 +384,6 @@ function TicketVer() {
             spacingX="1000px"
             spacingY="20px"
           >
-
             <Box
               margin={"1%"}
               justifyContent={"center"}
@@ -444,7 +458,6 @@ function TicketVer() {
               />
             </Box>
 
-
             <Box
               margin={"1%"}
               justifyContent={"center"}
@@ -455,8 +468,16 @@ function TicketVer() {
               right={["0.2px"]}
               zIndex={1}
             >
-              <FormControl paddingTop={2} as={SimpleGrid} columns={{ base: 1, lg: 2 }}>
-                <FormLabel htmlFor="facturado" fontWeight={"bold"} color="blue.700">
+              <FormControl
+                paddingTop={2}
+                as={SimpleGrid}
+                columns={{ base: 1, lg: 2 }}
+              >
+                <FormLabel
+                  htmlFor="facturado"
+                  fontWeight={"bold"}
+                  color="blue.700"
+                >
                   Facturado:
                 </FormLabel>
                 <Switch
@@ -464,25 +485,16 @@ function TicketVer() {
                   size="lg"
                   isChecked={facturado}
                   onChange={() => {
-                    setFacturado(!facturado)
+                    setFacturado(!facturado);
                     facturarTicket();
                   }}
                 />
               </FormControl>
-
             </Box>
           </SimpleGrid>
+        </Box>
+      ) : null}
 
-
-
-        </Box >
-
-      ) : null
-      }
-
-
-
-               
       <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
         <ModalOverlay />
         <ModalContent>
@@ -491,23 +503,24 @@ function TicketVer() {
           <ModalBody>
             <Printer doc={<TicketImprimible ticket={ticket} />} />
           </ModalBody>
-          <ModalFooter position={"fixed"} right={["16px", "84px"]} paddingTop={10}>
-              <Button
-                paddingLeft={10}
-                paddingRight={10}
-                colorScheme="red"
-                variant="outline"
-                position={"inherit"}
-                onClick={onClose}
-              >
-                Cerrar
-              </Button>
-            
+          <ModalFooter
+            position={"fixed"}
+            right={["16px", "84px"]}
+            paddingTop={10}
+          >
+            <Button
+              paddingLeft={10}
+              paddingRight={10}
+              colorScheme="red"
+              variant="outline"
+              position={"inherit"}
+              onClick={onClose}
+            >
+              Cerrar
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
-
-
 
       {/*  
       <Modal onClose={onCloseCotizacionT} size={"full"} isOpen={isOpenCot}>
@@ -542,14 +555,8 @@ function TicketVer() {
     */}
 
       {tipoVista}
-  
-      <VerInformacionTecnico Itecnico={tecnicoId}/>
-   
-    
-     
 
-
-
+      {tecnico ? <VerInformacionTecnico tecnico={tecnico!} /> : null}
 
       {/* ASIGNAR TÉCNICO */}
       <Modal closeOnOverlayClick={false} isOpen={abierto} onClose={cerrar}>
@@ -571,12 +578,12 @@ function TicketVer() {
               >
                 {serviciosList.length !== 0
                   ? serviciosList.map((servicio) => {
-                    return (
-                      <option key={servicio.id} value={Number(servicio.id)}>
-                        {servicio.nombre}
-                      </option>
-                    );
-                  })
+                      return (
+                        <option key={servicio.id} value={Number(servicio.id)}>
+                          {servicio.nombre}
+                        </option>
+                      );
+                    })
                   : null}
               </Select>
             </FormControl>
@@ -595,12 +602,12 @@ function TicketVer() {
               >
                 {tecnicosByServicios?.Tecnico?.length !== 0
                   ? tecnicosByServicios?.Tecnico?.map((tecnico) => {
-                    return (
-                      <option key={tecnico.id} value={tecnico.id}>
-                        {tecnico.nombre}, {tecnico.telefono}
-                      </option>
-                    );
-                  })
+                      return (
+                        <option key={tecnico.id} value={tecnico.id}>
+                          {tecnico.nombre}, {tecnico.telefono}
+                        </option>
+                      );
+                    })
                   : null}
               </Select>
             </FormControl>
@@ -740,7 +747,7 @@ function TicketVer() {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </DesktopLayout >
+    </DesktopLayout>
   );
 }
 

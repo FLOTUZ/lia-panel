@@ -7,6 +7,8 @@ export interface IUsuario {
   cerrar_ticket?: boolean;
   inactivo?: boolean;
   rol: string;
+  hashedRt?: string | null;
+  img_perfilId?: number | null;
   createdAt?: string;
   updatedAt?: string | null;
 }
@@ -48,7 +50,7 @@ export interface ITicket {
   marca_carro: string | null;
   is_servicio_domestico: boolean | null;
   is_servicio_foraneo: boolean | null;
-  is_archivado:boolean;
+  is_archivado: boolean;
   tecnicoId: number | null;
   createdAt?: string | null;
   updatedAt?: string | null;
@@ -87,7 +89,7 @@ export interface ISeguimiento {
   nombre_asesor_seguro: string;
   detalles: string;
   fecha_seguimiento: string;
-  ticketId : number;
+  ticketId: number;
   usuarioId: number;
   createdAt?: string | null;
   updatedAt?: string | null;
