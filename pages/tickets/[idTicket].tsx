@@ -322,66 +322,68 @@ function TicketVer() {
   */}
 
       {ticket?.estado === "FINALIZADO" ? (
-        <Box
-          margin={"1%"}
-          justifyContent={"center"}
-          alignItems={"center"}
-          position="fixed"
-          width={"80px"}
-          height={"80px"}
-          right={["16px", "84px"]}
-          zIndex={1}
-        >
-          <Button
-            padding={"2%"}
-            justifySelf="end"
-            width={"150px"}
-            height={"60px"}
-            leftIcon={<BsPrinter size={"30px"} />}
-            id="imprimirTicket"
-            colorScheme="telegram"
-            borderColor="twitter.100"
-            size="lg"
-            onClick={onOpen}
-          />
-        </Box>
-      ) : null}
-
-      {ticket?.estado === "FINALIZADO" ? (
         <Box>
-          <Box
-            margin={"1%"}
-            justifyContent={"center"}
-            alignItems={"center"}
+          <SimpleGrid
             position="fixed"
-            width={"250px"}
-            height={"60px"}
-            right={["16px", "250px"]}
-            zIndex={1}
-            borderRadius="md"
-            bg="tomato"
-            color="white"
+            columns={2}
+            spacingX="40px"
+            spacingY="20px"
           >
-            <FormControl
-              display="flex"
-              alignItems="center"
-              as={SimpleGrid}
-              columns={{ base: 1, lg: 4 }}
+            <Box
+              margin={"1%"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              position="fixed"
+              right={["16px", "84px"]}
+              zIndex={1}
             >
-              <FormLabel padding={3} htmlFor="isChecked">
-                Archivar ticket:
-              </FormLabel>
-
-              <Switch
-                isChecked={archivado}
-                size={"lg"}
-                onChange={() => {
-                  setArchivado(!archivado);
-                  archivarTicket();
-                }}
+              <Button
+                padding={"2%"}
+                justifySelf="end"
+                width={"100px"}
+                height={"50px"}
+                leftIcon={<BsPrinter size={"30px"} />}
+                id="imprimirTicket"
+                colorScheme="telegram"
+                borderColor="twitter.100"
+                size="lg"
+                onClick={onOpen}
               />
-            </FormControl>
-          </Box>
+            </Box>
+            <Box
+              margin={"1%"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              position="fixed"
+              height={"50px"}
+              right={["16px", "250px"]}
+              zIndex={1}
+              borderRadius="md"
+              bg="tomato"
+              color="white"
+            >
+              <FormControl
+                display="flex"
+                alignItems="center"
+                as={SimpleGrid}
+                columns={{ base: 1, lg: 4 }}
+              >
+                <FormLabel padding={3} htmlFor="isChecked">
+                  Archivar ticket:
+                </FormLabel>
+
+                <Switch
+                  isChecked={archivado}
+                  margin={"5px"}
+                  size={"lg"}
+                  onChange={() => {
+                    setArchivado(!archivado);
+                    archivarTicket();
+                  }}
+                />
+              </FormControl>
+            </Box>
+          </SimpleGrid>
 
           <Box
             margin={"1%"}
@@ -392,7 +394,7 @@ function TicketVer() {
             position="fixed"
           >
             {archivado ? (
-              <Alert variant='solid' status="info">
+              <Alert variant="solid" status="info">
                 <AlertIcon />
                 Este ticket se encuentra archivado
               </Alert>

@@ -167,7 +167,7 @@ export default function ListadoTickets() {
                       </Td>
                       <Td>{ticket.nombre_usuario_final}</Td>
                       <Td>
-                        {moment(Date.parse(ticket.fecha_llamada)).format(
+                        {moment(ticket.fecha_llamada).format(
                           "LLLL"
                         )}
                       </Td>
