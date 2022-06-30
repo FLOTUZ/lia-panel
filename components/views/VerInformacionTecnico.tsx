@@ -10,6 +10,7 @@ import {
   GridItem,
   Heading,
   HStack,
+  IconButton,
   Input,
   InputGroup,
   InputLeftElement,
@@ -23,9 +24,11 @@ import {
   WrapItem,
 } from "@chakra-ui/react";
 import moment from "moment";
+import Link from "next/link";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 moment.locale("es");
-import { FaUserAstronaut } from "react-icons/fa";
+import { FaRegEye, FaUserAstronaut } from "react-icons/fa";
 import { MdPhone, MdEmail, MdLocationOn, MdCheckCircle } from "react-icons/md";
 
 interface VerInformacionTecnicoProps {
@@ -35,6 +38,8 @@ export function VerInformacionTecnico({ tecnico }: VerInformacionTecnicoProps) {
   const [usuario, setUsuario] = useState<IUsuario>();
   const [imgTecnico, setImgTecnico] = useState<IImagen>();
   const [ciudad, setCiudad] = useState<ICiudad>();
+
+  const router = useRouter();
 
   const getUsuarioTecnico = async () => {
     const service = new UsuariosService();
@@ -78,9 +83,19 @@ export function VerInformacionTecnico({ tecnico }: VerInformacionTecnicoProps) {
   return (
     <>
       <Box m={2} bgColor={"white"} p={5} borderRadius={10} boxShadow={"lg"}>
-        <Heading>Informacion Del Tecnico</Heading>
+        <HStack mb={5}>
+          <Heading>Informacion del tecnico</Heading>
 
-        <SimpleGrid columns={[1,1,3]} placeItems={"center"}>
+          <Link href={`/tecnicos/${tecnico.id}`}>
+            <a>
+              <IconButton aria-label={""}>
+                <FaRegEye size={20} />
+              </IconButton>
+            </a>
+          </Link>
+        </HStack>
+
+        <SimpleGrid columns={[1, 1, 3]} placeItems={"center"}>
           <Box width={150} overflow="hidden">
             <WrapItem>
               <Avatar
