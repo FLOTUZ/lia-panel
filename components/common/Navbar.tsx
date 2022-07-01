@@ -13,39 +13,61 @@ import Image from "next/image";
 import Logo from "../../public/logo.jpeg";
 import { AuthService } from "@/services/auth.service";
 import { useRouter } from "next/router";
+import { UsuariosService } from "@/services/usuarios.service";
+import { IUsuario } from "@/services/api.models";
+import { useEffect, useState } from "react";
 
 const Navbar = (hideNabar: any, setHideNabar: Function) => {
+
+    
+  const [sesion, setSesion] = useState<IUsuario>();
+
+  const getUserLogeado = async () => {
+    const service = new UsuariosService();
+    const usuario = await service.getLogedUser();
+
+    if (usuario !== null) {
+      const variable = usuario as IUsuario;
+      setSesion(variable);
+    }
+  };
+
+  useEffect(() => {
+    getUserLogeado();
+  },);
+  
   const router = useRouter();
   const routes = [
-    {
+    
+    { 
       name: "Tickets",
       path: "/tickets",
-      icon: <IoReceipt size={32} />,
+      icon: <IoReceipt size={30} />,
     },
     {
       name: "Técnicos",
       path: "/tecnicos",
-      icon: <MdHomeRepairService size={32} />,
+      icon: <MdHomeRepairService size={30} />,
     },
     {
       name: "Usuarios",
       path: "/usuarios",
-      icon: <MdSupervisedUserCircle size={32} />,
+      icon: <MdSupervisedUserCircle size={30} />,
     },
     {
       name: "Servicios",
       path: "/servicios",
-      icon: <IoBook size={32} />,
+      icon: <IoBook size={30} />,
     },
     {
       name: "Seguros",
       path: "/aseguradoras",
-      icon: <MdVerifiedUser size={32} />,
+      icon: <MdVerifiedUser size={30} />,
     },
     {
       name: "Estados",
       path: "/ciudades",
-      icon: <IoMdMap size={32} />,
+      icon: <IoMdMap size={30} />,
     },
   ];
   return (
