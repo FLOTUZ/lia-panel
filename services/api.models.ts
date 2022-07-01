@@ -3,8 +3,6 @@ export interface IUsuario {
   usuario: string;
   email: string;
   password: string;
-  abrir_ticket?: boolean;
-  cerrar_ticket?: boolean;
   inactivo?: boolean;
   rol: string;
   hashedRt?: string | null;

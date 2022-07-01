@@ -1,5 +1,6 @@
 import { IUsuario } from "./api.models";
 import { Actualizar, Consultar, Crear, Eliminar } from "./ApiCall";
+import { AuthService } from "./auth.service";
 
 export class UsuariosService {
   private url = "/users";
@@ -32,5 +33,16 @@ export class UsuariosService {
   async count(usuario: IUsuario) {
     const respuesta = await Consultar(`${this.url}/count`, usuario);
     return respuesta;
+  }
+
+  async getLogedUser(): Promise<IUsuario | null> {
+    const respuesta: any = await Consultar(`${this.url}/usuario-logueado`);
+
+    if (respuesta.status === 200) {
+      const data = respuesta.data as IUsuario;
+      new AuthService().setToken(data.hashedRt!);
+      return data;
+    }
+    return null;
   }
 }

@@ -17,9 +17,8 @@ import {
 } from "@chakra-ui/react";
 import { AddIcon, EditIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
-import { ITecnico } from "@/services/api.models";
+import { ITecnico, IUsuario } from "@/services/api.models";
 import { TecnicoService } from "@/services/tecnicos.service";
-
 function TenicosListado() {
   const toast = useToast();
   const [query, setQuery] = useState("");
@@ -33,7 +32,6 @@ function TenicosListado() {
     if (respuesta.status == 200) {
       const data = respuesta.data as ITecnico[];
       setListadoTenicos(data);
-
     }
   };
   useEffect(() => {
@@ -90,7 +88,6 @@ function TenicosListado() {
                 <Th>Teléfono</Th>
                 <Th>Servicio Principal</Th>
                 <Th>Opciones</Th>
-
               </Tr>
             </Thead>
             <Tbody>
@@ -104,8 +101,8 @@ function TenicosListado() {
                       <Td>{t.ViveEn?.nombre}</Td>
                       <Td>{t.telefono}</Td>
                       <Td>{t.Servicio![0]?.nombre}</Td>
-                      
-                    <Td>
+
+                      <Td>
                         <Link href={`/tecnicos/${t.id}`}>
                           <a>
                             <IconButton

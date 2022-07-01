@@ -22,7 +22,8 @@ export class AuthService {
     }
   }
 
-  logout() {
+  async logout() {
+    const respuesta = await Crear(`${this.url}/logout`);
     window.localStorage.removeItem(this.TOKEN_KEY);
   }
 

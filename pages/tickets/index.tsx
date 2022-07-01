@@ -13,7 +13,7 @@ function TicketsListado() {
         <Header title="Tickets" />
 
         <Box>
-          <SimpleGrid margin={"20px"} columns={[1, 2, 5]} spacing='10px'>
+          <SimpleGrid margin={"20px"} columns={[1, 2, 5]} spacing="10px">
             <Button
               leftIcon={<ViewIcon />}
               colorScheme="facebook"
