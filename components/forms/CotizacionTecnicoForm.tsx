@@ -263,11 +263,11 @@ export const CrearCotizacionTecnico = ({
         <Box
           mt={1}
           p={1}
-          bgColor="cyan.200"
+          bgColor="facebook.500"
           borderRadius={10}
           boxShadow="2xl"
-          height={200}
-          width={200}
+          height={230}
+          width={230}
           alignContent={"center"}
           >
 
@@ -285,7 +285,7 @@ export const CrearCotizacionTecnico = ({
           ) : (
             <CircularProgress />
           )}
-           <Heading marginTop={2}  as="h4" size="sm">
+           <Heading marginTop={2}  as="h4" size="md" textAlign={"center"}>
            Llegada
         </Heading>
         </Box>
@@ -293,11 +293,11 @@ export const CrearCotizacionTecnico = ({
         <Box
          mt={1}
          p={1}
-         bgColor="cyan.200"
+         bgColor="facebook.500"
           borderRadius={10}
           boxShadow="2xl"
-          height={200}
-          width={200}
+          height={230}
+          width={230}
           alignContent={"center"}
         >
 
@@ -315,7 +315,7 @@ export const CrearCotizacionTecnico = ({
           ) : (
             <CircularProgress />
           )}
-           <Heading marginTop={2}  as="h4" size="sm">
+           <Heading marginTop={2}  as="h4" size="md" textAlign={"center"}>
            Problemática
         </Heading>
         </Box>
@@ -324,11 +324,11 @@ export const CrearCotizacionTecnico = ({
             <Box
             mt={1}
             p={1}
-            bgColor="cyan.200"
+            bgColor="facebook.500"
               borderRadius={10}
               boxShadow="2xl"
-              height={200}
-              width={200}
+              height={230}
+              width={230}
               alignContent={"center"}
             > 
               {uploadImage ? (
@@ -346,7 +346,7 @@ export const CrearCotizacionTecnico = ({
               ) : (
                 <CircularProgress />
               )}
-               <Heading marginTop={2}  as="h4" size="sm">
+               <Heading marginTop={2}  as="h4" size="md" textAlign={"center"}>
                Placas
             </Heading>
             </Box>
