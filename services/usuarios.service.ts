@@ -35,7 +35,7 @@ export class UsuariosService {
     return respuesta;
   }
 
-  async getLogedUser(): Promise<IUsuario | null> {
+  async getLogedUser() {
     const respuesta: any = await Consultar(`${this.url}/usuario-logueado`);
 
     if (respuesta.status === 200) {
