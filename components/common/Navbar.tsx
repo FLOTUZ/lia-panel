@@ -17,6 +17,13 @@ import { UsuariosService } from "@/services/usuarios.service";
 import { IUsuario } from "@/services/api.models";
 import { useEffect, useState } from "react";
 
+interface IRouteItem {
+  name: string;
+  path: string;
+  icon: JSX.Element;
+  rol: string[];
+}
+
 const Navbar = (hideNabar: any, setHideNabar: Function) => {
 
     
@@ -37,37 +44,48 @@ const Navbar = (hideNabar: any, setHideNabar: Function) => {
   },);
   
   const router = useRouter();
-  const routes = [
-    
-    { 
+
+  //Consultas el usuario logeado
+  ///  TODO: usuario logeado
+
+  const ROL = "CAPTURISTA";
+
+  const routes: IRouteItem[] = [
+    {
       name: "Tickets",
       path: "/tickets",
-      icon: <IoReceipt size={30} />,
+      icon: <IoReceipt size={32} />,
+      rol: ["CAPTURISTA", "ADMIN"],
     },
     {
       name: "Técnicos",
       path: "/tecnicos",
-      icon: <MdHomeRepairService size={30} />,
+      icon: <MdHomeRepairService size={32} />,
+      rol: ["CAPTURISTA", "ADMIN"],
     },
     {
       name: "Usuarios",
       path: "/usuarios",
-      icon: <MdSupervisedUserCircle size={30} />,
+      icon: <MdSupervisedUserCircle size={32} />,
+      rol: ["ADMIN"],
     },
     {
       name: "Servicios",
       path: "/servicios",
-      icon: <IoBook size={30} />,
+      icon: <IoBook size={32} />,
+      rol: ["CAPTURISTA", "ADMIN"],
     },
     {
       name: "Seguros",
       path: "/aseguradoras",
-      icon: <MdVerifiedUser size={30} />,
+      icon: <MdVerifiedUser size={32} />,
+      rol: ["ADMIN"],
     },
     {
       name: "Estados",
       path: "/ciudades",
-      icon: <IoMdMap size={30} />,
+      icon: <IoMdMap size={32} />,
+      rol: ["ADMIN"],
     },
   ];
   return (
@@ -86,7 +104,7 @@ const Navbar = (hideNabar: any, setHideNabar: Function) => {
         <Image src={Logo} alt="" />
       </Flex>
       {routes.map((route, key) => {
-        return (
+        return route.rol.includes(ROL) ? (
           <Link key={key} href={route.path}>
             <a>
               <Button
@@ -109,7 +127,7 @@ const Navbar = (hideNabar: any, setHideNabar: Function) => {
               </Button>
             </a>
           </Link>
-        );
+        ) : null;
       })}
       <Button
         h="3.5rem"
