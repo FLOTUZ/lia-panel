@@ -119,7 +119,7 @@ function TicketVer() {
         status: "success",
         duration: 9000,
         isClosable: true,
-      });
+      })
     } else {
       toast({
         title: "Se Desactivo la Factura",
@@ -494,7 +494,7 @@ function TicketVer() {
           <ModalHeader>Impresión</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Printer doc={<TicketImprimible ticket={ticket} />} />
+            <Printer doc={<TicketImprimible ticket={ticket!} /> }/>
           </ModalBody>
           <ModalFooter
             position={"fixed"}

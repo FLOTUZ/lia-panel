@@ -8,7 +8,9 @@ import {
   ICotizacionTecnico,
   IEstado,
   ISeguimiento,
+  ITecnico,
   ITicket,
+  IUsuario,
 } from "@/services/api.models";
 import { useEffect, useState } from "react";
 import { AseguradoraService } from "@/services/aseguradoras.service";
@@ -23,10 +25,15 @@ moment.locale("es");
 import 'moment-timezone'
 import 'moment/locale/es';
 import { SeguimientosService } from "@/services/seguimientos.service";
+import { UsuariosService } from "@/services/usuarios.service";
+import { TecnicoService } from "@/services/tecnicos.service";
 
 interface TicketImprimibleProp {
-  ticket?: ITicket;
+  ticket: ITicket;
 }
+
+
+
 
 const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
   const [aseguradora, setAseguradora] = useState<IAseguradora>();
@@ -34,73 +41,86 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
   const [ciudad, setCiudad] = useState<ICiudad>();
   const [estado, setEstado] = useState<IEstado>();
   const [asesorAseguradora, setAsesorAseguradora] = useState<IAsesor>();
-  const [cotizacionTecnico, setCotizacionTecnico] = useState<ICotizacionTecnico>();
   const [seguimiento, setSeguimiento] = useState<ISeguimiento>();
+  const [tecnico, setTecnico] = useState<ITecnico>();
+  const [cotizacionTecnico, setCotizacionTecnico] = useState<ICotizacionTecnico>();
 
+  /*OBTENER TPECNICO */
+  const getTecnico = async () => {
+    const service = new TecnicoService();
+    const respuesta = await service.getById(Number(ticket.tecnicoId));
+
+    if (respuesta.status === 200) {
+      const data = respuesta.data as ITecnico;
+      setTecnico(data);
+    }
+    console.log(respuesta);
+  };
+
+ /*Obtener aseguradora*/
+ const getAseguradora = async () => {
+  const service = new AseguradoraService();
+  const respuesta = await service.getById(Number(ticket?.aseguradoraId));
+  const data = respuesta.data as IAseguradora;
+  setAseguradora(data);
+};
+
+/*Obtener asistencia*/
+const getAsistencia = async () => {
+  const service = new AsistenciasService();
+  const respuesta = await service.getById(Number(ticket?.asistenciaId));
+  const data = respuesta.data as IAsistencia;
+  setAsistencia(data);
+};
+
+/*Obtener ciudad*/
+const getCiudad = async () => {
+  const service = new CiudadesService();
+  const respuesta = await service.getById(Number(ticket?.ciudadId));
+  const data = respuesta.data as IEstado;
+  setCiudad(data);
+};
+
+/*Obtener estado*/
+const getEstado = async () => {
+  const service = new EstadosService();
+  const respuesta = await service.getById(ciudad?.estadoId!);
+  const data = respuesta.data as IEstado;
+  setEstado(data);
+};
+
+/*Obtener asesor de aseguradora*/
+const getAsesorAseguradora = async () => {
+  const service = new AsesoresService();
+  const respuesta = await service.getById(ticket?.asesorId!);
+  const data = respuesta.data as IAsesor;
+  setAsesorAseguradora(data);
+};
+
+/*Obtener Seguimiento*/
+const getSeguimiento = async () => {
+  const service = new SeguimientosService();
+  const respuesta = await service.getAll();
+  const data = respuesta.data as ISeguimiento;
+  setSeguimiento(data);
+};
+
+/*OBTENER COTIZACION TECNICO */
+const getcotizacioTecnico = async () => {
+  const service = new CotizacionTecnicoService();
+  const respuesta = await service.getAll();
+  const data = respuesta.data as ICotizacionTecnico;
+  setCotizacionTecnico(data);
+}
   useEffect(() => {
-    /*Obtener aseguradora*/
-    const getAseguradora = async () => {
-      const service = new AseguradoraService();
-      const respuesta = await service.getById(Number(ticket?.aseguradoraId));
-      const data = respuesta.data as IAseguradora;
-      setAseguradora(data);
-    };
-
-    /*Obtener asistencia*/
-    const getAsistencia = async () => {
-      const service = new AsistenciasService();
-      const respuesta = await service.getById(Number(ticket?.asistenciaId));
-      const data = respuesta.data as IAsistencia;
-      setAsistencia(data);
-    };
-
-    /*Obtener ciudad*/
-    const getCiudad = async () => {
-      const service = new CiudadesService();
-      const respuesta = await service.getById(Number(ticket?.ciudadId));
-      const data = respuesta.data as IEstado;
-      setCiudad(data);
-    };
-
-    /*Obtener estado*/
-    const getEstado = async () => {
-      const service = new EstadosService();
-      const respuesta = await service.getById(ciudad?.estadoId!);
-      const data = respuesta.data as IEstado;
-      setEstado(data);
-    };
-
-    /*Obtener asesor de aseguradora*/
-    const getAsesorAseguradora = async () => {
-      const service = new AsesoresService();
-      const respuesta = await service.getById(ticket?.asesorId!);
-      const data = respuesta.data as IAsesor;
-      setAsesorAseguradora(data);
-    };
-
-    /*Obtener cotización del técnico*/
-    const getCotizacionTecnico = async () => {
-      const service = new CotizacionTecnicoService();
-      const respuesta = await service.getAll();
-      const data = respuesta.data as ICotizacionTecnico;
-      setCotizacionTecnico(data);
-    };
-
-    /*Obtener Seguimiento*/
-    const getSeguimiento = async () => {
-      const service = new SeguimientosService();
-      const respuesta = await service.getAll();
-      const data = respuesta.data as ISeguimiento;
-      setSeguimiento(data);
-    };
-
     getAseguradora();
     getAsistencia();
     getCiudad();
     getEstado();
     getAsesorAseguradora();
-    getCotizacionTecnico();
     getSeguimiento();
+    getTecnico();
+    getcotizacioTecnico();
   }, [ticket]);
 
   const styleTitulo = {
@@ -127,7 +147,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
         }}
       >
 
-        <div style={{float: "left", paddingLeft:"10px" }}>
+        <div style={{ float: "left", paddingLeft: "10px" }}>
           <Image
             src={LiasIMG}
             height={80}
@@ -149,7 +169,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
         >
           <p >TIEMPO:</p>
         </div>
-        
+
 
 
         <div style={{ width: "30%", paddingLeft: "10px", paddingTop: "90px" }}>
@@ -275,7 +295,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             height: "5%",
             float: "left",
             paddingLeft: "15px",
-            paddingTop:"20px"
+            paddingTop: "20px"
           }}
         >
           <p>ASISTENCIA: {asistencia?.nombre}</p>
@@ -310,7 +330,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             paddingLeft: "15px",
           }}
         >
-        
+
           <p>HORA DE LLAMADA: {moment(ticket?.fecha_llamada).format("LLL")}</p>
         </div>
         <div
@@ -321,7 +341,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             paddingLeft: "15px",
           }}
         >
-          <p>TÉCNICO: {cotizacionTecnico?.tecnicoId} </p>
+          <p>TÉCNICO: {`${tecnico?.nombre!} ${tecnico?.apellido_materno!}`} </p>
         </div>
 
         <div
@@ -357,9 +377,9 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
         <div style={{ width: "30%", height: "5%", float: "right" }}>
           <p>MARCA: {ticket?.marca_carro}</p>
         </div>
-        
-        
-       
+
+
+
 
         <br />
         <br />
@@ -377,7 +397,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
               colSpan={3}
               style={{ border: "1px solid", verticalAlign: "15px" }}
             >
-              SOLUCION DEL TÉCNICO: {cotizacionTecnico?.solucion_tecnico}
+              SOLUCION DEL TÉCNICO: {cotizacionTecnico?.solucion_tecnico }
             </td>
             <td
               colSpan={2}
@@ -387,9 +407,9 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             </td>
           </tr>
           <tr>
-            <td style={{ verticalAlign: "15px", height: "10px" }}>$MO: {cotizacionTecnico?.costo_mano_obra}</td>
-            <td style={{ verticalAlign: "15px", height: "10px" }}>$MAT: {cotizacionTecnico?.costo_materiales}</td>
-            <td style={{ verticalAlign: "15px", height: "10px" }}>$TÉCNICO: {cotizacionTecnico?.total_cotizacion}</td>
+            <td style={{ verticalAlign: "15px", height: "10px" }}>$MO:{ cotizacionTecnico?.costo_mano_obra}</td>
+            <td style={{ verticalAlign: "15px", height: "10px" }}>$MAT: {cotizacionTecnico?.costo_materiales }</td>
+            <td style={{ verticalAlign: "15px", height: "10px" }}>$TÉCNICO:{cotizacionTecnico?.total_cotizacion }</td>
           </tr>
         </table>
 
@@ -406,7 +426,7 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
             <td style={{ border: "1px solid", height: "30px" }}> {seguimiento?.nombre_asesor_seguro}</td>
             <td style={{ border: "1px solid", height: "30px" }}> {seguimiento?.fecha_seguimiento}</td>
           </tr>
-          
+
         </table>
       </div>
       {/*<style jsx global>{`
@@ -421,3 +441,4 @@ const TicketImprimible = ({ ticket }: TicketImprimibleProp) => {
 };
 
 export default TicketImprimible;
+

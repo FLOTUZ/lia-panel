@@ -80,7 +80,7 @@ export function VerInformacionTecnico({ tecnico }: VerInformacionTecnicoProps) {
     <>
       <Box m={2} bgColor={"white"} p={5} borderRadius={10} boxShadow={"lg"}>
         <HStack mb={5}>
-          <Heading>Informacion del tecnico</Heading>
+          <Heading>Información del Técnico</Heading>
 
           <Link href={`/tecnicos/${tecnico.id}`}>
             <a>
