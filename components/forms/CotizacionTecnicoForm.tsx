@@ -389,13 +389,11 @@ export const CrearCotizacionTecnico = ({
               <img src={uploadImage} alt={`Imagen de prueba`} width={400} />
             </Center>
           </ModalBody>
-          <ModalFooter>
-        
-          </ModalFooter>
+ 
         </ModalContent>
       </Modal>
 
-      <Modal onClose={onCloseImgLlegada} isOpen={isOpenImgLlegada} isCentered size={"4xl"}>
+      <Modal onClose={onCloseImgLlegada} isOpen={isOpenImgLlegada} isCentered size={"3xl"}>
         <ModalOverlay backdropBlur="10px" />
         <ModalContent>
           <ModalCloseButton />
@@ -406,23 +404,14 @@ export const CrearCotizacionTecnico = ({
           </ModalHeader>
           <ModalBody padding={"2%"}>
             <Center>
-              <img src={uploadImage} alt={`Imagen de Llegada`} width={500} />
+              <img src={uploadImage} alt={`Imagen de Llegada`} width={400} />
             </Center>
           </ModalBody>
-          <ModalFooter>
-            <Button
-              leftIcon={<CloseIcon />}
-              colorScheme="red"
-              variant="solid"
-              onClick={onCloseImgLlegada}
-            >
-              Cerrar
-            </Button>
-          </ModalFooter>
+
         </ModalContent>
       </Modal>
 
-      <Modal onClose={onCloseImgPlacas} isOpen={isOpenImgPlacas} isCentered size={"4xl"}>
+      <Modal onClose={onCloseImgPlacas} isOpen={isOpenImgPlacas} isCentered size={"3xl"}>
         <ModalOverlay backdropBlur="10px" />
         <ModalContent>
           <ModalCloseButton />
@@ -433,19 +422,10 @@ export const CrearCotizacionTecnico = ({
           </ModalHeader>
           <ModalBody padding={"2%"}>
             <Center>
-              <img src={uploadImage} alt={`Imagen de Placas`} width={500} />
+              <img src={uploadImage} alt={`Imagen de Placas`} width={400} />
             </Center>
           </ModalBody>
-          <ModalFooter>
-            <Button
-              leftIcon={<CloseIcon />}
-              colorScheme="red"
-              variant="solid"
-              onClick={onCloseImgPlacas}
-            >
-              Cerrar
-            </Button>
-          </ModalFooter>
+
         </ModalContent>
       </Modal>
     </div>
