@@ -8,6 +8,7 @@ import {
   IServicio,
   ITecnico,
   ITicket,
+  IUsuario,
 } from "@/services/api.models";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";
@@ -64,6 +65,8 @@ import { SeguimientosService } from "@/services/seguimientos.service";
 import { VerInformacionTecnico } from "@/views/VerInformacionTecnico";
 import { TecnicoService } from "@/services/tecnicos.service";
 import { AsesoresService } from "@/services/asesores.service";
+import { UsuariosService } from "@/services/usuarios.service";
+
 
 function TicketVer() {
   const router = useRouter();
@@ -99,36 +102,18 @@ function TicketVer() {
 
   const { idTicket } = router.query;
 
+  const [asesor_gpo_lias, setAsesor_gpo_lias] = useState("");
+  const [seguimiento, setSeguimiento] = useState("");
+  const [asesor_seguro, setAsesor_seguro] = useState("");
+  const [fecha_hora, setFecha_hora] = useState("");
+  const [listadoSeguimientos, setListadoSeguimientos] = useState<ISeguimiento[]>([]);
+
   const [nombreAsesor, setNombreAsesor] = useState("");
   const [idAseguradora, setidAseguradora] = useState(0);
   const [asesorList, setAsesorList] = useState<IAsesor[]>([]);
-  const [aseguradorasList, setAseguradorasList] = useState<IAseguradora[]>([]);
 
-  const asesorById = async () => {
-    if (Number(ticket?.aseguradoraId!) !== 0) {
-      const service = new AsesoresService();
-      const respuesta: any = await service.getAsesoresByIdAseguradora(
-        Number(ticket?.aseguradoraId!)
-      );
+  const [sesion, setSesion] = useState<IUsuario>();
 
-      const data = respuesta.data as IAsesor[];
-
-      setAsesorList(data || []);
-    }
-  };
-
-  const consultarAsesores = async () => {
-    const services = new AsesoresService();
-    const response: any = await services.getAsesoresByIdAseguradora(
-      Number(idAseguradora)
-    );
-    const data = response.data as IAsesor[];
-    if (response.status == 200) {
-      setAsesorList(data || []);
-    } else {
-
-    }
-  };
 
   /** FACTURAR EL TICKET */
   const facturarTicket = async () => {
@@ -198,6 +183,7 @@ function TicketVer() {
     }
   };
 
+  
   const consultarServicios = async () => {
     const service = new ServiciosService();
     const respuesta = await service.getAll();
@@ -214,13 +200,7 @@ function TicketVer() {
     setTecnicosByServicios(data);
   };
 
-  const [asesor_gpo_lias, setAsesor_gpo_lias] = useState("");
-  const [seguimiento, setSeguimiento] = useState("");
-  const [asesor_seguro, setAsesor_seguro] = useState("");
-  const [fecha_hora, setFecha_hora] = useState("");
-  const [listadoSeguimientos, setListadoSeguimientos] = useState<
-    ISeguimiento[]
-  >([]);
+
 
   const guardarSeguimiento = async () => {
     const data: ISeguimiento = {
@@ -316,7 +296,46 @@ function TicketVer() {
     router.push("/tickets");
   };
 
+  const asesorById = async () => {
+    if (Number(ticket?.aseguradoraId!) !== 0) {
+      const service = new AsesoresService();
+      const respuesta: any = await service.getAsesoresByIdAseguradora(
+        Number(ticket?.aseguradoraId!)
+      );
+
+      const data = respuesta.data as IAsesor[];
+
+      setAsesorList(data || []);
+    }
+  };
+
+  /*CONSULTA DE LA ASESORES DE ACUERDO A LA ASEGURADORA*/
+  const consultarAsesores = async () => {
+    const services = new AsesoresService();
+    const response: any = await services.getAsesoresByIdAseguradora(
+      Number(idAseguradora)
+    );
+    const data = response.data as IAsesor[];
+    if (response.status == 200) {
+      setAsesorList(data || []);
+    } else {
+
+    }
+  };
+
+  /*CONSULTA DEL USUARIO LOGUEADO, PARA EL ASESOR DE GPO LÍAS*/
+  const getUserLogeado = async () => {
+    const service = new UsuariosService();
+    const usuario = await service.getLogedUser();
+
+    if (usuario !== null) {
+      const variable = usuario as IUsuario;
+      setSesion(variable);
+    }
+  };
+
   useEffect(() => {
+    getUserLogeado();
     getTicket();
   }, []);
 
@@ -691,7 +710,7 @@ function TicketVer() {
                   listadoSeguimientos.map((seguimiento, index) => {
                     return (
                       <Tr key={index}>
-                        <Td></Td>
+                        <Td>{sesion?.usuario}</Td>
                         <Td>{seguimiento.detalles}</Td>
                         <Td>{aseguradora?.nombre}</Td>
                         <Td>{seguimiento.nombre_asesor_seguro}</Td>
@@ -728,9 +747,8 @@ function TicketVer() {
               <Input
                 paddingBottom={2}
                 placeholder="Asesor Gpo Lías"
-                onChange={(e) => {
-                  setAsesor_gpo_lias(e.target.value);
-                }}
+                value={sesion?.usuario}
+                
               />
 
               <FormLabel padding={1}>Seguimiento</FormLabel>
