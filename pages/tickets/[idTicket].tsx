@@ -120,7 +120,7 @@ function TicketVer() {
         duration: 9000,
         isClosable: true,
       })
-    } else {
+    } else if(ticket?.is_archivado == true) {
       toast({
         title: "Se Desactivo la Factura",
         description: respuesta.message,

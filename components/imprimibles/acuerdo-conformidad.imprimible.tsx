@@ -2,6 +2,7 @@ import WhatsIMG from "../../public/logoDeWhats.png";
 import LiasIMG from "../../public/logo.jpeg";
 import Image from "next/image";
 import { IAcuerdoConformidad, ITicket } from "@/services/api.models";
+import TicketImprimible from "./ticket.imprimible";
 
 interface AcuerdoConformidadProps {
   acuerdo?: IAcuerdoConformidad;
@@ -71,7 +72,7 @@ export function AcuerdoConformidadImprimible({ acuerdo, }: AcuerdoConformidadPro
                 className="celda1"
                 style={{ width: "50%", height: "100%", float: "left" }}
               >
-                <p style={{ paddingLeft: "20px" }}>DIRECCION: </p>
+                <p style={{ paddingLeft: "20px" }}>DIRECCION:</p>
               </div>
               <div
                 className="celda2"

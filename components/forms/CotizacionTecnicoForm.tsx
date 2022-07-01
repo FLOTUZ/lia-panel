@@ -11,6 +11,7 @@ import {
   Divider,
   FormControl,
   FormLabel,
+  Heading,
   Input,
   InputGroup,
   InputLeftAddon,
@@ -31,19 +32,21 @@ import { MdOutlineAttachMoney } from "react-icons/md";
 import Image from "next/image";
 import { CloseIcon } from "@chakra-ui/icons";
 import moment from "moment";
+import Header from "@/common/Header";
 
 interface CrearCotizacionTecnicoProps {
   cotizacion: ICotizacionTecnico;
+  ticket: ITicket;
 }
 
 export const CrearCotizacionTecnico = ({
-  cotizacion,
+  cotizacion,ticket
 }: CrearCotizacionTecnicoProps) => {
   const toast = useToast();
   const [imagen, setImagen] = useState<IImagen>();
   const [uploadImage, setUploadImage] = useState<string>("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  
+
   const getImagen = async () => {
     const service = new ImagenesService();
     const respuesta = await service.getById(cotizacion.preSolucionId!);
@@ -136,7 +139,6 @@ export const CrearCotizacionTecnico = ({
         <Text fontWeight="bold" fontSize="25px">
           Cotización del Técnico
         </Text>
-
         <FormControl paddingTop={15}>
           <FormLabel htmlFor="Solución y Cotización del Técnico">
             Solución y Cotización del Técnico
@@ -150,7 +152,6 @@ export const CrearCotizacionTecnico = ({
             value={cotizacion.solucion_tecnico}
           />
         </FormControl>
-
         <SimpleGrid columns={[1, 1, 2]} spacing={5}>
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="Fecha y Hora de Contacto">
@@ -178,7 +179,6 @@ export const CrearCotizacionTecnico = ({
             />
           </FormControl>*/}
         </SimpleGrid>
-
         <SimpleGrid columns={[1, 1, 3]} spacing={5}>
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="Costo de Mano de Obra">
@@ -248,39 +248,106 @@ export const CrearCotizacionTecnico = ({
               />
             </InputGroup>
           </FormControl>
-
         </SimpleGrid>
+        <Divider orientation="vertical" paddingTop={30} />
+        <Heading padding={5} as="h4" size="md">
+          Evidencia
+        </Heading>
 
-        <Center>
-          <Divider orientation="vertical" paddingTop={30} />
-
-          <Box
-            mt={5}
-            p={3}
-            bgColor="white"
-            borderRadius={10}
-            boxShadow="2xl"
-            height={200}
-            width={200}
-            paddingLeft={10}
+        <SimpleGrid columns={[2, null, 3]} spacing='40px'>
+     
+        <Box
+          mt={1}
+          p={1}
+          bgColor="cyan.200"
+          borderRadius={10}
+          boxShadow="2xl"
+          height={200}
+          width={200}
+          alignContent={"center"}
           >
-            {uploadImage ? (
-              <Image
-                src={uploadImage}
-                onClick={onOpen}
-                alt={`Imagen de prueba`}
-                unoptimized={true}
-                quality={100}
-                height={200}
-                width={200}
-                layout="responsive"
-              />
-            ) : (
-              <CircularProgress />
-            )}
-          </Box>
-        </Center>
 
+          {uploadImage ? (
+            <Image
+              src={uploadImage}
+              onClick={onOpen}
+              alt={`Imagen de prueba`}
+              unoptimized={true}
+              quality={100}
+              height={200}
+              width={200}
+              layout="responsive"
+            />
+          ) : (
+            <CircularProgress />
+          )}
+           <Heading marginTop={2}  as="h4" size="sm">
+           Llegada
+        </Heading>
+        </Box>
+        <Box
+         mt={1}
+         p={1}
+         bgColor="cyan.200"
+          borderRadius={10}
+          boxShadow="2xl"
+          height={200}
+          width={200}
+          alignContent={"center"}
+        >
+
+          {uploadImage ? (
+            <Image
+              src={uploadImage}
+              onClick={onOpen}
+              alt={`Imagen de prueba`}
+              unoptimized={true}
+              quality={100}
+              height={200}
+              width={200}
+              layout="responsive"
+            />
+          ) : (
+            <CircularProgress />
+          )}
+           <Heading marginTop={2}  as="h4" size="sm">
+           Problematica
+        </Heading>
+        </Box>
+        {ticket?.asistencia_vial && ticket?.is_servicio_foraneo? (
+            <Box
+            mt={1}
+            p={1}
+            bgColor="cyan.200"
+              borderRadius={10}
+              boxShadow="2xl"
+              height={200}
+              width={200}
+              alignContent={"center"}
+            > 
+              {uploadImage ? (
+                <Image
+    
+                  src={uploadImage}
+                  onClick={onOpen}
+                  alt={`Imagen de prueba`}
+                  unoptimized={true}
+                  quality={100}
+                  height={200}
+                  width={200}
+                  layout="responsive"
+                />
+              ) : (
+                <CircularProgress />
+              )}
+               <Heading marginTop={2}  as="h4" size="sm">
+               Placas
+            </Heading>
+            </Box>
+          ):null}
+      
+       
+        </SimpleGrid>
         <Box marginTop={"40px"} margin={"50px"} height="80px">
           {cotizacion.is_aprobado ? null : (
             <Button
