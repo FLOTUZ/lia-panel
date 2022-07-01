@@ -30,45 +30,61 @@ import {
 import { useEffect, useState } from "react";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import Image from "next/image";
-import { CloseIcon } from "@chakra-ui/icons";
 import moment from "moment";
-import Header from "@/common/Header";
 
 interface CrearCotizacionTecnicoProps {
   cotizacion: ICotizacionTecnico;
-  ticket: ITicket;
 }
 
 export const CrearCotizacionTecnico = ({
-  cotizacion,ticket
+  cotizacion,
 }: CrearCotizacionTecnicoProps) => {
   const toast = useToast();
   const [imagen, setImagen] = useState<IImagen>();
-  const [uploadImage, setUploadImage] = useState<string>("");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { isOpen: isOpenImgLlegada, onOpen: OnOpenImgLLegada, onClose: onCloseImgLlegada } = useDisclosure();
-  const { isOpen: isOpenImgPlacas, onOpen: OnOpenImgPlacas, onClose: onCloseImgPlacas } = useDisclosure();
-
-
-  const getImagen = async () => {
-    const service = new ImagenesService();
-    const respuesta = await service.getById(cotizacion.preSolucionId!);
-    const data = respuesta.data as IImagen;
-    setImagen(data);
-  };
+  const {
+    isOpen: isOpenImgLlegada,
+    onOpen: OnOpenImgLLegada,
+    onClose: onCloseImgLlegada,
+  } = useDisclosure();
+  const {
+    isOpen: isOpenImgPlacas,
+    onOpen: OnOpenImgPlacas,
+    onClose: onCloseImgPlacas,
+  } = useDisclosure();
+  const [imgLlegada, setImgLlegada] = useState<string>("");
+  const [imgPlacas, setImgPlacas] = useState<string>("");
+  const [imgPresolucion, setImgPresolucion] = useState<string>("");
 
   const getImagenUpload = async () => {
-    if (imagen) {
-      const service = new ImagenesService();
-      const respuesta: any = await service.getUploadImage(
-        cotizacion.preSolucionId!
+    const service = new ImagenesService();
+    const resImgLlegada: any = await service.getUploadImage(
+      cotizacion.img_llegadaId!
+    );
+
+    const resImgPresolucion: any = await service.getUploadImage(
+      cotizacion.preSolucionId!
+    );
+
+    if (resImgLlegada.status == 200) {
+      const data = resImgLlegada.data as IImagen;
+      setImgLlegada(data.url);
+    }
+
+    if (resImgPresolucion.status == 200) {
+      const data = resImgPresolucion.data as IImagen;
+      setImgPresolucion(data.url);
+    }
+
+    if (cotizacion.img_placasId != null) {
+      const resImgPlacas: any = await service.getUploadImage(
+        cotizacion.img_placasId!
       );
 
-      const data = respuesta.data as IImagen;
-
-      console.log(data);
-
-      setUploadImage(data.url);
+      if (resImgPlacas.status == 200) {
+        const data = resImgPlacas.data as IImagen;
+        setImgPlacas(data.url);
+      }
     }
   };
 
@@ -121,12 +137,8 @@ export const CrearCotizacionTecnico = ({
   };
 
   useEffect(() => {
-    getImagen();
-  }, []);
-
-  useEffect(() => {
     getImagenUpload();
-  }, [imagen]);
+  }, [cotizacion]);
 
   return (
     <div>
@@ -258,83 +270,79 @@ export const CrearCotizacionTecnico = ({
           Evidencia
         </Heading>
 
-        <SimpleGrid columns={[2, null, 3]} spacing='40px'>
-     
-        <Box
-          mt={1}
-          p={1}
-          bgColor="facebook.500"
-          borderRadius={10}
-          boxShadow="2xl"
-          height={230}
-          width={230}
-          alignContent={"center"}
-          >
-
-          {uploadImage ? (
-            <Image
-              src={uploadImage}
-              onClick={OnOpenImgLLegada}
-              alt={`Imagen de Llegada`}
-              unoptimized={true}
-              quality={100}
-              height={200}
-              width={200}
-              layout="responsive"
-            />
-          ) : (
-            <CircularProgress />
-          )}
-           <Heading marginTop={2}  as="h4" size="md" textAlign={"center"}>
-           Llegada
-        </Heading>
-        </Box>
-
-        <Box
-         mt={1}
-         p={1}
-         bgColor="facebook.500"
-          borderRadius={10}
-          boxShadow="2xl"
-          height={230}
-          width={230}
-          alignContent={"center"}
-        >
-
-          {uploadImage ? (
-            <Image
-              src={uploadImage}
-              onClick={onOpen}
-              alt={`Imagen del Problema`}
-              unoptimized={true}
-              quality={100}
-              height={200}
-              width={200}
-              layout="responsive"
-            />
-          ) : (
-            <CircularProgress />
-          )}
-           <Heading marginTop={2}  as="h4" size="md" textAlign={"center"}>
-           Problemática
-        </Heading>
-        </Box>
-
-        {ticket?.asistencia_vial && ticket?.is_servicio_foraneo? (
-            <Box
+        <SimpleGrid columns={[2, null, 3]} spacing="40px">
+          <Box
             mt={1}
             p={1}
             bgColor="facebook.500"
+            borderRadius={10}
+            boxShadow="2xl"
+            height={230}
+            width={230}
+            alignContent={"center"}
+          >
+            {imgLlegada ? (
+              <Image
+                src={imgLlegada}
+                onClick={OnOpenImgLLegada}
+                alt={`Imagen de Llegada`}
+                unoptimized={true}
+                quality={100}
+                height={200}
+                width={200}
+                layout="responsive"
+              />
+            ) : (
+              <CircularProgress />
+            )}
+            <Heading marginTop={2} as="h4" size="md" textAlign={"center"}>
+              Llegada
+            </Heading>
+          </Box>
+
+          <Box
+            mt={1}
+            p={1}
+            bgColor="facebook.500"
+            borderRadius={10}
+            boxShadow="2xl"
+            height={230}
+            width={230}
+            alignContent={"center"}
+          >
+            {imgPresolucion ? (
+              <Image
+                src={imgPresolucion}
+                onClick={onOpen}
+                alt={`Imagen del Problema`}
+                unoptimized={true}
+                quality={100}
+                height={200}
+                width={200}
+                layout="responsive"
+              />
+            ) : (
+              <CircularProgress />
+            )}
+            <Heading marginTop={2} as="h4" size="md" textAlign={"center"}>
+              Problemática
+            </Heading>
+          </Box>
+
+          {imgPlacas ? (
+            <Box
+              mt={1}
+              p={1}
+              bgColor="facebook.500"
               borderRadius={10}
               boxShadow="2xl"
               height={230}
               width={230}
               alignContent={"center"}
-            > 
-              {uploadImage ? (
+            >
+              {cotizacion.img_placasId != null ? (
                 <Image
-    
-                  src={uploadImage}
+                  src={imgPlacas}
                   onClick={OnOpenImgPlacas}
                   alt={`Imagen de Plcas`}
                   unoptimized={true}
@@ -346,13 +354,11 @@ export const CrearCotizacionTecnico = ({
               ) : (
                 <CircularProgress />
               )}
-               <Heading marginTop={2}  as="h4" size="md" textAlign={"center"}>
-               Placas
-            </Heading>
+              <Heading marginTop={2} as="h4" size="md" textAlign={"center"}>
+                Placas
+              </Heading>
             </Box>
-          ):null}
-      
-       
+          ) : null}
         </SimpleGrid>
         <Box marginTop={"40px"} margin={"50px"} height="80px">
           {cotizacion.is_aprobado ? null : (
@@ -373,7 +379,7 @@ export const CrearCotizacionTecnico = ({
         </Box>
       </Box>
 
-      <Modal   onClose={onClose} isOpen={isOpen} isCentered size={"3xl"}>
+      <Modal onClose={onClose} isOpen={isOpen} isCentered size={"3xl"}>
         <ModalOverlay backdropBlur="10px" />
         <ModalContent>
           <ModalCloseButton />
@@ -381,19 +387,25 @@ export const CrearCotizacionTecnico = ({
             <Text fontWeight="bold" fontSize="25px">
               Evidencia del Poblema
             </Text>
-            
           </ModalHeader>
           <ModalBody padding={"5%"}>
-        
             <Center>
-              <img src={uploadImage} alt={`Imagen de prueba`} width={400} />
+              <img
+                src={imgPresolucion}
+                alt={`Antes de solucionar`}
+                width={400}
+              />
             </Center>
           </ModalBody>
- 
         </ModalContent>
       </Modal>
 
-      <Modal onClose={onCloseImgLlegada} isOpen={isOpenImgLlegada} isCentered size={"3xl"}>
+      <Modal
+        onClose={onCloseImgLlegada}
+        isOpen={isOpenImgLlegada}
+        isCentered
+        size={"3xl"}
+      >
         <ModalOverlay backdropBlur="10px" />
         <ModalContent>
           <ModalCloseButton />
@@ -404,14 +416,18 @@ export const CrearCotizacionTecnico = ({
           </ModalHeader>
           <ModalBody padding={"2%"}>
             <Center>
-              <img src={uploadImage} alt={`Imagen de Llegada`} width={400} />
+              <img src={imgLlegada} alt={`Imagen llamada`} width={400} />
             </Center>
           </ModalBody>
-
         </ModalContent>
       </Modal>
 
-      <Modal onClose={onCloseImgPlacas} isOpen={isOpenImgPlacas} isCentered size={"3xl"}>
+      <Modal
+        onClose={onCloseImgPlacas}
+        isOpen={isOpenImgPlacas}
+        isCentered
+        size={"3xl"}
+      >
         <ModalOverlay backdropBlur="10px" />
         <ModalContent>
           <ModalCloseButton />
@@ -422,10 +438,9 @@ export const CrearCotizacionTecnico = ({
           </ModalHeader>
           <ModalBody padding={"2%"}>
             <Center>
-              <img src={uploadImage} alt={`Imagen de Placas`} width={400} />
+              <img src={imgPlacas} alt={`Placas del auto`} width={400} />
             </Center>
           </ModalBody>
-
         </ModalContent>
       </Modal>
     </div>

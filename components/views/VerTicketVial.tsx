@@ -104,9 +104,12 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
 
     const data = respuesta.data as ICotizacionTecnico;
 
-    setCotizacion(data);
+    if (respuesta.status === 200) {
+      setCotizacion(data);
+      
+      data ? setMostrarCotizacion(true) : setMostrarCotizacion(false);
+    }
 
-    data ? setMostrarCotizacion(true) : setMostrarCotizacion(false);
   };
 
   const getAcuerdo = async () => {

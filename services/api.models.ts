@@ -142,7 +142,7 @@ export interface ICotizacionTecnico {
   aprobado_por_usuarioId: number;
   hora_llegada: string;
   img_llegadaId: number;
-  img_placas?: number | null;
+  img_placasId?: number | null;
   createdAt?: string | null;
   updatedAt?: string | null;
 }
