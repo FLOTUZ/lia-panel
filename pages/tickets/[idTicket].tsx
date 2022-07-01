@@ -1,6 +1,7 @@
 import DesktopLayout from "@/layouts/DesktopLayout";
 import {
   IAseguradora,
+  IAsesor,
   IAsistencia,
   ICotizacionTecnico,
   ISeguimiento,
@@ -62,6 +63,7 @@ import { AddIcon } from "@chakra-ui/icons";
 import { SeguimientosService } from "@/services/seguimientos.service";
 import { VerInformacionTecnico } from "@/views/VerInformacionTecnico";
 import { TecnicoService } from "@/services/tecnicos.service";
+import { AsesoresService } from "@/services/asesores.service";
 
 function TicketVer() {
   const router = useRouter();
@@ -97,6 +99,37 @@ function TicketVer() {
 
   const { idTicket } = router.query;
 
+  const [nombreAsesor, setNombreAsesor] = useState("");
+  const [idAseguradora, setidAseguradora] = useState(0);
+  const [asesorList, setAsesorList] = useState<IAsesor[]>([]);
+  const [aseguradorasList, setAseguradorasList] = useState<IAseguradora[]>([]);
+
+  const asesorById = async () => {
+    if (Number(ticket?.aseguradoraId!) !== 0) {
+      const service = new AsesoresService();
+      const respuesta: any = await service.getAsesoresByIdAseguradora(
+        Number(ticket?.aseguradoraId!)
+      );
+
+      const data = respuesta.data as IAsesor[];
+
+      setAsesorList(data || []);
+    }
+  };
+
+  const consultarAsesores = async () => {
+    const services = new AsesoresService();
+    const response: any = await services.getAsesoresByIdAseguradora(
+      Number(idAseguradora)
+    );
+    const data = response.data as IAsesor[];
+    if (response.status == 200) {
+      setAsesorList(data || []);
+    } else {
+
+    }
+  };
+
   /** FACTURAR EL TICKET */
   const facturarTicket = async () => {
     //Se toma el estado del switch
@@ -109,7 +142,7 @@ function TicketVer() {
     const service = new TicketsService();
     const respuesta = await service.update(payload, ticket?.id!);
 
-    if (respuesta.status == 200  && ticket?.is_facturado == false ) {
+    if (respuesta.status == 200 && ticket?.is_facturado == false) {
       const data = respuesta.data as ITicket;
       setTicket(data);
       toast({
@@ -120,7 +153,7 @@ function TicketVer() {
         duration: 9000,
         isClosable: true,
       })
-    } else if(ticket?.is_archivado == true) {
+    } else if (ticket?.is_archivado == true) {
       toast({
         title: "Se Desactivo la Factura",
         description: respuesta.message,
@@ -296,6 +329,7 @@ function TicketVer() {
     setFacturado(ticket?.is_facturado!);
     consultarTecnico();
     consultarSeguimientos();
+    consultarAsesores();
   }, [ticket]);
 
   const getVista = () => {
@@ -494,7 +528,7 @@ function TicketVer() {
           <ModalHeader>Impresión</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Printer doc={<TicketImprimible ticket={ticket!} /> }/>
+            <Printer doc={<TicketImprimible ticket={ticket!} />} />
           </ModalBody>
           <ModalFooter
             position={"fixed"}
@@ -571,12 +605,12 @@ function TicketVer() {
               >
                 {serviciosList.length !== 0
                   ? serviciosList.map((servicio) => {
-                      return (
-                        <option key={servicio.id} value={Number(servicio.id)}>
-                          {servicio.nombre}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={servicio.id} value={Number(servicio.id)}>
+                        {servicio.nombre}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
             </FormControl>
@@ -595,12 +629,12 @@ function TicketVer() {
               >
                 {tecnicosByServicios?.Tecnico?.length !== 0
                   ? tecnicosByServicios?.Tecnico?.map((tecnico) => {
-                      return (
-                        <option key={tecnico.id} value={tecnico.id}>
-                          {tecnico.nombre}, {tecnico.telefono}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={tecnico.id} value={tecnico.id}>
+                        {tecnico.nombre}, {tecnico.telefono}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
             </FormControl>
@@ -647,6 +681,7 @@ function TicketVer() {
                 <Tr>
                   <Th>Asesor Gpo Lías</Th>
                   <Th>Seguimiento</Th>
+                  <Th>Aseguradora</Th>
                   <Th>Asesor Seguro</Th>
                   <Th>Fecha y Hora</Th>
                 </Tr>
@@ -658,6 +693,7 @@ function TicketVer() {
                       <Tr key={index}>
                         <Td></Td>
                         <Td>{seguimiento.detalles}</Td>
+                        <Td>{aseguradora?.nombre}</Td>
                         <Td>{seguimiento.nombre_asesor_seguro}</Td>
                         <Td>
                           {moment(seguimiento.fecha_seguimiento).format("LLL")}
@@ -686,6 +722,7 @@ function TicketVer() {
           <ModalHeader>Crea un Nuevo Seguimiento</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
+
             <FormControl mt={4}>
               <FormLabel padding={1}>Asesor de Gpo Lías</FormLabel>
               <Input
@@ -705,14 +742,54 @@ function TicketVer() {
                 }}
               />
 
-              <FormLabel padding={1}>Asesor Seguro</FormLabel>
-              <Input
+              
+                <FormLabel htmlFor="aseguradoraId" >Aseguradora</FormLabel>
+                <Input
                 paddingBottom={2}
-                placeholder="Asesor Seguro"
+                placeholder="Aseguradora"
+                value={aseguradora?.nombre!}
                 onChange={(e) => {
-                  setAsesor_seguro(e.target.value);
-                }}
-              />
+                  setidAseguradora(Number(e.target.value));
+                }}/>
+
+                {/* 
+                <FormLabel padding={1}>Asesor Seguro</FormLabel>
+                <Input
+                  paddingBottom={2}
+                  placeholder="Asesor Seguro"
+                  onChange={(e) => {
+                    setAsesor_seguro(e.target.value);
+                  }}
+                />
+                */}
+                <FormLabel htmlFor="asesorid">Asesor de Aseguradora</FormLabel>
+                <Select
+                  overflowWrap={"normal"}
+                  id="asesorId"
+                  placeholder="Selecciona el Asesor de la Aseguradora"
+                  alignItems={"center"}
+                  alignContent={"center"}
+                  variant="filled"
+                  borderColor="twitter.100"
+                  onFocus={() => {
+                    asesorById();
+                  }}
+                  onChange={(e) => {
+                    setAsesor_seguro(e.target.value);
+                  }}
+                >
+                  {asesorList.length !== 0
+                    ? asesorList.map((asesor, index) => {
+                      return (
+                        <option key={index} value={Number(asesor.id)}>
+                          {asesor.nombre}
+                        </option>
+                      );
+                    })
+                    : null}
+                </Select>
+              
+
 
               <FormLabel>Fecha y Hora</FormLabel>
               <Input
