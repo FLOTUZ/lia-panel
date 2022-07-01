@@ -46,6 +46,9 @@ export const CrearCotizacionTecnico = ({
   const [imagen, setImagen] = useState<IImagen>();
   const [uploadImage, setUploadImage] = useState<string>("");
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen: isOpenImgLlegada, onOpen: OnOpenImgLLegada, onClose: onCloseImgLlegada } = useDisclosure();
+  const { isOpen: isOpenImgPlacas, onOpen: OnOpenImgPlacas, onClose: onCloseImgPlacas } = useDisclosure();
+
 
   const getImagen = async () => {
     const service = new ImagenesService();
@@ -94,6 +97,7 @@ export const CrearCotizacionTecnico = ({
 
     if (respuestaTicket.status === 400) {
       onClose();
+      onCloseImgLlegada();
       toast({
         title: "Oops.. Algo salio mal",
         description: respuestaTicket.message,
@@ -270,8 +274,8 @@ export const CrearCotizacionTecnico = ({
           {uploadImage ? (
             <Image
               src={uploadImage}
-              onClick={onOpen}
-              alt={`Imagen de prueba`}
+              onClick={OnOpenImgLLegada}
+              alt={`Imagen de Llegada`}
               unoptimized={true}
               quality={100}
               height={200}
@@ -285,6 +289,7 @@ export const CrearCotizacionTecnico = ({
            Llegada
         </Heading>
         </Box>
+
         <Box
          mt={1}
          p={1}
@@ -300,7 +305,7 @@ export const CrearCotizacionTecnico = ({
             <Image
               src={uploadImage}
               onClick={onOpen}
-              alt={`Imagen de prueba`}
+              alt={`Imagen del Problema`}
               unoptimized={true}
               quality={100}
               height={200}
@@ -311,9 +316,10 @@ export const CrearCotizacionTecnico = ({
             <CircularProgress />
           )}
            <Heading marginTop={2}  as="h4" size="sm">
-           Problematica
+           Problemática
         </Heading>
         </Box>
+
         {ticket?.asistencia_vial && ticket?.is_servicio_foraneo? (
             <Box
             mt={1}
@@ -329,8 +335,8 @@ export const CrearCotizacionTecnico = ({
                 <Image
     
                   src={uploadImage}
-                  onClick={onOpen}
-                  alt={`Imagen de prueba`}
+                  onClick={OnOpenImgPlacas}
+                  alt={`Imagen de Plcas`}
                   unoptimized={true}
                   quality={100}
                   height={200}
@@ -367,18 +373,18 @@ export const CrearCotizacionTecnico = ({
         </Box>
       </Box>
 
-      <Modal onClose={onClose} isOpen={isOpen} isCentered size={"6xl"}>
+      <Modal onClose={onClose} isOpen={isOpen} isCentered size={"4xl"}>
         <ModalOverlay backdropBlur="10px" />
         <ModalContent>
           <ModalCloseButton />
           <ModalHeader>
             <Text fontWeight="bold" fontSize="25px">
-              Problema antes de arreglar
+              Evidencia del Poblema
             </Text>
           </ModalHeader>
-          <ModalBody padding={"5%"}>
+          <ModalBody padding={"2%"}>
             <Center>
-              <img src={uploadImage} alt={`Imagen de prueba`} width={500} />
+              <img src={uploadImage} alt={`Imagen de Problemática`} width={500} />
             </Center>
           </ModalBody>
           <ModalFooter>
@@ -387,6 +393,60 @@ export const CrearCotizacionTecnico = ({
               colorScheme="red"
               variant="solid"
               onClick={onClose}
+            >
+              Cerrar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal onClose={onCloseImgLlegada} isOpen={isOpenImgLlegada} isCentered size={"4xl"}>
+        <ModalOverlay backdropBlur="10px" />
+        <ModalContent>
+          <ModalCloseButton />
+          <ModalHeader>
+            <Text fontWeight="bold" fontSize="25px">
+              Evidencia de Llegada
+            </Text>
+          </ModalHeader>
+          <ModalBody padding={"2%"}>
+            <Center>
+              <img src={uploadImage} alt={`Imagen de Llegada`} width={500} />
+            </Center>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              leftIcon={<CloseIcon />}
+              colorScheme="red"
+              variant="solid"
+              onClick={onCloseImgLlegada}
+            >
+              Cerrar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+
+      <Modal onClose={onCloseImgPlacas} isOpen={isOpenImgPlacas} isCentered size={"4xl"}>
+        <ModalOverlay backdropBlur="10px" />
+        <ModalContent>
+          <ModalCloseButton />
+          <ModalHeader>
+            <Text fontWeight="bold" fontSize="25px">
+              Evidencia de Placas
+            </Text>
+          </ModalHeader>
+          <ModalBody padding={"2%"}>
+            <Center>
+              <img src={uploadImage} alt={`Imagen de Placas`} width={500} />
+            </Center>
+          </ModalBody>
+          <ModalFooter>
+            <Button
+              leftIcon={<CloseIcon />}
+              colorScheme="red"
+              variant="solid"
+              onClick={onCloseImgPlacas}
             >
               Cerrar
             </Button>
