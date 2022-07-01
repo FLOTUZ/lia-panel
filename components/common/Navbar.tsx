@@ -15,7 +15,7 @@ import { AuthService } from "@/services/auth.service";
 import { useRouter } from "next/router";
 import { UsuariosService } from "@/services/usuarios.service";
 import { IUsuario } from "@/services/api.models";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 interface IRouteItem {
   name: string;
@@ -25,7 +25,6 @@ interface IRouteItem {
 }
 
 const Navbar = (hideNabar: any, setHideNabar: Function) => {
-
     
   const [sesion, setSesion] = useState<IUsuario>();
 
@@ -36,19 +35,20 @@ const Navbar = (hideNabar: any, setHideNabar: Function) => {
     if (usuario !== null) {
       const variable = usuario as IUsuario;
       setSesion(variable);
+      console.log(variable);
     }
   };
 
-  useEffect(() => {
+  useMemo(() => {
     getUserLogeado();
-  },);
+  },[]);
   
   const router = useRouter();
 
   //Consultas el usuario logeado
   ///  TODO: usuario logeado
 
-  const ROL = "CAPTURISTA";
+  const ROL = sesion?.rol;
 
   const routes: IRouteItem[] = [
     {
@@ -104,7 +104,7 @@ const Navbar = (hideNabar: any, setHideNabar: Function) => {
         <Image src={Logo} alt="" />
       </Flex>
       {routes.map((route, key) => {
-        return route.rol.includes(ROL) ? (
+        return route.rol.includes(String(ROL)) ? (
           <Link key={key} href={route.path}>
             <a>
               <Button
@@ -155,5 +155,16 @@ const Navbar = (hideNabar: any, setHideNabar: Function) => {
     </Stack>
   );
 };
+
+import { GetServerSideProps } from 'next';
+
+export const getServerSideProps:GetServerSideProps = async (ctx) => {
+
+  return {
+    props:{
+      data:null
+    }
+  }
+}
 
 export default Navbar;

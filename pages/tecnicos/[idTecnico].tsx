@@ -20,7 +20,7 @@ import {
   Text,
   Checkbox,
   CheckboxGroup,
-  FormHelperText
+  FormHelperText,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 
@@ -35,6 +35,7 @@ import {
 import { UsuariosService } from "@/services/usuarios.service";
 import { TecnicoService } from "@/services/tecnicos.service";
 import { ServiciosService } from "@/services/servicios.service";
+import { ServiciosToTecnicos } from "@/services/serviciosToTecnicos.service";
 import { EstadosService } from "@/services/estados.service";
 import { useRouter } from "next/router";
 
@@ -53,6 +54,7 @@ function TecnicoNuevo() {
   const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
 
   const [cargando, setCargando] = useState(false);
+
   const [checkedItems, setCheckedItems] = React.useState([false, false]);
 
   const allChecked = checkedItems.every(Boolean);
@@ -126,24 +128,22 @@ function TecnicoNuevo() {
   const getUsuario = async () => {
     const service = new UsuariosService();
     const respuesta = await service.getById(Number(tecnico?.usuarioId));
-    const dato = respuesta.data as IUsuario
+    const dato = respuesta.data as IUsuario;
     setUsuario(dato);
+    setUsuarioId(Number(idTecnico));
   };
 
   const getEstado = async () => {
     const service = new EstadosService();
     const respuesta = await service.getById(Number(tecnico?.ViveEn?.estadoId));
-    const dato = respuesta.data as IEstado
+    const dato = respuesta.data as IEstado;
     setEstado(dato);
   };
 
   useEffect(() => {
     getTecnico();
-    
-    
-    
-  }, [])
-  
+  }, [idTecnico]);
+
   useEffect(() => {
     consultarServicios();
     consultarCiudades();
@@ -164,7 +164,6 @@ function TecnicoNuevo() {
       telefono: tecnico?.telefono || "",
       ciudadId: tecnico?.ciudadId || 0,
       usuarioId: tecnico?.usuarioId || 0,
-      Servicio: tecnico?.Servicio ,
     },
     enableReinitialize: true,
 
@@ -173,23 +172,32 @@ function TecnicoNuevo() {
         ...values,
       };
 
+      console.log(data);
       const service = new TecnicoService();
       const respuesta = await service.update(data, Number(idTecnico));
-      const dataUpdate = respuesta.data as ITecnico;
-      setTecnico(dataUpdate);
 
-      if (respuesta.status !== 200) {
-        toast({
-          title: "Error",
-          status: "error",
-          description: `Error al actualizar, verifique sus campos`,
-        });
-        setCargando(false);
-      } else {
+      const dataUpdate = respuesta.data as ITecnico;
+      
+      if (respuesta.status == 200) {
+        setTecnico(dataUpdate);
+        //Se actualizan sus servicios
+        const servicioToTecnicos = new ServiciosToTecnicos();
+        const respuestaServicios = servicioToTecnicos.update(
+          Number(idTecnico),
+          servicios
+        );
         toast({
           title: "Guardado",
           status: "success",
           description: `${respuesta.Estado} guardado`,
+        });
+
+      } else {
+        setCargando(false);
+        toast({
+          title: "Error",
+          status: "error",
+          description: `Error al actualizar, verifique sus campos`,
         });
       }
     },
@@ -198,6 +206,7 @@ function TecnicoNuevo() {
   // -------------------- usuario --------------------
   const formUsuario = useFormik({
     initialValues: {
+      inactivo: usuario?.inactivo,
       usuario: usuario?.usuario || "",
       email: usuario?.email || "",
       password: usuario?.password || "",
@@ -212,7 +221,6 @@ function TecnicoNuevo() {
 
       const service = new UsuariosService();
       const respuesta = await service.update(datos, Number(usuarioId));
-
 
       const dataUpdate = respuesta.data as IUsuario;
       setUsuario(dataUpdate);
@@ -237,6 +245,7 @@ function TecnicoNuevo() {
   return (
     <DesktopLayout>
       <Header title={"Editar Usuario"} />
+
       <form onSubmit={formUsuario.handleSubmit}>
         <FormControl isRequired>
           <VStack
@@ -250,7 +259,7 @@ function TecnicoNuevo() {
             spacing={2}
             alignItems={"start"}
           >
-            <FormLabel htmlFor="usuario">Editar Técnico</FormLabel>
+            <FormLabel htmlFor="usuario">Nombre de usuario</FormLabel>
             <Input
               isRequired
               variant="filled"
@@ -258,6 +267,7 @@ function TecnicoNuevo() {
               placeholder="Nombre de Usuario"
               defaultValue={usuario?.usuario}
               onChange={formUsuario.handleChange}
+              value={formUsuario.values.usuario}
             />
 
             <FormLabel htmlFor="email">Email</FormLabel>
@@ -269,6 +279,7 @@ function TecnicoNuevo() {
               placeholder="email@gmail.com"
               defaultValue={usuario?.email}
               onChange={formUsuario.handleChange}
+              value={formUsuario.values.email}
             />
 
             <FormLabel htmlFor="contraseña">Contraseña</FormLabel>
@@ -279,6 +290,7 @@ function TecnicoNuevo() {
               defaultValue={usuario?.password}
               isRequired={true}
               onChange={formUsuario.handleChange}
+              value={formUsuario.values.password}
             />
 
             <HStack spacing={4} w={"100%"} mt={"12rem"}>
@@ -292,12 +304,19 @@ function TecnicoNuevo() {
               >
                 Guardar
               </Button>
+              <Button
+                colorScheme="red"
+                variant="outline"
+                onClick={() => router.back()}
+              >
+                Cancelar
+              </Button>
             </HStack>
           </VStack>
         </FormControl>
       </form>
 
-      {/* terminar el fomr de usuario y empieza el de tecnico **/}
+      {/* terminar el form de usuario y empieza el de tecnico **/}
 
       <form onSubmit={formTecnico.handleSubmit}>
         <FormControl>
@@ -390,8 +409,7 @@ function TecnicoNuevo() {
                     placeholder="Selecciona el Estado"
                     variant="filled"
                     onChange={(e) => {
-                      formTecnico.handleChange,
-                        setIdEstado(Number(e.target.value));
+                      setIdEstado(Number(e.target.value));
                     }}
                   >
                     {estadosList?.length !== 0
@@ -404,17 +422,20 @@ function TecnicoNuevo() {
                         })
                       : null}
                   </Select>
-                  <FormHelperText >Seleccione el Estado Nuevamente</FormHelperText>
+                  <FormHelperText>
+                    Seleccione el Estado Nuevamente
+                  </FormHelperText>
                 </FormControl>
 
                 <FormControl isRequired paddingLeft={5} paddingTop={15}>
-                  <FormLabel htmlFor="ciudad">Ciudad</FormLabel>
+                  <FormLabel htmlFor="ciudadId">Ciudad</FormLabel>
                   <Select
-                    id="ciudad"
+                    id="ciudadId"
                     placeholder="Selecciona la Ciudad"
                     variant="filled"
-                    defaultValue={tecnico?.ViveEn?.nombre}
-                    onChange={formTecnico.handleChange}
+                    onChange={(e)=>{
+                      formTecnico.setFieldValue("ciudadId", Number(e.target.value))
+                    }}
                     onFocus={(e) => {
                       consultarCiudades();
                     }}
@@ -429,15 +450,17 @@ function TecnicoNuevo() {
                         })
                       : null}
                   </Select>
-                  <FormHelperText >Seleccione la Ciudad Nuevamente</FormHelperText>
+                  <FormHelperText>
+                    Seleccione la Ciudad Nuevamente
+                  </FormHelperText>
                 </FormControl>
               </Center>
 
               <Divider orientation="vertical" />
               <FormControl isRequired paddingTop={15}></FormControl>
               <FormControl>
-                <FormLabel htmlFor="ciudad">Servicios</FormLabel>
-                <FormHelperText >Agrega los Servicios Nuevamente</FormHelperText>
+                <FormLabel>Servicios</FormLabel>
+                <FormHelperText>Agrega los Servicios Nuevamente</FormHelperText>
                 <Stack pl={6} mt={1} spacing={1}>
                   <CheckboxGroup
                     onChange={(checks) => {
@@ -446,7 +469,16 @@ function TecnicoNuevo() {
                   >
                     {listadoServicios.length != 0 ? (
                       listadoServicios.map((t, index) => {
-                        return <Checkbox key={index}>{t.nombre}</Checkbox>;
+                        return (
+                          <Checkbox
+                            key={index}
+                            onChange={() => {
+                              filtradoServicios(t);
+                            }}
+                          >
+                            {t.nombre}
+                          </Checkbox>
+                        );
                       })
                     ) : (
                       <></>
@@ -464,6 +496,7 @@ function TecnicoNuevo() {
                 variant="solid"
                 type="submit"
                 isLoading={cargando}
+                onClick={() => Router.back()}
               >
                 Guardar
               </Button>

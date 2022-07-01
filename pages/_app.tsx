@@ -45,6 +45,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     isAuth ? router.push("/tickets") : router.push("/login");
+    console.log(router);
+    
   }, [isAuth]);
 
   return (

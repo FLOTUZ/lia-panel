@@ -77,6 +77,7 @@ function UsuarioVer() {
       const data = {
         ...values,
       };
+console.log(data);
 
       const service = new UsuariosService();
       const respuesta = await service.update(data, Number(idUsuario));
@@ -148,6 +149,7 @@ function UsuarioVer() {
                 isRequired
                 variant="filled"
                 id="usuario"
+                placeholder="Nombre de Usuario"
                 onChange={formUsuario.handleChange}
                 value={formUsuario.values.usuario}
               />

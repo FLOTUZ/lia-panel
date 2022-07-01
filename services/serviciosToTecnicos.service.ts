@@ -10,4 +10,17 @@ export class ServiciosToTecnicos {
     );
     return respuesta;
   }
+
+  public async update(idTecnico: number, data: string[]){
+    console.log(`${this.url}/${idTecnico}/servicios`);
+    
+    const respuesta: any = await axios.patch(
+      `${this.url}/${idTecnico}/servicios`,
+      data
+    );
+
+    
+    
+    return respuesta;
+  }
 }
