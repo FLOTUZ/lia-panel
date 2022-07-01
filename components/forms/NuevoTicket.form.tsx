@@ -7,6 +7,7 @@ import {
   IServicio,
   ITecnico,
   ITicket,
+  IUsuario,
 } from "@/services/api.models";
 import { FaUserShield } from "react-icons/fa";
 import { RiGpsLine } from "react-icons/ri";
@@ -53,6 +54,7 @@ import { TecnicoService } from "@/services/tecnicos.service";
 import { useRouter } from "next/router";
 import { IoFlag, IoSpeedometerOutline } from "react-icons/io5";
 import { EstadosService } from "@/services/estados.service";
+import { UsuariosService } from "@/services/usuarios.service";
 
 const NuevoTicket = () => {
 
@@ -113,6 +115,20 @@ const NuevoTicket = () => {
     consultarTecnicos();
   }, []);
 
+  const [sesion, setSesion] = useState<IUsuario>();
+  const getUserLogeado = async () => {
+    const service = new UsuariosService();
+    const usuario = await service.getLogedUser();
+
+    if (usuario !== null) {
+      const variable = usuario as IUsuario;
+      setSesion(variable);
+    }
+  };
+
+  useEffect(() => {
+    getUserLogeado();
+  },);
   const consultarAseguradoras = async () => {
     const servicio = new AseguradoraService();
     const respuesta = await servicio.getAll();
@@ -557,11 +573,12 @@ const NuevoTicket = () => {
               </FormLabel>
               <Input
                 variant="filled"
+                readOnly
                 id="nombre_asesor_gpo_lias"
                 placeholder="Asesor de Grupo Lías"
                 borderColor="twitter.100"
                 onChange={formTicket.handleChange}
-                value={formTicket.values.nombre_asesor_gpo_lias}
+                value={sesion?.usuario}
               />
             </FormControl>
 
