@@ -15,7 +15,7 @@ import { AuthService } from "@/services/auth.service";
 import { useRouter } from "next/router";
 import { UsuariosService } from "@/services/usuarios.service";
 import { IUsuario } from "@/services/api.models";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 interface IRouteItem {
   name: string;
@@ -35,11 +35,10 @@ const Navbar = (hideNabar: any, setHideNabar: Function) => {
     if (usuario !== null) {
       const variable = usuario as IUsuario;
       setSesion(variable);
-      console.log(variable);
     }
   };
 
-  useMemo(() => {
+  useEffect(() => {
     getUserLogeado();
   },[]);
   

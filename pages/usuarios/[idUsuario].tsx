@@ -56,7 +56,7 @@ function UsuarioVer() {
       const servicio = new UsuariosService();
       const respuesta = await servicio.getById(Number(idUsuario));
       if (respuesta.status == 200) {
-        setData(respuesta.data as IUsuario);
+        setData(respuesta.data as IUsuario);       
       }
     };
     getUser();
@@ -73,7 +73,6 @@ function UsuarioVer() {
     enableReinitialize: true,
 
     onSubmit: async (values: IUsuario) => {
-      // const actualizaUsuario = async () => {
       const data = {
         ...values,
       };
@@ -82,8 +81,8 @@ console.log(data);
       const service = new UsuariosService();
       const respuesta = await service.update(data, Number(idUsuario));
       const dataUpdate = respuesta.data as IUsuario;
-      setData(dataUpdate);
-
+      setData(dataUpdate);     
+      
       if (respuesta.status != 200) {
         toast({
           title: "Error",
@@ -175,7 +174,6 @@ console.log(data);
                 onChange={formUsuario.handleChange}
                 value={formUsuario.values.password}
               />
-
               <FormLabel htmlFor="rol">Seleccione Rol</FormLabel>
               <Text fontWeight={"bold"}>Actualmente es: {data?.rol}</Text>
               <RadioGroup
@@ -211,7 +209,6 @@ console.log(data);
                     Actualizar
                   </Button>
                 
-
                 <Button
                   colorScheme="red"
                   variant="outline"
