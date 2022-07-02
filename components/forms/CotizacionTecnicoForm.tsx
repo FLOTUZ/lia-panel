@@ -1,4 +1,9 @@
-import { ICotizacionTecnico, IImagen, ITicket } from "@/services/api.models";
+import {
+  ICotizacionTecnico,
+  IImagen,
+  ITicket,
+  IUsuario,
+} from "@/services/api.models";
 import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
 import Router from "next/router";
 import { ImagenesService } from "@/services/imagenes.service";
@@ -23,6 +28,7 @@ import {
   ModalHeader,
   ModalOverlay,
   SimpleGrid,
+  Spinner,
   Text,
   useDisclosure,
   useToast,
@@ -31,9 +37,11 @@ import { useEffect, useState } from "react";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import Image from "next/image";
 import moment from "moment";
+import { UsuariosService } from "@/services/usuarios.service";
 
 interface CrearCotizacionTecnicoProps {
   cotizacion: ICotizacionTecnico;
+  usuario: IUsuario;
 }
 
 export const CrearCotizacionTecnico = ({
@@ -55,6 +63,8 @@ export const CrearCotizacionTecnico = ({
   const [imgLlegada, setImgLlegada] = useState<string>("");
   const [imgPlacas, setImgPlacas] = useState<string>("");
   const [imgPresolucion, setImgPresolucion] = useState<string>("");
+  const [sesion, setSesion] = useState<IUsuario>();
+  const [usuarioAprobador, setUsuarioAprobador] = useState<IUsuario>();
 
   const getImagenUpload = async () => {
     const service = new ImagenesService();
@@ -88,11 +98,35 @@ export const CrearCotizacionTecnico = ({
     }
   };
 
+  const getUserLogeado = async () => {
+    const service = new UsuariosService();
+    const usuario = await service.getLogedUser();
+
+    if (usuario !== null) {
+      const variable = usuario as IUsuario;
+      setSesion(variable);
+    }
+  };
+
+  const getUsuarioAprobador = async () => {
+    const service = new UsuariosService();
+    const respuesta = await service.getById(cotizacion.aprobado_por_usuarioId);
+
+    if (respuesta.status == 200) {
+      const data = respuesta.data as IUsuario;
+      setUsuarioAprobador(data);
+    }
+  };
+
   const aprobarCotizacion = async () => {
-    //TODO: Obtener el id del usuario de la sesion
+    //TODO: Obtener el id del usuario de la sesionsuar
+
+    const service = new UsuariosService();
+    const user = await service.getLogedUser();
+
     const payloadCotizacion = {
       is_aprobado: true,
-      aprobado_por_usuarioId: 1,
+      aprobado_por_usuarioId: user?.id!,
     } as ICotizacionTecnico;
 
     const serviceCotizacion = new CotizacionTecnicoService();
@@ -137,7 +171,9 @@ export const CrearCotizacionTecnico = ({
   };
 
   useEffect(() => {
+    getUserLogeado();
     getImagenUpload();
+    getUsuarioAprobador();
   }, [cotizacion]);
 
   return (
@@ -293,7 +329,13 @@ export const CrearCotizacionTecnico = ({
                 layout="responsive"
               />
             ) : (
-              <CircularProgress />
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="blue.500"
+                size="xl"
+              />
             )}
             <Heading marginTop={2} as="h4" size="md" textAlign={"center"}>
               Llegada
@@ -322,7 +364,13 @@ export const CrearCotizacionTecnico = ({
                 layout="responsive"
               />
             ) : (
-              <CircularProgress />
+              <Spinner
+                thickness="4px"
+                speed="0.65s"
+                emptyColor="gray.200"
+                color="blue.500"
+                size="xl"
+              />
             )}
             <Heading marginTop={2} as="h4" size="md" textAlign={"center"}>
               Problemática
@@ -352,7 +400,13 @@ export const CrearCotizacionTecnico = ({
                   layout="responsive"
                 />
               ) : (
-                <CircularProgress />
+                <Spinner
+                  thickness="4px"
+                  speed="0.65s"
+                  emptyColor="gray.200"
+                  color="blue.500"
+                  size="xl"
+                />
               )}
               <Heading marginTop={2} as="h4" size="md" textAlign={"center"}>
                 Placas
@@ -376,6 +430,18 @@ export const CrearCotizacionTecnico = ({
           {/*<Button variant="outline" colorScheme={"red"}>
             Rechazar
         </Button>*/}
+          <FormControl paddingTop={5}>
+            <FormLabel htmlFor="Se aprobo la cotizacion ">
+              Se aprobo cotizacion por :
+            </FormLabel>
+            <Input
+              variant="unstyled"
+              isReadOnly
+              id="aprobado_por_usuarioId"
+              borderColor="twitter.100"
+              value={usuarioAprobador?.usuario!}
+            />
+          </FormControl>
         </Box>
       </Box>
 

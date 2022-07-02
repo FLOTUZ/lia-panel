@@ -105,6 +105,8 @@ const NuevoTicket = () => {
   const [estadosList, setEstadosList] = useState<IEstado[]>([]);
   const [IdEstado, setIdEstado] = useState(0);
 
+  const [sesion, setSesion] = useState<IUsuario>();
+
   const toast = useToast();
 
   useEffect(() => {
@@ -115,7 +117,6 @@ const NuevoTicket = () => {
     consultarTecnicos();
   }, []);
 
-  const [sesion, setSesion] = useState<IUsuario>();
   const getUserLogeado = async () => {
     const service = new UsuariosService();
     const usuario = await service.getLogedUser();

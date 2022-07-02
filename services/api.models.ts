@@ -91,6 +91,7 @@ export interface ISeguimiento {
   usuarioId: number;
   createdAt?: string | null;
   updatedAt?: string | null;
+  Usuario?: IUsuario;
 }
 
 export interface IAseguradora {

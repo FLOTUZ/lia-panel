@@ -67,7 +67,6 @@ import { TecnicoService } from "@/services/tecnicos.service";
 import { AsesoresService } from "@/services/asesores.service";
 import { UsuariosService } from "@/services/usuarios.service";
 
-
 function TicketVer() {
   const router = useRouter();
   const toast = useToast();
@@ -106,14 +105,15 @@ function TicketVer() {
   const [seguimiento, setSeguimiento] = useState("");
   const [asesor_seguro, setAsesor_seguro] = useState("");
   const [fecha_hora, setFecha_hora] = useState("");
-  const [listadoSeguimientos, setListadoSeguimientos] = useState<ISeguimiento[]>([]);
+  const [listadoSeguimientos, setListadoSeguimientos] = useState<
+    ISeguimiento[]
+  >([]);
 
   const [nombreAsesor, setNombreAsesor] = useState("");
   const [idAseguradora, setidAseguradora] = useState(0);
   const [asesorList, setAsesorList] = useState<IAsesor[]>([]);
 
   const [sesion, setSesion] = useState<IUsuario>();
-
 
   /** FACTURAR EL TICKET */
   const facturarTicket = async () => {
@@ -137,7 +137,7 @@ function TicketVer() {
         status: "success",
         duration: 9000,
         isClosable: true,
-      })
+      });
     } else if (ticket?.is_archivado == true) {
       toast({
         title: "Se Desactivo la Factura",
@@ -183,7 +183,6 @@ function TicketVer() {
     }
   };
 
-  
   const consultarServicios = async () => {
     const service = new ServiciosService();
     const respuesta = await service.getAll();
@@ -200,15 +199,13 @@ function TicketVer() {
     setTecnicosByServicios(data);
   };
 
-
-
-  const guardarSeguimiento = async () => {
+  const nuevoSeguimiento = async () => {
     const data: ISeguimiento = {
       detalles: seguimiento,
       nombre_asesor_seguro: asesor_seguro,
       fecha_seguimiento: new Date(Date.now()).toISOString(),
       ticketId: Number(idTicket),
-      usuarioId: 1, //TODO: Obtener el id del usuario logeado
+      usuarioId: sesion?.id, //TODO: Obtener el id del usuario logeado
     };
     console.log(data);
 
@@ -241,12 +238,13 @@ function TicketVer() {
   /*CONSULTA DE LA TABLA DE SEGUIMIENTOS*/
   const consultarSeguimientos = async () => {
     const service = new SeguimientosService();
-    const respuesta = await service.getSeguiminetosByTicket(ticket?.id!);
+    const respuesta = await service.getSeguimientosByTicket(ticket?.id!);
     const data = respuesta.data as ISeguimiento[];
 
     if (respuesta.status == 200) {
+      console.log(data);
+      
       setListadoSeguimientos(data);
-    } else {
     }
   };
 
@@ -319,7 +317,6 @@ function TicketVer() {
     if (response.status == 200) {
       setAsesorList(data || []);
     } else {
-
     }
   };
 
@@ -344,7 +341,6 @@ function TicketVer() {
     getAseguradora();
     getVista();
     consultarServicios();
-    consultarSeguimientos();
     setFacturado(ticket?.is_facturado!);
     consultarTecnico();
     consultarSeguimientos();
@@ -624,12 +620,12 @@ function TicketVer() {
               >
                 {serviciosList.length !== 0
                   ? serviciosList.map((servicio) => {
-                    return (
-                      <option key={servicio.id} value={Number(servicio.id)}>
-                        {servicio.nombre}
-                      </option>
-                    );
-                  })
+                      return (
+                        <option key={servicio.id} value={Number(servicio.id)}>
+                          {servicio.nombre}
+                        </option>
+                      );
+                    })
                   : null}
               </Select>
             </FormControl>
@@ -648,12 +644,12 @@ function TicketVer() {
               >
                 {tecnicosByServicios?.Tecnico?.length !== 0
                   ? tecnicosByServicios?.Tecnico?.map((tecnico) => {
-                    return (
-                      <option key={tecnico.id} value={tecnico.id}>
-                        {tecnico.nombre}, {tecnico.telefono}
-                      </option>
-                    );
-                  })
+                      return (
+                        <option key={tecnico.id} value={tecnico.id}>
+                          {tecnico.nombre}, {tecnico.telefono}
+                        </option>
+                      );
+                    })
                   : null}
               </Select>
             </FormControl>
@@ -710,7 +706,7 @@ function TicketVer() {
                   listadoSeguimientos.map((seguimiento, index) => {
                     return (
                       <Tr key={index}>
-                        <Td>{sesion?.usuario}</Td>
+                        <Td>{seguimiento.Usuario?.usuario}</Td>
                         <Td>{seguimiento.detalles}</Td>
                         <Td>{aseguradora?.nombre}</Td>
                         <Td>{seguimiento.nombre_asesor_seguro}</Td>
@@ -741,14 +737,12 @@ function TicketVer() {
           <ModalHeader>Crea un Nuevo Seguimiento</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-
             <FormControl mt={4}>
               <FormLabel padding={1}>Asesor de Gpo Lías</FormLabel>
               <Input
                 paddingBottom={2}
                 placeholder="Asesor Gpo Lías"
                 value={sesion?.usuario}
-                
               />
 
               <FormLabel padding={1}>Seguimiento</FormLabel>
@@ -760,17 +754,17 @@ function TicketVer() {
                 }}
               />
 
-              
-                <FormLabel htmlFor="aseguradoraId" >Aseguradora</FormLabel>
-                <Input
+              <FormLabel htmlFor="aseguradoraId">Aseguradora</FormLabel>
+              <Input
                 paddingBottom={2}
                 placeholder="Aseguradora"
                 value={aseguradora?.nombre!}
                 onChange={(e) => {
                   setidAseguradora(Number(e.target.value));
-                }}/>
+                }}
+              />
 
-                {/* 
+              {/* 
                 <FormLabel padding={1}>Asesor Seguro</FormLabel>
                 <Input
                   paddingBottom={2}
@@ -780,34 +774,32 @@ function TicketVer() {
                   }}
                 />
                 */}
-                <FormLabel htmlFor="asesorid">Asesor de Aseguradora</FormLabel>
-                <Select
-                  overflowWrap={"normal"}
-                  id="asesorId"
-                  placeholder="Selecciona el Asesor de la Aseguradora"
-                  alignItems={"center"}
-                  alignContent={"center"}
-                  variant="filled"
-                  borderColor="twitter.100"
-                  onFocus={() => {
-                    asesorById();
-                  }}
-                  onChange={(e) => {
-                    setAsesor_seguro(e.target.value);
-                  }}
-                >
-                  {asesorList.length !== 0
-                    ? asesorList.map((asesor, index) => {
+              <FormLabel htmlFor="asesorid">Asesor de Aseguradora</FormLabel>
+              <Select
+                overflowWrap={"normal"}
+                id="asesorId"
+                placeholder="Selecciona el Asesor de la Aseguradora"
+                alignItems={"center"}
+                alignContent={"center"}
+                variant="filled"
+                borderColor="twitter.100"
+                onFocus={() => {
+                  asesorById();
+                }}
+                onChange={(e) => {
+                  setAsesor_seguro(e.target.value);
+                }}
+              >
+                {asesorList.length !== 0
+                  ? asesorList.map((asesor, index) => {
                       return (
                         <option key={index} value={Number(asesor.id)}>
                           {asesor.nombre}
                         </option>
                       );
                     })
-                    : null}
-                </Select>
-              
-
+                  : null}
+              </Select>
 
               <FormLabel>Fecha y Hora</FormLabel>
               <Input
@@ -827,7 +819,7 @@ function TicketVer() {
               colorScheme="whatsapp"
               variant="solid"
               mr={3}
-              onClick={guardarSeguimiento}
+              onClick={nuevoSeguimiento}
             >
               Guardar
             </Button>
