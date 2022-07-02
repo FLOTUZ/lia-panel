@@ -205,7 +205,7 @@ function TicketVer() {
       nombre_asesor_seguro: asesor_seguro,
       fecha_seguimiento: new Date(Date.now()).toISOString(),
       ticketId: Number(idTicket),
-      usuarioId: sesion?.id, //TODO: Obtener el id del usuario logeado
+      usuarioId: sesion?.id!, //TODO: Obtener el id del usuario logeado
     };
     console.log(data);
 

@@ -251,7 +251,6 @@ const NuevoTicket = () => {
     }
   };
   const guardarAsesor = async () => {
-    
 
     const data: IAsesor = {
       nombre: nombreAsesor,

@@ -144,7 +144,7 @@ export default function ListadoTickets() {
                         </Badge>
                       ): ticket?.estado === "EN PROCESO"? (
                         
-                        <Badge colorScheme={"bisque"} key={index}>
+                        <Badge colorScheme={"orange"} key={index}>
                            {ticket.estado}
 
                         </Badge>

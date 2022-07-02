@@ -1,4 +1,4 @@
-import { IAcuerdoConformidad, ITicket } from "@/services/api.models";
+import { IAcuerdoConformidad, ITicket, IUsuario } from "@/services/api.models";
 
 import { TicketsService } from "@/services/tickets.service";
 import {
@@ -24,6 +24,9 @@ import {
 import { BsDownload } from "react-icons/bs";
 import { useRouter } from "next/router";
 import moment from "moment";
+import { UsuariosService } from "@/services/usuarios.service";
+import { AcuerdoConformidadService } from "@/services/acuerdo-conformidad.service";
+import { useState } from "react";
 
 interface IAcuerdoConformidadForm {
   acuerdoconformidad: IAcuerdoConformidad;
@@ -42,7 +45,26 @@ export const AcuerdoConformidadView = ({
     onClose: onClosePDF,
   } = useDisclosure();
 
+  const [usuarioAprobador, setUsuarioAprobador] = useState<IUsuario>();
   const aprobarAcuerdoConformidad = async () => {
+
+    const service = new UsuariosService();
+    const user = await service.getLogedUser();
+
+
+    const payloadAcuerdoConformidad={
+      is_aprobado: true,
+      aprobado_por_usuarioId:user?.id!,
+
+    }as IAcuerdoConformidad
+
+    const serviceAcuerdo = new AcuerdoConformidadService();
+    const respuestaAcuerdo = await serviceAcuerdo.update(
+      payloadAcuerdoConformidad,
+      acuerdoconformidad.id!,
+    );
+
+
     const payloadTicket = {
       estado: "FINALIZADO",
     } as ITicket;
@@ -203,7 +225,19 @@ export const AcuerdoConformidadView = ({
           >
             Descargar Acuerdo
           </Button>
-          {acuerdoconformidad.is_aprobado ? null : (
+          {acuerdoconformidad.is_aprobado ?  
+             <FormControl paddingTop={5}>
+            <FormLabel  htmlFor="Se aprobo el acuerdo ">
+              Se aprobo el acuerdo por :
+            </FormLabel>
+            <Input
+              variant="unstyled"
+              isReadOnly
+              id="aprobado_por_usuarioId"
+              borderColor="twitter.100"
+              value={usuarioAprobador?.usuario!}
+            />
+          </FormControl> : (
             <Button
               h={"3rem"}
               colorScheme={"green"}

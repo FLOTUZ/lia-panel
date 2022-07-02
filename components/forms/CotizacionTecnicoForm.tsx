@@ -415,7 +415,19 @@ export const CrearCotizacionTecnico = ({
           ) : null}
         </SimpleGrid>
         <Box marginTop={"40px"} margin={"50px"} height="80px">
-          {cotizacion.is_aprobado ? null : (
+          {cotizacion.is_aprobado ? 
+              <FormControl paddingTop={5}>
+              <FormLabel htmlFor="Se aprobo la cotizacion ">
+                Se aprobo cotizacion por :
+              </FormLabel>
+              <Input
+                variant="unstyled"
+                isReadOnly
+                id="aprobado_por_usuarioId"
+                borderColor="twitter.100"
+                value={usuarioAprobador?.usuario!}
+              />
+            </FormControl> : (
             <Button
               margin={"50px"}
               colorScheme={"green"}
@@ -430,18 +442,7 @@ export const CrearCotizacionTecnico = ({
           {/*<Button variant="outline" colorScheme={"red"}>
             Rechazar
         </Button>*/}
-          <FormControl paddingTop={5}>
-            <FormLabel htmlFor="Se aprobo la cotizacion ">
-              Se aprobo cotizacion por :
-            </FormLabel>
-            <Input
-              variant="unstyled"
-              isReadOnly
-              id="aprobado_por_usuarioId"
-              borderColor="twitter.100"
-              value={usuarioAprobador?.usuario!}
-            />
-          </FormControl>
+      
         </Box>
       </Box>
 
