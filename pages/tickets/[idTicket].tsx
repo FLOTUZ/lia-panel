@@ -103,7 +103,7 @@ function TicketVer() {
 
   const [asesor_gpo_lias, setAsesor_gpo_lias] = useState("");
   const [seguimiento, setSeguimiento] = useState("");
-  const [asesor_seguro, setAsesor_seguro] = useState("");
+  const [asesor_seguro, setAsesor_seguro] = useState<number>();
   const [fecha_hora, setFecha_hora] = useState("");
   const [listadoSeguimientos, setListadoSeguimientos] = useState<
     ISeguimiento[]
@@ -188,7 +188,9 @@ function TicketVer() {
     const respuesta = await service.getAll();
     const data = respuesta.data as IServicio[];
 
+    if (respuesta.status == 200) {
     setServiciosList(data);
+    }
   };
 
   const consultarTecnicosByServicio = async (id: number) => {
@@ -202,12 +204,11 @@ function TicketVer() {
   const nuevoSeguimiento = async () => {
     const data: ISeguimiento = {
       detalles: seguimiento,
-      nombre_asesor_seguro: asesor_seguro,
       fecha_seguimiento: new Date(Date.now()).toISOString(),
       ticketId: Number(idTicket),
       usuarioId: sesion?.id!, //TODO: Obtener el id del usuario logeado
+      asesorId: Number(asesor_seguro),
     };
-    console.log(data);
 
     const service = new SeguimientosService();
     const response = await service.create(data);
@@ -709,7 +710,7 @@ function TicketVer() {
                         <Td>{seguimiento.Usuario?.usuario}</Td>
                         <Td>{seguimiento.detalles}</Td>
                         <Td>{aseguradora?.nombre}</Td>
-                        <Td>{seguimiento.nombre_asesor_seguro}</Td>
+                        <Td>{seguimiento.Asesor?.nombre}</Td>
                         <Td>
                           {moment(seguimiento.fecha_seguimiento).format("LLL")}
                         </Td>
@@ -787,13 +788,13 @@ function TicketVer() {
                   asesorById();
                 }}
                 onChange={(e) => {
-                  setAsesor_seguro(e.target.value);
+                  setAsesor_seguro(Number(e.target.value));
                 }}
               >
                 {asesorList.length !== 0
                   ? asesorList.map((asesor, index) => {
                       return (
-                        <option key={index} value={Number(asesor.id)}>
+                        <option key={index} value={asesor.id}>
                           {asesor.nombre}
                         </option>
                       );

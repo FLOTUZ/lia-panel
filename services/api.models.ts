@@ -84,14 +84,15 @@ export interface IServicio {
 
 export interface ISeguimiento {
   id?: number;
-  nombre_asesor_seguro: string;
   detalles: string;
   fecha_seguimiento: string;
   ticketId: number;
   usuarioId: number;
+  asesorId: number;
   createdAt?: string | null;
   updatedAt?: string | null;
   Usuario?: IUsuario;
+  Asesor? : IAsesor;
 }
 
 export interface IAseguradora {

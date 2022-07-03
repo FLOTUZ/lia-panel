@@ -342,8 +342,7 @@ const NuevoTicket = () => {
       ticket.anticipo = calculoAnticipo;
       ticket.total_salida = calculoTotalSalida;
       ticket.total = calculoMontoTotal;
-
-      console.log(ticket);
+      ticket.nombre_asesor_gpo_lias = sesion?.usuario;
       
       
 
