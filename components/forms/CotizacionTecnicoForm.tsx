@@ -41,7 +41,6 @@ import { UsuariosService } from "@/services/usuarios.service";
 
 interface CrearCotizacionTecnicoProps {
   cotizacion: ICotizacionTecnico;
-  usuario: IUsuario;
 }
 
 export const CrearCotizacionTecnico = ({

@@ -129,7 +129,7 @@ const NuevoTicket = () => {
 
   useEffect(() => {
     getUserLogeado();
-  },);
+  },[]);
   const consultarAseguradoras = async () => {
     const servicio = new AseguradoraService();
     const respuesta = await servicio.getAll();
@@ -342,6 +342,9 @@ const NuevoTicket = () => {
       ticket.anticipo = calculoAnticipo;
       ticket.total_salida = calculoTotalSalida;
       ticket.total = calculoMontoTotal;
+
+      console.log(ticket);
+      
       
 
       const servicio = new TicketsService();
