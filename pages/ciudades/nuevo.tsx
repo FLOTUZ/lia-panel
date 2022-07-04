@@ -143,18 +143,7 @@ function EstadoNuevo() {
           rounded="md"
           bg="white"
         >
-          <Stack paddingLeft={"65%"}>
-            <Link href={"/ciudades"}>
-              <Button
-                leftIcon={<ViewOffIcon />}
-                colorScheme="facebook"
-                variant="solid"
-                width={200}
-              >
-                Ver Listado de Estados
-              </Button>
-            </Link>
-          </Stack>
+          
 
           <Stack spacing={4} paddingTop={15}>
             <InputGroup>
