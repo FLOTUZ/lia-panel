@@ -69,16 +69,17 @@ function EstadosListado() {
         >
           {" "}
           <Spacer />
-          <Link href={"/ciudades/nuevo"}>
-            <Button
-              leftIcon={<AddIcon />}
-              marginLeft={"auto"}
-              colorScheme="facebook"
-              variant="solid"
-            >
-              Agregar Nuevo Estado
-            </Button>
-          </Link>
+          <Button
+          onClick={() => {
+            router.push("/ciudades/nuevo");
+          }}
+            leftIcon={<AddIcon />}
+            marginLeft={"auto"}
+            colorScheme="facebook"
+            variant="solid"
+          >
+            Agregar Nuevo Estado
+          </Button>
         </Box>
         <Box marginLeft={"1%"}>
           <TableContainer>
