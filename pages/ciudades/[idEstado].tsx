@@ -180,18 +180,6 @@ function EstadoVer() {
             rounded="md"
             bg="white"
           >
-            <HStack spacing={4} w={"50%"}>
-              <Link href={"/ciudades"}>
-                <Button
-                  leftIcon={<ViewOffIcon />}
-                  colorScheme="facebook"
-                  variant="solid"
-                  width={200}
-                >
-                  Ver Listado de Estados
-                </Button>
-              </Link>
-            </HStack>
 
             <Stack spacing={4}>
               <InputGroup>
