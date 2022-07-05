@@ -45,7 +45,7 @@ function UsuarioNuevo() {
   const [apellidoMaterno, setApellidoMaterno] = useState("");
   const [telefono, setTelefono] = useState("");
   const [usuarioId, setUsuarioId] = useState(0);
-  const [ciudadId, setciudadId] = useState<number>();
+  const [ciudadId, setCiudad] = useState<number>();
   const [servicios, setServicios] = useState<string[]>([]);
   const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
 
@@ -116,7 +116,7 @@ function UsuarioNuevo() {
         apellido_materno: apellidoMaterno,
         telefono: telefono,
         usuarioId: usuarioGuardado.id || 0,
-        ciudadId: 1,
+        ciudadId: ciudadId || 0,  
       };
 
       const serviceTecnico = new TecnicoService();
@@ -335,7 +335,7 @@ function UsuarioNuevo() {
                         placeholder="Selecciona la Ciudad"
                         variant="filled"
                         onChange={(e) => {
-                          setciudadId(Number(e.target.value));
+                          setCiudad(Number(e.target.value));
                         }}
                       >
                         {ciudadesList?.length !== 0

@@ -132,6 +132,9 @@ function UsuarioNuevo() {
         ciudadId: ciudadId || 0,
       };
 
+      console.log(dataTecnico);
+      
+
       const serviceTecnico = new TecnicoService();
       const respuestaTecnico = await serviceTecnico.create(dataTecnico);
       const tecnicoGuardado = respuestaTecnico.data as ITecnico;
