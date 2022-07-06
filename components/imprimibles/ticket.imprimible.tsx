@@ -423,7 +423,7 @@ const getcotizacioTecnico = async () => {
           <tr>
             <td style={{ border: "1px solid", height: "30px" }} ></td>
             <td style={{ border: "1px solid", height: "30px" }}> {seguimiento?.detalles}</td>
-            <td style={{ border: "1px solid", height: "30px" }}> {seguimiento?.nombre_asesor_seguro}</td>
+            <td style={{ border: "1px solid", height: "30px" }}> {seguimiento?.Asesor?.nombre}</td>
             <td style={{ border: "1px solid", height: "30px" }}> {seguimiento?.fecha_seguimiento}</td>
           </tr>
 
