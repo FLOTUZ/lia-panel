@@ -2,7 +2,7 @@ export interface IUsuario {
   id?: number;
   usuario: string;
   email: string;
-  password: string;
+  password?: string;
   inactivo?: boolean;
   rol: string;
   hashedRt?: string | null;

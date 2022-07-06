@@ -128,9 +128,12 @@ function TecnicoNuevo() {
   const getUsuario = async () => {
     const service = new UsuariosService();
     const respuesta = await service.getById(Number(tecnico?.usuarioId));
-    const dato = respuesta.data as IUsuario;
-    setUsuario(dato);
-    setUsuarioId(Number(idTecnico));
+
+    if (respuesta.status == 200) {
+      const dato = respuesta.data as IUsuario;
+      setUsuario(dato);
+      setUsuarioId(Number(dato.id));
+    }
   };
 
   const getEstado = async () => {
@@ -177,7 +180,7 @@ function TecnicoNuevo() {
       const respuesta = await service.update(data, Number(idTecnico));
 
       const dataUpdate = respuesta.data as ITecnico;
-      
+
       if (respuesta.status == 200) {
         setTecnico(dataUpdate);
         //Se actualizan sus servicios
@@ -191,7 +194,6 @@ function TecnicoNuevo() {
           status: "success",
           description: `${respuesta.Estado} guardado`,
         });
-
       } else {
         setCargando(false);
         toast({
@@ -209,7 +211,7 @@ function TecnicoNuevo() {
       inactivo: usuario?.inactivo,
       usuario: usuario?.usuario || "",
       email: usuario?.email || "",
-      password: usuario?.password || "",
+      password: "",
       rol: usuario?.rol || "TECNICO",
     },
     enableReinitialize: true,
@@ -217,7 +219,9 @@ function TecnicoNuevo() {
     onSubmit: async (values: IUsuario) => {
       const datos = {
         ...values,
-      };
+      } as IUsuario;
+
+      if (datos.password == "") datos.password = undefined;
 
       const service = new UsuariosService();
       const respuesta = await service.update(datos, Number(usuarioId));
@@ -236,7 +240,7 @@ function TecnicoNuevo() {
         toast({
           title: "Guardado",
           status: "success",
-          description: `${respuesta.usuario} guardado`,
+          description: `Usuario guardado`,
         });
       }
     },
@@ -282,13 +286,12 @@ function TecnicoNuevo() {
               value={formUsuario.values.email}
             />
 
-            <FormLabel htmlFor="contraseña">Contraseña</FormLabel>
+            <FormLabel htmlFor="password">Contraseña</FormLabel>
             <Input
+              isRequired={false}
               variant="filled"
               id="password"
               type={"password"}
-              defaultValue={usuario?.password}
-              isRequired={true}
               onChange={formUsuario.handleChange}
               value={formUsuario.values.password}
             />
@@ -433,8 +436,11 @@ function TecnicoNuevo() {
                     id="ciudadId"
                     placeholder="Selecciona la Ciudad"
                     variant="filled"
-                    onChange={(e)=>{
-                      formTecnico.setFieldValue("ciudadId", Number(e.target.value))
+                    onChange={(e) => {
+                      formTecnico.setFieldValue(
+                        "ciudadId",
+                        Number(e.target.value)
+                      );
                     }}
                     onFocus={(e) => {
                       consultarCiudades();
