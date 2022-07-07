@@ -72,11 +72,6 @@ function TicketVer() {
   const toast = useToast();
   const { isOpen: abierto, onOpen: abrir, onClose: cerrar } = useDisclosure();
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {
-    isOpen: isOpenCot,
-    onOpen: onOpenCotizacionT,
-    onClose: onCloseCotizacionT,
-  } = useDisclosure();
 
   const [espera, setEspera] = useState<boolean>(true);
 
@@ -87,8 +82,6 @@ function TicketVer() {
   } = useDisclosure();
   const [ticket, setTicket] = useState<ITicket>();
   const [aseguradora, setAseguradora] = useState<IAseguradora>();
-  const [asistencia, setAsistencia] = useState<IAsistencia>();
-  const [cotizacion, setCotizacion] = useState<ICotizacionTecnico>();
 
   const [serviciosList, setServiciosList] = useState<IServicio[]>([]);
   const [tecnicosByServicios, setTecnicosByServicios] = useState<IServicio>();
@@ -104,7 +97,6 @@ function TicketVer() {
 
   const { idTicket } = router.query;
 
-  const [asesor_gpo_lias, setAsesor_gpo_lias] = useState("");
   const [seguimiento, setSeguimiento] = useState("");
   const [asesor_seguro, setAsesor_seguro] = useState<number>();
   const [fecha_hora, setFecha_hora] = useState("");
@@ -112,7 +104,6 @@ function TicketVer() {
     ISeguimiento[]
   >([]);
 
-  const [nombreAsesor, setNombreAsesor] = useState("");
   const [idAseguradora, setidAseguradora] = useState(0);
   const [asesorList, setAsesorList] = useState<IAsesor[]>([]);
 
@@ -155,23 +146,15 @@ function TicketVer() {
 
   /*Obtener aseguradora*/
   const getAseguradora = async () => {
+    if (ticket?.aseguradoraId == null) {
+      return;
+    }
     const service = new AseguradoraService();
     const respuesta = await service.getById(Number(ticket?.aseguradoraId));
 
     const data = respuesta.data as IAseguradora;
     if (respuesta.status == 200) {
       setAseguradora(data);
-    }
-  };
-
-  /*Obtener asistencias*/
-  const getAsistencia = async () => {
-    const service = new AsistenciasService();
-    const respuesta = await service.getById(Number(ticket?.asistenciaId));
-    const data = respuesta.data as IAsistencia;
-
-    if (respuesta.status == 200) {
-      setAsistencia(data);
     }
   };
 
@@ -201,7 +184,9 @@ function TicketVer() {
     const respuesta = await servicio.getTecnicosByServicio(id);
     const data = respuesta.data as IServicio;
 
-    setTecnicosByServicios(data);
+    if (respuesta.status == 200) {
+      setTecnicosByServicios(data);
+    }
   };
 
   const nuevoSeguimiento = async () => {
@@ -230,7 +215,8 @@ function TicketVer() {
     } else {
       toast({
         title: "Oops... Ocurrio un error.",
-        description: "Error, verificar los campos.",
+        description:
+          "Posible error: Verifique que ha llenado todos los campos.",
         position: "bottom-right",
         status: "error",
         duration: 9000,
@@ -241,14 +227,14 @@ function TicketVer() {
 
   /*CONSULTA DE LA TABLA DE SEGUIMIENTOS*/
   const consultarSeguimientos = async () => {
-    const service = new SeguimientosService();
-    const respuesta = await service.getSeguimientosByTicket(ticket?.id!);
-    const data = respuesta.data as ISeguimiento[];
+    if (ticket?.id != null) {
+      const service = new SeguimientosService();
+      const respuesta = await service.getSeguimientosByTicket(ticket?.id!);
+      const data = respuesta.data as ISeguimiento[];
 
-    if (respuesta.status == 200) {
-      console.log(data);
-
-      setListadoSeguimientos(data);
+      if (respuesta.status == 200) {
+        setListadoSeguimientos(data);
+      }
     }
   };
 
@@ -256,29 +242,27 @@ function TicketVer() {
     const payload = {
       is_archivado: !archivado,
     } as ITicket;
-    console.log(payload);
 
     const service = new TicketsService();
     const respuesta: any = await service.update(payload, ticket?.id!);
 
-    console.log(respuesta.data);
     if (respuesta.status == 200) {
       const t = respuesta.data as ITicket;
       setArchivado(t.is_archivado!);
     }
   };
 
-  /*************** CONSULTA DE TECNICOS ************** */
+  /*************** CONSULTA DE TECNICO ************** */
 
   const consultarTecnico = async () => {
-    const service = new TecnicoService();
-    const respuesta = await service.getById(ticket?.tecnicoId!);
-    const data = respuesta.data as ITecnico;
+    if (ticket?.tecnicoId != null) {
+      const service = new TecnicoService();
+      const respuesta = await service.getById(ticket?.tecnicoId!);
+      const data = respuesta.data as ITecnico;
 
-    console.log(data);
-
-    if (respuesta.status == 200) {
-      setTecnico(data);
+      if (respuesta.status == 200) {
+        setTecnico(data);
+      }
     }
   };
 
@@ -287,9 +271,7 @@ function TicketVer() {
     const service = new TicketsService();
     const respuesta = await service.update(data, ticket?.id || 0);
 
-    const response = await service.create(data);
-    
-    if (response.status === 201) {
+    if (respuesta.status === 200) {
       onCloseSeguimiento();
       await consultarSeguimientos();
       toast({
@@ -303,7 +285,7 @@ function TicketVer() {
     } else {
       toast({
         title: "Oops... Ocurrio un error.",
-        description: "Error, verificar los campos.",
+        description: "Error, no se pudo asignar el técnico.",
         position: "bottom-right",
         status: "error",
         duration: 9000,
@@ -320,9 +302,10 @@ function TicketVer() {
         Number(ticket?.aseguradoraId!)
       );
 
-      const data = respuesta.data as IAsesor[];
-
-      setAsesorList(data || []);
+      if (respuesta.status === 200) {
+        const data = respuesta.data as IAsesor[];
+        setAsesorList(data);
+      }
     }
   };
 
@@ -356,7 +339,6 @@ function TicketVer() {
   }, []);
 
   useEffect(() => {
-    getAsistencia();
     getAseguradora();
     getVista();
     consultarServicios();
@@ -646,12 +628,12 @@ function TicketVer() {
               >
                 {serviciosList.length !== 0
                   ? serviciosList.map((servicio) => {
-                    return (
-                      <option key={servicio.id} value={Number(servicio.id)}>
-                        {servicio.nombre}
-                      </option>
-                    );
-                  })
+                      return (
+                        <option key={servicio.id} value={Number(servicio.id)}>
+                          {servicio.nombre}
+                        </option>
+                      );
+                    })
                   : null}
               </Select>
             </FormControl>
@@ -671,12 +653,12 @@ function TicketVer() {
               >
                 {tecnicosByServicios?.Tecnico?.length !== 0
                   ? tecnicosByServicios?.Tecnico?.map((tecnico) => {
-                    return (
-                      <option key={tecnico.id} value={tecnico.id}>
-                        {tecnico.nombre}, {tecnico.telefono}
-                      </option>
-                    );
-                  })
+                      return (
+                        <option key={tecnico.id} value={tecnico.id}>
+                          {tecnico.nombre}, {tecnico.telefono}
+                        </option>
+                      );
+                    })
                   : null}
               </Select>
             </FormControl>
@@ -832,12 +814,12 @@ function TicketVer() {
               >
                 {asesorList.length !== 0
                   ? asesorList.map((asesor, index) => {
-                    return (
-                      <option key={index} value={asesor.id}>
-                        {asesor.nombre}
-                      </option>
-                    );
-                  })
+                      return (
+                        <option key={index} value={asesor.id}>
+                          {asesor.nombre}
+                        </option>
+                      );
+                    })
                   : null}
               </Select>
 

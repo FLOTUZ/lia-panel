@@ -148,7 +148,7 @@ export function VerInformacionTecnico({ tecnico }: VerInformacionTecnicoProps) {
                     height="48px"
                     type="tel"
                     placeholder="Numero de telefono"
-                    value={tecnico.telefono}
+                    defaultValue={tecnico.telefono}
                   />
                 </InputGroup>
                 <InputGroup height="48px">
@@ -162,7 +162,7 @@ export function VerInformacionTecnico({ tecnico }: VerInformacionTecnicoProps) {
                     height="48px"
                     type="tel"
                     placeholder="Email"
-                    value={usuario?.email}
+                    defaultValue={usuario?.email}
                   />
                 </InputGroup>
                 <InputGroup height="48px">
@@ -176,7 +176,7 @@ export function VerInformacionTecnico({ tecnico }: VerInformacionTecnicoProps) {
                     height="48px"
                     type="tel"
                     placeholder="Localizacion"
-                    value={ciudad?.nombre}
+                    defaultValue={ciudad?.nombre}
                   />
                 </InputGroup>
               </VStack>

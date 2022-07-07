@@ -163,7 +163,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
             type="text"
             placeholder="N° Expediente"
             borderColor="twitter.100"
-            value={ticket.num_expediente}
+            defaultValue={ticket.num_expediente}
           />
         </SimpleGrid>
 
@@ -176,7 +176,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
               isReadOnly
               placeholder="Fecha de la Llamada"
               borderColor="twitter.100"
-              value={moment(ticket.fecha_llamada).format("LLLL")}
+              defaultValue={moment(ticket.fecha_llamada).format("LLLL")}
             />
           </FormControl>
         </SimpleGrid>
@@ -191,7 +191,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 id="aseguradoraId"
                 placeholder="Nombre de Aseguradora"
                 borderColor="twitter.100"
-                value={aseguradora?.nombre}
+                defaultValue={aseguradora?.nombre}
               />
             </FormControl>
 
@@ -203,7 +203,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 id="asistenciaId"
                 placeholder="Nombre de Asistencia"
                 borderColor="twitter.100"
-                value={asistencia?.nombre}
+                defaultValue={asistencia?.nombre}
               />
             </FormControl>
           </Center>
@@ -221,7 +221,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 id="nombre_asesor_gpo_lias"
                 placeholder="Asesor de Grupo Lías"
                 borderColor="twitter.100"
-                value={ticket.nombre_asesor_gpo_lias}
+                defaultValue={ticket.nombre_asesor_gpo_lias}
               />
             </FormControl>
 
@@ -235,7 +235,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 id="nombre_asesor_aseguradora"
                 placeholder="Asesor de la Aseguradora"
                 borderColor="twitter.100"
-                value={asesorAseguradora?.nombre}
+                defaultValue={asesorAseguradora?.nombre}
               />
             </FormControl>
           </Center>
@@ -253,7 +253,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
               id="nombre_usuario_final"
               placeholder="Usuario a Brindar Servicio"
               borderColor="twitter.100"
-              value={ticket.nombre_usuario_final}
+              defaultValue={ticket.nombre_usuario_final}
             />
           </FormControl>
 
@@ -267,7 +267,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
               id="titulo_ticket"
               placeholder="Descripción Corta"
               borderColor="twitter.100"
-              value={ticket.titulo_ticket}
+              defaultValue={ticket.titulo_ticket}
             />
           </FormControl>
         </Center>
@@ -281,7 +281,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
             variant="unstyled"
             placeholder="Problemática"
             borderColor="twitter.100"
-            value={ticket.problematica}
+            defaultValue={ticket.problematica}
           />
         </FormControl>
       </Box>
@@ -310,7 +310,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
               id="estado"
               placeholder="Estado"
               borderColor="twitter.100"
-              value={estado?.nombre}
+              defaultValue={estado?.nombre}
             />
           </FormControl>
 
@@ -322,7 +322,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
               variant="unstyled"
               isReadOnly
               borderColor="twitter.100"
-              value={ciudad?.nombre}
+              defaultValue={ciudad?.nombre}
             ></Input>
           </FormControl>
         </SimpleGrid>
@@ -333,7 +333,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
               variant="unstyled"
               id="modelo_carro"
               placeholder="Modelo del Carro"
-              value={ticket.modelo_carro!}
+              defaultValue={ticket.modelo_carro!}
             ></Input>
           </FormControl>
 
@@ -343,7 +343,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
               variant="unstyled"
               id="placas_carro"
               placeholder="Placas"
-              value={ticket.placas_carro!}
+              defaultValue={ticket.placas_carro!}
             ></Input>
           </FormControl>
 
@@ -355,7 +355,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
               id="color_carro"
               placeholder="Color"
               borderColor="twitter.100"
-              value={ticket.color_carro!}
+              defaultValue={ticket.color_carro!}
             />
           </FormControl>
 
@@ -367,7 +367,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
               id="marca_carro"
               placeholder="Marca"
               borderColor="twitter.100"
-              value={ticket.marca_carro!}
+              defaultValue={ticket.marca_carro!}
             />
           </FormControl>
         </SimpleGrid>
@@ -392,7 +392,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 type="number"
                 max={2}
                 borderColor="twitter.100"
-                value={ticket.cobertura}
+                defaultValue={ticket.cobertura}
               />
             </InputGroup>
           </FormControl>
@@ -413,7 +413,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 min={0}
                 type="number"
                 borderColor="twitter.100"
-                value={ticket.costo_gpo_lias}
+                defaultValue={ticket.costo_gpo_lias}
               />
             </InputGroup>
           </FormControl>
@@ -429,7 +429,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
               min={0}
               placeholder="Coordenadas"
               borderColor="twitter.100"
-              value={ticket.calle}
+              defaultValue={ticket.calle}
             />
           </FormControl>
 
@@ -449,7 +449,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
-                value={ticket.kilometraje}
+                defaultValue={ticket.kilometraje}
               />
             </InputGroup>
           </FormControl>
@@ -472,7 +472,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
-                value={ticket.costo_de_kilometraje}
+                defaultValue={ticket.costo_de_kilometraje}
               />
             </InputGroup>
           </FormControl>
@@ -488,7 +488,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
               placeholder="0"
               type="number"
               borderColor="twitter.100"
-              value={Number(ticket.casetas)}
+              defaultValue={Number(ticket.casetas)}
             />
           </FormControl>
 
@@ -508,7 +508,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 paddingLeft={5}
                 type="number"
                 borderColor="twitter.100"
-                value={Number(ticket.costo_por_caseta)}
+                defaultValue={Number(ticket.costo_por_caseta)}
               />
             </InputGroup>
           </FormControl>
@@ -533,7 +533,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 borderColor="twitter.100"
                 fontWeight={"bold"}
                 textColor={"red"}
-                value={ticket.deducible}
+                defaultValue={ticket.deducible}
               />
             </InputGroup>
           </FormControl>
@@ -556,7 +556,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 borderColor="twitter.100"
                 fontWeight={"bold"}
                 textColor={"red"}
-                value={ticket.anticipo}
+                defaultValue={ticket.anticipo}
               />
             </InputGroup>
           </FormControl>
@@ -579,7 +579,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 borderColor="twitter.100"
                 fontWeight={"bold"}
                 textColor={"red"}
-                value={ticket.total_salida}
+                defaultValue={ticket.total_salida}
               />
             </InputGroup>
           </FormControl>
@@ -602,7 +602,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
                 borderColor="twitter.100"
                 fontWeight={"bold"}
                 textColor={"red"}
-                value={ticket.total}
+                defaultValue={ticket.total}
               />
             </InputGroup>
           </FormControl>
@@ -618,7 +618,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
             isReadOnly
             placeholder="Cotización"
             borderColor="twitter.100"
-            value={ticket.cotizacion_gpo_lias!}
+            defaultValue={ticket.cotizacion_gpo_lias!}
           />
         </FormControl>
       </Box>

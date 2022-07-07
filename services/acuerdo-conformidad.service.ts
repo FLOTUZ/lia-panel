@@ -1,4 +1,4 @@
-import { IAcuerdoConformidad, } from "./api.models";
+import { IAcuerdoConformidad } from "./api.models";
 import { Actualizar, Consultar, Crear, Eliminar } from "./ApiCall";
 
 export class AcuerdoConformidadService {
@@ -34,10 +34,7 @@ export class AcuerdoConformidadService {
     return respuesta;
   }
   async acuerdoConformidadByTicket(idTicket: number) {
-    console.log(`${this.url}/ticket/${idTicket}`);
-    
     const respuesta: any = await Consultar(`${this.url}/ticket/${idTicket}`);
     return respuesta;
   }
-
 }

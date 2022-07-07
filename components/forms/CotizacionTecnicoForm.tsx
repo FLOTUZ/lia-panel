@@ -67,30 +67,33 @@ export const CrearCotizacionTecnico = ({
 
   const getImagenUpload = async () => {
     const service = new ImagenesService();
-    const resImgLlegada: any = await service.getUploadImage(
-      cotizacion.img_llegadaId!
-    );
+    if (cotizacion.img_llegadaId != null &&  cotizacion.img_llegadaId != undefined) {
+      const resImgLlegada: any = await service.getUploadImage(
+        cotizacion.img_llegadaId!
+      );
 
-    const resImgPresolucion: any = await service.getUploadImage(
-      cotizacion.preSolucionId!
-    );
-
-    if (resImgLlegada.status == 200) {
-      const data = resImgLlegada.data as IImagen;
-      setImgLlegada(data.url);
+      if (resImgLlegada.status == 200) {
+        const data = resImgLlegada.data as IImagen;
+        setImgLlegada(data.url);
+      }
     }
 
-    if (resImgPresolucion.status == 200) {
-      const data = resImgPresolucion.data as IImagen;
-      setImgPresolucion(data.url);
+    if (cotizacion.preSolucionId != null &&  cotizacion.img_llegadaId != undefined) {
+      const resImgPresolucion: any = await service.getUploadImage(
+        cotizacion.preSolucionId!
+      );
+      if (resImgPresolucion.status == 200) {
+        const data = resImgPresolucion.data as IImagen;
+        setImgPresolucion(data.url);
+      }
     }
 
-    if (cotizacion.img_placasId != null) {
+    if (cotizacion.img_placasId != null &&  cotizacion.img_llegadaId != undefined) {
       const resImgPlacas: any = await service.getUploadImage(
         cotizacion.img_placasId!
       );
 
-      if (resImgPlacas.status == 200) {
+      if (resImgPlacas.status == 200 ) {
         const data = resImgPlacas.data as IImagen;
         setImgPlacas(data.url);
       }
@@ -414,8 +417,8 @@ export const CrearCotizacionTecnico = ({
           ) : null}
         </SimpleGrid>
         <Box marginTop={"40px"} margin={"50px"} height="80px">
-          {cotizacion.is_aprobado ? 
-              <FormControl paddingTop={5}>
+          {cotizacion.is_aprobado ? (
+            <FormControl paddingTop={5}>
               <FormLabel htmlFor="Se aprobo la cotizacion ">
                 Se aprobo cotizacion por :
               </FormLabel>
@@ -426,7 +429,8 @@ export const CrearCotizacionTecnico = ({
                 borderColor="twitter.100"
                 value={usuarioAprobador?.usuario!}
               />
-            </FormControl> : (
+            </FormControl>
+          ) : (
             <Button
               margin={"50px"}
               colorScheme={"green"}
@@ -441,7 +445,6 @@ export const CrearCotizacionTecnico = ({
           {/*<Button variant="outline" colorScheme={"red"}>
             Rechazar
         </Button>*/}
-      
         </Box>
       </Box>
 
