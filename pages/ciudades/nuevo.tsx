@@ -35,7 +35,6 @@ import { IEstado, ICiudad } from "@/services/api.models";
 import { CiudadesService } from "@/services/ciudades.service";
 
 function EstadoNuevo() {
-
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const [IdEstado, setIdEstado] = useState(0);
@@ -50,7 +49,6 @@ function EstadoNuevo() {
     if (respuesta.status == 200) {
       setListadoCiudades(data);
     } else {
-      
     }
   };
 
@@ -99,12 +97,12 @@ function EstadoNuevo() {
       nombre: nombreEstado,
     };
 
+    console.log(data);
+
     const estado = new EstadosService();
     const response = await estado.create(data);
     const estad = response.data as IEstado;
     setEstadoGuardado(estad);
-    
-
 
     if (response.status === 201) {
       //onClose();
@@ -145,8 +143,6 @@ function EstadoNuevo() {
           rounded="md"
           bg="white"
         >
-          
-
           <Stack spacing={4} paddingTop={15}>
             <InputGroup>
               <FormControl isRequired>
@@ -220,7 +216,6 @@ function EstadoNuevo() {
               variant="solid"
               onClick={onOpen}
               textAlign="center"
-
             >
               Nueva Ciudad
             </Button>

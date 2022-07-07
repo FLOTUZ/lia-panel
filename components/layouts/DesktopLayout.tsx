@@ -11,7 +11,8 @@ const DesktopLayout = ({ children }: IDesktopLayout) => {
     <Center>
       <Grid
         h="100vh"
-        maxWidth={2160}
+        maxWidth={2080}
+        width="100%"
         templateRows="repeat(1, 1fr)"
         templateColumns={"repeat( 9, 1fr)"}
         gap={0}
