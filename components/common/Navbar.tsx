@@ -37,8 +37,6 @@ const Navbar = (hideNabar: any, setHideNabar: Function) => {
 
   const [isMayorQueHD] = useMediaQuery("(min-width: 700px)");
 
-  console.log(isMayorQueHD);
-
   const getUserLogeado = async () => {
     const service = new UsuariosService();
     const usuario = await service.getLogedUser();

@@ -22,7 +22,6 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 function UsuarioVer() {
-
   const [servicios, setServicios] = useState<string[]>([]);
   const filtradoServicios = (t: IServicio) => {
     const id = t.id || 0;
@@ -56,7 +55,7 @@ function UsuarioVer() {
       const servicio = new UsuariosService();
       const respuesta = await servicio.getById(Number(idUsuario));
       if (respuesta.status == 200) {
-        setData(respuesta.data as IUsuario);       
+        setData(respuesta.data as IUsuario);
       }
     };
     getUser();
@@ -67,7 +66,7 @@ function UsuarioVer() {
       inactivo: data?.inactivo,
       usuario: data?.usuario || "",
       email: data?.email || "",
-      password: data?.password || "",
+      password: undefined,
       rol: data?.rol || "",
     },
     enableReinitialize: true,
@@ -75,29 +74,28 @@ function UsuarioVer() {
     onSubmit: async (values: IUsuario) => {
       const data = {
         ...values,
-      };
-console.log(data);
+      } as IUsuario;
 
       const service = new UsuariosService();
       const respuesta = await service.update(data, Number(idUsuario));
       const dataUpdate = respuesta.data as IUsuario;
-      setData(dataUpdate);     
-      
+      setData(dataUpdate);
+
       if (respuesta.status != 200) {
         toast({
           title: "Oops... Ocurrio un error.",
           status: "error",
           position: "bottom-right",
-          description: `Error, verificar los campos.`,
+          description: `Posibles causa: El usuario ya existe, 
+          El email ya fué asignado a un usuario.`,
         });
         setCargando(false);
       } else {
         toast({
-          title: "Usuario agregado.",
+          title: "Usuario Actualizado",
           position: "bottom-right",
           status: "success",
-          description: `Usuario, agregado exitosamente.`,
-
+          description: `Usuario, ${dataUpdate.usuario} actualizado.`,
         });
 
         router.back();
@@ -138,8 +136,13 @@ console.log(data);
               ) : null}
               <Switch
                 name="inactivo"
-                onChange={formUsuario.handleChange}
-                isChecked={formUsuario.values.inactivo}
+                onChange={() => {
+                  formUsuario.setFieldValue(
+                    "inactivo",
+                    !formUsuario.values.inactivo
+                  );
+                }}
+                defaultChecked={!formUsuario.values.inactivo}
               >
                 Activo
               </Switch>
@@ -148,6 +151,7 @@ console.log(data);
                 isRequired
                 variant="filled"
                 id="usuario"
+                maxLength={20}
                 placeholder="Nombre de Usuario"
                 onChange={formUsuario.handleChange}
                 value={formUsuario.values.usuario}
@@ -157,6 +161,7 @@ console.log(data);
               <Input
                 isRequired
                 variant="filled"
+                maxLength={100}
                 id="email"
                 type={"email"}
                 defaultValue={data?.email}
@@ -168,9 +173,9 @@ console.log(data);
               <Input
                 variant="filled"
                 id="password"
+                maxLength={255}
+                minLength={8}
                 type={"password"}
-                defaultValue={data?.password}
-                isRequired={true}
                 onChange={formUsuario.handleChange}
                 value={formUsuario.values.password}
               />
@@ -185,7 +190,6 @@ console.log(data);
                 }}
               >
                 <HStack spacing="1rem">
-
                   <Radio size={"lg"} value="CAPTURISTA">
                     Capturista
                   </Radio>
@@ -198,17 +202,17 @@ console.log(data);
 
               <HStack marginTop={50} spacing={4} w={"100%"}>
                 <Spacer />
-                
-                  <Button
-                    id="guardar"
-                    type="submit"
-                    colorScheme="whatsapp"
-                    variant="solid"
-                    isLoading={cargando}
-                  >
-                    Actualizar
-                  </Button>
-                
+
+                <Button
+                  id="guardar"
+                  type="submit"
+                  colorScheme="whatsapp"
+                  variant="solid"
+                  isLoading={cargando}
+                >
+                  Actualizar
+                </Button>
+
                 <Button
                   colorScheme="red"
                   variant="outline"

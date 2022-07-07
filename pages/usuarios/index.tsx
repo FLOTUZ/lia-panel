@@ -106,9 +106,9 @@ function UsuariosListado() {
                       <Td>{usuario.usuario}</Td>
                       <Td>
                         {usuario.inactivo ? (
-                          <Badge colorScheme="yellow">Archivado</Badge>
+                          <Badge colorScheme="yellow">INACTIVO</Badge>
                         ) : (
-                          <Badge colorScheme="green">Activo</Badge>
+                          <Badge colorScheme="green">ACTIVO</Badge>
                         )}
                       </Td>
                       <Td>{usuario.rol}</Td>
