@@ -72,18 +72,18 @@ function EstadoNuevo() {
     if (response.status === 201) {
       onClose();
       toast({
-        title: "Asistencia Nueva Agregado con Exito.",
-        description: "La Asistencia se Agrego con Exito.",
-        position:"bottom-right",
+        title: "Ciudad agregada.",
+        description: "La ciudad se agrego, exitosamente.",
+        position: "bottom-right",
         status: "success",
         duration: 9000,
         isClosable: true,
       });
     } else {
       toast({
-        title: "Oops.. Algo salio mal",
-        position:"bottom-right",
-        description: response.message,
+        title: "Oops... Ocurrio un error.",
+        position: "bottom-right",
+        description: "Verificar los campos.",
         status: "error",
         duration: 9000,
         isClosable: true,
@@ -111,16 +111,18 @@ function EstadoNuevo() {
       setNombreEstado("");
       setIdEstado(estad.id || 0);
       toast({
-        title: "Estado Nuevo Agregado con Exito.",
-        description: "El Estado se Agrego con Exito.",
+        title: "Estado agregado.",
+        description: "El estado se agrego, exitosamente.",
+        position: "bottom-right",
         status: "success",
         duration: 9000,
         isClosable: true,
       });
     } else {
       toast({
-        title: "Oops.. Algo salio mal",
-        description: response.message,
+        title: "Oops... Ocurrio un error.",
+        description: "Verificar los campos.",
+        position: "bottom-right",
         status: "error",
         duration: 9000,
         isClosable: true,

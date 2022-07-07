@@ -72,8 +72,8 @@ export const CrearCotizacionTecnicoManual = ({
       
       onClose();
       toast({
-        title: "Se creo Cotizacion Con exito",
-        description: "Se creo Cotizacion con exito",
+        title: "Cotización creada.",
+        description: "Se creo la cotización, exitosamente.",
         position:"bottom-right",
         status: "success",
         duration: 9000,
@@ -81,8 +81,8 @@ export const CrearCotizacionTecnicoManual = ({
       });
     } else {
       toast({
-        title: "Oops.. Algo salio mal",
-        description: response.message,
+        title: "Oops... Ocurrio un error.",
+        description: "Verificar la cotización realizada.",
         position:"bottom-right",
         status: "error",
         duration: 9000,
@@ -115,8 +115,8 @@ export const CrearCotizacionTecnicoManual = ({
     if (respuestaCotizacion.status === 200) {
       onClose();
       toast({
-        title: "Se acepto cotizacion Con exito",
-        description: "Se aprobo cotizacion con exito",
+        title: "Se acepto la cotización.",
+        description: "Cotización aprobada, exitosamente.",
         position:"bottom-right",
         status: "success",
         duration: 9000,
@@ -124,8 +124,8 @@ export const CrearCotizacionTecnicoManual = ({
       });
     } else {
       toast({
-        title: "Oops.. Algo salio mal",
-        description: respuestaCotizacion.message,
+        title: "Oops... Ocurrio un error.",
+        description: "Verificar la cotización",
         position:"bottom-right",
         status: "error",
         duration: 9000,

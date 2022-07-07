@@ -95,8 +95,8 @@ function AseguradoraVer() {
     if (response.status === 201) {
       onClose();
       toast({
-        title: "Asistencia Nueva Agregado con Exito.",
-        description: "La Asistencia se Agrego con Exito.",
+        title: "Asistencia agregada con éxito.",
+        description: "La asistencia se agrego, exitosamente.",
         position: "bottom-right",
         status: "success",
         duration: 9000,
@@ -104,8 +104,8 @@ function AseguradoraVer() {
       });
     } else {
       toast({
-        title: "Oops.. Algo salio mal",
-        description: response.message,
+        title: "Oops... Ocurrio un error.",
+        description: "Error al agregar, verificar los campos.",
         position: "bottom-right",
         status: "error",
         duration: 9000,
@@ -172,16 +172,18 @@ function AseguradoraVer() {
 
       if (respuesta.status !== 200) {
         toast({
-          title: "Error",
+          title: "Oops... Ocurrio un error.",
           status: "error",
-          description: `Error al actualizar, verifique sus campos`,
+          position: "bottom-right",
+          description: `Error al actualizar, verifique los campos.`,
         });
         setCargando(false);
       } else {
         toast({
-          title: "Guardado",
+          title: "Actualización exitosa.",
           status: "success",
-          description: `${respuesta.Aseguradora} guardado`,
+          position: "bottom-right",
+          description: `La actualización se agrego, exitosamente.`,
         });
         router.push("/aseguradoras");
       }
@@ -191,7 +193,7 @@ function AseguradoraVer() {
   return (
     <div>
       <DesktopLayout>
-        <Header title={"Editar aseguradora"} />
+        <Header title={"Editar Aseguradora"} />
         <form onSubmit={formAseguradora.handleSubmit}>
           <FormControl isRequired>
             <Box
@@ -438,23 +440,25 @@ function AseguradoraVer() {
                 <ModalCloseButton />
                 <ModalBody pb={6}>
                   <FormControl mt={4}>
-                    <FormLabel>Nombre del Servicio</FormLabel>
+                    <FormLabel>Nombre de la Asistencia</FormLabel>
                     <Input
                       maxLength={50}
                       onChange={(e) => {
                         const nombreM = e.target.value.toUpperCase();
                         setNombreAsistencia(nombreM);
                       }}
-                      placeholder="Nombre del Servicio"
+                      placeholder="Nombre de la Asistencia"
                     />
                   </FormControl>
                 </ModalBody>
 
                 <ModalFooter>
-                  <Button colorScheme="blue" mr={3} onClick={guardarAsistencia}>
+                  <Button colorScheme="whatsapp"
+                    variant="solid" mr={3} onClick={guardarAsistencia}>
                     Guardar
                   </Button>
-                  <Button onClick={onClose}>Cancelar</Button>
+                  <Button colorScheme="red"
+                    variant="outline" onClick={onClose}>Cancelar</Button>
                 </ModalFooter>
               </ModalContent>
             </Modal>

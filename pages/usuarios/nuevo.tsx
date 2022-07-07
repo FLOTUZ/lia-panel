@@ -94,18 +94,18 @@ function UsuarioNuevo() {
     if (respuestaUsuario.status != 201) {
       setCargando(false);
       toast({
-        title: "Error",
+        title: "Oops... Ocurrio un error.",
         position:"bottom-right",
         status: "error",
-        description: `Error al dar de alta, verifique sus campos de usuario`,
+        description: `Error, verificar los campos.`,
       });
     }
     if (respuestaUsuario.status == 201) {
       toast({
-        title: "Guardado",
+        title: "Usuario agregado",
         position:"bottom-right",
         status: "success",
-        description: `Se guardo el usuario `,
+        description: `Se guardo el usuario, exitosamente.`,
       });
     }
     //----------------------------ALTA TECNICO----------------------------------------
@@ -127,16 +127,18 @@ function UsuarioNuevo() {
       if (respuestaTecnico.status != 201) {
         setCargando(false);
         toast({
-          title: "Error",
+          title: "Oops... Ocurrio un error.",
           status: "error",
-          description: `Error al dar de alta, verifique sus campos de usuario`,
+          position:"bottom-right",
+          description: `Error, verificar los campos.`,
         });
       }
       if (respuestaUsuario.status == 201 && respuestaTecnico.status == 201) {
         toast({
-          title: "Guardado",
+          title: "Usuario guardado.",
           status: "success",
-          description: `Se guardo el técnico ${tecnicoGuardado.nombre} con el usuario ${usuarioGuardado.usuario}`,
+          position:"bottom-right",
+          description: `Se guardo, con éxito el técnico ${tecnicoGuardado.nombre}.`,
         });
 
         const servicioToTecnicos = new ServiciosToTecnicos();

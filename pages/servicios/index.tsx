@@ -76,8 +76,8 @@ function ServiciosListado() {
 
       consultarServicios();
       toast({
-        title: "Servicio nuevo agregado con exito",
-        description: "El servicio de agrego con exito",
+        title: "Servicio agregado con éxito.",
+        description: "El servicio se agrego, exitosamente.",
         position: "bottom-right",
         status: "success",
         duration: 9000,
@@ -86,8 +86,8 @@ function ServiciosListado() {
 
     } else {
       toast({
-        title: "Oops.. Algo salio mal",
-        description: response.message,
+        title: "Oops... Ocurrio un error.",
+        description: "Error, verificar los campos.",
         position: "bottom-right",
         status: "error",
         duration: 9000,
@@ -147,16 +147,18 @@ function ServiciosListado() {
 
         if (respuesta === undefined) {
           toast({
-            title: "Error",
+            title: "Oops... Ocurrio un error.",
             status: "error",
-            description: `Error al dar de alta, verifique sus campos`,
+            position: "bottom-right",
+            description: `Error al dar de alta, verificar los campos.`,
           });
           setCargando(false);
         } else {
           toast({
-            title: "Guardado",
+            title: "Se guardo, exitosamente.",
             status: "success",
-            description: `${respuesta.usuario} guardado`,
+            position: "bottom-right",
+            description: `Se agrego con éxito`,
           });
         }
       };

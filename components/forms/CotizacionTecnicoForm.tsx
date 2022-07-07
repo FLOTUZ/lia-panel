@@ -148,8 +148,8 @@ export const CrearCotizacionTecnico = ({
       onClose();
       onCloseImgLlegada();
       toast({
-        title: "Oops.. Algo salio mal",
-        description: respuestaTicket.message,
+        title: "Oops... Ocurrio un error.",
+        description: "Verificar la cotización del técnico.",
         position: "bottom-right",
         status: "error",
         duration: 9000,
@@ -157,8 +157,8 @@ export const CrearCotizacionTecnico = ({
       });
     } else {
       toast({
-        title: "Se acepto cotizacion Con exito",
-        description: "Se aprobo cotizacion con exito",
+        title: "Se acepto la cotización.",
+        description: "Cotización aprobada, exitosamente.",
         position: "bottom-right",
         status: "success",
         duration: 9000,

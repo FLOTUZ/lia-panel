@@ -190,16 +190,18 @@ function TecnicoNuevo() {
           servicios
         );
         toast({
-          title: "Guardado",
+          title: "Usuario guardado, con éxito",
+          position: "bottom-right",
           status: "success",
-          description: `${respuesta.Estado} guardado`,
+          description: `Se guardo usuario, exitosamente.`,
         });
       } else {
         setCargando(false);
         toast({
-          title: "Error",
+          title: "Oops... Ocurrio un error.",
           status: "error",
-          description: `Error al actualizar, verifique sus campos`,
+          position: "bottom-right",
+          description: `Error, verificar los campos.`,
         });
       }
     },
@@ -231,16 +233,18 @@ function TecnicoNuevo() {
 
       if (respuesta.status !== 200) {
         toast({
-          title: "Error",
+          title: "Oops... Ocurrio un error.",
           status: "error",
-          description: `Error al actualizar, verifique sus campos`,
+          position: "bottom-right",
+          description: `Error al actualizar, verificar los campos.`,
         });
         setCargando(false);
       } else {
         toast({
-          title: "Guardado",
+          title: "Se guardo con éxito.",
           status: "success",
-          description: `Usuario guardado`,
+          position: "bottom-right",
+          description: `Usuario guardado, exitosamente`,
         });
       }
     },
@@ -295,6 +299,9 @@ function TecnicoNuevo() {
               onChange={formUsuario.handleChange}
               value={formUsuario.values.password}
             />
+            <FormHelperText>
+              Mínimo 8 carácteres
+            </FormHelperText>
 
             <HStack spacing={4} w={"100%"} mt={"12rem"}>
               <Spacer />
@@ -417,12 +424,12 @@ function TecnicoNuevo() {
                   >
                     {estadosList?.length !== 0
                       ? estadosList?.map((estado, index) => {
-                          return (
-                            <option key={index} value={estado.id}>
-                              {estado.nombre}
-                            </option>
-                          );
-                        })
+                        return (
+                          <option key={index} value={estado.id}>
+                            {estado.nombre}
+                          </option>
+                        );
+                      })
                       : null}
                   </Select>
                   <FormHelperText>
@@ -448,12 +455,12 @@ function TecnicoNuevo() {
                   >
                     {ciudadesList?.length !== 0
                       ? ciudadesList?.map((ciudad, index) => {
-                          return (
-                            <option key={index} value={ciudad.id}>
-                              {ciudad.nombre}
-                            </option>
-                          );
-                        })
+                        return (
+                          <option key={index} value={ciudad.id}>
+                            {ciudad.nombre}
+                          </option>
+                        );
+                      })
                       : null}
                   </Select>
                   <FormHelperText>

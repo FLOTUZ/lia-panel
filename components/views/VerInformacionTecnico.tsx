@@ -104,7 +104,7 @@ export function VerInformacionTecnico({ tecnico }: VerInformacionTecnicoProps) {
 
           <Box padding={5}>
             <Heading color="black" as="h6" size="xs">
-              Informacion general
+              Información General
             </Heading>
             <Box padding={5}>
               <VStack spacing={3} alignItems="flex-start">
@@ -133,7 +133,7 @@ export function VerInformacionTecnico({ tecnico }: VerInformacionTecnicoProps) {
           </Box>
           <Box>
             <Heading padding={5} color="black" as="h6" size="xs">
-              Informacion de contacto
+              Información de Contacto
             </Heading>
             <Box>
               <VStack spacing={3} alignItems="flex-start">

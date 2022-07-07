@@ -63,18 +63,18 @@ function ServicioVer() {
 
       if (respuesta.status !== 200) {
         toast({
-          title: "Error",
+          title: "Oops... Ocurrio un error.",
           status: "error",
           position:"bottom-right",
-          description: `Error al actualizar, verifique sus campos`,
+          description: `Error al actualizar, verificar los campos.`,
         });
         setCargando(false);
       } else {
         toast({
-          title: "Guardado",
+          title: "Actualización exitosa.",
           position:"bottom-right",
           status: "success",
-          description: `${respuesta.Ciudad} guardado`,
+          description: `La actualización se guardo, exitosamente.`,
         });
       }
     },
@@ -98,7 +98,7 @@ function ServicioVer() {
             >
               <Stack spacing={1}>
                 <FormControl>
-                  <FormLabel>Nombre del servicio</FormLabel>
+                  <FormLabel>Nombre del Servicio</FormLabel>
                   <Input
                     isRequired
                     placeholder="Nombre del servicio"
@@ -108,7 +108,7 @@ function ServicioVer() {
                     defaultValue={data?.nombre}
                     onChange={formServicio.handleChange}
                   />
-                  <FormLabel padding={1}>Tipo del servicio</FormLabel>
+                  <FormLabel padding={1}>Tipo del Servicio</FormLabel>
                   <RadioGroup
                     colorScheme="green"
                     defaultValue={data?.tipo}
@@ -127,12 +127,12 @@ function ServicioVer() {
                       <Radio
                         value="DOMESTICO"
                       >
-                        Domestico
+                        Doméstico
                       </Radio>
                       <Radio
                         value="VIAL"
                       >
-                        Automovilistico
+                        Automovilístico
                       </Radio>
                     </Stack>
                   </RadioGroup>

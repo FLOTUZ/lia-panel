@@ -83,8 +83,9 @@ function EstadoVer() {
     if (response.status === 201) {
       onClose();
       toast({
-        title: "Ciudad Nueva Agregado con Exito.",
-        description: "La Asistencia se Agrego con Exito.",
+        title: "Ciudad agregada con éxito.",
+        description: "La ciudad se agrego, exitosamente.",
+        position: "bottom-right",
         status: "success",
         duration: 9000,
         isClosable: true,
@@ -93,7 +94,8 @@ function EstadoVer() {
     } else {
       toast({
         title: "Oops.. Algo salio mal",
-        description: response.message,
+        description: "Verificar los campos, no deben ser vacios.",
+        position: "bottom-right",
         status: "error",
         duration: 9000,
         isClosable: true,
@@ -149,16 +151,18 @@ function EstadoVer() {
 
       if (respuesta.status !== 200) {
         toast({
-          title: "Error",
+          title: "Oops... Ocurrio un error.",
           status: "error",
+          position: "bottom-right",
           description: `Error al actualizar, verifique sus campos`,
         });
         setCargando(false);
       } else {
         toast({
-          title: "Guardado",
+          title: "Actualización exitosa",
           status: "success",
-          description: `${respuesta.Estado} guardado`,
+          position: "bottom-right",
+          description: `El estado se actualizó, correctamente`,
         });
         router.push("/ciudades");
       }
@@ -228,7 +232,7 @@ function EstadoVer() {
               </Button>
             </Stack>
           </Box>
-       
+
           <Box
             m={2}
             bgColor="white"
@@ -281,10 +285,12 @@ function EstadoVer() {
                 </ModalBody>
 
                 <ModalFooter>
-                  <Button colorScheme="blue" mr={3} onClick={guardarCiudad}>
+                  <Button colorScheme="whatsapp"
+                    variant="solid" mr={3} onClick={guardarCiudad}>
                     Guardar
                   </Button>
-                  <Button onClick={onClose}>Cancelar</Button>
+                  <Button colorScheme="red"
+                    variant="outline" onClick={onClose}>Cancelar</Button>
                 </ModalFooter>
               </ModalContent>
             </Modal>
@@ -313,10 +319,10 @@ function EstadoVer() {
                               variant="ghost"
                               aria-label="edit"
                               icon={<EditIcon />}
-                              onClick={()=>{
+                              onClick={() => {
                                 router.push(`/ciudades/ciudad/${t.id}`);
-                            }
-                              
+                              }
+
                               }
                             />
                           </Td>

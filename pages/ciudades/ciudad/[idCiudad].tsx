@@ -65,16 +65,18 @@ function CiudadVer() {
 
       if (respuesta.status !== 200) {
         toast({
-          title: "Error",
+          title: "Oops... Ocurrio un error.",
           status: "error",
-          description: `Error al actualizar, verifique sus campos`,
+          position: "bottom-right",
+          description: `Error al actualizar, verificar los campos.`,
         });
         setCargando(false);
       } else {
         toast({
-          title: "Guardado",
+          title: "Actualización exitosa.",
           status: "success",
-          description: `${respuesta.Estado} guardado`,
+          position: "bottom-right",
+          description: `La ciudad se actualizó, correctamente.`,
         });
         router.back();
       }

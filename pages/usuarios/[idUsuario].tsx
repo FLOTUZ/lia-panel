@@ -85,18 +85,18 @@ console.log(data);
       
       if (respuesta.status != 200) {
         toast({
-          title: "Error",
+          title: "Oops... Ocurrio un error.",
           status: "error",
           position: "bottom-right",
-          description: `Error al dar de alta, verifique sus campos`,
+          description: `Error, verificar los campos.`,
         });
         setCargando(false);
       } else {
         toast({
-          title: "Guardado",
+          title: "Usuario agregado.",
           position: "bottom-right",
           status: "success",
-          description: `${respuesta.usuario} guardado`,
+          description: `Usuario, agregado exitosamente.`,
 
         });
 

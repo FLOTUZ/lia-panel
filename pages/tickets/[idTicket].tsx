@@ -131,8 +131,8 @@ function TicketVer() {
       const data = respuesta.data as ITicket;
       setTicket(data);
       toast({
-        title: "Factura Realizada",
-        description: "La Factura se ah Realizado con Éxito",
+        title: "Factura realizada.",
+        description: "La factura se ha realizado, exitosamente.",
         position: "bottom-right",
         status: "success",
         duration: 9000,
@@ -140,8 +140,8 @@ function TicketVer() {
       });
     } else if (ticket?.is_archivado == true) {
       toast({
-        title: "Se Desactivo la Factura",
-        description: respuesta.message,
+        title: "Factura desactivada.",
+        description: "La factura fue desactivada.",
         position: "bottom-right",
         status: "info",
         duration: 9000,
@@ -189,7 +189,7 @@ function TicketVer() {
     const data = respuesta.data as IServicio[];
 
     if (respuesta.status == 200) {
-    setServiciosList(data);
+      setServiciosList(data);
     }
   };
 
@@ -217,8 +217,8 @@ function TicketVer() {
       onCloseSeguimiento();
       await consultarSeguimientos();
       toast({
-        title: "Seguimiento Nuevo Agregado con Éxito",
-        description: "El Seguimiento se Agrego con Éxito",
+        title: "Seguimiento agregado con éxito",
+        description: "El seguimiento se agrego, exitosamente.",
         position: "bottom-right",
         status: "success",
         duration: 9000,
@@ -226,8 +226,8 @@ function TicketVer() {
       });
     } else {
       toast({
-        title: "Oops.. Algo salio mal",
-        description: response.message,
+        title: "Oops... Ocurrio un error.",
+        description: "Error, verificar los campos.",
         position: "bottom-right",
         status: "error",
         duration: 9000,
@@ -244,7 +244,7 @@ function TicketVer() {
 
     if (respuesta.status == 200) {
       console.log(data);
-      
+
       setListadoSeguimientos(data);
     }
   };
@@ -284,14 +284,29 @@ function TicketVer() {
     const service = new TicketsService();
     const respuesta = await service.update(data, ticket?.id || 0);
 
-    toast({
-      title: "Técnico Asignado.",
-      position: "bottom-right",
-      description: "Se Asigno el Servicio al Técnico",
-      status: "success",
-      duration: 9000,
-      isClosable: true,
-    });
+    const response = await service.create(data);
+    
+    if (response.status === 201) {
+      onCloseSeguimiento();
+      await consultarSeguimientos();
+      toast({
+        title: "Técnico Asignado.",
+        position: "bottom-right",
+        description: "Se asigno el servicio, al técnico exitosamente.",
+        status: "success",
+        duration: 9000,
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Oops... Ocurrio un error.",
+        description: "Error, verificar los campos.",
+        position: "bottom-right",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
     router.push("/tickets");
   };
 
@@ -621,12 +636,12 @@ function TicketVer() {
               >
                 {serviciosList.length !== 0
                   ? serviciosList.map((servicio) => {
-                      return (
-                        <option key={servicio.id} value={Number(servicio.id)}>
-                          {servicio.nombre}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={servicio.id} value={Number(servicio.id)}>
+                        {servicio.nombre}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
             </FormControl>
@@ -645,12 +660,12 @@ function TicketVer() {
               >
                 {tecnicosByServicios?.Tecnico?.length !== 0
                   ? tecnicosByServicios?.Tecnico?.map((tecnico) => {
-                      return (
-                        <option key={tecnico.id} value={tecnico.id}>
-                          {tecnico.nombre}, {tecnico.telefono}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={tecnico.id} value={tecnico.id}>
+                        {tecnico.nombre}, {tecnico.telefono}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
             </FormControl>
@@ -793,12 +808,12 @@ function TicketVer() {
               >
                 {asesorList.length !== 0
                   ? asesorList.map((asesor, index) => {
-                      return (
-                        <option key={index} value={asesor.id}>
-                          {asesor.nombre}
-                        </option>
-                      );
-                    })
+                    return (
+                      <option key={index} value={asesor.id}>
+                        {asesor.nombre}
+                      </option>
+                    );
+                  })
                   : null}
               </Select>
 

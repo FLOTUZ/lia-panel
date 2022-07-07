@@ -96,8 +96,8 @@ function AseguradoraNueva() {
     if (response.status === 201) {
       onClose();
       toast({
-        title: "Asistencia Nueva Agregado con Exito.",
-        description: "La Asistencia se Agrego con Exito.",
+        title: "Asistencia agregada.",
+        description: "La asistencia se agrego exitosamente.",
         position: "bottom-right",
         status: "success",
         duration: 9000,
@@ -105,8 +105,9 @@ function AseguradoraNueva() {
       });
     } else {
       toast({
-        title: "Oops.. Algo salio mal",
-        description: response.message,
+        title: "Oops... Ocurrio un error.",
+        description: "Verificar los campos, no deben ser vacios.",
+        position: "bottom-right",
         status: "error",
         duration: 9000,
         isClosable: true,
@@ -137,16 +138,18 @@ function AseguradoraNueva() {
     if (response.status === 201) {
       onClose();
       toast({
-        title: "Aseguradora nueva agregado con exito",
-        description: "La Aseguradora se agrego con exito",
+        title: "Aseguradora agregada.",
+        description: "La Aseguradora se agrego exitosamente.",
+        position: "bottom-right",
         status: "success",
         duration: 9000,
         isClosable: true,
       });
     } else {
       toast({
-        title: "Oops.. Algo salio mal",
-        description: response.message,
+        title: "Oops... Ocurrio un error.",
+        description: "Verificar los campos, no deben ser vacios.",
+        position: "bottom-right",
         status: "error",
         duration: 9000,
         isClosable: true,

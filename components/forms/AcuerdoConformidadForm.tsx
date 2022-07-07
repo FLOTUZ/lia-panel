@@ -79,8 +79,8 @@ export const AcuerdoConformidadView = ({
     
     if (respuestaTicket.status === 200) {
       toast({
-        title: "Ticket Finalizado",
-        description: "Se finalizo el ticket",
+        title: "Ticket finalizado.",
+        description: "Se finalizó el ticket.",
         position: "bottom-right",
         status: "success",
         duration: 9000,
@@ -88,7 +88,7 @@ export const AcuerdoConformidadView = ({
       });
     } else {
       toast({
-        title: `Oops.. Algo salio mal ${respuestaTicket.status}`,
+        title: `Oops... Ocurrio un error.`,
         description: "No se pudo finalizar el ticket",
         position: "bottom-right",
         status: "error",
@@ -118,7 +118,7 @@ export const AcuerdoConformidadView = ({
         <SimpleGrid columns={[1, 1, 3]} spacing={5}>
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="hora_llegada_servicio">
-              Hora de llegada del tecnico
+              Hora de Llegada del Técnico.
             </FormLabel>
             <Input
               readOnly
@@ -134,7 +134,7 @@ export const AcuerdoConformidadView = ({
 
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="hora_finalizacion_servicio">
-              Hora de finalizacion del servicio
+              Hora de Finalización del Servicio.
             </FormLabel>
             <Input
               readOnly
@@ -150,7 +150,7 @@ export const AcuerdoConformidadView = ({
 
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="fecha de acuerdo">
-              Fecha de firmado de acuerdo
+              Fecha de Firmado de Acuerdo.
             </FormLabel>
             <Input
               readOnly
@@ -171,7 +171,7 @@ export const AcuerdoConformidadView = ({
         <SimpleGrid columns={[1, 1, 2]} spacing={5}>
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="Descripcion del problema">
-              Descripcion del problema
+              Descripción del Problema.
             </FormLabel>
             <Textarea
               readOnly
@@ -184,7 +184,7 @@ export const AcuerdoConformidadView = ({
           </FormControl>
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="Actividades_realizadas">
-              Actividad Realizada
+              Actividad Realizada.
             </FormLabel>
 
             <Textarea
@@ -223,12 +223,12 @@ export const AcuerdoConformidadView = ({
             colorScheme="black"
             onClick={onOpenPDF}
           >
-            Descargar Acuerdo
+            Descargar Acuerdo.
           </Button>
-          {acuerdoconformidad.is_aprobado ?  
+          {acuerdoconformidad.is_aprobado ? (
              <FormControl paddingTop={5}>
             <FormLabel  htmlFor="Se aprobo el acuerdo ">
-              Se aprobo el acuerdo por :
+              Se Aprobó el acuerdo por:
             </FormLabel>
             <Input
               variant="unstyled"
@@ -237,22 +237,24 @@ export const AcuerdoConformidadView = ({
               borderColor="twitter.100"
               value={usuarioAprobador?.usuario!}
             />
-          </FormControl> : (
+          </FormControl>
+          ) : null}
             <Button
               h={"3rem"}
               colorScheme={"green"}
               onClick={aprobarAcuerdoConformidad}
             >
-              Aprobar Cierre
+              Aprobar Cierre.
             </Button>
-          )}
+          
+          
         </SimpleGrid>
       </Box>
 
       <Modal onClose={onOpenPDF} size={"full"} isOpen={isOpenPDF}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Acuerdo firmado</ModalHeader>
+          <ModalHeader>Acuerdo Firmado.</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <iframe

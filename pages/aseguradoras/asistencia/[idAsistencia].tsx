@@ -65,16 +65,18 @@ function AsistenciaVer() {
 
       if (respuesta.status !== 200) {
         toast({
-          title: "Error",
+          title: "Oops... Ocurrio un error.",
+          position: "bottom-right",
           status: "error",
-          description: `Error al actualizar, verifique sus campos`,
+          description: `Verificar los campos.`,
         });
         setCargando(false);
       } else {
         toast({
-          title: "Guardado",
+          title: "Actualización exitosa.",
+          position: "bottom-right",
           status: "success",
-          description: `${respuesta.Estado} guardado`,
+          description: `Asistencia, actualizada correctamente.`,
         });
         router.back();
       }
