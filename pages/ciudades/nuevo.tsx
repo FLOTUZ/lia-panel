@@ -97,9 +97,8 @@ function EstadoNuevo() {
       nombre: nombreEstado,
     };
 
-    console.log(data);
-
     const estado = new EstadosService();
+
     const response = await estado.create(data);
     const estad = response.data as IEstado;
     setEstadoGuardado(estad);
@@ -119,7 +118,7 @@ function EstadoNuevo() {
     } else {
       toast({
         title: "Oops... Ocurrio un error.",
-        description: "Verificar los campos.",
+        description: "Posibles causas: El estado ya existe.",
         position: "bottom-right",
         status: "error",
         duration: 9000,
@@ -151,6 +150,7 @@ function EstadoNuevo() {
                   <Input
                     type="Nombre"
                     placeholder="Estado"
+                    maxLength={25}
                     onChange={(e) => {
                       const nombreM = e.target.value.toUpperCase();
                       setNombreEstado(nombreM);
