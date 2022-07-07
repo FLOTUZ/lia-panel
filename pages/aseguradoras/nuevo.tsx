@@ -43,14 +43,12 @@ import Link from "next/link";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { IAseguradora, IAsistencia } from "@/services/api.models";
 import { AsistenciasService } from "@/services/asistencias.service";
-import {
-  IoLogoWhatsapp,
-  IoSpeedometerOutline,
-} from "react-icons/io5";
+import { IoLogoWhatsapp, IoSpeedometerOutline } from "react-icons/io5";
 
 function AseguradoraNueva() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
+  const [habilitado, setHabilitado] = useState<boolean>(false);
 
   const [nombre, setNombre] = useState("");
   const [telefono, setTelefono] = useState("");
@@ -370,7 +368,10 @@ function AseguradoraNueva() {
               <Button
                 colorScheme="whatsapp"
                 variant="solid"
-                onClick={guardarAseguradora}
+                onClick={() => {
+                  guardarAseguradora();
+                  setHabilitado(true);
+                }}
               >
                 Agregar
               </Button>
@@ -386,86 +387,98 @@ function AseguradoraNueva() {
           </Stack>
         </Box>
 
-        <Box
-          m={2}
-          bgColor="white"
-          padding={10}
-          borderRadius={10}
-          boxShadow="2xl"
-          p="6"
-          rounded="md"
-          bg="white"
-        >
-          <Heading marginTop={5} as="h5" size="md">
-            Asistencia de Aseguradora
-          </Heading>
+        {/*-------------------Agregar asistencias a la aseguradora se habilitada al guardar el estado */}
+        {habilitado === true ? (
+          <Box
+            m={2}
+            bgColor="white"
+            padding={10}
+            borderRadius={10}
+            boxShadow="2xl"
+            p="6"
+            rounded="md"
+            bg="white"
+          >
+            <Heading marginTop={5} as="h5" size="md">
+              Asistencia de Aseguradora
+            </Heading>
 
-          <Stack paddingLeft={"75%"}>
-            <Button
-              leftIcon={<AddIcon />}
-              colorScheme="facebook"
-              variant="solid"
-              onClick={onOpen}
+            <Stack paddingLeft={"75%"}>
+              <Button
+                leftIcon={<AddIcon />}
+                colorScheme="facebook"
+                variant="solid"
+                onClick={onOpen}
+              >
+                Nueva Asistencia
+              </Button>
+            </Stack>
+
+            <Modal
+              closeOnOverlayClick={false}
+              isOpen={isOpen}
+              onClose={onClose}
             >
-              Nueva Asistencia
-            </Button>
-          </Stack>
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader>Crea una Nueva Asistencia</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody pb={6}>
+                  <FormControl mt={4}>
+                    <FormLabel>Nombre de la Asistencia</FormLabel>
+                    <Input
+                      placeholder="Nombre de la Asistencia"
+                      onChange={(e) => {
+                        setNombreAsistencia(e.target.value);
+                      }}
+                    />
+                  </FormControl>
+                </ModalBody>
 
-          <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Crea una Nueva Asistencia</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody pb={6}>
-                <FormControl mt={4}>
-                  <FormLabel>Nombre de la Asistencia</FormLabel>
-                  <Input
-                    placeholder="Nombre de la Asistencia"
-                    onChange={(e) => {
-                      setNombreAsistencia(e.target.value);
-                    }}
-                  />
-                </FormControl>
-              </ModalBody>
+                <ModalFooter>
+                  <Button
+                    colorScheme="whatsapp"
+                    mr={3}
+                    onClick={guardarAsistencia}
+                  >
+                    Guardar
+                  </Button>
+                  <Button onClick={onClose}>Cancelar</Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
 
-              <ModalFooter>
-                <Button
-                  colorScheme="whatsapp"
-                  mr={3}
-                  onClick={guardarAsistencia}
-                >
-                  Guardar
-                </Button>
-                <Button onClick={onClose}>Cancelar</Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
-
-          <TableContainer>
-            <Table marginTop={8} size="md" colorScheme="teal" variant="simple">
-              <Thead>
-                <Tr>
-                  <Th>Nombre</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {listadoAsistencias.length !== 0 ? (
-                  listadoAsistencias.map((t, index) => {
-                    return (
-                      <Tr key={index}>
-                        <Td>{t.nombre}</Td>
-                      </Tr>
-                    );
-                  })
-                ) : (
+            <TableContainer>
+              <Table
+                marginTop={8}
+                size="md"
+                colorScheme="teal"
+                variant="simple"
+              >
+                <Thead>
                   <Tr>
-                    <Td>NO DATA</Td>
+                    <Th>Nombre</Th>
                   </Tr>
-                )}
-              </Tbody>
-            </Table>
-          </TableContainer>
-        </Box>
+                </Thead>
+                <Tbody>
+                  {listadoAsistencias.length !== 0 ? (
+                    listadoAsistencias.map((t, index) => {
+                      return (
+                        <Tr key={index}>
+                          <Td>{t.nombre}</Td>
+                        </Tr>
+                      );
+                    })
+                  ) : (
+                    <Tr>
+                      <Td>NO DATA</Td>
+                    </Tr>
+                  )}
+                </Tbody>
+              </Table>
+            </TableContainer>
+          </Box>
+        ) : null}
       </DesktopLayout>
     </div>
   );

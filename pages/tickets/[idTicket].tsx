@@ -77,6 +77,9 @@ function TicketVer() {
     onOpen: onOpenCotizacionT,
     onClose: onCloseCotizacionT,
   } = useDisclosure();
+
+  const [espera, setEspera] = useState<boolean>(true);
+
   const {
     isOpen: isOpenSeguimiento,
     onOpen: onOpenSeguimiento,
@@ -280,7 +283,7 @@ function TicketVer() {
   };
 
   const asignarTecnicoWithId = async () => {
-    const data = { estado: "TOMADO" } as ITicket;
+    const data = { estado: "TOMADO", tecnicoId: tecnicoId } as ITicket;
     const service = new TicketsService();
     const respuesta = await service.update(data, ticket?.id || 0);
 
@@ -617,7 +620,14 @@ function TicketVer() {
       {tecnico ? <VerInformacionTecnico tecnico={tecnico!} /> : null}
 
       {/* ASIGNAR TÉCNICO */}
-      <Modal closeOnOverlayClick={false} isOpen={abierto} onClose={cerrar}>
+      <Modal
+        closeOnOverlayClick={false}
+        isOpen={abierto}
+        onClose={() => {
+          cerrar();
+          setEspera(true);
+        }}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Asignar Técnico</ModalHeader>
@@ -656,6 +666,7 @@ function TicketVer() {
                 borderColor="twitter.100"
                 onChange={(e) => {
                   setTecnicoId(Number(e.target.value));
+                  setEspera(false);
                 }}
               >
                 {tecnicosByServicios?.Tecnico?.length !== 0
@@ -672,11 +683,24 @@ function TicketVer() {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="green" mr={3} onClick={asignarTecnicoWithId}>
+            <Button
+              colorScheme="green"
+              mr={3}
+              onClick={asignarTecnicoWithId}
+              //isLoading={}
+              disabled={espera}
+              //isDisabled=(Boolean(espera))
+            >
               Asignar
             </Button>
 
-            <Button colorScheme="red" onClick={cerrar}>
+            <Button
+              colorScheme="red"
+              onClick={() => {
+                cerrar();
+                setEspera(true);
+              }}
+            >
               Cancelar
             </Button>
           </ModalFooter>

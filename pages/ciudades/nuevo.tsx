@@ -38,6 +38,7 @@ function EstadoNuevo() {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const [IdEstado, setIdEstado] = useState(0);
+  const [habilitado, setHabilitado] = useState<boolean>(false);
   /*CONSULTA de Ciudades  */
   const [listadoCiudades, setListadoCiudades] = useState<ICiudad[]>([]);
 
@@ -115,7 +116,8 @@ function EstadoNuevo() {
         duration: 9000,
         isClosable: true,
       });
-    } else {
+    }
+    if (response.status === 409) {
       toast({
         title: "Oops... Ocurrio un error.",
         description: "Posibles causas: El estado ya existe.",
@@ -173,7 +175,10 @@ function EstadoNuevo() {
             <Button
               colorScheme="whatsapp"
               variant="solid"
-              onClick={guardarEstado}
+              onClick={() => {
+                guardarEstado();
+                setHabilitado(true);
+              }}
             >
               Agregar
             </Button>
@@ -182,97 +187,109 @@ function EstadoNuevo() {
               <a>
                 {" "}
                 <Button colorScheme="red" variant="outline">
-                  Cancelar
+                  Regresar
                 </Button>
               </a>
             </Link>
           </Stack>
         </Box>
 
-        <Box
-          m={2}
-          bgColor="white"
-          padding={10}
-          borderRadius={10}
-          boxShadow="2xl"
-          p="6"
-          rounded="md"
-          bg="white"
-        >
-          <Heading marginTop={5} as="h5" size="md">
-            Ciudades del Estado
-          </Heading>
-
-          <Stack
-            paddingTop={10}
-            align="center"
-            paddingLeft={"65%"}
-            spacing={5}
-            direction="row"
+        {/*-------------------Agregar ciudades al estado   se habilitada al guardar el estado */}
+        {habilitado === true ? (
+          <Box
+            m={2}
+            bgColor="white"
+            padding={10}
+            borderRadius={10}
+            boxShadow="2xl"
+            p="6"
+            rounded="md"
+            bg="white"
           >
-            <Button
-              leftIcon={<AddIcon />}
-              colorScheme="facebook"
-              variant="solid"
-              onClick={onOpen}
-              textAlign="center"
+            <Heading marginTop={5} as="h5" size="md">
+              Ciudades del Estado
+            </Heading>
+
+            <Stack
+              paddingTop={10}
+              align="center"
+              paddingLeft={"65%"}
+              spacing={5}
+              direction="row"
             >
-              Nueva Ciudad
-            </Button>
-          </Stack>
+              <Button
+                leftIcon={<AddIcon />}
+                colorScheme="facebook"
+                variant="solid"
+                onClick={onOpen}
+                textAlign="center"
+              >
+                Nueva Ciudad
+              </Button>
+            </Stack>
 
-          <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Agregar una Nueva Ciudad</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody pb={6}>
-                <FormControl mt={4}>
-                  <FormLabel>Nombre de la Ciudad</FormLabel>
-                  <Input
-                    placeholder="Nombre de la Ciudad"
-                    onChange={(e) => {
-                      const nombreM = e.target.value.toUpperCase();
-                      setNombreCiudad(nombreM);
-                    }}
-                  />
-                </FormControl>
-              </ModalBody>
+            <Modal
+              closeOnOverlayClick={false}
+              isOpen={isOpen}
+              onClose={onClose}
+            >
+              <ModalOverlay />
+              <ModalContent>
+                <ModalHeader>Agregar una Nueva Ciudad</ModalHeader>
+                <ModalCloseButton />
+                <ModalBody pb={6}>
+                  <FormControl mt={4}>
+                    <FormLabel>Nombre de la Ciudad</FormLabel>
+                    <Input
+                      placeholder="Nombre de la Ciudad"
+                      onChange={(e) => {
+                        const nombreM = e.target.value.toUpperCase();
+                        setNombreCiudad(nombreM);
+                      }}
+                    />
+                  </FormControl>
+                </ModalBody>
 
-              <ModalFooter>
-                <Button colorScheme="blue" mr={3} onClick={guardarCiudad}>
-                  Guardar
-                </Button>
-                <Button onClick={onClose}>Cancelar</Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
+                <ModalFooter>
+                  <Button colorScheme="blue" mr={3} onClick={guardarCiudad}>
+                    Guardar
+                  </Button>
+                  <Button onClick={onClose}>Cancelar</Button>
+                </ModalFooter>
+              </ModalContent>
+            </Modal>
 
-          <TableContainer>
-            <Table marginTop={8} size="md" colorScheme="teal" variant="simple">
-              <Thead>
-                <Tr>
-                  <Th>Nombre</Th>
-                </Tr>
-              </Thead>
-              <Tbody>
-                {listadoCiudades.length !== 0 ? (
-                  listadoCiudades.map((t, index) => {
-                    return (
-                      <Tr key={index}>
-                        <Td>{t.nombre}</Td>
-                      </Tr>
-                    );
-                  })
-                ) : (
+            <TableContainer>
+              <Table
+                marginTop={8}
+                size="md"
+                colorScheme="teal"
+                variant="simple"
+              >
+                <Thead>
                   <Tr>
-                    <Td>NO DATA</Td>
+                    <Th>Nombre</Th>
                   </Tr>
-                )}
-              </Tbody>
-            </Table>
-          </TableContainer>
-        </Box>
+                </Thead>
+                <Tbody>
+                  {listadoCiudades.length !== 0 ? (
+                    listadoCiudades.map((t, index) => {
+                      return (
+                        <Tr key={index}>
+                          <Td>{t.nombre}</Td>
+                        </Tr>
+                      );
+                    })
+                  ) : (
+                    <Tr>
+                      <Td>NO DATA</Td>
+                    </Tr>
+                  )}
+                </Tbody>
+              </Table>
+            </TableContainer>
+          </Box>
+        ) : null}
       </DesktopLayout>
     </div>
   );
