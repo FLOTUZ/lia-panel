@@ -50,14 +50,14 @@ function UsuarioVer() {
 
   const { idUsuario } = router.query;
 
+  const getUser = async () => {
+    const servicio = new UsuariosService();
+    const respuesta = await servicio.getById(Number(idUsuario));
+    if (respuesta.status == 200) {
+      setData(respuesta.data as IUsuario);
+    }
+  };
   useEffect(() => {
-    const getUser = async () => {
-      const servicio = new UsuariosService();
-      const respuesta = await servicio.getById(Number(idUsuario));
-      if (respuesta.status == 200) {
-        setData(respuesta.data as IUsuario);
-      }
-    };
     getUser();
   }, [idUsuario]);
 
@@ -70,6 +70,9 @@ function UsuarioVer() {
       rol: data?.rol || "",
     },
     enableReinitialize: true,
+    onReset: () => {
+      getUser();
+    },
 
     onSubmit: async (values: IUsuario) => {
       const data = {
