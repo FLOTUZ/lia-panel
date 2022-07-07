@@ -174,8 +174,6 @@ function TecnicoNuevo() {
       const data = {
         ...values,
       };
-
-      console.log(data);
       const service = new TecnicoService();
       const respuesta = await service.update(data, Number(idTecnico));
       
@@ -227,9 +225,7 @@ function TecnicoNuevo() {
 
       const service = new UsuariosService();
       const respuesta = await service.update(datos, Number(usuarioId));
-      console.log(usuarioId);
-      console.log(datos);
-      
+
       const dataUpdate = respuesta.data as IUsuario;
       setUsuario(dataUpdate);
 
