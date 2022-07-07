@@ -48,7 +48,6 @@ import { useFormik } from "formik";
 import { IoLogoWhatsapp, IoSpeedometerOutline } from "react-icons/io5";
 
 function AseguradoraVer() {
-
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const toast = useToast();
@@ -258,7 +257,7 @@ function AseguradoraVer() {
                   </FormControl>
                 </InputGroup>
 
-                <SimpleGrid columns={2} spacing={5}>
+                <SimpleGrid columns={[1, 1, 3]} spacing={5}>
                   <InputGroup>
                     <FormControl isRequired>
                       <FormLabel htmlFor="kilometraje">
@@ -309,7 +308,7 @@ function AseguradoraVer() {
                 <Heading paddingLeft={2} paddingBottom={5} as="h4" size="md">
                   Información adicional
                 </Heading>
-                <SimpleGrid columns={3} spacing={5}>
+                <SimpleGrid columns={[1, 1, 3]} spacing={5}>
                   <InputGroup>
                     <FormControl>
                       <FormLabel htmlFor="telefono">
@@ -382,13 +381,7 @@ function AseguradoraVer() {
                   </InputGroup>
                 </SimpleGrid>
               </Stack>
-              <Stack
-                marginTop={50}
-                direction="row"
-                spacing={4}
-                align="center"
-                paddingLeft="930"
-              >
+              <Stack marginTop={50} direction="row" spacing={4}>
                 <Button
                   id="guardar"
                   type="submit"
@@ -424,13 +417,7 @@ function AseguradoraVer() {
               Asistencia de Aseguradora
             </Heading>
 
-            <Stack
-              marginTop={5}
-              paddingLeft={960}
-              direction="row"
-              spacing={4}
-              align="center"
-            >
+            <Stack marginTop={5} direction="row" spacing={4} align="center">
               <Button
                 leftIcon={<AddIcon />}
                 colorScheme="facebook"
@@ -453,6 +440,7 @@ function AseguradoraVer() {
                   <FormControl mt={4}>
                     <FormLabel>Nombre del Servicio</FormLabel>
                     <Input
+                      maxLength={50}
                       onChange={(e) => {
                         const nombreM = e.target.value.toUpperCase();
                         setNombreAsistencia(nombreM);
@@ -496,7 +484,9 @@ function AseguradoraVer() {
                               aria-label="edit"
                               icon={<EditIcon />}
                               onClick={() => {
-                                router.push(`/aseguradoras/asistencia/${asistencias.id}`);
+                                router.push(
+                                  `/aseguradoras/asistencia/${asistencias.id}`
+                                );
                               }}
                             />
                           </Td>

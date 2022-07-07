@@ -1,4 +1,12 @@
-import { Button, Flex, Spacer, Stack } from "@chakra-ui/react";
+import {
+  Button,
+  Center,
+  Flex,
+  SimpleGrid,
+  Spacer,
+  Stack,
+  useMediaQuery,
+} from "@chakra-ui/react";
 import {
   MdHomeRepairService,
   MdSupervisedUserCircle,
@@ -25,8 +33,11 @@ interface IRouteItem {
 }
 
 const Navbar = (hideNabar: any, setHideNabar: Function) => {
-    
   const [sesion, setSesion] = useState<IUsuario>();
+
+  const [isMayorQueHD] = useMediaQuery("(min-width: 700px)");
+
+  console.log(isMayorQueHD);
 
   const getUserLogeado = async () => {
     const service = new UsuariosService();
@@ -40,8 +51,8 @@ const Navbar = (hideNabar: any, setHideNabar: Function) => {
 
   useEffect(() => {
     getUserLogeado();
-  },[]);
-  
+  }, []);
+
   const router = useRouter();
 
   //Consultas el usuario logeado
@@ -119,10 +130,19 @@ const Navbar = (hideNabar: any, setHideNabar: Function) => {
                   color: "white",
                 }}
               >
-                {route.icon}
-                <Spacer />
-                {route.name}
-                <Spacer />
+                {isMayorQueHD ? (
+                  <>
+                    {route.icon}
+                    <Spacer />
+                    {route.name}
+                    <Spacer />
+                  </>
+                ) : (
+                  <SimpleGrid columns={[1, 1, 2]} justifyItems="center">
+                    {route.icon}
+                    {route.name}
+                  </SimpleGrid>
+                )}
               </Button>
             </a>
           </Link>
@@ -146,24 +166,32 @@ const Navbar = (hideNabar: any, setHideNabar: Function) => {
           router.push("/login");
         }}
       >
-        <IoExit size={32} />
-        <Spacer />
-        Salir
-        <Spacer />
+        {isMayorQueHD ? (
+          <>
+            <IoExit size={32} />
+            <Spacer />
+            Salir
+            <Spacer />
+          </>
+        ) : (
+          <SimpleGrid columns={[1, 1, 2]} justifyItems="center">
+            <IoExit size={32} />
+            Salir
+          </SimpleGrid>
+        )}
       </Button>
     </Stack>
   );
 };
 
-import { GetServerSideProps } from 'next';
+import { GetServerSideProps } from "next";
 
-export const getServerSideProps:GetServerSideProps = async (ctx) => {
-
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return {
-    props:{
-      data:null
-    }
-  }
-}
+    props: {
+      data: null,
+    },
+  };
+};
 
 export default Navbar;
