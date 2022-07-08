@@ -132,7 +132,7 @@ function TicketVer() {
         duration: 9000,
         isClosable: true,
       });
-    } else if (ticket?.is_archivado == true) {
+    } else if (ticket?.is_facturado == true) {
       toast({
         title: "Factura desactivada.",
         description: "La factura fue desactivada.",
@@ -157,7 +157,6 @@ function TicketVer() {
       setAseguradora(data);
     }
   };
-
 
   const getTicket = async () => {
     const service = new TicketsService();
@@ -249,6 +248,32 @@ function TicketVer() {
 
     if (respuesta.status == 200) {
       const t = respuesta.data as ITicket;
+
+      if (respuesta.status == 200 && ticket?.is_archivado == false) {
+        const data = respuesta.data as ITicket;
+        setTicket(data);
+        toast({
+          title: "Archivado realizado.",
+          description: "Se ha realizado archivado ticket, exitosamente.",
+          position: "bottom-right",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+      } else if (ticket?.is_archivado == true) {
+        toast({
+          title: "Archivado desactivado.",
+          description: "El archivado fue desactivado.",
+          position: "bottom-right",
+          status: "info",
+          duration: 9000,
+          isClosable: true,
+        });
+      }
+
+
+
+
       setArchivado(t.is_archivado!);
     }
   };
@@ -296,7 +321,6 @@ function TicketVer() {
     router.push("/tickets");
   };
 
-
   const asesorById = async () => {
     if (Number(ticket?.aseguradoraId!) !== 0) {
       const service = new AsesoresService();
@@ -320,7 +344,7 @@ function TicketVer() {
     const data = response.data as IAsesor[];
     if (response.status == 200) {
       setAsesorList(data || []);
-    } 
+    }
   };
 
   /*CONSULTA DEL USUARIO LOGUEADO, PARA EL ASESOR DE GPO LÍAS*/
@@ -421,173 +445,7 @@ function TicketVer() {
       ) : null}
   */}
 
-      {ticket?.estado === "FINALIZADO" ? (
-        <Box>
-          <SimpleGrid
-            position="fixed"
-            columns={3}
-            spacingX="1000px"
-            spacingY="20px"
-          >
-            <Box
-            scrollPadding={"-0.5"}
-              margin={"1%"}
-              justifyContent={"center"}
-              alignItems={"center"}
-              position="fixed"
-              height={"50px"}
-              right={["16px", "380px"]}
-              zIndex={1}
-              borderRadius="md"
-              bg="tomato"
-              color="white"
-              _hover={{
-                boxShadow: "10px 10px 5px #F4C26B",
-                bgColor: " #FFFFFF",
-                color: "black",
-              }}
-            >
-              <FormControl
-                display="flex"
-                alignItems="center"
-                as={SimpleGrid}
-                columns={{ base: 1, lg: 2 }}
-              >
-                <FormLabel padding={3} htmlFor="isChecked">
-                  Archivar ticket:
-                </FormLabel>
-
-                <Switch
-                  isChecked={archivado}
-                  margin={"5px"}
-                  size={"lg"}
-                  onChange={() => {
-                    setArchivado(!archivado);
-                    archivarTicket();
-                  }}
-                />
-              </FormControl>
-            </Box>
-
-            <Box
-              margin={"1%"}
-              justifyContent={"center"}
-              alignItems={"center"}
-              bottom="20px"
-              right={["16px", "84px"]}
-              position="fixed"
-              fontWeight='semibold'
-              letterSpacing='wide'
-              fontSize='xs'
-              textTransform='uppercase'
-              ml='2'
-            >
-              {archivado ? (
-                <Alert variant="solid" status="info">
-                  <AlertIcon />
-                  Este ticket se encuentra archivado
-                </Alert>
-              ) : null}
-            </Box>
-
-            <Box
-              margin={"1%"}
-              justifyContent={"center"}
-              alignItems={"center"}
-              position="fixed"
-              width={"190px"}
-              height={"50px"}
-              right={["16px", "170px"]}
-              zIndex={1}
-              fontWeight='semibold'
-              letterSpacing='wide'
-              fontSize='xs'
-              textTransform='uppercase'
-              ml='2'
-            >
-              <Button
-                padding={"2%"}
-                justifySelf="end"
-                width={"150px"}
-                leftIcon={<BsPrinter size={"30px"} />}
-                id="imprimirTicket"
-                colorScheme="telegram"
-                borderColor="twitter.100"
-                size="lg"
-                onClick={onOpen}
-                _hover={{
-                  boxShadow: "10px 10px 5px #6BBFF4",
-                  bgColor: " #FFFFFF",
-                  color: "black",
-                }}
-              />
-            </Box>
-
-            <Box
-              margin={"1%"}
-              justifyContent={"center"}
-              alignItems={"center"}
-              position="fixed"
-              width={"190px"}
-              height={"50px"}
-              right={["0.2px"]}
-              zIndex={1}
-              fontWeight='semibold'
-              
-            >
-              <FormControl
-                paddingTop={2}
-                as={SimpleGrid}
-                columns={{ base: 1, lg: 2 }}
-              >
-                <FormLabel
-                  htmlFor="facturar"
-                  fontWeight={"bold"}
-                  color="blue.700"
-                >
-                  Facturar:
-                </FormLabel>
-                <Switch
-                  id="facturar"
-                  size="lg"
-                  isChecked={facturado}
-                  onChange={() => {
-                    setFacturado(!facturado);
-                    facturarTicket();
-                  }}
-                />
-              </FormControl>
-            </Box>
-          </SimpleGrid>
-        </Box>
-      ) : null}
-
-      <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Impresión</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            <Printer doc={<TicketImprimible ticket={ticket!} />} />
-          </ModalBody>
-          <ModalFooter
-            position={"fixed"}
-            right={["16px", "84px"]}
-            paddingTop={10}
-          >
-            <Button
-              paddingLeft={10}
-              paddingRight={10}
-              colorScheme="red"
-              variant="outline"
-              position={"inherit"}
-              onClick={onClose}
-            >
-              Cerrar
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+    
 
       {/*  
       <Modal onClose={onCloseCotizacionT} size={"full"} isOpen={isOpenCot}>
@@ -723,16 +581,125 @@ function TicketVer() {
         rounded="md"
         bg="white"
       >
+         
+
+          {ticket?.estado === "FINALIZADO" ? (
+            <Box >
+
+        <SimpleGrid columns={[2, null, 3]} spacing='40px'>
+              <Box margin={"1%"}>
+                  <Button
+                    width={"150px"}
+                    leftIcon={<BsPrinter size={"30px"} />}
+                    id="imprimirTicket"
+                    colorScheme="telegram"
+                    borderColor="twitter.100"
+                    size="lg"
+                    onClick={onOpen}
+                    _hover={{
+                      boxShadow: "10px 10px 5px #6BBFF4",
+                      bgColor: " #FFFFFF",
+                      color: "black",
+                    }}
+                  />
+                </Box>
+                <Box
+                  height={"50px"}
+                  margin={"1%"}
+                  borderRadius="md"
+                  width={"190px"}
+                  right={["0.2px"]}
+                >
+                  <FormControl
+                    alignItems="center"
+                    as={SimpleGrid}
+                    columns={{ base: 1, lg: 2 }}
+                  >
+                    <FormLabel    htmlFor="archivar"
+                      fontWeight={"bold"}
+                      color="blue.700">
+                      Archivar:
+                    </FormLabel>
+
+                    <Switch
+                      isChecked={archivado}
+                      size={"lg"}
+                      onChange={() => {
+                        setArchivado(!archivado);
+                        archivarTicket();
+                      }}
+                    />
+                  </FormControl>
+                </Box>
+                <Box
+                  margin={"1%"}
+                  justifyContent={"center"}
+                  alignItems={"center"}
+                  width={"190px"}
+                  height={"50px"}
+                  right={["0.2px"]}
+                  zIndex={1}
+                  fontWeight="semibold"
+                >
+                  <FormControl
+                    paddingTop={2}
+                    as={SimpleGrid}
+                    columns={{ base: 1, lg: 2 }}
+                  >
+                    <FormLabel
+                      htmlFor="facturar"
+                      fontWeight={"bold"}
+                      color="blue.700"
+                    >
+                      Facturar:
+                    </FormLabel>
+                    <Switch
+                      id="facturar"
+                      size="lg"
+                      isChecked={facturado}
+                      onChange={() => {
+                        setFacturado(!facturado);
+                        facturarTicket();
+                      }}
+                    />
+                  </FormControl>
+                </Box>
+              </SimpleGrid>
+            </Box>
+          ) : null}
+
+          <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
+            <ModalOverlay />
+            <ModalContent>
+              <ModalHeader>Impresión</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Printer doc={<TicketImprimible ticket={ticket!} />} />
+              </ModalBody>
+              <ModalFooter right={["16px", "84px"]} paddingTop={10}>
+                <Button
+                  paddingLeft={10}
+                  paddingRight={10}
+                  colorScheme="red"
+                  variant="outline"
+                  position={"inherit"}
+                  onClick={onClose}
+                >
+                  Cerrar
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
         <HStack spacing={4} w={"50%"}>
-          <Button
-            onClick={onOpenSeguimiento}
-            leftIcon={<AddIcon />}
-            colorScheme="facebook"
-            variant="solid"
-          >
-            Agregar Nuevo Seguimiento
-          </Button>
-        </HStack>
+            <Button
+              onClick={onOpenSeguimiento}
+              leftIcon={<AddIcon />}
+              colorScheme="facebook"
+              variant="solid"
+            >
+              Agregar Nuevo Seguimiento
+            </Button>
+          </HStack>
 
         <Box marginLeft={"1%"} marginTop="20px">
           <TableContainer>

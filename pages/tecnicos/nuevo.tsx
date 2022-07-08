@@ -109,14 +109,14 @@ function UsuarioNuevo() {
       toast({
         title: "Oops... Ocurrio un error.",
         status: "error",
-        position:"bottom-right",
+        position: "bottom-right",
         description: `Error al dar de alta, verificar los campos.`,
       });
     }
     if (respuestaUsuario.status == 200) {
       toast({
         title: "Técnico agregado.",
-        position:"bottom-right",
+        position: "bottom-right",
         status: "success",
         description: `Se guardo el usuario, exitosamente.`,
       });
@@ -133,19 +133,17 @@ function UsuarioNuevo() {
       };
 
       console.log(dataTecnico);
-      
 
       const serviceTecnico = new TecnicoService();
       const respuestaTecnico = await serviceTecnico.create(dataTecnico);
       const tecnicoGuardado = respuestaTecnico.data as ITecnico;
-
 
       if (respuestaTecnico.status != 201) {
         setCargando(false);
         toast({
           title: "Oops... Ocurrio un error.",
           status: "error",
-          position:"bottom-right",
+          position: "bottom-right",
           description: `Error, verificar los campos.`,
         });
       }
@@ -153,7 +151,7 @@ function UsuarioNuevo() {
         toast({
           title: "Se agrego el usuario.",
           status: "success",
-          position:"bottom-right",
+          position: "bottom-right",
           description: `Se guardo exitosamente, el técnico ${tecnicoGuardado.nombre}.`,
         });
 
@@ -194,7 +192,6 @@ function UsuarioNuevo() {
 
     setCiudadesList(data);
   };
-  
 
   useEffect(() => {
     consultarEstados();
@@ -221,6 +218,7 @@ function UsuarioNuevo() {
             <FormLabel htmlFor="usuario">Nombre de Usuario</FormLabel>
             <Input
               isRequired
+              maxLength={20}
               variant="filled"
               id="usuario"
               placeholder="Nombre de Usuario"
@@ -231,6 +229,7 @@ function UsuarioNuevo() {
             <FormLabel htmlFor="email">Email</FormLabel>
             <Input
               isRequired
+              maxLength={100}
               variant="filled"
               id="email"
               type={"email"}
@@ -241,6 +240,7 @@ function UsuarioNuevo() {
             <FormControl isRequired>
               <FormLabel htmlFor="password">Contraseña</FormLabel>
               <Input
+                maxLength={100}
                 variant="filled"
                 id="password"
                 type={"password"}
@@ -271,6 +271,7 @@ function UsuarioNuevo() {
                     <FormControl isRequired paddingTop={15}>
                       <FormLabel htmlFor="nombre">Nombre</FormLabel>
                       <Input
+                        maxLength={100}
                         variant="filled"
                         id="Nombre"
                         placeholder="Nombre"
@@ -284,7 +285,9 @@ function UsuarioNuevo() {
                       <FormLabel htmlFor="apellidoPaterno">
                         Apellido Paterno
                       </FormLabel>
+
                       <Input
+                        maxLength={100}
                         variant="filled"
                         id="apellidoPaterno"
                         placeholder="Apellido Paterno"
@@ -303,6 +306,7 @@ function UsuarioNuevo() {
                         Apellido Materno
                       </FormLabel>
                       <Input
+                        maxLength={100}
                         variant="filled"
                         id="apellidoMaterno"
                         placeholder="Apellido Materno"
