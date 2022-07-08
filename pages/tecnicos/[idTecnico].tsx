@@ -366,7 +366,7 @@ function TecnicoNuevo() {
 
                 <FormControl isRequired paddingTop={15} paddingLeft={15}>
                   <FormLabel htmlFor="apellidoPaterno">
-                    Apellido Paterno
+                    Primer Apellido
                   </FormLabel>
                   <Input
                     variant="filled"
@@ -383,7 +383,7 @@ function TecnicoNuevo() {
 
                 <FormControl isRequired paddingTop={15}>
                   <FormLabel htmlFor="apellidoMaterno">
-                    Apellido Materno
+                    Segundo Apellido
                   </FormLabel>
                   <Input
                     variant="filled"

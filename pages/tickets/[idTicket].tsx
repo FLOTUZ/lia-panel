@@ -158,6 +158,7 @@ function TicketVer() {
     }
   };
 
+
   const getTicket = async () => {
     const service = new TicketsService();
     const respuesta = await service.getById(Number(idTicket));
@@ -295,6 +296,7 @@ function TicketVer() {
     router.push("/tickets");
   };
 
+
   const asesorById = async () => {
     if (Number(ticket?.aseguradoraId!) !== 0) {
       const service = new AsesoresService();
@@ -318,8 +320,7 @@ function TicketVer() {
     const data = response.data as IAsesor[];
     if (response.status == 200) {
       setAsesorList(data || []);
-    } else {
-    }
+    } 
   };
 
   /*CONSULTA DEL USUARIO LOGUEADO, PARA EL ASESOR DE GPO LÍAS*/
