@@ -372,7 +372,7 @@ const NuevoTicket = () => {
           id: "altaError",
           title: "Oops... Ocurrio un error.",
           position: "bottom-right",
-          description: `El ticket no se ha podido guardar, verifica los campos.`,
+          description: `El ticket no se ha podido guardar, posiblemente el número de esxpediente ya existe.`,
           status: "error",
         });
       }

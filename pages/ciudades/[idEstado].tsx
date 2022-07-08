@@ -81,6 +81,7 @@ function EstadoVer() {
 
     consultarCiudades();
     if (response.status === 201) {
+      setNombreCiudad("");
       onClose();
       toast({
         title: "Ciudad agregada con éxito.",
@@ -276,6 +277,7 @@ function EstadoVer() {
                     <FormLabel>Nombre de la Ciudad</FormLabel>
                     <Input
                       placeholder="Nombre de la Ciudad"
+                      value={nombreCiudad}
                       onChange={(e) => {
                         const nombreM = e.target.value.toUpperCase();
                         setNombreCiudad(nombreM);

@@ -219,6 +219,7 @@ function AseguradoraVer() {
                     <Input
                       id="nombre"
                       variant="filled"
+                    
                       defaultValue={data?.nombre}
                       onChange={(e) => {
                         const nombreM = e.target.value.toUpperCase();

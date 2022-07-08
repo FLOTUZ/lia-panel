@@ -69,6 +69,7 @@ function EstadoNuevo() {
 
     consultarCiudades();
     if (response.status === 201) {
+      setNombreCiudad("");
       onClose();
       toast({
         title: "Ciudad agregada.",
@@ -82,7 +83,7 @@ function EstadoNuevo() {
       toast({
         title: "Oops... Ocurrio un error.",
         position: "bottom-right",
-        description: "Verificar los campos.",
+        description: "Verificar los campos, no deben ser vacios.",
         status: "error",
         duration: 9000,
         isClosable: true,
@@ -105,8 +106,7 @@ function EstadoNuevo() {
     setEstadoGuardado(estad);
 
     if (response.status === 201) {
-      //onClose();
-      setNombreEstado("");
+      
       setIdEstado(estad.id || 0);
       toast({
         title: "Estado agregado.",
@@ -152,6 +152,7 @@ function EstadoNuevo() {
                   <Input
                     type="Nombre"
                     placeholder="Estado"
+                    value={nombreEstado}
                     maxLength={25}
                     onChange={(e) => {
                       const nombreM = e.target.value.toUpperCase();
@@ -242,6 +243,7 @@ function EstadoNuevo() {
                     <FormLabel>Nombre de la Ciudad</FormLabel>
                     <Input
                       placeholder="Nombre de la Ciudad"
+                      value={nombreCiudad}
                       onChange={(e) => {
                         const nombreM = e.target.value.toUpperCase();
                         setNombreCiudad(nombreM);
@@ -251,7 +253,7 @@ function EstadoNuevo() {
                 </ModalBody>
 
                 <ModalFooter>
-                  <Button colorScheme="blue" mr={3} onClick={guardarCiudad}>
+                  <Button colorScheme="whatsapp" mr={3} onClick={guardarCiudad}>
                     Guardar
                   </Button>
                   <Button onClick={onClose}>Cancelar</Button>
