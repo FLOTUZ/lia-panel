@@ -430,6 +430,7 @@ function TicketVer() {
             spacingY="20px"
           >
             <Box
+            scrollPadding={"-0.5"}
               margin={"1%"}
               justifyContent={"center"}
               alignItems={"center"}
@@ -440,6 +441,11 @@ function TicketVer() {
               borderRadius="md"
               bg="tomato"
               color="white"
+              _hover={{
+                boxShadow: "10px 10px 5px #F4C26B",
+                bgColor: " #FFFFFF",
+                color: "black",
+              }}
             >
               <FormControl
                 display="flex"
@@ -470,6 +476,11 @@ function TicketVer() {
               bottom="20px"
               right={["16px", "84px"]}
               position="fixed"
+              fontWeight='semibold'
+              letterSpacing='wide'
+              fontSize='xs'
+              textTransform='uppercase'
+              ml='2'
             >
               {archivado ? (
                 <Alert variant="solid" status="info">
@@ -488,6 +499,11 @@ function TicketVer() {
               height={"50px"}
               right={["16px", "170px"]}
               zIndex={1}
+              fontWeight='semibold'
+              letterSpacing='wide'
+              fontSize='xs'
+              textTransform='uppercase'
+              ml='2'
             >
               <Button
                 padding={"2%"}
@@ -499,6 +515,11 @@ function TicketVer() {
                 borderColor="twitter.100"
                 size="lg"
                 onClick={onOpen}
+                _hover={{
+                  boxShadow: "10px 10px 5px #6BBFF4",
+                  bgColor: " #FFFFFF",
+                  color: "black",
+                }}
               />
             </Box>
 
@@ -511,6 +532,8 @@ function TicketVer() {
               height={"50px"}
               right={["0.2px"]}
               zIndex={1}
+              fontWeight='semibold'
+              
             >
               <FormControl
                 paddingTop={2}
@@ -518,11 +541,11 @@ function TicketVer() {
                 columns={{ base: 1, lg: 2 }}
               >
                 <FormLabel
-                  htmlFor="facturado"
+                  htmlFor="facturar"
                   fontWeight={"bold"}
                   color="blue.700"
                 >
-                  Facturado:
+                  Facturar:
                 </FormLabel>
                 <Switch
                   id="facturar"
