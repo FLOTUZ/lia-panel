@@ -288,7 +288,7 @@ function UsuarioNuevo() {
                     <Divider orientation="vertical" />
                     <FormControl isRequired paddingTop={15}>
                       <FormLabel htmlFor="apellidoPaterno">
-                        Apellido Paterno
+                       Primer  Apellido
                       </FormLabel>
                       <Input
                         variant="filled"
@@ -302,7 +302,7 @@ function UsuarioNuevo() {
 
                     <FormControl isRequired paddingLeft={5} paddingTop={15}>
                       <FormLabel htmlFor="apellidoMaterno">
-                        Apellido Materno
+                        Segundo Apellido
                       </FormLabel>
                       <Input
                         variant="filled"

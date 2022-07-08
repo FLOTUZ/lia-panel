@@ -176,7 +176,7 @@ function TecnicoNuevo() {
       };
       const service = new TecnicoService();
       const respuesta = await service.update(data, Number(idTecnico));
-      
+
       const dataUpdate = respuesta.data as ITecnico;
 
       if (respuesta.status == 200) {
@@ -267,6 +267,7 @@ function TecnicoNuevo() {
           >
             <FormLabel htmlFor="usuario">Nombre de usuario</FormLabel>
             <Input
+              maxLength={20}
               isRequired
               variant="filled"
               id="usuario"
@@ -278,6 +279,7 @@ function TecnicoNuevo() {
 
             <FormLabel htmlFor="email">Email</FormLabel>
             <Input
+              maxLength={100}
               isRequired
               variant="filled"
               id="email"
@@ -290,6 +292,8 @@ function TecnicoNuevo() {
 
             <FormLabel htmlFor="password">Contraseña</FormLabel>
             <Input
+              minLength={8}
+              maxLength={100}
               isRequired={false}
               variant="filled"
               id="password"
@@ -297,9 +301,7 @@ function TecnicoNuevo() {
               onChange={formUsuario.handleChange}
               value={formUsuario.values.password}
             />
-            <FormHelperText>
-              Mínimo 8 carácteres
-            </FormHelperText>
+            <FormHelperText>Mínimo 8 carácteres</FormHelperText>
 
             <HStack spacing={4} w={"100%"} mt={"12rem"}>
               <Spacer />
@@ -356,6 +358,7 @@ function TecnicoNuevo() {
                 <FormControl isRequired paddingTop={15}>
                   <FormLabel htmlFor="nombre">Nombre</FormLabel>
                   <Input
+                    maxLength={20}
                     variant="filled"
                     id="nombre"
                     placeholder="Nombre"
@@ -366,9 +369,10 @@ function TecnicoNuevo() {
 
                 <FormControl isRequired paddingTop={15} paddingLeft={15}>
                   <FormLabel htmlFor="apellidoPaterno">
-                    Apellido Paterno
+                    Primer Apellido
                   </FormLabel>
                   <Input
+                    maxLength={20}
                     variant="filled"
                     id="apellido_paterno"
                     placeholder="Apellido Paterno"
@@ -383,9 +387,10 @@ function TecnicoNuevo() {
 
                 <FormControl isRequired paddingTop={15}>
                   <FormLabel htmlFor="apellidoMaterno">
-                    Apellido Materno
+                    Segundo Apellido
                   </FormLabel>
                   <Input
+                    maxLength={20}
                     variant="filled"
                     id="apellido_materno"
                     placeholder="Apellido Materno"
@@ -397,6 +402,7 @@ function TecnicoNuevo() {
                 <FormControl isRequired paddingTop={15} paddingLeft={15}>
                   <FormLabel htmlFor="telefono">Teléfono</FormLabel>
                   <Input
+                    maxLength={14}
                     variant="filled"
                     id="telefono"
                     placeholder="Teléfono"
@@ -422,12 +428,12 @@ function TecnicoNuevo() {
                   >
                     {estadosList?.length !== 0
                       ? estadosList?.map((estado, index) => {
-                        return (
-                          <option key={index} value={estado.id}>
-                            {estado.nombre}
-                          </option>
-                        );
-                      })
+                          return (
+                            <option key={index} value={estado.id}>
+                              {estado.nombre}
+                            </option>
+                          );
+                        })
                       : null}
                   </Select>
                   <FormHelperText>
@@ -453,12 +459,12 @@ function TecnicoNuevo() {
                   >
                     {ciudadesList?.length !== 0
                       ? ciudadesList?.map((ciudad, index) => {
-                        return (
-                          <option key={index} value={ciudad.id}>
-                            {ciudad.nombre}
-                          </option>
-                        );
-                      })
+                          return (
+                            <option key={index} value={ciudad.id}>
+                              {ciudad.nombre}
+                            </option>
+                          );
+                        })
                       : null}
                   </Select>
                   <FormHelperText>
