@@ -20,7 +20,8 @@
       "@/views/*": ["components/views/*"],
       "@/forms/*": ["components/forms/*"],
       "@/layouts/*": ["components/layouts/*"],
-      "@/services/*": ["services/*"]
+      "@/services/*": ["services/*"],
+      "@/context/*": ["components/context/*"],
     }
   },
   "include": [

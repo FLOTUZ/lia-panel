@@ -23,7 +23,7 @@ import { AuthService } from "@/services/auth.service";
 import { useRouter } from "next/router";
 import { UsuariosService } from "@/services/usuarios.service";
 import { IUsuario } from "@/services/api.models";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 
 interface IRouteItem {
   name: string;
@@ -37,26 +37,14 @@ const Navbar = (hideNabar: any, setHideNabar: Function) => {
 
   const [isMayorQueHD] = useMediaQuery("(min-width: 700px)");
 
-  const getUserLogeado = async () => {
-    const service = new UsuariosService();
-    const usuario = await service.getLogedUser();
-
-    if (usuario !== null) {
-      const variable = usuario as IUsuario;
-      setSesion(variable);
-    }
-  };
-
-  useEffect(() => {
-    getUserLogeado();
-  }, []);
+  const { usuario } = useContext(UserContext);
 
   const router = useRouter();
 
   //Consultas el usuario logeado
   ///  TODO: usuario logeado
 
-  const ROL = sesion?.rol;
+  const ROL = usuario?.rol;
 
   const routes: IRouteItem[] = [
     {
@@ -183,6 +171,7 @@ const Navbar = (hideNabar: any, setHideNabar: Function) => {
 };
 
 import { GetServerSideProps } from "next";
+import { UserContext } from "@/context/UserProvider";
 
 export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return {
