@@ -71,7 +71,7 @@ function EstadosListado() {
           <Spacer />
           <Button
           onClick={() => {
-            router.push("/ciudades/nuevo");
+            router.push("/estados/nuevo");
           }}
             leftIcon={<AddIcon />}
             marginLeft={"auto"}
@@ -105,7 +105,7 @@ function EstadosListado() {
                             aria-label="edit"
                             icon={<EditIcon />}
                             onClick={() => {
-                              router.push(`/ciudades/${estado.id}`);
+                              router.push(`/estados/${estado.id}`);
                             }}
                           />
                         </Td>

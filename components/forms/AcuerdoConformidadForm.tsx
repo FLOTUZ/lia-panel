@@ -251,7 +251,7 @@ export const AcuerdoConformidadView = ({
         </SimpleGrid>
       </Box>
 
-      <Modal onClose={onOpenPDF} size={"full"} isOpen={isOpenPDF}>
+      <Modal onClose={onClosePDF} size={"full"} isOpen={isOpenPDF} closeOnEsc={true}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Acuerdo Firmado.</ModalHeader>

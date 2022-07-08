@@ -91,7 +91,7 @@ const Navbar = (hideNabar: any, setHideNabar: Function) => {
     },
     {
       name: "Estados",
-      path: "/ciudades",
+      path: "/estados",
       icon: <IoMdMap size={32} />,
       rol: ["ADMIN"],
     },
