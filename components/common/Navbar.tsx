@@ -1,6 +1,5 @@
 import {
   Button,
-  Center,
   Flex,
   SimpleGrid,
   Spacer,
@@ -13,6 +12,8 @@ import {
   MdVerifiedUser,
 } from "react-icons/md";
 
+import { UserContext } from "@/context/UserProvider";
+
 import { IoBook, IoExit, IoReceipt } from "react-icons/io5";
 import { IoMdMap } from "react-icons/io";
 
@@ -21,9 +22,7 @@ import Image from "next/image";
 import Logo from "../../public/logo.jpeg";
 import { AuthService } from "@/services/auth.service";
 import { useRouter } from "next/router";
-import { UsuariosService } from "@/services/usuarios.service";
-import { IUsuario } from "@/services/api.models";
-import { useContext, useEffect, useState } from "react";
+import { useContext } from "react";
 
 interface IRouteItem {
   name: string;
@@ -32,18 +31,12 @@ interface IRouteItem {
   rol: string[];
 }
 
-const Navbar = (hideNabar: any, setHideNabar: Function) => {
-  const [sesion, setSesion] = useState<IUsuario>();
-
+export const Navbar = () => {
   const [isMayorQueHD] = useMediaQuery("(min-width: 700px)");
-
-  const { usuario } = useContext(UserContext);
-
   const router = useRouter();
 
   //Consultas el usuario logeado
-  ///  TODO: usuario logeado
-
+  const { usuario } = useContext(UserContext);
   const ROL = usuario?.rol;
 
   const routes: IRouteItem[] = [
@@ -100,7 +93,7 @@ const Navbar = (hideNabar: any, setHideNabar: Function) => {
         <Image src={Logo} alt="" />
       </Flex>
       {routes.map((route, key) => {
-        return route.rol.includes(String(ROL)) ? (
+        return route.rol.includes(String(ROL)) && ROL != "TECNICO" ? (
           <Link key={key} href={route.path}>
             <a>
               <Button
@@ -169,16 +162,3 @@ const Navbar = (hideNabar: any, setHideNabar: Function) => {
     </Stack>
   );
 };
-
-import { GetServerSideProps } from "next";
-import { UserContext } from "@/context/UserProvider";
-
-export const getServerSideProps: GetServerSideProps = async (ctx) => {
-  return {
-    props: {
-      data: null,
-    },
-  };
-};
-
-export default Navbar;

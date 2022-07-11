@@ -1,6 +1,7 @@
 import { IUsuario } from "@/services/api.models";
 import { AuthService } from "@/services/auth.service";
 import { UsuariosService } from "@/services/usuarios.service";
+import UsuarioNoAutorizado from "@/views/UsuarioNoAutorizado.view";
 import { Center, Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { createContext, useMemo, useState } from "react";
@@ -44,8 +45,10 @@ const UserProvider = ({ children }: IUserProvider) => {
         logout,
       }}
     >
-      {usuario !== null ? (
+      {usuario !== null && usuario.rol != "TECNICO" ? (
         children
+      ) : usuario?.rol == "TECNICO" ? (
+        <UsuarioNoAutorizado />
       ) : (
         <Center h={"100vh"}>
           <Spinner size="xl" />

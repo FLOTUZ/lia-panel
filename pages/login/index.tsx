@@ -20,6 +20,7 @@ import { useFormik } from "formik";
 import { AuthService } from "@/services/auth.service";
 import { ILogin } from "@/services/api.models";
 import { useRouter } from "next/router";
+import Head from "next/head";
 
 export default function Home(): JSX.Element {
   const [show, setShow] = useState(false);
@@ -36,13 +37,22 @@ export default function Home(): JSX.Element {
 
     onSubmit: async (credenciales: ILogin) => {
       const service = new AuthService();
-      (await service.login(credenciales))
-        ? router.push("/tickets")
-        : setShowError(true);
+      try {
+        const hasPermission = await service.login(credenciales);
+        if (hasPermission) {
+          router.push("/tickets");
+        }
+      } catch (error) {
+        setShowError(true);
+        setTimeout(() => {
+          setShowError(false);
+        }, 3000);
+      }
     },
   });
   return (
     <>
+      <Head>Lia Panel - Login</Head>
       <Flex
         flexDirection="column"
         width="100wh"
@@ -129,7 +139,7 @@ export default function Home(): JSX.Element {
                       colorScheme="red"
                       width="50"
                     >
-                      Error en credenciales
+                      Error: Credenciales invalidas
                     </Button>
                   ) : (
                     <Button

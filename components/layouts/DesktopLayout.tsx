@@ -1,6 +1,5 @@
 import { Center, Grid, GridItem } from "@chakra-ui/react";
-
-import Navbar from "@/common/Navbar";
+import { Navbar } from "@/common/Navbar";
 import UserProvider from "@/context/UserProvider";
 
 interface IDesktopLayout {
@@ -20,7 +19,7 @@ const DesktopLayout = ({ children }: IDesktopLayout) => {
           gap={0}
         >
           <GridItem width={"20vh"} colSpan={1} shadow="sm">
-            <Navbar />
+          <Navbar/>
           </GridItem>
           <GridItem colSpan={8} bg="#f5f5f5">
             {children}
