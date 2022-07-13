@@ -30,9 +30,9 @@ function MyApp({ Component, pageProps }: AppProps) {
   const showLogin = async () => {
     const token = service.getToken();
 
-    if (!token) {
+    if (token == null || !(await service.checkToken())) {
       router.push("/login");
-    } 
+    }
   };
 
   useEffect(() => {

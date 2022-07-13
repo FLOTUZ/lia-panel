@@ -17,11 +17,12 @@ const DesktopLayout = ({ children }: IDesktopLayout) => {
           templateRows="repeat(1, 1fr)"
           templateColumns={"repeat( 9, 1fr)"}
           gap={0}
+          overflow={"inherit"}
         >
           <GridItem width={"20vh"} colSpan={1} shadow="sm">
-          <Navbar/>
+            <Navbar />
           </GridItem>
-          <GridItem colSpan={8} bg="#f5f5f5">
+          <GridItem colSpan={8} bg="#f5f5f5" overflow={"scroll"}>
             {children}
           </GridItem>
         </Grid>

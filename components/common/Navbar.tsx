@@ -88,8 +88,6 @@ export const Navbar = () => {
         padding={1}
         alignSelf={"normal"}
       >
-        {/*TODO: Poner Imagen de GPO LIAS*/}
-
         <Image src={Logo} alt="" />
       </Flex>
       {routes.map((route, key) => {
