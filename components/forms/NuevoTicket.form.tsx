@@ -142,7 +142,6 @@ const NuevoTicket = () => {
     const servicio = new CiudadesService();
     const respuesta: any = await servicio.getCiudadesByIdEstado(IdEstado);
     const data = respuesta.data as ICiudad[];
-
     setCiudadesList(data);
   };
 
@@ -150,7 +149,6 @@ const NuevoTicket = () => {
     const servicio = new EstadosService();
     const respuesta = await servicio.getAll();
     const data = respuesta.data as IEstado[];
-
     setEstadosList(data);
   };
 
@@ -400,9 +398,12 @@ const NuevoTicket = () => {
               Número de Expediente:
             </FormLabel>
             <Input
+              isRequired
               variant="filled"
               id="num_expediente"
               type="text"
+              minLength={1}
+              maxLength={255}
               placeholder="N° Expediente"
               borderColor="twitter.100"
               onChange={formTicket.handleChange}
@@ -415,6 +416,7 @@ const NuevoTicket = () => {
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="fecha_llamada">Fecha de la Llamada</FormLabel>
             <Input
+              isRequired
               w={"fit-content"}
               id="fecha_llamada"
               variant="filled"
@@ -437,6 +439,7 @@ const NuevoTicket = () => {
             <FormControl isRequired paddingTop={15}>
               <FormLabel htmlFor="aseguradoraId">Aseguradora</FormLabel>
               <Select
+                isRequired
                 id="aseguradoraId"
                 placeholder="Selecciona la Aseguradora"
                 variant="filled"
@@ -465,6 +468,7 @@ const NuevoTicket = () => {
             <FormControl isRequired paddingLeft={5} paddingTop={15}>
               <FormLabel htmlFor="asistenciaId">Asistencia</FormLabel>
               <Select
+                isRequired
                 id="asistenciaId"
                 placeholder="Selecciona Asistencia"
                 variant="filled"
@@ -521,6 +525,8 @@ const NuevoTicket = () => {
                 <FormLabel>Nombre</FormLabel>
                 <Input
                   placeholder="Nombre del asesor"
+                  minLength={3}
+                  maxLength={45}
                   onChange={(e) => {
                     setNombreAsesor(e.target.value);
                   }}
@@ -582,6 +588,7 @@ const NuevoTicket = () => {
                 Asesor de Gpo. Lías
               </FormLabel>
               <Input
+                isDisabled={true}
                 variant="filled"
                 readOnly
                 id="nombre_asesor_gpo_lias"
@@ -633,6 +640,9 @@ const NuevoTicket = () => {
               Nombre del Usuario a Brindar Servicio
             </FormLabel>
             <Input
+              isRequired
+              minLength={3}
+              maxLength={255}
               variant="filled"
               id="nombre_usuario_final"
               placeholder="Usuario a Brindar Servicio"
@@ -647,6 +657,9 @@ const NuevoTicket = () => {
               Descripción Corta del Ticket
             </FormLabel>
             <Input
+              isRequired
+              minLength={10}
+              maxLength={500}
               variant="filled"
               id="titulo_ticket"
               maxLength={150}
@@ -663,7 +676,13 @@ const NuevoTicket = () => {
             Descripción de la Problemática
           </FormLabel>
           <Textarea
+<<<<<<< Updated upstream
             maxLength={200}
+=======
+            minLength={10}
+            maxLength={500}
+            isRequired
+>>>>>>> Stashed changes
             id="problematica"
             variant="filled"
             placeholder="Problemática"
@@ -673,7 +692,7 @@ const NuevoTicket = () => {
           />
         </FormControl>
 
-        <FormControl paddingTop={15}>
+        <FormControl paddingTop={15} isRequired>
           <FormLabel htmlFor="servicioId">
             Seleccione Servicios Relacionados:
           </FormLabel>
@@ -811,6 +830,7 @@ const NuevoTicket = () => {
               ) : null}
             </FormControl>
           ) : null}
+
           {formTicket.values.asistencia_vial === true ? (
             <FormControl paddingTop={2} paddingLeft={2}>
               <FormLabel htmlFor="servicio_foraneo">Servicio Foráneo</FormLabel>
@@ -843,6 +863,7 @@ const NuevoTicket = () => {
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="estado">Estado</FormLabel>
             <Select
+              isRequired
               id="estado"
               placeholder="Selecciona el Estado"
               variant="filled"
@@ -867,6 +888,7 @@ const NuevoTicket = () => {
           <FormControl isRequired paddingTop={15}>
             <FormLabel htmlFor="ciudad">Ciudad</FormLabel>
             <Select
+              isRequired
               id="ciudadId"
               placeholder="Selecciona la Ciudad"
               variant="filled"
@@ -897,6 +919,9 @@ const NuevoTicket = () => {
             <FormControl isRequired paddingTop={15}>
               <FormLabel htmlFor="colonia">Colonia</FormLabel>
               <Input
+                isRequired
+                minLength={5}
+                maxLength={255}
                 variant="filled"
                 id="colonia"
                 placeholder="Colonia"
@@ -911,6 +936,9 @@ const NuevoTicket = () => {
             <FormControl isRequired paddingTop={15}>
               <FormLabel htmlFor="calle">Calle</FormLabel>
               <Input
+                isRequired
+                minLength={5}
+                maxLength={255}
                 variant="filled"
                 id="calle"
                 placeholder="Calle"
@@ -927,6 +955,8 @@ const NuevoTicket = () => {
                 Número Exterior
               </FormLabel>
               <Input
+                minLength={1}
+                maxLength={50}
                 variant="filled"
                 id="numero_domicilio"
                 placeholder="N° de Domicilio Exterior"
@@ -943,6 +973,8 @@ const NuevoTicket = () => {
                 Número Interior
               </FormLabel>
               <Input
+                minLength={1}
+                maxLength={5}
                 variant="filled"
                 id="num_interior"
                 placeholder="N° de Domicilio Interior"
@@ -965,6 +997,9 @@ const NuevoTicket = () => {
                 children={<MdOutlineAttachMoney />}
               />
               <Input
+                isRequired
+                minLength={1}
+                maxLength={50}
                 variant="filled"
                 id="cobertura"
                 min={0}
@@ -989,6 +1024,9 @@ const NuevoTicket = () => {
                 children={<MdOutlineAttachMoney />}
               />
               <Input
+                isRequired
+                minLength={1}
+                maxLength={50}
                 variant="filled"
                 id="costo_gpo_lias"
                 placeholder="0.00"
@@ -1013,6 +1051,9 @@ const NuevoTicket = () => {
               <InputGroup>
                 <InputLeftAddon pointerEvents="none" children={<RiGpsLine />} />
                 <Input
+                  isRequired
+                  minLength={5}
+                  maxLength={255}
                   variant="filled"
                   id="calle"
                   placeholder="Coordenadas"
@@ -1032,6 +1073,9 @@ const NuevoTicket = () => {
                 children={<IoSpeedometerOutline />}
               />
               <Input
+                isRequired
+                minLength={1}
+                maxLength={255}
                 variant="filled"
                 id="kilometraje"
                 min={0}
@@ -1081,6 +1125,7 @@ const NuevoTicket = () => {
             <FormControl paddingTop={15}>
               <FormLabel htmlFor="casetas">Número de Casetas</FormLabel>
               <Input
+                maxLength={50}
                 variant="filled"
                 id="casetas"
                 placeholder="0"
@@ -1142,6 +1187,8 @@ const NuevoTicket = () => {
             <FormControl isRequired paddingTop={15}>
               <FormLabel htmlFor="placas">Placas</FormLabel>
               <Input
+                maxLength={10}
+                minLength={3}
                 variant="filled"
                 id="placas_carro"
                 placeholder="Placas"
@@ -1156,6 +1203,8 @@ const NuevoTicket = () => {
             <FormControl isRequired paddingTop={15}>
               <FormLabel htmlFor="color">Color</FormLabel>
               <Input
+                maxLength={50}
+                minLength={3}
                 variant="filled"
                 id="color_carro"
                 placeholder="Color"
@@ -1169,7 +1218,8 @@ const NuevoTicket = () => {
           {formTicket.values.asistencia_vial === true ? (
             <FormControl isRequired paddingTop={15}>
               <FormLabel htmlFor="marca">Marca</FormLabel>
-              <Input //isDisabled
+              <Input
+                maxLength={50}
                 variant="filled"
                 id="marca_carro"
                 placeholder="Marca"
@@ -1191,6 +1241,7 @@ const NuevoTicket = () => {
               <InputGroup>
                 <InputLeftAddon pointerEvents="none" children={<IoFlag />} />
                 <Input
+                  maxLength={50}
                   paddingLeft={8}
                   variant="filled"
                   id="banderazo"
@@ -1311,6 +1362,7 @@ const NuevoTicket = () => {
             Cotización de Grupo Lías (Información Adicional)
           </FormLabel>
           <Textarea
+            maxLength={500}
             id="cotizacion_gpo_lias"
             variant="filled"
             placeholder="Cotización"

@@ -111,6 +111,8 @@ function AsistenciaVer() {
                       variant="filled"
                       defaultValue={data?.nombre}
                       placeholder="Asistencia"
+                      maxLength={50}
+                      minLength={3}
                       onChange={(e) => {
                         const nombreM = e.target.value.toUpperCase();
                         formAsistencia.setFieldValue("nombre", nombreM);

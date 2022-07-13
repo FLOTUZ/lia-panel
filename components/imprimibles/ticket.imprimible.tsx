@@ -173,13 +173,13 @@ const getcotizacioTecnico = async () => {
 
 
         <div style={{ width: "30%", paddingLeft: "10px", paddingTop: "90px" }}>
-          <p>EXPEDIENTE: {ticket?.num_expediente}</p>
+          <p>EXPEDIENTE:  {ticket?.num_expediente}</p>
         </div>
         <div style={{ width: "30%", paddingLeft: "50px", float: "right" }}>
-          <p>KM: {ticket?.kilometraje}</p>
+          <p>KM:  {ticket?.kilometraje}</p>
         </div>
         <div style={{ width: "30%", paddingLeft: "60px", float: "right" }}>
-          <p >CASETAS: {ticket?.casetas}</p>
+          <p >CASETAS:  {ticket?.casetas}</p>
         </div>
 
 
@@ -192,7 +192,7 @@ const getcotizacioTecnico = async () => {
             paddingTop: "20px",
           }}
         >
-          <p>PROBLEMA: {ticket?.problematica}</p>
+          <p>PROBLEMA:  {ticket?.problematica}</p>
         </div>
 
         <div
@@ -205,17 +205,17 @@ const getcotizacioTecnico = async () => {
         >
           <div>
             <p style={{ paddingTop: "0", paddingLeft: "80px" }}>
-              $BANDERAZO {ticket?.banderazo}
+              $BANDERAZO:  {ticket?.banderazo}
             </p>
           </div>
           <div>
             <p style={{ paddingTop: "0", paddingLeft: "80px" }}>
-              $TOTAL DE SALIDA {ticket?.total_salida}
+              $TOTAL DE SALIDA:  {ticket?.total_salida}
             </p>
           </div>
           <div>
             <p style={{ paddingTop: "0", paddingLeft: "80px" }}>
-              $SEGURO {ticket?.cobertura}
+              $SEGURO:  {ticket?.cobertura}
             </p>
           </div>
           <div>
@@ -225,22 +225,22 @@ const getcotizacioTecnico = async () => {
                 paddingLeft: "80px",
               }}
             >
-              $DEDUCIBLE {ticket?.deducible}
+              $DEDUCIBLE:  {ticket?.deducible}
             </p>
           </div>
           <div>
             <p style={{ paddingTop: "5%", paddingLeft: "80px" }}>
-              COSTO GPOLIAS {ticket?.costo_gpo_lias}
+              COSTO GPOLIAS:  {ticket?.costo_gpo_lias}
             </p>
           </div>
           <div>
             <p style={{ paddingTop: "5%", paddingLeft: "80px" }}>
-              $TOTAL {ticket?.total}
+              $TOTAL:  {ticket?.total}
             </p>
           </div>
           <div>
             <p style={{ paddingTop: "5%", paddingLeft: "80px" }}>
-              60% DE ANTICIPO {ticket?.anticipo}
+              60% DE ANTICIPO:  {ticket?.anticipo}
             </p>
           </div>
         </div>
@@ -253,15 +253,15 @@ const getcotizacioTecnico = async () => {
             paddingLeft: "15px",
           }}
         >
-          <p>USUARIO: {ticket?.nombre_usuario_final}</p>
+          <p>USUARIO:  {ticket?.nombre_usuario_final}</p>
         </div>
 
         <div style={{ width: "30%", height: "5%", float: "right" }}>
-          <p>ESTADO: {estado?.nombre}</p>
+          <p>ESTADO:  {estado?.nombre}</p>
         </div>
 
         <div style={{ width: "30%", height: "5%", float: "right" }}>
-          <p>CIUDAD: {ciudad?.nombre}</p>
+          <p>CIUDAD:  {ciudad?.nombre}</p>
         </div>
 
 
@@ -273,7 +273,7 @@ const getcotizacioTecnico = async () => {
             paddingLeft: "15px",
           }}
         >
-          <p> COLONIA: {ticket?.colonia}</p>
+          <p> COLONIA:  {ticket?.colonia}</p>
         </div>
 
         <div
@@ -285,7 +285,7 @@ const getcotizacioTecnico = async () => {
           }}
         >
           <p>
-            CALLE Y NO. {ticket?.calle} {ticket?.numero_domicilio}{" "}
+            CALLE Y NO.:  {ticket?.calle} {ticket?.numero_domicilio}{" "}
           </p>
         </div>
 
@@ -298,7 +298,7 @@ const getcotizacioTecnico = async () => {
             paddingTop: "20px"
           }}
         >
-          <p>ASISTENCIA: {asistencia?.nombre}</p>
+          <p>ASISTENCIA:  {asistencia?.nombre}</p>
         </div>
         <div
           style={{
@@ -308,7 +308,7 @@ const getcotizacioTecnico = async () => {
             paddingLeft: "25px",
           }}
         >
-          <p>CUBRE SEGURO: {ticket?.cobertura} </p>
+          <p>CUBRE SEGURO:  {ticket?.cobertura} </p>
         </div>
 
         <div
@@ -319,7 +319,7 @@ const getcotizacioTecnico = async () => {
             paddingLeft: "10px",
           }}
         >
-          <p>ASESOR: {asesorAseguradora?.nombre}</p>
+          <p>ASESOR:  {asesorAseguradora?.nombre}</p>
         </div>
 
         <div
@@ -331,7 +331,7 @@ const getcotizacioTecnico = async () => {
           }}
         >
 
-          <p>HORA DE LLAMADA: {moment(ticket?.fecha_llamada).format("LLL")}</p>
+          <p>HORA DE LLAMADA:  {moment(ticket?.fecha_llamada).format("LLL")}</p>
         </div>
         <div
           style={{
@@ -341,7 +341,7 @@ const getcotizacioTecnico = async () => {
             paddingLeft: "15px",
           }}
         >
-          <p>TÉCNICO: {`${tecnico?.nombre!} ${tecnico?.apellido_materno!}`} </p>
+          <p>TÉCNICO:  {`${tecnico?.nombre!} ${tecnico?.apellido_materno!}`} </p>
         </div>
 
         <div
@@ -352,7 +352,7 @@ const getcotizacioTecnico = async () => {
             paddingLeft: "15px",
           }}
         >
-          <p>HORA DE CONTACTO: { }</p>
+          <p>HORA DE CONTACTO:  { }</p>
         </div>
         <div
           style={{
@@ -362,20 +362,20 @@ const getcotizacioTecnico = async () => {
             paddingLeft: "15px",
           }}
         >
-          <p>HORA DE TERMINO: </p>
+          <p>HORA DE TERMINO:  </p>
         </div>
 
         <div style={{ width: "30%", height: "5%", float: "right" }}>
-          <p>COLOR: {ticket?.color_carro}</p>
+          <p>COLOR:  {ticket?.color_carro}</p>
         </div>
         <div style={{ width: "30%", height: "5%", float: "right" }}>
-          <p>PLACAS: {ticket?.placas_carro}</p>
+          <p>PLACAS:  {ticket?.placas_carro}</p>
         </div>
         <div style={{ width: "30%", height: "5%", float: "right" }}>
-          <p>MODELO DE CARRO: {ticket?.modelo_carro}</p>
+          <p>MODELO DE CARRO:  {ticket?.modelo_carro}</p>
         </div>
         <div style={{ width: "30%", height: "5%", float: "right" }}>
-          <p>MARCA: {ticket?.marca_carro}</p>
+          <p>MARCA:  {ticket?.marca_carro}</p>
         </div>
 
 
@@ -397,19 +397,19 @@ const getcotizacioTecnico = async () => {
               colSpan={3}
               style={{ border: "1px solid", verticalAlign: "15px" }}
             >
-              SOLUCION DEL TÉCNICO: {cotizacionTecnico?.solucion_tecnico }
+              SOLUCION DEL TÉCNICO:  {cotizacionTecnico?.solucion_tecnico }
             </td>
             <td
               colSpan={2}
               style={{ border: "1px solid", verticalAlign: "15px" }}
             >
-              COTIZACION DE GPOLIAS: {ticket?.cotizacion_gpo_lias}
+              COTIZACION DE GPOLIAS:  {ticket?.cotizacion_gpo_lias}
             </td>
           </tr>
           <tr>
-            <td style={{ verticalAlign: "15px", height: "10px" }}>$MO:{ cotizacionTecnico?.costo_mano_obra}</td>
-            <td style={{ verticalAlign: "15px", height: "10px" }}>$MAT: {cotizacionTecnico?.costo_materiales }</td>
-            <td style={{ verticalAlign: "15px", height: "10px" }}>$TÉCNICO:{cotizacionTecnico?.total_cotizacion }</td>
+            <td style={{ verticalAlign: "15px", height: "10px" }}>$MO:  { cotizacionTecnico?.costo_mano_obra}</td>
+            <td style={{ verticalAlign: "15px", height: "10px" }}>$MAT:  {cotizacionTecnico?.costo_materiales }</td>
+            <td style={{ verticalAlign: "15px", height: "10px" }}>$TÉCNICO:  {cotizacionTecnico?.total_cotizacion }</td>
           </tr>
         </table>
 

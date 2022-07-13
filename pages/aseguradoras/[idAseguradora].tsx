@@ -93,6 +93,7 @@ function AseguradoraVer() {
 
     consultaAsistencias();
     if (response.status === 201) {
+      setNombreAsistencia("");
       onClose();
       toast({
         title: "Asistencia agregada con éxito.",
@@ -226,6 +227,8 @@ function AseguradoraVer() {
                         formAseguradora.setFieldValue("nombre", nombreM);
                       }}
                       type="Nombre"
+                      minLength={3}
+                      maxLength={255}
                       placeholder="Aseguradora"
                     />
                     <InputRightAddon
@@ -249,7 +252,9 @@ function AseguradoraVer() {
                         variant="filled"
                         defaultValue={data?.telefono}
                         onChange={formAseguradora.handleChange}
-                        type="tel"
+                        type="number"
+                        minLength={8}
+                        maxLength={12}
                         placeholder="Phone number"
                       />
                       <InputRightAddon
@@ -272,6 +277,10 @@ function AseguradoraVer() {
                           children={<IoSpeedometerOutline color="gray.300" />}
                         />
                         <Input
+                        minLength={1}
+                        maxLength={3}
+                        min={0}
+                        max={100}
                           id="kilometraje_permitido"
                           variant="filled"
                           defaultValue={data?.kilometraje_permitido}
@@ -294,6 +303,10 @@ function AseguradoraVer() {
                           children={<MdOutlineAttachMoney color="gray.300" />}
                         />
                         <Input
+                        minLength={1}
+                        maxLength={3}
+                        min={0}
+                        max={100}
                           id="costo_por_kilometro"
                           variant="filled"
                           defaultValue={data?.costo_por_kilometro!}
@@ -327,7 +340,9 @@ function AseguradoraVer() {
                           variant="filled"
                           defaultValue={data?.telefono_domestico}
                           onChange={formAseguradora.handleChange}
-                          type="phone"
+                          type="number"
+                          minLength={8}
+                          maxLength={12}
                           placeholder="Numero de Teléfono de servicio domestico"
                           value={formAseguradora.values.telefono_domestico}
                         />
@@ -352,7 +367,9 @@ function AseguradoraVer() {
                           defaultValue={data?.telefono_vial}
                           onChange={formAseguradora.handleChange}
                           value={formAseguradora.values.telefono_vial}
-                          type="phone"
+                          type="number"
+                          minLength={8}
+                          maxLength={12}
                           placeholder="Numero de Teléfono de servicio vial"
                         />
                       </InputGroup>
@@ -376,7 +393,9 @@ function AseguradoraVer() {
                           defaultValue={data?.telefono_whats}
                           onChange={formAseguradora.handleChange}
                           value={formAseguradora.values.telefono_whats}
-                          type="phone"
+                          type="number"
+                          minLength={8}
+                          maxLength={12}
                           placeholder="Numero de whatsapp"
                         />
                       </InputGroup>
@@ -405,6 +424,8 @@ function AseguradoraVer() {
               </Stack>
             </Box>
           </FormControl>
+
+         
 
           <Box
             m={2}
@@ -444,6 +465,8 @@ function AseguradoraVer() {
                     <FormLabel>Nombre de la Asistencia</FormLabel>
                     <Input
                       maxLength={50}
+                      minLength={3}
+                      value={nombreAsistencia}
                       onChange={(e) => {
                         const nombreM = e.target.value.toUpperCase();
                         setNombreAsistencia(nombreM);
@@ -507,7 +530,7 @@ function AseguradoraVer() {
               </Table>
             </TableContainer>
           </Box>
-        </form>
+          </form>
       </DesktopLayout>
     </div>
   );

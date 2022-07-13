@@ -445,7 +445,157 @@ function TicketVer() {
       ) : null}
   */}
 
+<<<<<<< Updated upstream
     
+=======
+      {ticket?.estado === "FINALIZADO" ? (
+        <Box>
+          <SimpleGrid
+            position="fixed"
+            columns={1}
+            spacingX="1000px"
+            spacingY="20px"
+            zIndex={2}
+            display={{ md: 'flex' }}
+          >
+            <Box
+              margin={"1%"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              position="fixed"
+              height={"50px"}
+              right={["16px", "380px"]}
+              zIndex={1}
+              borderRadius="md"
+              bg="tomato"
+              color="white"
+              
+            >
+              <FormControl
+                display="flex"
+                alignItems="center"
+                as={SimpleGrid}
+                columns={{ base: 1, lg: 2 }}
+              >
+                <FormLabel padding={3} htmlFor="isChecked">
+                  Archivar ticket:
+                </FormLabel>
+
+                <Switch
+                  isChecked={archivado}
+                  margin={"5px"}
+                  size={"lg"}
+                  onChange={() => {
+                    setArchivado(!archivado);
+                    archivarTicket();
+                  }}
+                />
+              </FormControl>
+            </Box>
+
+            <Box
+              margin={"1%"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              bottom="20px"
+              right={["16px", "84px"]}
+              position="fixed"
+            >
+              {archivado ? (
+                <Alert variant="solid" status="info">
+                  <AlertIcon />
+                  Este ticket se encuentra archivado
+                </Alert>
+              ) : null}
+            </Box>
+
+            <Box
+              margin={"1%"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              position="fixed"
+              width={"190px"}
+              height={"50px"}
+              right={["16px", "170px"]}
+              zIndex={1}
+            >
+              <Button
+                padding={"2%"}
+                justifySelf="end"
+                width={"150px"}
+                leftIcon={<BsPrinter size={"30px"} />}
+                id="imprimirTicket"
+                colorScheme="telegram"
+                borderColor="twitter.100"
+                size="lg"
+                onClick={onOpen}
+              />
+            </Box>
+
+            <Box
+              margin={"1%"}
+              justifyContent={"center"}
+              alignItems={"center"}
+              position="fixed"
+              width={"190px"}
+              height={"50px"}
+              right={["0.2px"]}
+              zIndex={1}
+            >
+              <FormControl
+                paddingTop={2}
+                as={SimpleGrid}
+                columns={{ base: 1, lg: 2 }}
+              >
+                <FormLabel
+                  htmlFor="facturado"
+                  fontWeight={"bold"}
+                  color="blue.700"
+                >
+                  Facturado:
+                </FormLabel>
+                <Switch
+                  id="facturar"
+                  size="lg"
+                  isChecked={facturado}
+                  onChange={() => {
+                    setFacturado(!facturado);
+                    facturarTicket();
+                  }}
+                />
+              </FormControl>
+            </Box>
+          </SimpleGrid>
+        </Box>
+      ) : null}
+
+      <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Impresión</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Printer doc={<TicketImprimible ticket={ticket!} />} />
+          </ModalBody>
+          <ModalFooter
+            position={"fixed"}
+            right={["16px", "84px"]}
+            paddingTop={10}
+          >
+            <Button
+              paddingLeft={10}
+              paddingRight={10}
+              colorScheme="red"
+              variant="outline"
+              position={"inherit"}
+              onClick={onClose}
+            >
+              Cerrar
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
+>>>>>>> Stashed changes
 
       {/*  
       <Modal onClose={onCloseCotizacionT} size={"full"} isOpen={isOpenCot}>

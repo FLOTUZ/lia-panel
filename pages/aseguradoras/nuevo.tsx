@@ -92,6 +92,7 @@ function AseguradoraNueva() {
 
     consultaAsistencias();
     if (response.status === 201) {
+      setNombreAsistencia("");
       onClose();
       toast({
         title: "Asistencia agregada.",
@@ -134,6 +135,7 @@ function AseguradoraNueva() {
     setAseguradoraGuardada(aseguradora);
 
     if (response.status === 201) {
+      setHabilitado(true);
       onClose();
       toast({
         title: "Aseguradora agregada.",
@@ -158,6 +160,10 @@ function AseguradoraNueva() {
   return (
     <div>
       <DesktopLayout>
+        <form onSubmit={(e)=>{
+          e.preventDefault()
+          guardarAseguradora()
+        }}>
         <Header title={"Crear Nueva Aseguradora"} />
 
         <Box
@@ -185,6 +191,8 @@ function AseguradoraNueva() {
                     onChange={(e) => {
                       setNombre(e.target.value);
                     }}
+                    maxLength={255}
+                    minLength={3}
                   />
                 </InputGroup>
               </FormControl>
@@ -201,10 +209,11 @@ function AseguradoraNueva() {
                   <Input
                     minLength={8}
                     maxLength={12}
+                    
                     onChange={(e) => {
                       setTelefono(e.target.value);
                     }}
-                    type="phone"
+                    type="number"
                     placeholder="Numero de Teléfono"
                   />
                 </InputGroup>
@@ -249,6 +258,9 @@ function AseguradoraNueva() {
                     />
                     <Input
                       min={0}
+                      max={100}
+                      minLength={1}
+                      maxLength={3}
                       step={0.01}
                       onChange={(e) => {
                         setCostoKilometro(Number(e.target.value));
@@ -273,6 +285,9 @@ function AseguradoraNueva() {
                     <Input
                       id="costo_kilometro_foraneo"
                       min={0}
+                      max={100}
+                      minLength={1}
+                      maxLength={3}
                       step={0.01}
                       onChange={(e) => {
                         setCostoKilometroForaneo(Number(e.target.value));
@@ -306,7 +321,7 @@ function AseguradoraNueva() {
                       }}
                       minLength={8}
                       maxLength={12}
-                      type="phone"
+                      type="number"
                       placeholder="Número de Teléfono de Servicio Doméstico"
                     />
                   </InputGroup>
@@ -329,7 +344,7 @@ function AseguradoraNueva() {
                       onChange={(e) => {
                         setTelefonoVial(e.target.value);
                       }}
-                      type="phone"
+                      type="number"
                       placeholder="Número de Teléfono de Servicio Vial"
                     />
                   </InputGroup>
@@ -350,7 +365,7 @@ function AseguradoraNueva() {
                       onChange={(e) => {
                         setTelefonoWhats(e.target.value);
                       }}
-                      type="phone"
+                      type="number"
                       placeholder="Numero de WhatsApp"
                     />
                   </InputGroup>
@@ -368,10 +383,7 @@ function AseguradoraNueva() {
               <Button
                 colorScheme="whatsapp"
                 variant="solid"
-                onClick={() => {
-                  guardarAseguradora();
-                  setHabilitado(true);
-                }}
+                type="submit"
               >
                 Agregar
               </Button>
@@ -379,16 +391,18 @@ function AseguradoraNueva() {
               <Link href={"/aseguradoras"}>
                 <a>
                   <Button colorScheme="red" variant="outline">
-                    Cancelar
+                    Regresar
                   </Button>
                 </a>
               </Link>
             </Stack>
           </Stack>
         </Box>
+        </form>
 
         {/*-------------------Agregar asistencias a la aseguradora se habilitada al guardar el estado */}
         {habilitado === true ? (
+          <form>
           <Box
             m={2}
             bgColor="white"
@@ -428,8 +442,11 @@ function AseguradoraNueva() {
                     <FormLabel>Nombre de la Asistencia</FormLabel>
                     <Input
                       placeholder="Nombre de la Asistencia"
+                      value={nombreAsistencia}
+                      minLength={3}
+                      maxLength={50}
                       onChange={(e) => {
-                        setNombreAsistencia(e.target.value);
+                        setNombreAsistencia(e.target.value.toUpperCase());
                       }}
                     />
                   </FormControl>
@@ -478,7 +495,8 @@ function AseguradoraNueva() {
               </Table>
             </TableContainer>
           </Box>
-        ) : null}
+          </form>
+        ) : null} 
       </DesktopLayout>
     </div>
   );

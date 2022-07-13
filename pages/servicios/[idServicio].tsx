@@ -105,6 +105,8 @@ function ServicioVer() {
                     variant="filled"
                     id="nombre"
                     type="nombre"
+                    minLength={5}
+                    maxLength={100}
                     defaultValue={data?.nombre}
                     onChange={formServicio.handleChange}
                   />
@@ -132,7 +134,7 @@ function ServicioVer() {
                       <Radio
                         value="VIAL"
                       >
-                        Automovilístico
+                        Vial
                       </Radio>
                     </Stack>
                   </RadioGroup>
