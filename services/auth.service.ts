@@ -23,12 +23,12 @@ export class AuthService {
   }
 
   async logout() {
-    const respuesta = await Crear(`${this.url}/logout`);
-    if (window) window.localStorage.removeItem(this.TOKEN_KEY);
+    await Crear(`${this.url}/logout`);
+    localStorage.removeItem(this.TOKEN_KEY);
   }
 
   setToken(token: string) {
-    if (window) window.localStorage.setItem(this.TOKEN_KEY, token);
+    localStorage.setItem(this.TOKEN_KEY, token);
   }
 
   async refreshToken() {
@@ -40,8 +40,11 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    if (window) return window.localStorage.getItem(this.TOKEN_KEY);
-    return null;
+    const token = localStorage.getItem(this.TOKEN_KEY);
+    if (token == null) {
+      return token;
+    }
+    return token;
   }
 
   initAxiosInterceptor() {

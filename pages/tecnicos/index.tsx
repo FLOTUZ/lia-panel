@@ -101,7 +101,6 @@ function TenicosListado() {
                       <Td>{t.ViveEn?.nombre}</Td>
                       <Td>{t.telefono}</Td>
                       <Td>{t.Servicio![0]?.nombre}</Td>
-
                       <Td>
                         <Link href={`/tecnicos/${t.id}`}>
                           <a>
@@ -109,7 +108,7 @@ function TenicosListado() {
                               variant="ghost"
                               aria-label="edit"
                               icon={<EditIcon />}
-                            />{" "}
+                            />
                           </a>
                         </Link>
                       </Td>
@@ -120,7 +119,7 @@ function TenicosListado() {
                 <Tr>
                   <Td>No hay data</Td>
                 </Tr>
-              )}{" "}
+              )}
             </Tbody>
           </Table>
         </TableContainer>

@@ -4,7 +4,7 @@ import { UsuariosService } from "@/services/usuarios.service";
 import UsuarioNoAutorizado from "@/views/UsuarioNoAutorizado.view";
 import { Center, Spinner } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { createContext, useMemo, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 
 type IUserContext = {
   usuario: IUsuario | null;
@@ -22,10 +22,15 @@ const UserProvider = ({ children }: IUserProvider) => {
   const [usuario, setUsuario] = useState<IUsuario | null>(null);
 
   const login = async () => {
-    const service = new UsuariosService();
-    const user = await service.getLogedUser();
-    if (user) setUsuario(user);
+    if (usuario == null) {
+      const service = new UsuariosService();
+      const user = await service.getLogedUser();
+      if (user) setUsuario(user);
+    } else {
+      router.push("/login");
+    }
   };
+
   const logout = () => {
     const service = new AuthService();
     setUsuario(null);
@@ -33,7 +38,7 @@ const UserProvider = ({ children }: IUserProvider) => {
     router.push("/login");
   };
 
-  useMemo(() => {
+  useEffect(() => {
     login();
   }, []);
 
