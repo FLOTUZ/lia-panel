@@ -30,7 +30,6 @@ import { ITecnico, IUsuario, IServicio, ICiudad } from "@/services/api.models";
 import { UsuariosService } from "@/services/usuarios.service";
 import { TecnicoService } from "@/services/tecnicos.service";
 import { ServiciosService } from "@/services/servicios.service";
-import { ServiciosToTecnicos } from "@/services/serviciosToTecnicos.service";
 
 function UsuarioNuevo() {
   //------------------------ DATA USUARIO -------------------------------------
@@ -90,12 +89,11 @@ function UsuarioNuevo() {
     const respuestaUsuario = await serviceUsuario.create(dataUsuario);
     const usuarioGuardado = respuestaUsuario.data as IUsuario;
 
-
     if (respuestaUsuario.status != 201) {
       setCargando(false);
       toast({
         title: "Oops... Ocurrio un error.",
-        position:"bottom-right",
+        position: "bottom-right",
         status: "error",
         description: `Error, verificar los campos.`,
       });
@@ -103,7 +101,7 @@ function UsuarioNuevo() {
     if (respuestaUsuario.status == 201) {
       toast({
         title: "Usuario agregado",
-        position:"bottom-right",
+        position: "bottom-right",
         status: "success",
         description: `Se guardo el usuario, exitosamente.`,
       });
@@ -116,20 +114,19 @@ function UsuarioNuevo() {
         apellido_materno: apellidoMaterno,
         telefono: telefono,
         usuarioId: usuarioGuardado.id || 0,
-        ciudadId: ciudadId || 0,  
+        ciudadId: ciudadId || 0,
       };
 
       const serviceTecnico = new TecnicoService();
       const respuestaTecnico = await serviceTecnico.create(dataTecnico);
       const tecnicoGuardado = respuestaTecnico.data as ITecnico;
 
-
       if (respuestaTecnico.status != 201) {
         setCargando(false);
         toast({
           title: "Oops... Ocurrio un error.",
           status: "error",
-          position:"bottom-right",
+          position: "bottom-right",
           description: `Error, verificar los campos.`,
         });
       }
@@ -137,12 +134,12 @@ function UsuarioNuevo() {
         toast({
           title: "Usuario guardado.",
           status: "success",
-          position:"bottom-right",
+          position: "bottom-right",
           description: `Se guardo, con éxito el técnico ${tecnicoGuardado.nombre}.`,
         });
 
-        const servicioToTecnicos = new ServiciosToTecnicos();
-        const respuesta = servicioToTecnicos.create(
+        const servicioToTecnicos = new TecnicoService();
+        const respuesta = servicioToTecnicos.agregarServiciosATecnico(
           tecnicoGuardado.id || 0,
           servicios
         );
@@ -202,6 +199,7 @@ function UsuarioNuevo() {
               variant="filled"
               id="usuario"
               placeholder="Nombre de Usuario"
+              maxLength={20}
               value={usuario}
               onChange={(e) => setUsuario(e.target.value.toLowerCase())}
             />
@@ -212,6 +210,7 @@ function UsuarioNuevo() {
               variant="filled"
               id="email"
               type={"email"}
+              maxLength={100}
               placeholder="email@gmail.com"
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -223,6 +222,7 @@ function UsuarioNuevo() {
                 id="password"
                 type={"password"}
                 placeholder="Contraseña"
+                maxLength={255}
                 isRequired={true}
                 onChange={(e) => setPassword(e.target.value)}
               />
@@ -236,7 +236,6 @@ function UsuarioNuevo() {
               defaultValue="USUARIO"
               onChange={(e) => setRol(e)}
             >
-
               <HStack spacing="1rem">
                 <Radio size={"lg"} value="TECNICO">
                   Es Técnico
@@ -249,9 +248,6 @@ function UsuarioNuevo() {
                 <Radio size={"lg"} value="ADMIN">
                   Administrador
                 </Radio>
-
-
-
               </HStack>
             </RadioGroup>
             {/* //----------------------------FORMULARIO NUEVO TECNICO------------------------------------ */}
@@ -288,7 +284,7 @@ function UsuarioNuevo() {
                     <Divider orientation="vertical" />
                     <FormControl isRequired paddingTop={15}>
                       <FormLabel htmlFor="apellidoPaterno">
-                       Primer  Apellido
+                        Primer Apellido
                       </FormLabel>
                       <Input
                         variant="filled"
@@ -342,12 +338,12 @@ function UsuarioNuevo() {
                       >
                         {ciudadesList?.length !== 0
                           ? ciudadesList?.map((ciudad, index) => {
-                            return (
-                              <option key={index} value={ciudad.id}>
-                                {ciudad.nombre}
-                              </option>
-                            );
-                          })
+                              return (
+                                <option key={index} value={ciudad.id}>
+                                  {ciudad.nombre}
+                                </option>
+                              );
+                            })
                           : null}
                       </Select>
                     </FormControl>
@@ -373,7 +369,7 @@ function UsuarioNuevo() {
                         })
                       ) : (
                         <></>
-                      )}{" "}
+                      )}
                     </Stack>
                   </FormControl>
                 </Box>
@@ -399,7 +395,6 @@ function UsuarioNuevo() {
                 Cancelar
               </Button>
             </HStack>
-
           </VStack>
         </FormControl>
       </form>

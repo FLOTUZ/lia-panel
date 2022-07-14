@@ -445,9 +445,6 @@ function TicketVer() {
       ) : null}
   */}
 
-<<<<<<< Updated upstream
-    
-=======
       {ticket?.estado === "FINALIZADO" ? (
         <Box>
           <SimpleGrid
@@ -595,7 +592,6 @@ function TicketVer() {
           </ModalFooter>
         </ModalContent>
       </Modal>
->>>>>>> Stashed changes
 
       {/*  
       <Modal onClose={onCloseCotizacionT} size={"full"} isOpen={isOpenCot}>

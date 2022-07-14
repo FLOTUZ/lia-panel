@@ -662,7 +662,6 @@ const NuevoTicket = () => {
               maxLength={500}
               variant="filled"
               id="titulo_ticket"
-              maxLength={150}
               placeholder="Descripción Corta"
               borderColor="twitter.100"
               onChange={formTicket.handleChange}
@@ -676,13 +675,9 @@ const NuevoTicket = () => {
             Descripción de la Problemática
           </FormLabel>
           <Textarea
-<<<<<<< Updated upstream
-            maxLength={200}
-=======
             minLength={10}
             maxLength={500}
             isRequired
->>>>>>> Stashed changes
             id="problematica"
             variant="filled"
             placeholder="Problemática"

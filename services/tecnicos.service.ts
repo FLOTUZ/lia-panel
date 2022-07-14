@@ -3,7 +3,6 @@ import { Actualizar, Consultar, Crear, Eliminar } from "./ApiCall";
 
 export class TecnicoService {
   private url = "/tecnicos";
-  constructor() {}
   public async create(data: ITecnico) {
     const respuesta: any = await Crear(this.url, data);
     return respuesta;
@@ -26,6 +25,20 @@ export class TecnicoService {
 
   public async remove(id: number) {
     const respuesta = await Eliminar(`${this.url}/${id}`);
+    return respuesta;
+  }
+
+  public async agregarServiciosATecnico(idTecnico: number, data: string[]) {
+    const respuesta: any = Crear(`${this.url}/${idTecnico}/servicios`, data);
+    return respuesta;
+  }
+
+  public async editarServiciosDeTecnico(idTecnico: number, data: number[]) {
+    const respuesta: any = await Actualizar(
+      `${this.url}/${idTecnico}/servicios`,
+      data
+    );
+
     return respuesta;
   }
 }

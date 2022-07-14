@@ -35,7 +35,6 @@ import {
 import { UsuariosService } from "@/services/usuarios.service";
 import { TecnicoService } from "@/services/tecnicos.service";
 import { ServiciosService } from "@/services/servicios.service";
-import { ServiciosToTecnicos } from "@/services/serviciosToTecnicos.service";
 import { EstadosService } from "@/services/estados.service";
 import { useRouter } from "next/router";
 
@@ -48,17 +47,11 @@ function TecnicoNuevo() {
   //------------------------ DATA TECNICO -------------------------------------
   const [tecnico, setTecnico] = useState<ITecnico>();
 
-  //----------------------- DATA TECNICO -------------------------------------
-  const [ciudadId, setciudadId] = useState<number>();
-  const [servicios, setServicios] = useState<string[]>([]);
+  const [ciudadDeTecnico, setCiudadDeTecnico] = useState<number>();
+  const [serviciosDeTecnico, setServiciosDeTecnico] = useState<number[]>([]);
   const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
 
   const [cargando, setCargando] = useState(false);
-
-  const [checkedItems, setCheckedItems] = React.useState([false, false]);
-
-  const allChecked = checkedItems.every(Boolean);
-  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
 
   const toast = useToast();
 
@@ -77,12 +70,14 @@ function TecnicoNuevo() {
   // Ciudades ----- estado
   const [estado, setEstado] = useState<IEstado>();
   const [IdEstado, setIdEstado] = useState(0);
+
   const consultarCiudades = async () => {
     const servicio = new CiudadesService();
     const respuesta: any = await servicio.getCiudadesByIdEstado(IdEstado);
     const data = respuesta.data as ICiudad[];
 
     setCiudadesList(data);
+    setCiudadDeTecnico(tecnico?.ciudadId);
   };
   // ---------- servicios ------------
   const [listadoServicios, setListadoServicios] = useState<IServicio[]>([]);
@@ -91,29 +86,8 @@ function TecnicoNuevo() {
     const service = new ServiciosService();
     const respuesta = await service.getAll();
 
-    if (respuesta.status != 200) {
-    } else {
-      const data = respuesta.data as IServicio[];
-      setListadoServicios(data);
-    }
-  };
-
-  const filtradoServicios = (t: IServicio) => {
-    const id = t.id || 0;
-    const arr = servicios;
-    const found = arr.find((e) => e == String(id));
-
-    if (!found) {
-      arr.push(String(id));
-      setServicios(arr);
-    } else {
-      for (let i = 0; i < arr.length; i++) {
-        if (arr[i] == String(id)) {
-          arr.splice(i, 1);
-          setServicios(arr);
-        }
-      }
-    }
+    const data = respuesta.data as IServicio[];
+    setListadoServicios(data);
   };
 
   //------------ adquirir datos del usuario
@@ -127,33 +101,35 @@ function TecnicoNuevo() {
 
   const getUsuario = async () => {
     const service = new UsuariosService();
-    const respuesta = await service.getById(Number(tecnico?.usuarioId));
-
-    if (respuesta.status == 200) {
-      const dato = respuesta.data as IUsuario;
-      setUsuario(dato);
-      setUsuarioId(Number(dato.id));
+    if (tecnico?.usuarioId) {
+      const respuesta = await service.getById(Number(tecnico?.usuarioId));
+      if (respuesta.status == 200) {
+        const dato = respuesta.data as IUsuario;
+        setUsuario(dato);
+        setUsuarioId(Number(dato.id));
+      }
     }
   };
 
   const getEstado = async () => {
     const service = new EstadosService();
-    const respuesta = await service.getById(Number(tecnico?.ViveEn?.estadoId));
-    const dato = respuesta.data as IEstado;
-    setEstado(dato);
+    if (tecnico?.ViveEn?.estadoId) {
+      const respuesta = await service.getById(tecnico?.ViveEn?.estadoId);
+      const dato = respuesta.data as IEstado;
+      setEstado(dato);
+      setIdEstado(Number(dato.id));
+    }
   };
 
-  useEffect(() => {
-    getTecnico();
-  }, [idTecnico]);
+  const serviciosOfTecnico = async () => {
+    const servicios = tecnico?.Servicio;
 
-  useEffect(() => {
-    consultarServicios();
-    consultarCiudades();
-    consultarEstados();
-    getUsuario();
-    getEstado();
-  }, [tecnico]);
+    const arr = servicios?.map((servicio) => {
+      return servicio.id!;
+    });
+
+    if (arr != undefined) setServiciosDeTecnico(arr);
+  };
 
   /*ACTUALIZAR EL ESTADO SELECCIONADO FORMIK */
 
@@ -170,10 +146,11 @@ function TecnicoNuevo() {
     },
     enableReinitialize: true,
 
-    onSubmit: async (values: ITecnico) => {
+    onSubmit: async (values) => {
       const data = {
         ...values,
-      };
+      } as ITecnico;
+
       const service = new TecnicoService();
       const respuesta = await service.update(data, Number(idTecnico));
 
@@ -182,17 +159,19 @@ function TecnicoNuevo() {
       if (respuesta.status == 200) {
         setTecnico(dataUpdate);
         //Se actualizan sus servicios
-        const servicioToTecnicos = new ServiciosToTecnicos();
-        const respuestaServicios = servicioToTecnicos.update(
+
+        const respuestaServicios = await service.editarServiciosDeTecnico(
           Number(idTecnico),
-          servicios
+          serviciosDeTecnico
         );
+
         toast({
           title: "Usuario guardado, con éxito",
           position: "bottom-right",
           status: "success",
           description: `Se guardo usuario, exitosamente.`,
         });
+        router.push("/tecnicos");
       } else {
         setCargando(false);
         toast({
@@ -247,6 +226,25 @@ function TecnicoNuevo() {
       }
     },
   });
+
+  useEffect(() => {
+    getTecnico();
+  }, [idTecnico]);
+
+  useEffect(() => {
+    consultarServicios();
+    consultarEstados();
+    getUsuario();
+    getEstado();
+  }, [tecnico]);
+
+  useEffect(() => {
+    consultarCiudades();
+  }, [IdEstado]);
+
+  useEffect(() => {
+    serviciosOfTecnico();
+  }, [listadoServicios]);
 
   return (
     <DesktopLayout>
@@ -306,7 +304,7 @@ function TecnicoNuevo() {
             <HStack spacing={4} w={"100%"} mt={"12rem"}>
               <Spacer />
               <Button
-                id="guardar"
+                id="guardar_tecnico"
                 colorScheme="whatsapp"
                 variant="solid"
                 type="submit"
@@ -422,6 +420,8 @@ function TecnicoNuevo() {
                     id="estado"
                     placeholder="Selecciona el Estado"
                     variant="filled"
+                    value={IdEstado == 0 ? estado?.id : IdEstado}
+                    onClick={() => consultarCiudades()}
                     onChange={(e) => {
                       setIdEstado(Number(e.target.value));
                     }}
@@ -436,9 +436,6 @@ function TecnicoNuevo() {
                         })
                       : null}
                   </Select>
-                  <FormHelperText>
-                    Seleccione el Estado Nuevamente
-                  </FormHelperText>
                 </FormControl>
 
                 <FormControl isRequired paddingLeft={5} paddingTop={15}>
@@ -447,14 +444,17 @@ function TecnicoNuevo() {
                     id="ciudadId"
                     placeholder="Selecciona la Ciudad"
                     variant="filled"
+                    value={
+                      ciudadDeTecnico != 0
+                        ? ciudadDeTecnico
+                        : formTecnico.values.ciudadId
+                    }
                     onChange={(e) => {
                       formTecnico.setFieldValue(
                         "ciudadId",
                         Number(e.target.value)
                       );
-                    }}
-                    onFocus={(e) => {
-                      consultarCiudades();
+                      setCiudadDeTecnico(Number(e.target.value));
                     }}
                   >
                     {ciudadesList?.length !== 0
@@ -467,32 +467,27 @@ function TecnicoNuevo() {
                         })
                       : null}
                   </Select>
-                  <FormHelperText>
-                    Seleccione la Ciudad Nuevamente
-                  </FormHelperText>
                 </FormControl>
               </Center>
 
               <Divider orientation="vertical" />
-              <FormControl isRequired paddingTop={15}></FormControl>
+
               <FormControl>
-                <FormLabel>Servicios</FormLabel>
-                <FormHelperText>Agrega los Servicios Nuevamente</FormHelperText>
+                <FormLabel htmlFor="servicios">Servicios</FormLabel>
                 <Stack pl={6} mt={1} spacing={1}>
                   <CheckboxGroup
+                    value={serviciosDeTecnico}
                     onChange={(checks) => {
-                      formTecnico.setFieldValue("servicio", checks);
+                      const arr: number[] = checks.map((check) => {
+                        return Number(check);
+                      });
+                      setServiciosDeTecnico(arr);
                     }}
                   >
                     {listadoServicios.length != 0 ? (
                       listadoServicios.map((t, index) => {
                         return (
-                          <Checkbox
-                            key={index}
-                            onChange={() => {
-                              filtradoServicios(t);
-                            }}
-                          >
+                          <Checkbox key={index} id={t.nombre} value={t.id}>
                             {t.nombre}
                           </Checkbox>
                         );
@@ -508,12 +503,11 @@ function TecnicoNuevo() {
             <HStack spacing={4} w={"100%"} mt={"12rem"}>
               <Spacer />
               <Button
-                id="guardar"
+                id="guardar_usuario"
                 colorScheme="whatsapp"
                 variant="solid"
                 type="submit"
                 isLoading={cargando}
-                onClick={() => Router.back()}
               >
                 Guardar
               </Button>

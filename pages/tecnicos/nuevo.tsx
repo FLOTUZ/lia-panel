@@ -35,7 +35,6 @@ import {
 import { UsuariosService } from "@/services/usuarios.service";
 import { TecnicoService } from "@/services/tecnicos.service";
 import { ServiciosService } from "@/services/servicios.service";
-import { ServiciosToTecnicos } from "@/services/serviciosToTecnicos.service";
 import { EstadosService } from "@/services/estados.service";
 
 function UsuarioNuevo() {
@@ -155,8 +154,7 @@ function UsuarioNuevo() {
           description: `Se guardo exitosamente, el técnico ${tecnicoGuardado.nombre}.`,
         });
 
-        const servicioToTecnicos = new ServiciosToTecnicos();
-        const respuesta = servicioToTecnicos.create(
+        const respuesta = serviceTecnico.agregarServiciosATecnico(
           tecnicoGuardado.id || 0,
           servicios
         );
