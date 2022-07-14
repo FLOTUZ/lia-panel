@@ -63,7 +63,7 @@ export class AuthService {
       this.logout();
       return false;
     }
-    this.refreshToken();
+    //this.refreshToken();
     return true;
   }
 }

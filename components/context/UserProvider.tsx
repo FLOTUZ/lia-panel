@@ -2,7 +2,7 @@ import { IUsuario } from "@/services/api.models";
 import { AuthService } from "@/services/auth.service";
 import { UsuariosService } from "@/services/usuarios.service";
 import UsuarioNoAutorizado from "@/views/UsuarioNoAutorizado.view";
-import { Center, Spinner } from "@chakra-ui/react";
+import { Center, Spinner, useToast } from "@chakra-ui/react";
 import { useRouter } from "next/router";
 import { createContext, useEffect, useState } from "react";
 
@@ -19,13 +19,26 @@ interface IUserProvider {
 }
 const UserProvider = ({ children }: IUserProvider) => {
   const router = useRouter();
+  const toast = useToast();
   const [usuario, setUsuario] = useState<IUsuario | null>(null);
 
   const login = async () => {
     if (usuario == null) {
       const service = new UsuariosService();
       const user = await service.getLogedUser();
-      if (user) setUsuario(user);
+
+      if (user) {
+        setUsuario(user);
+      } else {
+        logout();
+        toast({
+          title: "La sesion ha caducado",
+          description: "Por favor, inicia sesión de nuevo",
+          status: "warning",
+          duration: 5000,
+          position: "bottom-end",
+        });
+      }
     } else {
       router.push("/login");
     }
