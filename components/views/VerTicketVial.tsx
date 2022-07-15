@@ -1,6 +1,7 @@
 import Header from "@/common/Header";
 
 import {
+  Badge,
   Box,
   Center,
   Divider,
@@ -36,11 +37,10 @@ import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service"
 import { AcuerdoConformidadView } from "@/forms/AcuerdoConformidadForm";
 import { AcuerdoConformidadService } from "@/services/acuerdo-conformidad.service";
 
-
-import moment from 'moment';
+import moment from "moment";
 moment.locale("es");
-import 'moment-timezone'
-import 'moment/locale/es';
+import "moment-timezone";
+import "moment/locale/es";
 
 interface VerTicketVialProps {
   ticket: ITicket;
@@ -106,10 +106,9 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
 
     if (respuesta.status === 200) {
       setCotizacion(data);
-      
+
       data ? setMostrarCotizacion(true) : setMostrarCotizacion(false);
     }
-
   };
 
   const getAcuerdo = async () => {
@@ -277,6 +276,12 @@ export function VerTicketVial({ ticket }: VerTicketVialProps) {
             defaultValue={ticket.problematica}
           />
         </FormControl>
+        <Text fontWeight={"bold"}>Servicios</Text>
+        <SimpleGrid columns={[1, 2, 3]} spacing={2} w={"50%"}>
+          {ticket.Servicio?.map((servicio) => {
+            return <Badge width={"fit-content"}>{servicio.nombre}</Badge>;
+          })}
+        </SimpleGrid>
       </Box>
 
       <Box

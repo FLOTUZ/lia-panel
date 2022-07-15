@@ -53,6 +53,7 @@ export interface ITicket {
   createdAt?: string | null;
   updatedAt?: string | null;
   is_facturado?: boolean | null;
+  Servicio?: IServicio[];
 }
 
 export interface ITecnico {
@@ -92,7 +93,7 @@ export interface ISeguimiento {
   createdAt?: string | null;
   updatedAt?: string | null;
   Usuario?: IUsuario;
-  Asesor? : IAsesor;
+  Asesor?: IAsesor;
 }
 
 export interface IAseguradora {

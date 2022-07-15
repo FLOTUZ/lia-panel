@@ -12,6 +12,7 @@ import {
   SimpleGrid,
   InputGroup,
   InputLeftAddon,
+  Badge,
 } from "@chakra-ui/react";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { IoSpeedometerOutline } from "react-icons/io5";
@@ -276,6 +277,12 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
             defaultValue={ticket.problematica}
           />
         </FormControl>
+        <Text fontWeight={"bold"}>Servicios</Text>
+        <SimpleGrid columns={[1, 2, 3]} spacing={2} w={"50%"}>
+          {ticket.Servicio?.map((servicio) => {
+            return <Badge width={"fit-content"}>{servicio.nombre}</Badge>;
+          })}
+        </SimpleGrid>
       </Box>
 
       <Box

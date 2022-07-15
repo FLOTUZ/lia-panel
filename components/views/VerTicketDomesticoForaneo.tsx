@@ -12,6 +12,7 @@ import {
   SimpleGrid,
   InputGroup,
   InputLeftAddon,
+  Badge,
 } from "@chakra-ui/react";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { IoSpeedometerOutline } from "react-icons/io5";
@@ -36,10 +37,10 @@ import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service"
 import { AcuerdoConformidadView } from "@/forms/AcuerdoConformidadForm";
 import { AcuerdoConformidadService } from "@/services/acuerdo-conformidad.service";
 
-import moment from 'moment';
+import moment from "moment";
 moment.locale("es");
-import 'moment-timezone'
-import 'moment/locale/es';
+import "moment-timezone";
+import "moment/locale/es";
 
 interface VerTicketDomesticoForaneoProps {
   ticket: ITicket;
@@ -108,7 +109,6 @@ export function VerTicketDomesticoForaneo({
     const data = respuesta.data as ICotizacionTecnico;
 
     setCotizacion(data);
-    
 
     data ? setMostrarCotizacion(true) : setMostrarCotizacion(false);
   };
@@ -120,7 +120,6 @@ export function VerTicketDomesticoForaneo({
     const data = respuesta.data as IAcuerdoConformidad;
 
     setAcuerdoConformidad(data);
-    
 
     data
       ? setMostrarAcuerdoConformidad(true)
@@ -170,7 +169,7 @@ export function VerTicketDomesticoForaneo({
           />
         </SimpleGrid>
 
-        <SimpleGrid columns={[1, 1, 1]} >
+        <SimpleGrid columns={[1, 1, 1]}>
           <FormControl paddingTop={15}>
             <FormLabel htmlFor="fecha_llamada">Fecha de la Llamada</FormLabel>
             <Input
@@ -287,6 +286,12 @@ export function VerTicketDomesticoForaneo({
             defaultValue={ticket.problematica}
           />
         </FormControl>
+        <Text fontWeight={"bold"}>Servicios</Text>
+        <SimpleGrid columns={[1, 2, 3]} spacing={2} w={"50%"}>
+          {ticket.Servicio?.map((servicio) => {
+            return <Badge width={"fit-content"}>{servicio.nombre}</Badge>;
+          })}
+        </SimpleGrid>
       </Box>
 
       <Box
@@ -379,7 +384,9 @@ export function VerTicketDomesticoForaneo({
               id="num_interior"
               placeholder=""
               borderColor="twitter.100"
-              defaultValue={ticket.num_interior !== null ? ticket.num_interior : ""}
+              defaultValue={
+                ticket.num_interior !== null ? ticket.num_interior : ""
+              }
             />
           </FormControl>
         </SimpleGrid>
