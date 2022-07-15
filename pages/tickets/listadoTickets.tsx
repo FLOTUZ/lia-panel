@@ -101,7 +101,7 @@ export default function ListadoTickets() {
           </FormControl>
         </Box>
 
-        <TableContainer>
+        <TableContainer >
           <Table variant="simple" colorScheme="teal">
             <TableCaption>Tickets</TableCaption>
             <Thead>
@@ -122,8 +122,9 @@ export default function ListadoTickets() {
                     <Tr key={index}>
                       <Td>{ticket.num_expediente}</Td>
                       <Td>
-                        {ticket.titulo_ticket.substring(0, 30)}
-                        {ticket.titulo_ticket.length > 30 ? "..." : ""}
+                        {ticket.titulo_ticket.length > 30
+                          ? `${ticket.titulo_ticket.substring(0, 30)}...`
+                          : `${ticket.titulo_ticket.substring(0, 30)}`}
                       </Td>
                       <Td>
                         {ticket?.estado === "NUEVO" ? (

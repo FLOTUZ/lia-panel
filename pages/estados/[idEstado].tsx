@@ -29,6 +29,7 @@ import {
   Link,
   IconButton,
   HStack,
+  Spacer,
 } from "@chakra-ui/react";
 import { AddIcon, ViewOffIcon, EditIcon } from "@chakra-ui/icons";
 import React, { useState, useEffect } from "react";
@@ -206,13 +207,8 @@ function EstadoVer() {
               <Divider paddingTop={5} orientation="horizontal" />
             </Stack>
 
-            <Stack
-              marginTop={50}
-              direction="row"
-              spacing={4}
-              align="center"
-              paddingLeft={930}
-            >
+            <Stack direction="row" spacing={4} align="center">
+              <Spacer/>
               <Button
                 id="guardar"
                 type="submit"
@@ -249,8 +245,8 @@ function EstadoVer() {
               direction="row"
               spacing={2}
               align="center"
-              paddingLeft={930}
             >
+              <Spacer/>
               <Button
                 leftIcon={<AddIcon />}
                 colorScheme="facebook"

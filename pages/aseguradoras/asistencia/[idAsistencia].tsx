@@ -11,6 +11,7 @@ import {
   useToast,
   Divider,
   HStack,
+  Spacer,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -19,7 +20,6 @@ import { AsistenciasService } from "@/services/asistencias.service";
 import { useFormik } from "formik";
 
 function AsistenciaVer() {
-
   const toast = useToast();
 
   const [data, setData] = useState<IAsistencia>();
@@ -89,49 +89,36 @@ function AsistenciaVer() {
         <Header title={"Editar Asistencia"} />
         <form onSubmit={formAsistencia.handleSubmit}>
           <Box
-           m={2}
-           bgColor="white"
-           padding={5}
-           borderRadius={10}
-           boxShadow="2xl"
-           p="6"
-           rounded="md"
-           bg="white"
+            m={2}
+            bgColor="white"
+            padding={5}
+            borderRadius={10}
+            boxShadow="2xl"
+            p="6"
+            rounded="md"
+            bg="white"
           >
-            <HStack spacing={4} w={"50%"}>
-            </HStack>
+            <FormControl isRequired>
+              <FormLabel htmlFor="nombre">Nombre de la Asistencia</FormLabel>
 
-            <Stack spacing={4}>
-              <InputGroup>
-                <FormControl isRequired>
-                  <FormLabel htmlFor="nombre">Nombre de la Asistencia</FormLabel>
-                  <InputGroup>
-                    <Input
-                      id="nombre"
-                      variant="filled"
-                      defaultValue={data?.nombre}
-                      placeholder="Asistencia"
-                      maxLength={50}
-                      minLength={3}
-                      onChange={(e) => {
-                        const nombreM = e.target.value.toUpperCase();
-                        formAsistencia.setFieldValue("nombre", nombreM);
-                      }}
-                    />
-                  </InputGroup>
-                </FormControl>
-              </InputGroup>
+              <Input
+                id="nombre"
+                variant="filled"
+                defaultValue={data?.nombre}
+                placeholder="Asistencia"
+                maxLength={50}
+                minLength={3}
+                onChange={(e) => {
+                  const nombreM = e.target.value.toUpperCase();
+                  formAsistencia.setFieldValue("nombre", nombreM);
+                }}
+              />
+            </FormControl>
 
-             <Divider paddingTop={5} orientation="horizontal" />
-            </Stack>
+            <Divider paddingTop={5} orientation="horizontal" />
 
-            <Stack
-              marginTop={50}
-              direction="row"
-              spacing={4}
-              align="center"
-              paddingLeft={930}
-            >
+            <HStack>
+              <Spacer />
               <Button
                 id="guardar"
                 type="submit"
@@ -148,8 +135,7 @@ function AsistenciaVer() {
               >
                 Cancelar
               </Button>
-            </Stack>
-
+            </HStack>
           </Box>
         </form>
       </DesktopLayout>

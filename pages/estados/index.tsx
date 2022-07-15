@@ -58,30 +58,20 @@ function EstadosListado() {
         rounded="md"
         bg="white"
       >
-        <Box
-          m={2}
-          bgColor="white"
-          padding={5}
-          borderRadius={10}
-          p="6"
-          rounded="md"
-          bg="white"
-        >
-          {" "}
-          <Spacer />
-          <Button
+        {" "}
+        <Spacer />
+        <Button
+          leftIcon={<AddIcon />}
+          marginLeft={"auto"}
+          colorScheme="facebook"
+          variant="solid"
           onClick={() => {
             router.push("/estados/nuevo");
           }}
-            leftIcon={<AddIcon />}
-            marginLeft={"auto"}
-            colorScheme="facebook"
-            variant="solid"
-          >
-            Agregar Nuevo Estado
-          </Button>
-        </Box>
-        <Box marginLeft={"1%"}>
+        >
+          Agregar Nuevo Estado
+        </Button>
+        <Box mt={8}>
           <TableContainer>
             <Table size={"md"} variant="simple" colorScheme="teal">
               <TableCaption>Estados</TableCaption>

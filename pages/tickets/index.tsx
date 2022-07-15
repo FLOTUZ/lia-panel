@@ -1,9 +1,11 @@
 import Kanban from "@/layouts/Kanban";
 import DesktopLayout from "@/layouts/DesktopLayout";
 import Header from "@/common/Header";
-import { Button, Box, SimpleGrid, Spacer } from "@chakra-ui/react";
+import { Button, IconButton, SimpleGrid } from "@chakra-ui/react";
 import { useRouter } from "next/router";
-import { AddIcon, ViewIcon } from "@chakra-ui/icons";
+import { AddIcon } from "@chakra-ui/icons";
+import { BsList } from "react-icons/bs";
+import Link from "next/link";
 
 function TicketsListado() {
   const router = useRouter();
@@ -18,17 +20,18 @@ function TicketsListado() {
           spacing={5}
           width="fit-content"
         >
-          <Button
-            leftIcon={<ViewIcon />}
-            colorScheme="facebook"
-            variant="solid"
-            w={"fit-content"}
-            onClick={() => {
-              router.push("/tickets/listadoTickets");
-            }}
-          >
-            Ver Tickets
-          </Button>
+          <Link href={"/tickets/listadoTickets"}>
+            <a>
+              <Button
+                leftIcon={<BsList color="white" size={20} />}
+                colorScheme="facebook"
+                variant="solid"
+                w={"fit-content"}
+              >
+                Listado de tickets
+              </Button>
+            </a>
+          </Link>
 
           <Button
             leftIcon={<AddIcon />}
