@@ -47,45 +47,41 @@ export const AcuerdoConformidadView = ({
 
   const [usuarioAprobador, setUsuarioAprobador] = useState<IUsuario>();
   const aprobarAcuerdoConformidad = async () => {
-
     const service = new UsuariosService();
     const user = await service.getLogedUser();
 
-
-    const payloadAcuerdoConformidad={
+    const payloadAcuerdoConformidad = {
       is_aprobado: true,
-      aprobado_por_usuarioId:user?.id!,
-
-    }as IAcuerdoConformidad
+      aprobado_por_usuarioId: user?.id!,
+    } as IAcuerdoConformidad;
 
     const serviceAcuerdo = new AcuerdoConformidadService();
     const respuestaAcuerdo = await serviceAcuerdo.update(
       payloadAcuerdoConformidad,
-      acuerdoconformidad.id!,
+      acuerdoconformidad.id!
     );
 
+    if (respuestaAcuerdo.status === 200) {
+      setUsuarioAprobador(respuestaAcuerdo.data as IUsuario);
+      const payloadTicket = {
+        estado: "FINALIZADO",
+      } as ITicket;
 
-    const payloadTicket = {
-      estado: "FINALIZADO",
-    } as ITicket;
-
-    const serviceTicket = new TicketsService();
-    const respuestaTicket = await serviceTicket.update(
-      payloadTicket,
-      acuerdoconformidad.ticketId!
-    );
-
-    console.log(respuestaTicket);
-    
-    if (respuestaTicket.status === 200) {
-      toast({
-        title: "Ticket finalizado.",
-        description: "Se finalizó el ticket.",
-        position: "bottom-right",
-        status: "success",
-        duration: 9000,
-        isClosable: true,
-      });
+      const serviceTicket = new TicketsService();
+      const respuestaTicket = await serviceTicket.update(
+        payloadTicket,
+        acuerdoconformidad.ticketId!
+      );
+      if (respuestaTicket.status === 200) {
+        toast({
+          title: "Ticket finalizado.",
+          description: "Se finalizó el ticket.",
+          position: "bottom-right",
+          status: "success",
+          duration: 9000,
+          isClosable: true,
+        });
+      }
     } else {
       toast({
         title: `Oops... Ocurrio un error.`,
@@ -96,6 +92,7 @@ export const AcuerdoConformidadView = ({
         isClosable: true,
       });
     }
+
     router.back();
   };
 
@@ -226,19 +223,19 @@ export const AcuerdoConformidadView = ({
             Descargar Acuerdo.
           </Button>
           {acuerdoconformidad.is_aprobado ? (
-             <FormControl paddingTop={5}>
-            <FormLabel  htmlFor="Se aprobo el acuerdo ">
-              Se Aprobó el acuerdo por:
-            </FormLabel>
-            <Input
-              variant="unstyled"
-              isReadOnly
-              id="aprobado_por_usuarioId"
-              borderColor="twitter.100"
-              value={usuarioAprobador?.usuario!}
-            />
-          </FormControl>
-          ) : null}
+            <FormControl paddingTop={5}>
+              <FormLabel htmlFor="Se aprobo el acuerdo ">
+                Se Aprobó el acuerdo por:
+              </FormLabel>
+              <Input
+                variant="unstyled"
+                isReadOnly
+                id="aprobado_por_usuarioId"
+                borderColor="twitter.100"
+                value={acuerdoconformidad.Usuario_Aprobador?.usuario}
+              />
+            </FormControl>
+          ) : (
             <Button
               h={"3rem"}
               colorScheme={"green"}
@@ -246,12 +243,16 @@ export const AcuerdoConformidadView = ({
             >
               Aprobar Cierre.
             </Button>
-          
-          
+          )}
         </SimpleGrid>
       </Box>
 
-      <Modal onClose={onClosePDF} size={"full"} isOpen={isOpenPDF} closeOnEsc={true}>
+      <Modal
+        onClose={onClosePDF}
+        size={"full"}
+        isOpen={isOpenPDF}
+        closeOnEsc={true}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Acuerdo Firmado.</ModalHeader>

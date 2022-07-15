@@ -1,5 +1,6 @@
 import DesktopLayout from "@/layouts/DesktopLayout";
 import {
+  IAcuerdoConformidad,
   IAseguradora,
   IAsesor,
   IAsistencia,
@@ -50,7 +51,7 @@ import { useRouter } from "next/router";
 
 import React, { useEffect, useState } from "react";
 import { IoAdd } from "react-icons/io5";
-import { BsPrinter } from "react-icons/bs";
+import { BsArrowLeft, BsPrinter } from "react-icons/bs";
 import { TicketsService } from "@/services/tickets.service";
 import { VerTicketVialForaneo } from "@/views/VerTicketVialForaneo";
 import { VerTicketVial } from "@/views/VerTicketVial";
@@ -66,6 +67,8 @@ import { VerInformacionTecnico } from "@/views/VerInformacionTecnico";
 import { TecnicoService } from "@/services/tecnicos.service";
 import { AsesoresService } from "@/services/asesores.service";
 import { UsuariosService } from "@/services/usuarios.service";
+import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service";
+import { AcuerdoConformidadService } from "@/services/acuerdo-conformidad.service";
 
 function TicketVer() {
   const router = useRouter();
@@ -271,9 +274,6 @@ function TicketVer() {
         });
       }
 
-
-
-
       setArchivado(t.is_archivado!);
     }
   };
@@ -358,6 +358,64 @@ function TicketVer() {
     }
   };
 
+  const regresarAEstadoAnterior = async () => {
+    const serviceTicket = new TicketsService();
+    const serviceCotizacion = new CotizacionTecnicoService();
+    const acuerdoService = new AcuerdoConformidadService();
+    switch (ticket?.estado) {
+      case "TOMADO":
+        await serviceTicket.update(
+          { estado: "NUEVO", tecnicoId: null },
+          ticket?.id!
+        );
+        break;
+
+      case "COTIZADO":
+        await serviceTicket.update({ estado: "TOMADO" }, ticket?.id!);
+        const cotizacion = await serviceCotizacion.cotizacionByTicket(
+          ticket.id!
+        );
+        serviceCotizacion.remove(cotizacion.data?.id!);
+        break;
+
+      case "EN PROCESO":
+        await serviceTicket.update({ estado: "COTIZADO" }, ticket?.id!);
+        break;
+
+      case "A CERRAR":
+        await serviceTicket.update({ estado: "EN PROCESO" }, ticket?.id!);
+        const response = await acuerdoService.acuerdoConformidadByTicket(
+          ticket.id!
+        );
+        if (response.status === 200) {
+          const acuerdoDeTicket = response.data as IAcuerdoConformidad;
+          await acuerdoService.remove(acuerdoDeTicket.id!);
+        }
+        break;
+
+      case "FINALIZADO":
+        await serviceTicket.update({ estado: "A CERRAR" }, ticket?.id!);
+        const respuesta = await acuerdoService.acuerdoConformidadByTicket(
+          ticket.id!
+        );
+        const acuerdoACancelar = respuesta.data as IAcuerdoConformidad;
+
+        const payload = {
+          aprobado_por_usuarioId: null,
+          is_aprobado: false,
+        } as IAcuerdoConformidad;
+
+        const res = await acuerdoService.update(payload, acuerdoACancelar.id!);
+        console.log(res);
+
+        break;
+
+      default:
+        break;
+    }
+    router.back();
+  };
+
   useEffect(() => {
     getUserLogeado();
     getTicket();
@@ -389,6 +447,32 @@ function TicketVer() {
 
   return (
     <DesktopLayout>
+      {ticket?.estado !== "NUEVO" ? (
+        <Box
+          justifyContent={"center"}
+          alignItems={"center"}
+          position="fixed"
+          width={"80px"}
+          ml={2}
+          height={"80px"}
+          bottom="20px"
+          zIndex={1}
+          borderWidth={1}
+          bgColor={"#df0000"}
+          color={"white"}
+          borderRadius={100}
+          _hover={{
+            boxShadow: "5px 5px 5px #DDD9D9",
+            bgColor: "white",
+            color: "black",
+          }}
+          onClick={regresarAEstadoAnterior}
+        >
+          <Center w={"100%"} h={"100%"}>
+            <BsArrowLeft size={40} />
+          </Center>
+        </Box>
+      ) : null}
       {ticket?.estado === "NUEVO" ? (
         <Box
           justifyContent={"center"}
@@ -404,13 +488,13 @@ function TicketVer() {
           color={"white"}
           borderRadius={100}
           _hover={{
-            boxShadow: "10px 10px 5px #DDD9D9",
-            bgColor: " #98A7C9",
+            boxShadow: "5px 5px 5px #DDD9D9",
+            bgColor: "white",
             color: "black",
           }}
           onClick={abrir}
         >
-          <Center marginTop={"3.5"}>
+          <Center w={"100%"} h={"100%"}>
             <IoAdd size={40} />
           </Center>
         </Box>
@@ -453,7 +537,7 @@ function TicketVer() {
             spacingX="1000px"
             spacingY="20px"
             zIndex={2}
-            display={{ md: 'flex' }}
+            display={{ md: "flex" }}
           >
             <Box
               margin={"1%"}
@@ -466,7 +550,6 @@ function TicketVer() {
               borderRadius="md"
               bg="tomato"
               color="white"
-              
             >
               <FormControl
                 display="flex"
@@ -727,125 +810,124 @@ function TicketVer() {
         rounded="md"
         bg="white"
       >
-         
-
-          {ticket?.estado === "FINALIZADO" ? (
-            <Box >
-
-        <SimpleGrid columns={[2, null, 3]} spacing='40px'>
+        {ticket?.estado === "FINALIZADO" ? (
+          <Box>
+            <SimpleGrid columns={[2, null, 3]} spacing="40px">
               <Box margin={"1%"}>
-                  <Button
-                    width={"150px"}
-                    leftIcon={<BsPrinter size={"30px"} />}
-                    id="imprimirTicket"
-                    colorScheme="telegram"
-                    borderColor="twitter.100"
-                    size="lg"
-                    onClick={onOpen}
-                    _hover={{
-                      boxShadow: "10px 10px 5px #6BBFF4",
-                      bgColor: " #FFFFFF",
-                      color: "black",
+                <Button
+                  width={"150px"}
+                  leftIcon={<BsPrinter size={"30px"} />}
+                  id="imprimirTicket"
+                  colorScheme="telegram"
+                  borderColor="twitter.100"
+                  size="lg"
+                  onClick={onOpen}
+                  _hover={{
+                    boxShadow: "10px 10px 5px #6BBFF4",
+                    bgColor: " #FFFFFF",
+                    color: "black",
+                  }}
+                />
+              </Box>
+              <Box
+                height={"50px"}
+                margin={"1%"}
+                borderRadius="md"
+                width={"190px"}
+                right={["0.2px"]}
+              >
+                <FormControl
+                  alignItems="center"
+                  as={SimpleGrid}
+                  columns={{ base: 1, lg: 2 }}
+                >
+                  <FormLabel
+                    htmlFor="archivar"
+                    fontWeight={"bold"}
+                    color="blue.700"
+                  >
+                    Archivar:
+                  </FormLabel>
+
+                  <Switch
+                    isChecked={archivado}
+                    size={"lg"}
+                    onChange={() => {
+                      setArchivado(!archivado);
+                      archivarTicket();
                     }}
                   />
-                </Box>
-                <Box
-                  height={"50px"}
-                  margin={"1%"}
-                  borderRadius="md"
-                  width={"190px"}
-                  right={["0.2px"]}
+                </FormControl>
+              </Box>
+              <Box
+                margin={"1%"}
+                justifyContent={"center"}
+                alignItems={"center"}
+                width={"190px"}
+                height={"50px"}
+                right={["0.2px"]}
+                zIndex={1}
+                fontWeight="semibold"
+              >
+                <FormControl
+                  paddingTop={2}
+                  as={SimpleGrid}
+                  columns={{ base: 1, lg: 2 }}
                 >
-                  <FormControl
-                    alignItems="center"
-                    as={SimpleGrid}
-                    columns={{ base: 1, lg: 2 }}
+                  <FormLabel
+                    htmlFor="facturar"
+                    fontWeight={"bold"}
+                    color="blue.700"
                   >
-                    <FormLabel    htmlFor="archivar"
-                      fontWeight={"bold"}
-                      color="blue.700">
-                      Archivar:
-                    </FormLabel>
+                    Facturar:
+                  </FormLabel>
+                  <Switch
+                    id="facturar"
+                    size="lg"
+                    isChecked={facturado}
+                    onChange={() => {
+                      setFacturado(!facturado);
+                      facturarTicket();
+                    }}
+                  />
+                </FormControl>
+              </Box>
+            </SimpleGrid>
+          </Box>
+        ) : null}
 
-                    <Switch
-                      isChecked={archivado}
-                      size={"lg"}
-                      onChange={() => {
-                        setArchivado(!archivado);
-                        archivarTicket();
-                      }}
-                    />
-                  </FormControl>
-                </Box>
-                <Box
-                  margin={"1%"}
-                  justifyContent={"center"}
-                  alignItems={"center"}
-                  width={"190px"}
-                  height={"50px"}
-                  right={["0.2px"]}
-                  zIndex={1}
-                  fontWeight="semibold"
-                >
-                  <FormControl
-                    paddingTop={2}
-                    as={SimpleGrid}
-                    columns={{ base: 1, lg: 2 }}
-                  >
-                    <FormLabel
-                      htmlFor="facturar"
-                      fontWeight={"bold"}
-                      color="blue.700"
-                    >
-                      Facturar:
-                    </FormLabel>
-                    <Switch
-                      id="facturar"
-                      size="lg"
-                      isChecked={facturado}
-                      onChange={() => {
-                        setFacturado(!facturado);
-                        facturarTicket();
-                      }}
-                    />
-                  </FormControl>
-                </Box>
-              </SimpleGrid>
-            </Box>
-          ) : null}
-
-          <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
-            <ModalOverlay />
-            <ModalContent>
-              <ModalHeader>Impresión</ModalHeader>
-              <ModalCloseButton />
-              <ModalBody>
-                <Printer doc={<TicketImprimible ticket={ticket!} />} />
-              </ModalBody>
-              <ModalFooter right={["16px", "84px"]} paddingTop={10}>
-                <Button
-                  paddingLeft={10}
-                  paddingRight={10}
-                  colorScheme="red"
-                  variant="outline"
-                  position={"inherit"}
-                  onClick={onClose}
-                >
-                  Cerrar
-                </Button>
-              </ModalFooter>
-            </ModalContent>
-          </Modal>
+        <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Impresión</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Printer doc={<TicketImprimible ticket={ticket!} />} />
+            </ModalBody>
+            <ModalFooter right={["16px", "84px"]} paddingTop={10}>
+              <Button
+                paddingLeft={10}
+                paddingRight={10}
+                colorScheme="red"
+                variant="outline"
+                position={"inherit"}
+                onClick={onClose}
+              >
+                Cerrar
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
         <HStack spacing={4} w={"50%"}>
-            <Button
-              onClick={onOpenSeguimiento}
-              leftIcon={<AddIcon />}
-              colorScheme="facebook"
-              variant="solid"
-            >
-              Agregar Nuevo Seguimiento
-            </Button>
-          </HStack>
+          <Button
+            onClick={onOpenSeguimiento}
+            leftIcon={<AddIcon />}
+            colorScheme="facebook"
+            variant="solid"
+          >
+            Agregar Nuevo Seguimiento
+          </Button>
+        </HStack>
 
         <Box marginLeft={"1%"} marginTop="20px">
           <TableContainer>
