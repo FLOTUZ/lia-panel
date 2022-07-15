@@ -60,7 +60,7 @@ export interface ITecnico {
   id?: number;
   nombre: string;
   apellido_paterno: string;
-  apellido_materno: string;
+  apellido_materno?: string;
   calificacion?: number;
   telefono: string;
   usuarioId?: number;

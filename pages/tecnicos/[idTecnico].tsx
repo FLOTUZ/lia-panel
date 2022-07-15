@@ -416,7 +416,15 @@ function TecnicoNuevo() {
                   placeholder="Teléfono"
                   type={"number"}
                   defaultValue={tecnico?.telefono}
-                  onChange={formTecnico.handleChange}
+                  value={formTecnico.values.telefono}
+                  onChange={(e) => {
+                    if (e.target.value.length <= 10) {
+                      formTecnico.setFieldValue(
+                        "telefono",
+                        e.target.value.toString()
+                      );
+                    }
+                  }}
                 />
               </FormControl>
 

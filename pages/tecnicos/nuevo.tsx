@@ -271,7 +271,7 @@ function UsuarioNuevo() {
                       <Input
                         maxLength={100}
                         variant="filled"
-                        id="Nombre"
+                        id="nombre"
                         placeholder="Nombre"
                         onChange={(e) => {
                           setNombre(e.target.value);
@@ -281,14 +281,14 @@ function UsuarioNuevo() {
 
                     <FormControl isRequired paddingTop={15} paddingLeft={15}>
                       <FormLabel htmlFor="apellidoPaterno">
-                        Apellido Paterno
+                        Primer Apellido
                       </FormLabel>
 
                       <Input
                         maxLength={100}
                         variant="filled"
                         id="apellidoPaterno"
-                        placeholder="Apellido Paterno"
+                        placeholder="Primer Apellido"
                         onChange={(e) => {
                           setApellidoPaterno(e.target.value);
                         }}
@@ -299,15 +299,15 @@ function UsuarioNuevo() {
                   <Center>
                     <Divider orientation="vertical" />
 
-                    <FormControl isRequired paddingTop={15}>
+                    <FormControl paddingTop={15}>
                       <FormLabel htmlFor="apellidoMaterno">
-                        Apellido Materno
+                        Segundo Apellido
                       </FormLabel>
                       <Input
                         maxLength={100}
                         variant="filled"
                         id="apellidoMaterno"
-                        placeholder="Apellido Materno"
+                        placeholder="Segundo Apellido"
                         onChange={(e) => {
                           setApellidoMaterno(e.target.value);
                         }}

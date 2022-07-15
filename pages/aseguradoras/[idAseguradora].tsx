@@ -166,8 +166,6 @@ function AseguradoraVer() {
       const service = new AseguradoraService();
       const respuesta = await service.update(data, Number(idAseguradora));
 
-      console.log(respuesta);
-
       const dataUpdate = respuesta.data as IAseguradora;
       setData(dataUpdate);
 
@@ -220,7 +218,6 @@ function AseguradoraVer() {
                     <Input
                       id="nombre"
                       variant="filled"
-                    
                       defaultValue={data?.nombre}
                       onChange={(e) => {
                         const nombreM = e.target.value.toUpperCase();
@@ -251,7 +248,15 @@ function AseguradoraVer() {
                         id="telefono"
                         variant="filled"
                         defaultValue={data?.telefono}
-                        onChange={formAseguradora.handleChange}
+                        onChange={(e) => {
+                          if (e.target.value.length <= 10) {
+                            formAseguradora.setFieldValue(
+                              "telefono",
+                              e.target.value.toString()
+                            );
+                          }
+                        }}
+                        value={formAseguradora.values.telefono}
                         type="number"
                         minLength={8}
                         maxLength={12}
@@ -277,10 +282,10 @@ function AseguradoraVer() {
                           children={<IoSpeedometerOutline color="gray.300" />}
                         />
                         <Input
-                        minLength={1}
-                        maxLength={3}
-                        min={0}
-                        max={100}
+                          minLength={1}
+                          maxLength={3}
+                          min={0}
+                          max={100}
                           id="kilometraje_permitido"
                           variant="filled"
                           defaultValue={data?.kilometraje_permitido}
@@ -303,10 +308,10 @@ function AseguradoraVer() {
                           children={<MdOutlineAttachMoney color="gray.300" />}
                         />
                         <Input
-                        minLength={1}
-                        maxLength={3}
-                        min={0}
-                        max={100}
+                          minLength={1}
+                          maxLength={3}
+                          min={0}
+                          max={100}
                           id="costo_por_kilometro"
                           variant="filled"
                           defaultValue={data?.costo_por_kilometro!}
@@ -339,7 +344,14 @@ function AseguradoraVer() {
                           id="telefono_domestico"
                           variant="filled"
                           defaultValue={data?.telefono_domestico}
-                          onChange={formAseguradora.handleChange}
+                          onChange={(e) => {
+                            if (e.target.value.length <= 10) {
+                              formAseguradora.setFieldValue(
+                                "telefono_domestico",
+                                e.target.value.toString()
+                              );
+                            }
+                          }}
                           type="number"
                           minLength={8}
                           maxLength={12}
@@ -365,11 +377,18 @@ function AseguradoraVer() {
                           id="telefono_vial"
                           variant="filled"
                           defaultValue={data?.telefono_vial}
-                          onChange={formAseguradora.handleChange}
+                          onChange={(e) => {
+                            if (e.target.value.length <= 10) {
+                              formAseguradora.setFieldValue(
+                                "telefono_vial",
+                                e.target.value.toString()
+                              );
+                            }
+                          }}
                           value={formAseguradora.values.telefono_vial}
                           type="number"
                           minLength={8}
-                          maxLength={12}
+                          maxLength={10}
                           placeholder="Numero de Teléfono de servicio vial"
                         />
                       </InputGroup>
@@ -391,7 +410,14 @@ function AseguradoraVer() {
                           id="telefono_whats"
                           variant="filled"
                           defaultValue={data?.telefono_whats}
-                          onChange={formAseguradora.handleChange}
+                          onChange={(e) => {
+                            if (e.target.value.length <= 10) {
+                              formAseguradora.setFieldValue(
+                                "telefono_whats",
+                                e.target.value.toString()
+                              );
+                            }
+                          }}
                           value={formAseguradora.values.telefono_whats}
                           type="number"
                           minLength={8}
@@ -424,8 +450,6 @@ function AseguradoraVer() {
               </Stack>
             </Box>
           </FormControl>
-
-         
 
           <Box
             m={2}
@@ -477,12 +501,17 @@ function AseguradoraVer() {
                 </ModalBody>
 
                 <ModalFooter>
-                  <Button colorScheme="whatsapp"
-                    variant="solid" mr={3} onClick={guardarAsistencia}>
+                  <Button
+                    colorScheme="whatsapp"
+                    variant="solid"
+                    mr={3}
+                    onClick={guardarAsistencia}
+                  >
                     Guardar
                   </Button>
-                  <Button colorScheme="red"
-                    variant="outline" onClick={onClose}>Cancelar</Button>
+                  <Button colorScheme="red" variant="outline" onClick={onClose}>
+                    Cancelar
+                  </Button>
                 </ModalFooter>
               </ModalContent>
             </Modal>
@@ -530,7 +559,7 @@ function AseguradoraVer() {
               </Table>
             </TableContainer>
           </Box>
-          </form>
+        </form>
       </DesktopLayout>
     </div>
   );

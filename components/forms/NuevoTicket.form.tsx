@@ -343,6 +343,17 @@ const NuevoTicket = () => {
       ticket.total = calculoMontoTotal;
       ticket.nombre_asesor_gpo_lias = sesion?.usuario;
 
+      if (serviciosSeleccionados.length == 0) {
+        toast({
+          title: "Seleccione los servicios",
+          description: "Debe seleccionar al menos un servicio.",
+          position: "bottom-right",
+          status: "warning",
+        });
+        document.getElementById("control_servicios")?.focus();
+        return;
+      }
+
       const servicio = new TicketsService();
       const respuestaTicketPost: any = await servicio.create(ticket);
       const dataTicketGuardado = respuestaTicketPost.data as ITicket;
@@ -686,13 +697,14 @@ const NuevoTicket = () => {
           />
         </FormControl>
 
-        <FormControl paddingTop={15} isRequired>
+        <FormControl id="control_servicios" paddingTop={15}>
           <FormLabel htmlFor="servicioId">
             Seleccione Servicios Relacionados:
           </FormLabel>
           <CheckboxGroup
             variant="filled"
             size={"lg"}
+            value={serviciosSeleccionados}
             onChange={(e) => {
               setServiciosSeleccionados(e as string[]);
             }}
