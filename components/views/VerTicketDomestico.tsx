@@ -37,15 +37,15 @@ import { CotizacionTecnicoService } from "@/services/cotizacion-tecnico.service"
 import { AcuerdoConformidadService } from "@/services/acuerdo-conformidad.service";
 import { AcuerdoConformidadView } from "@/forms/AcuerdoConformidadForm";
 
-import moment from 'moment';
+import moment from "moment";
 moment.locale("es");
-import 'moment-timezone'
-import 'moment/locale/es';
+import "moment-timezone";
+import "moment/locale/es";
 
 interface VerTicketDomesticoProps {
   ticket: ITicket;
 }
-   
+
 export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
   const [aseguradora, setAseguradora] = useState<IAseguradora>();
   const [asistencia, setAsistencia] = useState<IAsistencia>();
@@ -109,13 +109,13 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
     const service = new AcuerdoConformidadService();
     const respuesta = await service.acuerdoConformidadByTicket(ticket.id!);
 
-    const data = respuesta.data as IAcuerdoConformidad;
-
-    setAcuerdoConformidad(data);
-
-    data
-      ? setMostrarAcuerdoConformidad(true)
-      : setMostrarAcuerdoConformidad(false);
+    if (respuesta.status == 200) {
+      const data = respuesta.data as IAcuerdoConformidad;
+      setAcuerdoConformidad(data);
+      setMostrarAcuerdoConformidad(true);
+    } else {
+      setMostrarAcuerdoConformidad(false);
+    }
   };
 
   useEffect(() => {
@@ -376,7 +376,9 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
               id="num_interior"
               placeholder=""
               borderColor="twitter.100"
-              defaultValue={ticket.num_interior !== null ? ticket.num_interior : ""}
+              defaultValue={
+                ticket.num_interior !== null ? ticket.num_interior : ""
+              }
             />
           </FormControl>
         </SimpleGrid>

@@ -118,13 +118,13 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
     const service = new AcuerdoConformidadService();
     const respuesta = await service.acuerdoConformidadByTicket(ticket.id!);
 
-    const data = respuesta.data as IAcuerdoConformidad;
-
-    setAcuerdoConformidad(data);
-
-    data
-      ? setMostrarAcuerdoConformidad(true)
-      : setMostrarAcuerdoConformidad(false);
+    if (respuesta.status == 200) {
+      const data = respuesta.data as IAcuerdoConformidad;
+      setAcuerdoConformidad(data);
+      setMostrarAcuerdoConformidad(true);
+    } else {
+      setMostrarAcuerdoConformidad(false);
+    }
   };
   useEffect(() => {
     getAseguradora();
@@ -634,7 +634,7 @@ export function VerTicketVialForaneo({ ticket }: VerTicketVialForaneoProps) {
         <CrearCotizacionTecnico cotizacion={cotizacion!} />
       ) : null}
 
-      {mostrarAcuerdoConformidad ? (
+      {mostrarAcuerdoConformidad == true ? (
         <AcuerdoConformidadView acuerdoconformidad={acuerdoconformidad!} />
       ) : null}
     </>

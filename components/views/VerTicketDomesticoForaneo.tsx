@@ -117,13 +117,13 @@ export function VerTicketDomesticoForaneo({
     const service = new AcuerdoConformidadService();
     const respuesta = await service.acuerdoConformidadByTicket(ticket.id!);
 
-    const data = respuesta.data as IAcuerdoConformidad;
-
-    setAcuerdoConformidad(data);
-
-    data
-      ? setMostrarAcuerdoConformidad(true)
-      : setMostrarAcuerdoConformidad(false);
+    if (respuesta.status == 200) {
+      const data = respuesta.data as IAcuerdoConformidad;
+      setAcuerdoConformidad(data);
+      setMostrarAcuerdoConformidad(true);
+    } else {
+      setMostrarAcuerdoConformidad(false);
+    }
   };
 
   useEffect(() => {
