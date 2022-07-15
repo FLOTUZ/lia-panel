@@ -21,6 +21,9 @@ import {
   Checkbox,
   CheckboxGroup,
   FormHelperText,
+  Heading,
+  SimpleGrid,
+  Switch,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 
@@ -44,6 +47,7 @@ function TecnicoNuevo() {
   const { idTecnico } = router.query;
   //------------------------ DATA USUARIO -------------------------------------
   const [usuario, setUsuario] = useState<IUsuario>();
+  const [isInactivo, setIsInactivo] = useState<boolean>(false);
   //------------------------ DATA TECNICO -------------------------------------
   const [tecnico, setTecnico] = useState<ITecnico>();
 
@@ -107,6 +111,7 @@ function TecnicoNuevo() {
         const dato = respuesta.data as IUsuario;
         setUsuario(dato);
         setUsuarioId(Number(dato.id));
+        setIsInactivo(dato.inactivo!);
       }
     }
   };
@@ -188,17 +193,18 @@ function TecnicoNuevo() {
   const formUsuario = useFormik({
     initialValues: {
       inactivo: usuario?.inactivo,
-      usuario: usuario?.usuario || "",
-      email: usuario?.email || "",
-      password: "",
-      rol: usuario?.rol || "TECNICO",
+      usuario: usuario?.usuario || undefined,
+      email: usuario?.email || undefined,
+      password: undefined,
+      rol: usuario?.rol || undefined,
     },
     enableReinitialize: true,
 
-    onSubmit: async (values: IUsuario) => {
+    onSubmit: async (values) => {
       const datos = {
         ...values,
       } as IUsuario;
+      console.log(datos);
 
       if (datos.password == "") datos.password = undefined;
 
@@ -213,7 +219,7 @@ function TecnicoNuevo() {
           title: "Oops... Ocurrio un error.",
           status: "error",
           position: "bottom-right",
-          description: `Error al actualizar, verificar los campos.`,
+          description: `Error al actualizar, posibles errrores en los de usuario`,
         });
         setCargando(false);
       } else {
@@ -251,48 +257,64 @@ function TecnicoNuevo() {
       <Header title={"Editar Usuario"} />
 
       <form onSubmit={formUsuario.handleSubmit}>
-        <FormControl isRequired>
-          <VStack
-            m={2}
-            padding={5}
-            borderRadius={10}
-            boxShadow="sm"
-            p="6"
-            rounded="md"
-            bg="white"
-            spacing={2}
-            alignItems={"start"}
-          >
-            <FormLabel htmlFor="usuario">Nombre de usuario</FormLabel>
-            <Input
-              maxLength={20}
-              isRequired
-              variant="filled"
-              id="usuario"
-              placeholder="Nombre de Usuario"
-              defaultValue={usuario?.usuario}
-              onChange={formUsuario.handleChange}
-              value={formUsuario.values.usuario}
-            />
+        <VStack
+          m={2}
+          padding={5}
+          borderRadius={10}
+          boxShadow="sm"
+          p="6"
+          rounded="md"
+          bg="white"
+          spacing={2}
+          alignItems={"start"}
+        >
+          <FormControl isRequired={false}>
+            <FormLabel htmlFor="inactivo">Esta inactivo</FormLabel>
+            <Switch
+              size={"lg"}
+              name="inactivo"
+              defaultChecked={isInactivo}
+              onChange={(e) => {
+                formUsuario.setFieldValue("inactivo", e.target.checked);
+                setIsInactivo(e.target.checked);
+              }}
+            ></Switch>
+          </FormControl>
 
-            <FormLabel htmlFor="email">Email</FormLabel>
-            <Input
-              maxLength={100}
-              isRequired
-              variant="filled"
-              id="email"
-              type={"email"}
-              placeholder="email@gmail.com"
-              defaultValue={usuario?.email}
-              onChange={formUsuario.handleChange}
-              value={formUsuario.values.email}
-            />
+          <SimpleGrid columns={[1, 2, 2]} spacing={2} w={"100%"}>
+            <FormControl isRequired={true}>
+              <FormLabel htmlFor="usuario">Nombre de usuario</FormLabel>
+              <Input
+                maxLength={20}
+                variant="filled"
+                id="usuario"
+                placeholder="Nombre de Usuario"
+                defaultValue={usuario?.usuario}
+                onChange={formUsuario.handleChange}
+                value={formUsuario.values.usuario}
+              />
+            </FormControl>
+            <FormControl isRequired={true}>
+              <FormLabel htmlFor="email">Email</FormLabel>
+              <Input
+                minLength={3}
+                maxLength={100}
+                variant="filled"
+                id="email"
+                type={"email"}
+                placeholder="email@gmail.com"
+                defaultValue={usuario?.email}
+                onChange={formUsuario.handleChange}
+                value={formUsuario.values.email}
+              />
+            </FormControl>
+          </SimpleGrid>
 
+          <FormControl isRequired={false}>
             <FormLabel htmlFor="password">Contraseña</FormLabel>
             <Input
               minLength={8}
               maxLength={100}
-              isRequired={false}
               variant="filled"
               id="password"
               type={"password"}
@@ -300,207 +322,192 @@ function TecnicoNuevo() {
               value={formUsuario.values.password}
             />
             <FormHelperText>Mínimo 8 carácteres</FormHelperText>
+          </FormControl>
 
-            <HStack spacing={4} w={"100%"} mt={"12rem"}>
-              <Spacer />
-              <Button
-                id="guardar_tecnico"
-                colorScheme="whatsapp"
-                variant="solid"
-                type="submit"
-                isLoading={cargando}
-              >
-                Guardar
-              </Button>
-              <Button
-                colorScheme="red"
-                variant="outline"
-                onClick={() => router.back()}
-              >
-                Cancelar
-              </Button>
-            </HStack>
-          </VStack>
-        </FormControl>
+          <HStack spacing={4} w={"100%"} mt={"12rem"}>
+            <Spacer />
+            <Button
+              id="guardar_tecnico"
+              colorScheme="whatsapp"
+              variant="solid"
+              type="submit"
+              isLoading={cargando}
+            >
+              Guardar
+            </Button>
+            <Button
+              colorScheme="red"
+              variant="outline"
+              onClick={() => router.back()}
+            >
+              Cancelar
+            </Button>
+          </HStack>
+        </VStack>
       </form>
 
       {/* terminar el form de usuario y empieza el de tecnico **/}
 
       <form onSubmit={formTecnico.handleSubmit}>
         <FormControl>
-          <VStack
+          <Box
             m={2}
             padding={5}
             borderRadius={10}
-            boxShadow="sm"
+            boxShadow="lg"
             p="6"
             rounded="md"
-            bg="white"
-            spacing={2}
-            alignItems={"start"}
+            bg={"white"}
           >
-            <Box
-              w={"100%"}
-              m={2}
-              padding={5}
-              borderRadius={10}
-              boxShadow="lg"
-              p="6"
-              rounded="md"
-              bg={"white"}
-            >
-              <Text fontWeight="bold">Datos básicos del tecnico</Text>
+            <Heading as="h2" fontWeight="bold" paddingBottom={15}>
+              Datos del tecnico
+            </Heading>
 
-              <Center>
-                <Divider orientation="vertical" />
-                <FormControl isRequired paddingTop={15}>
-                  <FormLabel htmlFor="nombre">Nombre</FormLabel>
-                  <Input
-                    maxLength={20}
-                    variant="filled"
-                    id="nombre"
-                    placeholder="Nombre"
-                    defaultValue={tecnico?.nombre}
-                    onChange={formTecnico.handleChange}
-                  />
-                </FormControl>
+            <SimpleGrid columns={[1, 1, 2]} spacing={2}>
+              <FormControl isRequired>
+                <FormLabel htmlFor="nombre">Nombre</FormLabel>
+                <Input
+                  minLength={3}
+                  maxLength={50}
+                  variant="filled"
+                  id="nombre"
+                  placeholder="Nombre"
+                  defaultValue={tecnico?.nombre}
+                  onChange={formTecnico.handleChange}
+                />
+              </FormControl>
 
-                <FormControl isRequired paddingTop={15} paddingLeft={15}>
-                  <FormLabel htmlFor="apellidoPaterno">
-                    Primer Apellido
-                  </FormLabel>
-                  <Input
-                    maxLength={20}
-                    variant="filled"
-                    id="apellido_paterno"
-                    placeholder="Apellido Paterno"
-                    defaultValue={tecnico?.apellido_paterno}
-                    onChange={formTecnico.handleChange}
-                  />
-                </FormControl>
-              </Center>
+              <FormControl isRequired>
+                <FormLabel htmlFor="apellido_paterno">
+                  Primer Apellido
+                </FormLabel>
+                <Input
+                  minLength={3}
+                  maxLength={50}
+                  variant="filled"
+                  id="apellido_paterno"
+                  placeholder="Apellido Paterno"
+                  defaultValue={tecnico?.apellido_paterno}
+                  onChange={formTecnico.handleChange}
+                />
+              </FormControl>
 
-              <Center>
-                <Divider orientation="vertical" />
+              <FormControl isRequired paddingTop={15}>
+                <FormLabel htmlFor="apellido_materno">
+                  Segundo Apellido
+                </FormLabel>
+                <Input
+                  minLength={3}
+                  maxLength={50}
+                  variant="filled"
+                  id="apellido_materno"
+                  placeholder="Apellido Materno"
+                  defaultValue={tecnico?.apellido_materno}
+                  onChange={formTecnico.handleChange}
+                />
+              </FormControl>
 
-                <FormControl isRequired paddingTop={15}>
-                  <FormLabel htmlFor="apellidoMaterno">
-                    Segundo Apellido
-                  </FormLabel>
-                  <Input
-                    maxLength={20}
-                    variant="filled"
-                    id="apellido_materno"
-                    placeholder="Apellido Materno"
-                    defaultValue={tecnico?.apellido_materno}
-                    onChange={formTecnico.handleChange}
-                  />
-                </FormControl>
+              <FormControl isRequired paddingTop={15}>
+                <FormLabel htmlFor="telefono">Teléfono</FormLabel>
+                <Input
+                  maxLength={10}
+                  variant="filled"
+                  id="telefono"
+                  placeholder="Teléfono"
+                  type={"number"}
+                  defaultValue={tecnico?.telefono}
+                  onChange={formTecnico.handleChange}
+                />
+              </FormControl>
 
-                <FormControl isRequired paddingTop={15} paddingLeft={15}>
-                  <FormLabel htmlFor="telefono">Teléfono</FormLabel>
-                  <Input
-                    maxLength={14}
-                    variant="filled"
-                    id="telefono"
-                    placeholder="Teléfono"
-                    type={"tel"}
-                    defaultValue={tecnico?.telefono}
-                    onChange={formTecnico.handleChange}
-                  />
-                </FormControl>
-              </Center>
-
-              <Center>
-                <Divider orientation="vertical" />
-
-                <FormControl isRequired paddingTop={15}>
-                  <FormLabel htmlFor="estado">Estado</FormLabel>
-                  <Select
-                    id="estado"
-                    placeholder="Selecciona el Estado"
-                    variant="filled"
-                    value={IdEstado == 0 ? estado?.id : IdEstado}
-                    onClick={() => consultarCiudades()}
-                    onChange={(e) => {
-                      setIdEstado(Number(e.target.value));
-                    }}
-                  >
-                    {estadosList?.length !== 0
-                      ? estadosList?.map((estado, index) => {
-                          return (
-                            <option key={index} value={estado.id}>
-                              {estado.nombre}
-                            </option>
-                          );
-                        })
-                      : null}
-                  </Select>
-                </FormControl>
-
-                <FormControl isRequired paddingLeft={5} paddingTop={15}>
-                  <FormLabel htmlFor="ciudadId">Ciudad</FormLabel>
-                  <Select
-                    id="ciudadId"
-                    placeholder="Selecciona la Ciudad"
-                    variant="filled"
-                    value={
-                      ciudadDeTecnico != 0
-                        ? ciudadDeTecnico
-                        : formTecnico.values.ciudadId
-                    }
-                    onChange={(e) => {
-                      formTecnico.setFieldValue(
-                        "ciudadId",
-                        Number(e.target.value)
-                      );
-                      setCiudadDeTecnico(Number(e.target.value));
-                    }}
-                  >
-                    {ciudadesList?.length !== 0
-                      ? ciudadesList?.map((ciudad, index) => {
-                          return (
-                            <option key={index} value={ciudad.id}>
-                              {ciudad.nombre}
-                            </option>
-                          );
-                        })
-                      : null}
-                  </Select>
-                </FormControl>
-              </Center>
-
-              <Divider orientation="vertical" />
-
-              <FormControl>
-                <FormLabel htmlFor="servicios">Servicios</FormLabel>
-                <Stack pl={6} mt={1} spacing={1}>
-                  <CheckboxGroup
-                    value={serviciosDeTecnico}
-                    onChange={(checks) => {
-                      const arr: number[] = checks.map((check) => {
-                        return Number(check);
-                      });
-                      setServiciosDeTecnico(arr);
-                    }}
-                  >
-                    {listadoServicios.length != 0 ? (
-                      listadoServicios.map((t, index) => {
+              <FormControl isRequired>
+                <FormLabel htmlFor="estado" paddingTop={15}>
+                  Estado
+                </FormLabel>
+                <Select
+                  id="estado"
+                  placeholder="Selecciona el Estado"
+                  variant="filled"
+                  value={IdEstado == 0 ? estado?.id : IdEstado}
+                  onClick={() => consultarCiudades()}
+                  onChange={(e) => {
+                    setIdEstado(Number(e.target.value));
+                  }}
+                >
+                  {estadosList?.length !== 0
+                    ? estadosList?.map((estado, index) => {
                         return (
-                          <Checkbox key={index} id={t.nombre} value={t.id}>
-                            {t.nombre}
-                          </Checkbox>
+                          <option key={index} value={estado.id}>
+                            {estado.nombre}
+                          </option>
                         );
                       })
-                    ) : (
-                      <></>
-                    )}{" "}
-                  </CheckboxGroup>
-                </Stack>
+                    : null}
+                </Select>
               </FormControl>
-            </Box>
 
-            <HStack spacing={4} w={"100%"} mt={"12rem"}>
+              <FormControl isRequired paddingTop={15}>
+                <FormLabel htmlFor="ciudadId">Ciudad</FormLabel>
+                <Select
+                  id="ciudadId"
+                  placeholder="Selecciona la Ciudad"
+                  variant="filled"
+                  value={
+                    ciudadDeTecnico != 0
+                      ? ciudadDeTecnico
+                      : formTecnico.values.ciudadId
+                  }
+                  onChange={(e) => {
+                    formTecnico.setFieldValue(
+                      "ciudadId",
+                      Number(e.target.value)
+                    );
+                    setCiudadDeTecnico(Number(e.target.value));
+                  }}
+                >
+                  {ciudadesList?.length !== 0
+                    ? ciudadesList?.map((ciudad, index) => {
+                        return (
+                          <option key={index} value={ciudad.id}>
+                            {ciudad.nombre}
+                          </option>
+                        );
+                      })
+                    : null}
+                </Select>
+              </FormControl>
+            </SimpleGrid>
+
+            <FormControl>
+              <FormLabel htmlFor="servicios" paddingTop={15}>
+                Servicios
+              </FormLabel>
+              <Stack pl={6} mt={1} spacing={1}>
+                <CheckboxGroup
+                  value={serviciosDeTecnico}
+                  onChange={(checks) => {
+                    const arr: number[] = checks.map((check) => {
+                      return Number(check);
+                    });
+                    setServiciosDeTecnico(arr);
+                  }}
+                >
+                  {listadoServicios.length != 0 ? (
+                    listadoServicios.map((t, index) => {
+                      return (
+                        <Checkbox key={index} id={t.nombre} value={t.id}>
+                          {t.nombre}
+                        </Checkbox>
+                      );
+                    })
+                  ) : (
+                    <></>
+                  )}{" "}
+                </CheckboxGroup>
+              </Stack>
+            </FormControl>
+
+            <HStack>
               <Spacer />
               <Button
                 id="guardar_usuario"
@@ -520,7 +527,7 @@ function TecnicoNuevo() {
                 Cancelar
               </Button>
             </HStack>
-          </VStack>
+          </Box>
         </FormControl>
       </form>
     </DesktopLayout>

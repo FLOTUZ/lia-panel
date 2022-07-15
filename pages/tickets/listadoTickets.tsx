@@ -121,73 +121,58 @@ export default function ListadoTickets() {
                   return (
                     <Tr key={index}>
                       <Td>{ticket.num_expediente}</Td>
-                      <Td>{ticket.titulo_ticket}</Td>
                       <Td>
-                      
-                      {ticket?.estado === "NUEVO" ? (
-                          
+                        {ticket.titulo_ticket.substring(0, 30)}
+                        {ticket.titulo_ticket.length > 30 ? "..." : ""}
+                      </Td>
+                      <Td>
+                        {ticket?.estado === "NUEVO" ? (
                           <Badge colorScheme={"green"} key={index}>
                             {ticket.estado}
                           </Badge>
-                      ): ticket?.estado === "TOMADO"? (
-                        
-                        <Badge colorScheme={"purple"} key={index}>
-                           {ticket.estado}
-
-                        </Badge>
-                        
-                      ): ticket?.estado === "COTIZADO"? (
-                        
-                        <Badge colorScheme={"gray"} key={index}>
-                           {ticket.estado}
-
-                        </Badge>
-                      ): ticket?.estado === "EN PROCESO"? (
-                        
-                        <Badge colorScheme={"orange"} key={index}>
-                           {ticket.estado}
-
-                        </Badge>
-                      ) : ticket?.estado === "A CERRAR"? (
-                        
-                        <Badge colorScheme={"blue"} key={index}>
-                           {ticket.estado}
-
-                        </Badge>
-                      ):ticket?.estado === "FINALIZADO"? (
-                        
-                        <Badge colorScheme={"red"} key={index}>
-                           {ticket.estado}
-
-                        </Badge>
-                      ):null}
-                            
-
-                       
+                        ) : ticket?.estado === "TOMADO" ? (
+                          <Badge colorScheme={"purple"} key={index}>
+                            {ticket.estado}
+                          </Badge>
+                        ) : ticket?.estado === "COTIZADO" ? (
+                          <Badge colorScheme={"gray"} key={index}>
+                            {ticket.estado}
+                          </Badge>
+                        ) : ticket?.estado === "EN PROCESO" ? (
+                          <Badge colorScheme={"orange"} key={index}>
+                            {ticket.estado}
+                          </Badge>
+                        ) : ticket?.estado === "A CERRAR" ? (
+                          <Badge colorScheme={"blue"} key={index}>
+                            {ticket.estado}
+                          </Badge>
+                        ) : ticket?.estado === "FINALIZADO" ? (
+                          <Badge colorScheme={"red"} key={index}>
+                            {ticket.estado}
+                          </Badge>
+                        ) : null}
                       </Td>
                       <Td>{ticket.nombre_usuario_final}</Td>
-                      <Td>
-                        {moment(ticket.fecha_llamada).format(
-                          "LLLL"
-                        )}
-                      </Td>
+                      <Td>{moment(ticket.fecha_llamada).format("LLLL")}</Td>
                       <Td>
                         {ticket.is_archivado ? (
-                          <Badge  variant='outline' colorScheme={"red"}>Archivado</Badge>
+                          <Badge variant="outline" colorScheme={"red"}>
+                            Archivado
+                          </Badge>
                         ) : (
-                          <Badge  variant='outline' colorScheme="blue">Sin archivar</Badge>
+                          <Badge variant="outline" colorScheme="blue">
+                            Sin archivar
+                          </Badge>
                         )}
                       </Td>
                       <Td>
-                      <Link href={`/tickets/${ticket.id}`}>
-
-                      <IconButton
-                          variant="outline"
-                          aria-label="show"
-                          icon={<BsEye />}
-                
-                      ></IconButton>
-                      </Link>
+                        <Link href={`/tickets/${ticket.id}`}>
+                          <IconButton
+                            variant="outline"
+                            aria-label="show"
+                            icon={<BsEye />}
+                          ></IconButton>
+                        </Link>
                       </Td>
                       <Td>
                         <IconButton
@@ -195,9 +180,7 @@ export default function ListadoTickets() {
                           aria-label="edit"
                           icon={<BsPrinter />}
                           onClick={onOpen}
-                          
                         />
-                        
 
                         <Modal onClose={onClose} size={"full"} isOpen={isOpen}>
                           <ModalOverlay />

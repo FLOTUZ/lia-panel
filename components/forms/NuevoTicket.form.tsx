@@ -583,14 +583,13 @@ const NuevoTicket = () => {
 
         <SimpleGrid columns={1} spacing={5}>
           <Center>
-            <FormControl isRequired paddingTop={15}>
+            <FormControl paddingTop={15}>
               <FormLabel htmlFor="nombre_asesor_gpo_lias">
                 Asesor de Gpo. Lías
               </FormLabel>
               <Input
-                isDisabled={true}
+                isReadOnly={true}
                 variant="filled"
-                readOnly
                 id="nombre_asesor_gpo_lias"
                 placeholder="Asesor de Grupo Lías"
                 borderColor="twitter.100"
@@ -659,7 +658,7 @@ const NuevoTicket = () => {
             <Input
               isRequired
               minLength={10}
-              maxLength={500}
+              maxLength={100}
               variant="filled"
               id="titulo_ticket"
               placeholder="Descripción Corta"

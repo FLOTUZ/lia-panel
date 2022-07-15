@@ -51,33 +51,20 @@ function TenicosListado() {
         rounded="md"
         bg="white"
       >
-        <Box
-          m={2}
-          bgColor="white"
-          padding={5}
-          borderRadius={10}
-          p="6"
-          rounded="md"
-          bg="white"
-        >
-          <HStack spacing={4} w={"50%"}>
-            <Link href={"/tecnicos/nuevo"}>
-              <a>
-                {" "}
-                <Button
-                  leftIcon={<AddIcon />}
-                  colorScheme="facebook"
-                  variant="solid"
-                  marginLeft={"80%"}
-                >
-                  Nuevo Técnico
-                </Button>
-              </a>
-            </Link>
-          </HStack>
-        </Box>
+        <Link href={"/tecnicos/nuevo"}>
+          <a>
+            {" "}
+            <Button
+              leftIcon={<AddIcon />}
+              colorScheme="facebook"
+              variant="solid"
+            >
+              Nuevo Técnico
+            </Button>
+          </a>
+        </Link>
 
-        <TableContainer>
+        <TableContainer mt={8}>
           <Table variant="striped" colorScheme="teal">
             <Thead>
               <Tr>
