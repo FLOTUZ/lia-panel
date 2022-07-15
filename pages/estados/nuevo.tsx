@@ -108,6 +108,7 @@ function EstadoNuevo() {
       //onClose();
       setNombreEstado("");
       setIdEstado(estad.id || 0);
+      setVerAltaCiudades(true);
       toast({
         title: "Estado agregado.",
         description: "El estado se agrego, exitosamente.",
@@ -116,8 +117,7 @@ function EstadoNuevo() {
         duration: 9000,
         isClosable: true,
       });
-    }
-    if (response.status === 409) {
+    } else {
       toast({
         title: "Oops... Ocurrio un error.",
         description: "Posibles causas: El estado ya existe.",
@@ -178,7 +178,6 @@ function EstadoNuevo() {
                 variant="solid"
                 onClick={() => {
                   guardarEstado();
-                  setVerAltaCiudades(true);
                 }}
               >
                 Agregar
