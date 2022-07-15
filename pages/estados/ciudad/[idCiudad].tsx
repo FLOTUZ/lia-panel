@@ -11,6 +11,7 @@ import {
   useToast,
   Divider,
   HStack,
+  Spacer,
 } from "@chakra-ui/react";
 import React, { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -19,7 +20,6 @@ import { CiudadesService } from "@/services/ciudades.service";
 import { useFormik } from "formik";
 
 function CiudadVer() {
-
   const toast = useToast();
 
   const [data, setData] = useState<ICiudad>();
@@ -89,18 +89,14 @@ function CiudadVer() {
         <Header title={"Editar Ciudad"} />
         <form onSubmit={formCiudad.handleSubmit}>
           <Box
-           m={2}
-           bgColor="white"
-           padding={5}
-           borderRadius={10}
-           boxShadow="2xl"
-           p="6"
-           rounded="md"
-           bg="white"
+            m={2}
+            bgColor="white"
+            padding={5}
+            borderRadius={10}
+            boxShadow="2xl"
+            rounded="md"
+            bg="white"
           >
-            <HStack spacing={4} w={"50%"}>
-            </HStack>
-
             <Stack spacing={4}>
               <InputGroup>
                 <FormControl isRequired>
@@ -120,16 +116,15 @@ function CiudadVer() {
                 </FormControl>
               </InputGroup>
 
-             <Divider paddingTop={5} orientation="horizontal" />
+              <Divider paddingTop={5} orientation="horizontal" />
             </Stack>
 
             <Stack
-              marginTop={50}
               direction="row"
               spacing={4}
               align="center"
-              paddingLeft={930}
             >
+              <Spacer/>
               <Button
                 id="guardar"
                 type="submit"
@@ -147,7 +142,6 @@ function CiudadVer() {
                 Cancelar
               </Button>
             </Stack>
-
           </Box>
         </form>
       </DesktopLayout>
