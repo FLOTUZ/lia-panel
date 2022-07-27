@@ -186,8 +186,7 @@ const NuevoTicket = () => {
 
       let montoTotal = 0;
       if (deducible < 0) {
-        deducible = Math.abs(deducible);
-        montoTotal = totalSalida + costoGPOLIAS + deducible + banderazo;
+        montoTotal = totalSalida + costoGPOLIAS + banderazo;
         setCalculoDeducible(deducible);
       } else {
         montoTotal = totalSalida + costoGPOLIAS;
@@ -206,6 +205,7 @@ const NuevoTicket = () => {
     costoPorKilometro,
     costoBanderazo,
     calculoDeducible,
+    kilometrosARecorrer,
   ]);
 
   const asistenciaById = async () => {
