@@ -9,7 +9,7 @@ export class CotizacionTecnicoService {
     return respuesta;
   }
 
-  public async update(data: ICotizacionTecnico, id: number) {
+  public async update(data: Partial<ICotizacionTecnico>, id: number) {
     const respuesta: any = await Actualizar(`${this.url}/${id}`, data);
     return respuesta;
   }

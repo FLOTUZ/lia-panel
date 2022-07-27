@@ -372,14 +372,20 @@ function TicketVer() {
 
       case "COTIZADO":
         await serviceTicket.update({ estado: "TOMADO" }, ticket?.id!);
-        const cotizacion = await serviceCotizacion.cotizacionByTicket(
+        const cotizacionAEliminar = await serviceCotizacion.cotizacionByTicket(
           ticket.id!
         );
-        serviceCotizacion.remove(cotizacion.data?.id!);
+        serviceCotizacion.remove(cotizacionAEliminar.data?.id!);
         break;
 
       case "EN PROCESO":
         await serviceTicket.update({ estado: "COTIZADO" }, ticket?.id!);
+        const cotizacionADesaprobar =
+          await serviceCotizacion.cotizacionByTicket(ticket.id!);
+        await serviceCotizacion.update(
+          { is_aprobado: false },
+          cotizacionADesaprobar.data?.id!
+        );
         break;
 
       case "A CERRAR":
@@ -406,7 +412,6 @@ function TicketVer() {
         } as IAcuerdoConformidad;
 
         const res = await acuerdoService.update(payload, acuerdoACancelar.id!);
-        console.log(res);
 
         break;
 

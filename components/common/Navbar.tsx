@@ -50,7 +50,7 @@ export const Navbar = () => {
       name: "Técnicos",
       path: "/tecnicos",
       icon: <MdHomeRepairService size={32} />,
-      rol: ["CAPTURISTA", "ADMIN"],
+      rol: ["ADMIN"],
     },
     {
       name: "Usuarios",
@@ -68,7 +68,7 @@ export const Navbar = () => {
       name: "Seguros",
       path: "/aseguradoras",
       icon: <MdVerifiedUser size={32} />,
-      rol: ["ADMIN"],
+      rol: ["ADMIN", "CAPTURISTA"],
     },
     {
       name: "Estados",
