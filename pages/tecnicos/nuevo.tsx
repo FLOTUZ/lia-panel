@@ -1,88 +1,109 @@
 import Header from "@/common/Header";
 import DesktopLayout from "@/layouts/DesktopLayout";
-import Router from "next/router";
-import React from "react";
-import { CiudadesService } from "@/services/ciudades.service";
+
 import {
   FormLabel,
   Input,
   FormControl,
-  HStack,
   VStack,
   Button,
-  Spacer,
   useToast,
-  Box,
-  Center,
-  Divider,
   Select,
   Stack,
-  Text,
   Checkbox,
   FormHelperText,
-  Link,
+  SimpleGrid,
+  Heading,
+  Flex,
 } from "@chakra-ui/react";
-//import { useFormik } from "formik";
 
 import { FormEvent, useState, useEffect } from "react";
-import {
-  ITecnico,
-  IUsuario,
-  IServicio,
-  ICiudad,
-  IEstado,
-} from "@/services/api.models";
+import { useRouter } from "next/router";
+
 import { UsuariosService } from "@/services/usuarios.service";
 import { TecnicoService } from "@/services/tecnicos.service";
 import { ServiciosService } from "@/services/servicios.service";
-import { EstadosService } from "@/services/estados.service";
+import { CiudadesService } from "@/services/ciudades.service";
+
+import { ITecnico, IUsuario, IServicio, ICiudad } from "@/services/api.models";
 
 function UsuarioNuevo() {
+  const [listadoServicios, setListadoServicios] = useState<IServicio[]>([]);
+  const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
   //------------------------ DATA USUARIO -------------------------------------
   const [usuario, setUsuario] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [rol, setRol] = useState("TECNICO");
 
   //----------------------- DATA TECNICO -------------------------------------
   const [nombre, setNombre] = useState("");
   const [apellidoPaterno, setApellidoPaterno] = useState("");
   const [apellidoMaterno, setApellidoMaterno] = useState("");
   const [telefono, setTelefono] = useState("");
-  const [usuarioId, setUsuarioId] = useState(0);
-  const [ciudadId, setciudadId] = useState<number>(0);
-  const [estadoId, setestadoId] = useState<number>();
+  const [ciudadId, setCiudad] = useState<number>();
   const [servicios, setServicios] = useState<string[]>([]);
-  const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
-  const [estadosList, setEstadosList] = useState<IEstado[]>([]);
 
   const [cargando, setCargando] = useState(false);
-  const [checkedItems, setCheckedItems] = React.useState([false, false]);
-
-  const allChecked = checkedItems.every(Boolean);
-  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
+  const toast = useToast();
+  const router = useRouter();
 
   // consulta de la tabla de servicios
+  const consultarTecnicos = async () => {
+    const service = new ServiciosService();
+    const respuesta = await service.getAll();
 
-  const [listadoServicios, setListadoServicios] = useState<IServicio[]>([]);
+    if (respuesta.status == 200) {
+      const data = respuesta.data as IServicio[];
+      setListadoServicios(data);
+    } else {
+      toast({
+        title: "Error",
+        description: "Error al consultar los servicios",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  };
 
-  // ciudades por Estado
-  const [IdEstado, setIdEstado] = useState(0);
+  const consultarCiudades = async () => {
+    const servicio = new CiudadesService();
+    const respuesta = await servicio.getAll();
+    const data = respuesta.data as ICiudad[];
 
-  const toast = useToast();
+    if (respuesta.status == 200) {
+      setCiudadesList(data);
+    } else {
+      toast({
+        title: "Error",
+        description: "Error al consultar las ciudades",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  };
 
+  //Controlar el cambio de servicios
   const filtradoServicios = (t: IServicio) => {
-    const id = t.id || 0;
+    //Id del servicio
+    const idServicio = t.id || 0;
+    //Arreglo de servicios
     const arr = servicios;
-    const found = arr.find((e) => e == String(id));
+    //Buscar el servicio en el arreglo
+    const found = arr.find((e) => e == String(idServicio));
 
+    //Si no existe el servicio, agregarlo
     if (!found) {
-      arr.push(String(id));
+      arr.push(idServicio.toString());
+      //Asigna el arreglo de servicios actualizado
       setServicios(arr);
     } else {
+      //Si existe el servicio, eliminarlo
       for (let i = 0; i < arr.length; i++) {
-        if (arr[i] == String(id)) {
+        if (arr[i] == idServicio.toString()) {
           arr.splice(i, 1);
+          //Asigna el arreglo de servicios actualizado
           setServicios(arr);
         }
       }
@@ -91,110 +112,92 @@ function UsuarioNuevo() {
 
   const altaUsuario = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    //setCargando(true);
+    setCargando(true);
+    const serviceUsuario = new UsuariosService();
+
     const dataUsuario: IUsuario = {
       usuario,
       email,
       password,
-      rol,
+      rol: "TECNICO",
     };
 
-    const serviceUsuario = new UsuariosService();
-    const respuestaUsuario = await serviceUsuario.create(dataUsuario);
-    const usuarioGuardado = respuestaUsuario.data as IUsuario;
+    if (servicios.length == 0) {
+      toast({
+        title: "Error al registrar tecnico",
+        description: "Debe seleccionar al menos un servicio",
+        status: "error",
+        isClosable: true,
+        duration: 5000,
+      });
+      return;
+    }
 
-    if (respuestaUsuario.status != 201) {
+    const respuesta = await serviceUsuario.create(dataUsuario);
+
+    if (respuesta.status != 201) {
       setCargando(false);
       toast({
-        title: "Oops... Ocurrio un error.",
+        title: "Error al registrar usuario",
         status: "error",
-        position: "bottom-right",
-        description: `Error al dar de alta, verificar los campos.`,
+        isClosable: true,
+        description: `Es posible que el nombre de usuario ya exista o que el email esté en uso.`,
       });
-    }
-    if (respuestaUsuario.status == 200) {
-      toast({
-        title: "Técnico agregado.",
-        position: "bottom-right",
-        status: "success",
-        description: `Se guardo el usuario, exitosamente.`,
-      });
+      return;
     }
     //----------------------------ALTA TECNICO----------------------------------------
-    if (rol === "TECNICO" && respuestaUsuario.status == 201) {
-      const dataTecnico: ITecnico = {
-        nombre: nombre,
-        apellido_paterno: apellidoPaterno,
-        apellido_materno: apellidoMaterno,
-        telefono: telefono,
-        usuarioId: usuarioGuardado.id || 0,
-        ciudadId: ciudadId || 0,
-      };
-
-      console.log(dataTecnico);
-
-      const serviceTecnico = new TecnicoService();
-      const respuestaTecnico = await serviceTecnico.create(dataTecnico);
-      const tecnicoGuardado = respuestaTecnico.data as ITecnico;
-
-      if (respuestaTecnico.status != 201) {
-        setCargando(false);
-        toast({
-          title: "Oops... Ocurrio un error.",
-          status: "error",
-          position: "bottom-right",
-          description: `Error, verificar los campos.`,
-        });
-      }
-      if (respuestaUsuario.status == 201 && respuestaTecnico.status == 201) {
-        toast({
-          title: "Se agrego el usuario.",
-          status: "success",
-          position: "bottom-right",
-          description: `Se guardo exitosamente, el técnico ${tecnicoGuardado.nombre}.`,
-        });
-
-        const respuesta = serviceTecnico.agregarServiciosATecnico(
-          tecnicoGuardado.id || 0,
-          servicios
-        );
-      }
-    }
-
-    Router.back();
-  };
-
-  const consultarServicios = async () => {
-    const service = new ServiciosService();
-    const respuesta = await service.getAll();
-
-    if (respuesta.status != 200) {
-    } else {
-      const data = respuesta.data as IServicio[];
-      setListadoServicios(data);
+    if (respuesta.status == 201 && dataUsuario.rol === "TECNICO") {
+      const usuarioEnBD = respuesta.data as IUsuario;
+      await altaTecnico(usuarioEnBD);
     }
   };
 
-  const consultarEstados = async () => {
-    const servicio = new EstadosService();
-    const respuesta = await servicio.getAll();
-    const data = respuesta.data as IEstado[];
+  const altaTecnico = async (usuarioEnBD: IUsuario) => {
+    const usuarioService = new UsuariosService();
+    const tecnicoService = new TecnicoService();
 
-    setEstadosList(data);
-  };
+    const dataTecnico: ITecnico = {
+      nombre: nombre,
+      apellido_paterno: apellidoPaterno,
+      apellido_materno: apellidoMaterno,
+      telefono: telefono,
+      usuarioId: usuarioEnBD.id || 0,
+      ciudadId: ciudadId || 0,
+    };
 
-  const consultarCiudades = async () => {
-    const servicio = new CiudadesService();
-    const respuesta: any = await servicio.getCiudadesByIdEstado(IdEstado);
-    const data = respuesta.data as ICiudad[];
+    const respuestaTecnico = await tecnicoService.create(dataTecnico);
+    const tecnicoGuardado = respuestaTecnico.data as ITecnico;
 
-    setCiudadesList(data);
+    if (respuestaTecnico.status != 201) {
+      setCargando(false);
+      toast({
+        title: "Error al registrar tecnico",
+        status: "error",
+        position: "bottom-right",
+        description: `Error, verificar los campos del tecnico`,
+      });
+      await usuarioService.remove(usuarioEnBD.id!);
+    }
+    if (respuestaTecnico.status == 201) {
+      toast({
+        title: "Usuario guardado.",
+        status: "success",
+        position: "bottom-right",
+        description: `Se guardo, con éxito el técnico ${tecnicoGuardado.nombre}.`,
+      });
+
+      const servicioToTecnicos = new TecnicoService();
+      await servicioToTecnicos.agregarServiciosATecnico(
+        tecnicoGuardado.id || 0,
+        servicios
+      );
+      router.back();
+    }
   };
 
   useEffect(() => {
-    consultarEstados();
     consultarCiudades();
-    consultarServicios();
+    consultarTecnicos();
   }, []);
 
   return (
@@ -216,10 +219,10 @@ function UsuarioNuevo() {
             <FormLabel htmlFor="usuario">Nombre de Usuario</FormLabel>
             <Input
               isRequired
-              maxLength={20}
               variant="filled"
               id="usuario"
               placeholder="Nombre de Usuario"
+              maxLength={20}
               value={usuario}
               onChange={(e) => setUsuario(e.target.value.toLowerCase())}
             />
@@ -227,10 +230,10 @@ function UsuarioNuevo() {
             <FormLabel htmlFor="email">Email</FormLabel>
             <Input
               isRequired
-              maxLength={100}
               variant="filled"
               id="email"
               type={"email"}
+              maxLength={100}
               placeholder="email@gmail.com"
               onChange={(e) => setEmail(e.target.value)}
             />
@@ -238,198 +241,156 @@ function UsuarioNuevo() {
             <FormControl isRequired>
               <FormLabel htmlFor="password">Contraseña</FormLabel>
               <Input
-                maxLength={100}
                 variant="filled"
                 id="password"
                 type={"password"}
+                placeholder="Contraseña"
+                minLength={8}
+                maxLength={255}
                 isRequired={true}
                 onChange={(e) => setPassword(e.target.value)}
               />
-              <FormHelperText>Mínimo 8 Caracteres</FormHelperText>
+              <FormHelperText>Mínimo 8 caracteres</FormHelperText>
             </FormControl>
 
             {/* //----------------------------FORMULARIO NUEVO TECNICO------------------------------------ */}
-            {rol === "TECNICO" ? (
-              <>
-                <Box
-                  w={"100%"}
-                  m={2}
-                  padding={5}
-                  paddingTop={5}
-                  borderRadius={10}
-                  boxShadow="lg"
-                  p="6"
-                  rounded="md"
-                  bg={"white"}
+
+            <Heading as={"h2"} fontWeight="bold">
+              Datos Básicos del Técnico
+            </Heading>
+            <SimpleGrid
+              w={"100%"}
+              columns={[1, 2, 2]}
+              spacingX={10}
+              spacingY={2}
+            >
+              <FormControl isRequired>
+                <FormLabel htmlFor="nombre">Nombre</FormLabel>
+                <Input
+                  variant="filled"
+                  id="nombre_tecnico"
+                  placeholder="Nombre"
+                  onChange={(e) => {
+                    setNombre(e.target.value);
+                  }}
+                />
+              </FormControl>
+
+              <FormControl isRequired>
+                <FormLabel htmlFor="apellidoPaterno">Primer Apellido</FormLabel>
+                <Input
+                  variant="filled"
+                  id="primer_apellido"
+                  placeholder="Apellido Paterno"
+                  onChange={(e) => {
+                    setApellidoPaterno(e.target.value);
+                  }}
+                />
+              </FormControl>
+
+              <FormControl isRequired>
+                <FormLabel htmlFor="apellidoMaterno">
+                  Segundo Apellido
+                </FormLabel>
+                <Input
+                  variant="filled"
+                  id="segundo_apellido"
+                  placeholder="Apellido Materno"
+                  onChange={(e) => {
+                    setApellidoMaterno(e.target.value);
+                  }}
+                />
+              </FormControl>
+
+              <FormControl isRequired>
+                <FormLabel htmlFor="telefono">Teléfono</FormLabel>
+                <Input
+                  id="telefono"
+                  variant="filled"
+                  step="1"
+                  minLength={10}
+                  maxLength={10}
+                  placeholder="Teléfono"
+                  type={"number"}
+                  value={telefono}
+                  onChange={(e) => {
+                    if (e.target.value.length <= 10)
+                      setTelefono(e.target.value);
+                  }}
+                />
+                <FormHelperText>10 digitos numericos</FormHelperText>
+              </FormControl>
+
+              <FormControl isRequired>
+                <FormLabel htmlFor="ciudad">Ciudad</FormLabel>
+                <Select
+                  id="ciudad"
+                  placeholder="Selecciona la Ciudad"
+                  variant="filled"
+                  onChange={(e) => {
+                    setCiudad(Number(e.target.value));
+                  }}
                 >
-                  <Text fontWeight="bold">Datos Básicos del Técnico</Text>
-
-                  <Center>
-                    <Divider orientation="vertical" />
-                    <FormControl isRequired paddingTop={15}>
-                      <FormLabel htmlFor="nombre">Nombre</FormLabel>
-                      <Input
-                        maxLength={100}
-                        variant="filled"
-                        id="nombre"
-                        placeholder="Nombre"
-                        onChange={(e) => {
-                          setNombre(e.target.value);
-                        }}
-                      />
-                    </FormControl>
-
-                    <FormControl isRequired paddingTop={15} paddingLeft={15}>
-                      <FormLabel htmlFor="apellidoPaterno">
-                        Primer Apellido
-                      </FormLabel>
-
-                      <Input
-                        maxLength={100}
-                        variant="filled"
-                        id="apellidoPaterno"
-                        placeholder="Primer Apellido"
-                        onChange={(e) => {
-                          setApellidoPaterno(e.target.value);
-                        }}
-                      />
-                    </FormControl>
-                  </Center>
-
-                  <Center>
-                    <Divider orientation="vertical" />
-
-                    <FormControl paddingTop={15}>
-                      <FormLabel htmlFor="apellidoMaterno">
-                        Segundo Apellido
-                      </FormLabel>
-                      <Input
-                        maxLength={100}
-                        variant="filled"
-                        id="apellidoMaterno"
-                        placeholder="Segundo Apellido"
-                        onChange={(e) => {
-                          setApellidoMaterno(e.target.value);
-                        }}
-                      />
-                    </FormControl>
-
-                    <FormControl isRequired paddingTop={15} paddingLeft={15}>
-                      <FormLabel htmlFor="telefono">Teléfono</FormLabel>
-                      <Input
-                        variant="filled"
-                        id="telefono"
-                        placeholder="Teléfono"
-                        maxLength={10}
-                        type={"tel"}
-                        onChange={(e) => {
-                          setTelefono(e.target.value);
-                        }}
-                      />
-                    </FormControl>
-                  </Center>
-
-                  <Center>
-                    <Divider orientation="vertical" />
-
-                    <FormControl isRequired paddingTop={15}>
-                      <FormLabel htmlFor="estado">Estado</FormLabel>
-                      <Select
-                        id="estado"
-                        placeholder="Selecciona el Estado"
-                        variant="filled"
-                        onChange={(e) => {
-                          setestadoId(Number(e.target.value));
-                          setIdEstado(Number(e.target.value));
+                  {ciudadesList?.length !== 0
+                    ? ciudadesList?.map((ciudad, index) => {
+                        return (
+                          <option key={index} value={ciudad.id}>
+                            {ciudad.nombre}
+                          </option>
+                        );
+                      })
+                    : null}
+                </Select>
+              </FormControl>
+            </SimpleGrid>
+            <FormControl>
+              <FormLabel htmlFor="ciudad">Servicios que ofrece</FormLabel>
+              <Stack pl={6} mt={1} spacing={1}>
+                {listadoServicios.length != 0 ? (
+                  listadoServicios.map((t, index) => {
+                    return (
+                      <Checkbox
+                        id={index.toString()}
+                        key={index}
+                        onChange={() => {
+                          filtradoServicios(t);
                         }}
                       >
-                        {estadosList?.length !== 0
-                          ? estadosList?.map((estado, index) => {
-                              return (
-                                <option key={index} value={estado.id}>
-                                  {estado.nombre}
-                                </option>
-                              );
-                            })
-                          : null}
-                      </Select>
-                    </FormControl>
+                        {t.nombre}
+                      </Checkbox>
+                    );
+                  })
+                ) : (
+                  <></>
+                )}
+              </Stack>
+            </FormControl>
 
-                    <FormControl isRequired paddingLeft={5} paddingTop={15}>
-                      <FormLabel htmlFor="ciudad">Ciudad</FormLabel>
-                      <Select
-                        id="ciudad"
-                        placeholder="Selecciona la Ciudad"
-                        variant="filled"
-                        onChange={(e) => {
-                          setciudadId(Number(e.target.value));
-                        }}
-                        onFocus={(e) => {
-                          consultarCiudades();
-                        }}
-                      >
-                        {ciudadesList?.length !== 0
-                          ? ciudadesList?.map((ciudad, index) => {
-                              return (
-                                <option key={index} value={ciudad.id}>
-                                  {ciudad.nombre}
-                                </option>
-                              );
-                            })
-                          : null}
-                      </Select>
-                    </FormControl>
-                  </Center>
+            <Flex w={"100%"}>
+              <SimpleGrid
+                justifyContent={"right"}
+                columns={[1, 2, 2]}
+                spacing={2}
+              >
+                <Button
+                  id="guardar"
+                  colorScheme="whatsapp"
+                  variant="solid"
+                  type="submit"
+                  isLoading={cargando}
+                >
+                  Agregar
+                </Button>
 
-                  <Divider orientation="vertical" />
-                  <FormControl isRequired paddingTop={15}></FormControl>
-                  <FormControl>
-                    <FormLabel htmlFor="ciudad">Servicios</FormLabel>
-                    <Stack pl={6} mt={1} spacing={1}>
-                      {listadoServicios.length != 0 ? (
-                        listadoServicios.map((t, index) => {
-                          return (
-                            <Checkbox
-                              key={index}
-                              onChange={() => {
-                                filtradoServicios(t);
-                              }}
-                            >
-                              {t.nombre}
-                            </Checkbox>
-                          );
-                        })
-                      ) : (
-                        <></>
-                      )}{" "}
-                    </Stack>
-                  </FormControl>
-
-                  <HStack spacing={4} w={"100%"}>
-                    <Spacer />
-                    <Link href={"/usuarios/index"}>
-                      <Button
-                        id="guardar"
-                        colorScheme="whatsapp"
-                        variant="solid"
-                        type="submit"
-                        //isLoading={cargando}
-                      >
-                        Agregar
-                      </Button>
-                    </Link>
-
-                    <Button
-                      colorScheme="red"
-                      variant="outline"
-                      onClick={() => Router.back()}
-                    >
-                      Cancelar
-                    </Button>
-                  </HStack>
-                </Box>
-              </>
-            ) : null}
+                <Button
+                  colorScheme="red"
+                  variant="outline"
+                  onClick={() => router.back()}
+                >
+                  Cancelar
+                </Button>
+              </SimpleGrid>
+            </Flex>
           </VStack>
         </FormControl>
       </form>

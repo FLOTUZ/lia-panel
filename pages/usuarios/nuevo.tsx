@@ -115,6 +115,7 @@ function UsuarioNuevo() {
 
   const altaUsuario = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setCargando(true);
     const serviceUsuario = new UsuariosService();
 
     const dataUsuario: IUsuario = {
@@ -143,7 +144,7 @@ function UsuarioNuevo() {
         title: "Error al registrar usuario",
         status: "error",
         isClosable: true,
-        description: `Es posible que el usuario ya exista o que el email esté en uso.`,
+        description: `Es posible que el nombre de usuario ya exista o que el email esté en uso.`,
       });
       return;
     }
