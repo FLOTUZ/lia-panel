@@ -1,38 +1,33 @@
 import Header from "@/common/Header";
 import DesktopLayout from "@/layouts/DesktopLayout";
-import { useRouter } from "next/router";
-import React from "react";
-import { CiudadesService } from "@/services/ciudades.service";
+
 import {
   FormLabel,
   Input,
   FormControl,
   RadioGroup,
-  HStack,
   VStack,
   Radio,
   Button,
-  Spacer,
   useToast,
-  Box,
-  Center,
-  Divider,
   Select,
   Stack,
-  Text,
   Checkbox,
   FormHelperText,
   SimpleGrid,
   Heading,
-  Container,
   Flex,
 } from "@chakra-ui/react";
 
 import { FormEvent, useState, useEffect } from "react";
-import { ITecnico, IUsuario, IServicio, ICiudad } from "@/services/api.models";
+import { useRouter } from "next/router";
+
 import { UsuariosService } from "@/services/usuarios.service";
 import { TecnicoService } from "@/services/tecnicos.service";
 import { ServiciosService } from "@/services/servicios.service";
+import { CiudadesService } from "@/services/ciudades.service";
+
+import { ITecnico, IUsuario, IServicio, ICiudad } from "@/services/api.models";
 
 function UsuarioNuevo() {
   const [listadoServicios, setListadoServicios] = useState<IServicio[]>([]);
@@ -50,7 +45,7 @@ function UsuarioNuevo() {
   const [telefono, setTelefono] = useState("");
   const [ciudadId, setCiudad] = useState<number>();
   const [servicios, setServicios] = useState<string[]>([]);
-  
+
   const [cargando, setCargando] = useState(false);
   const toast = useToast();
   const router = useRouter();
