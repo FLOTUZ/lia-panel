@@ -27,7 +27,6 @@ import {
   Container,
   Flex,
 } from "@chakra-ui/react";
-//import { useFormik } from "formik";
 
 import { FormEvent, useState, useEffect } from "react";
 import { ITecnico, IUsuario, IServicio, ICiudad } from "@/services/api.models";
@@ -36,6 +35,8 @@ import { TecnicoService } from "@/services/tecnicos.service";
 import { ServiciosService } from "@/services/servicios.service";
 
 function UsuarioNuevo() {
+  const [listadoServicios, setListadoServicios] = useState<IServicio[]>([]);
+  const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
   //------------------------ DATA USUARIO -------------------------------------
   const [usuario, setUsuario] = useState("");
   const [email, setEmail] = useState("");
@@ -49,36 +50,66 @@ function UsuarioNuevo() {
   const [telefono, setTelefono] = useState("");
   const [ciudadId, setCiudad] = useState<number>();
   const [servicios, setServicios] = useState<string[]>([]);
-  const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
-
+  
   const [cargando, setCargando] = useState(false);
-  const [checkedItems, setCheckedItems] = React.useState([false, false]);
-
-  const allChecked = checkedItems.every(Boolean);
-  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
-
   const toast = useToast();
-
   const router = useRouter();
+
+  // consulta de la tabla de servicios
+  const consultarTecnicos = async () => {
+    const service = new ServiciosService();
+    const respuesta = await service.getAll();
+
+    if (respuesta.status == 200) {
+      const data = respuesta.data as IServicio[];
+      setListadoServicios(data);
+    } else {
+      toast({
+        title: "Error",
+        description: "Error al consultar los servicios",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const consultarCiudades = async () => {
+    const servicio = new CiudadesService();
+    const respuesta = await servicio.getAll();
+    const data = respuesta.data as ICiudad[];
+
+    if (respuesta.status == 200) {
+      setCiudadesList(data);
+    } else {
+      toast({
+        title: "Error",
+        description: "Error al consultar las ciudades",
+        status: "error",
+        duration: 9000,
+        isClosable: true,
+      });
+    }
+  };
 
   //Controlar el cambio de servicios
   const filtradoServicios = (t: IServicio) => {
     //Id del servicio
-    const id = t.id || 0;
+    const idServicio = t.id || 0;
     //Arreglo de servicios
     const arr = servicios;
     //Buscar el servicio en el arreglo
-    const found = arr.find((e) => e == String(id));
+    const found = arr.find((e) => e == String(idServicio));
 
     //Si no existe el servicio, agregarlo
     if (!found) {
-      arr.push(id.toString());
+      arr.push(idServicio.toString());
       //Asigna el arreglo de servicios actualizado
       setServicios(arr);
     } else {
       //Si existe el servicio, eliminarlo
       for (let i = 0; i < arr.length; i++) {
-        if (arr[i] == id.toString()) {
+        if (arr[i] == idServicio.toString()) {
           arr.splice(i, 1);
           //Asigna el arreglo de servicios actualizado
           setServicios(arr);
@@ -89,6 +120,14 @@ function UsuarioNuevo() {
 
   const altaUsuario = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    const serviceUsuario = new UsuariosService();
+
+    const dataUsuario: IUsuario = {
+      usuario,
+      email,
+      password,
+      rol,
+    };
 
     if (servicios.length == 0) {
       toast({
@@ -101,18 +140,9 @@ function UsuarioNuevo() {
       return;
     }
 
-    //----------------------------ALTA USUARIO----------------------------------------
-    const dataUsuario: IUsuario = {
-      usuario,
-      email,
-      password,
-      rol,
-    };
+    const respuesta = await serviceUsuario.create(dataUsuario);
 
-    const serviceUsuario = new UsuariosService();
-    const respuestaUsuario = await serviceUsuario.create(dataUsuario);
-
-    if (respuestaUsuario.status != 201) {
+    if (respuesta.status != 201) {
       setCargando(false);
       toast({
         title: "Error al registrar usuario",
@@ -123,74 +153,56 @@ function UsuarioNuevo() {
       return;
     }
     //----------------------------ALTA TECNICO----------------------------------------
-    if (respuestaUsuario.status == 201 && dataUsuario.rol === "TECNICO") {
-      const usuarioGuardado = respuestaUsuario.data as IUsuario;
-
-      const dataTecnico: ITecnico = {
-        nombre: nombre,
-        apellido_paterno: apellidoPaterno,
-        apellido_materno: apellidoMaterno,
-        telefono: telefono,
-        usuarioId: usuarioGuardado.id || 0,
-        ciudadId: ciudadId || 0,
-      };
-
-      const serviceTecnico = new TecnicoService();
-      const respuestaTecnico = await serviceTecnico.create(dataTecnico);
-      const tecnicoGuardado = respuestaTecnico.data as ITecnico;
-
-      if (respuestaTecnico.status != 201) {
-        setCargando(false);
-        toast({
-          title: "Error al registrar tecnico",
-          status: "error",
-          position: "bottom-right",
-          description: `Error, verificar los campos del tecnico`,
-        });
-        await serviceUsuario.remove(usuarioGuardado.id!);
-      }
-      if (respuestaTecnico.status == 201) {
-        toast({
-          title: "Usuario guardado.",
-          status: "success",
-          position: "bottom-right",
-          description: `Se guardo, con éxito el técnico ${tecnicoGuardado.nombre}.`,
-        });
-
-        const servicioToTecnicos = new TecnicoService();
-        await servicioToTecnicos.agregarServiciosATecnico(
-          tecnicoGuardado.id || 0,
-          servicios
-        );
-        router.back();
-      }
+    if (respuesta.status == 201 && dataUsuario.rol === "TECNICO") {
+      const usuarioEnBD = respuesta.data as IUsuario;
+      await altaTecnico(usuarioEnBD);
     }
   };
 
-  // consulta de la tabla de servicios
+  const altaTecnico = async (usuarioEnBD: IUsuario) => {
+    const usuarioService = new UsuariosService();
+    const tecnicoService = new TecnicoService();
 
-  const [listadoServicios, setListadoServicios] = useState<IServicio[]>([]);
+    const dataTecnico: ITecnico = {
+      nombre: nombre,
+      apellido_paterno: apellidoPaterno,
+      apellido_materno: apellidoMaterno,
+      telefono: telefono,
+      usuarioId: usuarioEnBD.id || 0,
+      ciudadId: ciudadId || 0,
+    };
+
+    const respuestaTecnico = await tecnicoService.create(dataTecnico);
+    const tecnicoGuardado = respuestaTecnico.data as ITecnico;
+
+    if (respuestaTecnico.status != 201) {
+      setCargando(false);
+      toast({
+        title: "Error al registrar tecnico",
+        status: "error",
+        position: "bottom-right",
+        description: `Error, verificar los campos del tecnico`,
+      });
+      await usuarioService.remove(usuarioEnBD.id!);
+    }
+    if (respuestaTecnico.status == 201) {
+      toast({
+        title: "Usuario guardado.",
+        status: "success",
+        position: "bottom-right",
+        description: `Se guardo, con éxito el técnico ${tecnicoGuardado.nombre}.`,
+      });
+
+      const servicioToTecnicos = new TecnicoService();
+      await servicioToTecnicos.agregarServiciosATecnico(
+        tecnicoGuardado.id || 0,
+        servicios
+      );
+      router.back();
+    }
+  };
 
   useEffect(() => {
-    const consultarTecnicos = async () => {
-      const service = new ServiciosService();
-      const respuesta = await service.getAll();
-
-      if (respuesta.status != 200) {
-      } else {
-        const data = respuesta.data as IServicio[];
-        setListadoServicios(data);
-      }
-    };
-
-    const consultarCiudades = async () => {
-      const servicio = new CiudadesService();
-      const respuesta = await servicio.getAll();
-      const data = respuesta.data as ICiudad[];
-
-      setCiudadesList(data);
-    };
-
     consultarCiudades();
     consultarTecnicos();
   }, []);
