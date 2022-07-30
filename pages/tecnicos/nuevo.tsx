@@ -187,7 +187,7 @@ function UsuarioNuevo() {
       });
 
       const servicioToTecnicos = new TecnicoService();
-      await servicioToTecnicos.agregarServiciosATecnico(
+      await servicioToTecnicos.addServicesAndCiudadesCoberturaToTecnico(
         tecnicoGuardado.id || 0,
         servicios
       );

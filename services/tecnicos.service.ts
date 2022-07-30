@@ -1,3 +1,4 @@
+import axios from "axios";
 import { ITecnico } from "./api.models";
 import { Actualizar, Consultar, Crear, Eliminar } from "./ApiCall";
 
@@ -28,8 +29,18 @@ export class TecnicoService {
     return respuesta;
   }
 
-  public async agregarServiciosATecnico(idTecnico: number, data: string[]) {
-    const respuesta: any = Crear(`${this.url}/${idTecnico}/servicios`, data);
+  public async addServicesAndCiudadesCoberturaToTecnico(
+    idTecnico: number,
+    servicios: string[],
+    ciudades_cobertura: string[]
+  ) {
+    const respuesta: any = await axios.post(
+      `${process.env.NEXT_PUBLIC_APIURL}${this.url}/${idTecnico}/servicios-ciudadescobertura`,
+      {
+        servicios,
+        ciudades_cobertura,
+      }
+    );
     return respuesta;
   }
 

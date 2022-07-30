@@ -67,7 +67,7 @@ export interface ITecnico {
   ciudadId?: number;
   ViveEn?: ICiudad;
   Servicio?: IServicio[];
-  Ciudad?: ICiudad[];
+  Ciudades_Cobertura?: ICiudad[];
   Cotizaciones?: ICotizacionTecnico[];
   Usuario?: IUsuario;
   createdAt?: string | null;
