@@ -15,6 +15,7 @@ import {
   SimpleGrid,
   Heading,
   Flex,
+  CheckboxGroup,
 } from "@chakra-ui/react";
 
 import { FormEvent, useState, useEffect } from "react";
@@ -42,6 +43,8 @@ function UsuarioNuevo() {
   const [telefono, setTelefono] = useState("");
   const [ciudadId, setCiudad] = useState<number>();
   const [servicios, setServicios] = useState<string[]>([]);
+
+  const [ciudadesCobertura, setCiudadesCobertura] = useState<string[]>([]);
 
   const [cargando, setCargando] = useState(false);
   const toast = useToast();
@@ -189,8 +192,10 @@ function UsuarioNuevo() {
       const servicioToTecnicos = new TecnicoService();
       await servicioToTecnicos.addServicesAndCiudadesCoberturaToTecnico(
         tecnicoGuardado.id || 0,
-        servicios
+        servicios,
+        ciudadesCobertura
       );
+      setCargando(false);
       router.back();
     }
   };
@@ -343,28 +348,59 @@ function UsuarioNuevo() {
                 </Select>
               </FormControl>
             </SimpleGrid>
-            <FormControl>
-              <FormLabel htmlFor="ciudad">Servicios que ofrece</FormLabel>
-              <Stack pl={6} mt={1} spacing={1}>
-                {listadoServicios.length != 0 ? (
-                  listadoServicios.map((t, index) => {
-                    return (
-                      <Checkbox
-                        id={index.toString()}
-                        key={index}
-                        onChange={() => {
-                          filtradoServicios(t);
-                        }}
-                      >
-                        {t.nombre}
-                      </Checkbox>
-                    );
-                  })
-                ) : (
-                  <></>
-                )}
-              </Stack>
-            </FormControl>
+
+            <SimpleGrid columns={[1, 2, 2]}>
+              <FormControl>
+                <FormLabel htmlFor="ciudades">Ciudades de cobertura</FormLabel>
+                <CheckboxGroup
+                  value={ciudadesCobertura}
+                  onChange={(e) => {
+                    setCiudadesCobertura(e as string[]);
+                  }}
+                >
+                  <Stack pl={6} mt={1} spacing={1}>
+                    {ciudadesList.length != 0 ? (
+                      ciudadesList.map((ciudad, index) => {
+                        return (
+                          <Checkbox
+                            key={index}
+                            id={ciudad.nombre}
+                            value={ciudad.id?.toString()}
+                          >
+                            {ciudad.nombre}
+                          </Checkbox>
+                        );
+                      })
+                    ) : (
+                      <></>
+                    )}
+                  </Stack>
+                </CheckboxGroup>
+              </FormControl>
+
+              <FormControl>
+                <FormLabel htmlFor="servicios">Servicios</FormLabel>
+                <Stack pl={6} mt={1} spacing={1}>
+                  {listadoServicios.length != 0 ? (
+                    listadoServicios.map((t, index) => {
+                      return (
+                        <Checkbox
+                          id={index.toString()}
+                          key={index}
+                          onChange={() => {
+                            filtradoServicios(t);
+                          }}
+                        >
+                          {t.nombre}
+                        </Checkbox>
+                      );
+                    })
+                  ) : (
+                    <></>
+                  )}
+                </Stack>
+              </FormControl>
+            </SimpleGrid>
 
             <Flex w={"100%"}>
               <SimpleGrid
