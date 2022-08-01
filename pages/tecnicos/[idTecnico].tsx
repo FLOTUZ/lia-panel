@@ -52,6 +52,7 @@ function TecnicoNuevo() {
   const [tecnico, setTecnico] = useState<ITecnico>();
 
   const [ciudadDeTecnico, setCiudadDeTecnico] = useState<number>();
+  const [ciudadesCobertura, setCiudadesCobertura] = useState<string[]>([]);
   const [serviciosDeTecnico, setServiciosDeTecnico] = useState<number[]>([]);
   const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
 
@@ -83,6 +84,7 @@ function TecnicoNuevo() {
     setCiudadesList(data);
     setCiudadDeTecnico(tecnico?.ciudadId);
   };
+
   // ---------- servicios ------------
   const [listadoServicios, setListadoServicios] = useState<IServicio[]>([]);
 
@@ -134,6 +136,16 @@ function TecnicoNuevo() {
     });
 
     if (arr != undefined) setServiciosDeTecnico(arr);
+  };
+
+  const ciudadesCoberturaOfTecnico = async () => {
+    const ciudadesCobertura = tecnico?.Ciudades_Cobertura;
+
+    const arr = ciudadesCobertura?.map((ciudad) => {
+      return ciudad.id!.toString();
+    });
+
+    if (arr != undefined) setCiudadesCobertura(arr);
   };
 
   /*ACTUALIZAR EL ESTADO SELECCIONADO FORMIK */
@@ -250,11 +262,12 @@ function TecnicoNuevo() {
 
   useEffect(() => {
     serviciosOfTecnico();
+    ciudadesCoberturaOfTecnico();
   }, [listadoServicios]);
 
   return (
     <DesktopLayout>
-      <Header title={"Editar Usuario"} />
+      <Header title={"Editar Tecnico"} />
 
       <form onSubmit={formUsuario.handleSubmit}>
         <VStack
@@ -278,12 +291,12 @@ function TecnicoNuevo() {
                 formUsuario.setFieldValue("inactivo", e.target.checked);
                 setIsInactivo(e.target.checked);
               }}
-            ></Switch>
+            />
           </FormControl>
 
           <SimpleGrid columns={[1, 2, 2]} spacing={2} w={"100%"}>
             <FormControl isRequired={true}>
-              <FormLabel htmlFor="usuario">Nombre de usuario</FormLabel>
+              <FormLabel htmlFor="usuario">Usuario de tecnico</FormLabel>
               <Input
                 maxLength={20}
                 variant="filled"
@@ -310,11 +323,11 @@ function TecnicoNuevo() {
             </FormControl>
           </SimpleGrid>
 
-          <FormControl isRequired={false}>
+          <FormControl isRequired>
             <FormLabel htmlFor="password">Contraseña</FormLabel>
             <Input
               minLength={8}
-              maxLength={100}
+              maxLength={255}
               variant="filled"
               id="password"
               type={"password"}
@@ -323,26 +336,6 @@ function TecnicoNuevo() {
             />
             <FormHelperText>Mínimo 8 carácteres</FormHelperText>
           </FormControl>
-
-          <HStack spacing={4} w={"100%"} mt={"12rem"}>
-            <Spacer />
-            <Button
-              id="guardar_tecnico"
-              colorScheme="whatsapp"
-              variant="solid"
-              type="submit"
-              isLoading={cargando}
-            >
-              Guardar
-            </Button>
-            <Button
-              colorScheme="red"
-              variant="outline"
-              onClick={() => router.back()}
-            >
-              Cancelar
-            </Button>
-          </HStack>
         </VStack>
       </form>
 
@@ -486,34 +479,66 @@ function TecnicoNuevo() {
               </FormControl>
             </SimpleGrid>
 
-            <FormControl>
-              <FormLabel htmlFor="servicios" paddingTop={15}>
-                Servicios
-              </FormLabel>
-              <Stack pl={6} mt={1} spacing={1}>
-                <CheckboxGroup
-                  value={serviciosDeTecnico}
-                  onChange={(checks) => {
-                    const arr: number[] = checks.map((check) => {
-                      return Number(check);
-                    });
-                    setServiciosDeTecnico(arr);
-                  }}
-                >
-                  {listadoServicios.length != 0 ? (
-                    listadoServicios.map((t, index) => {
-                      return (
-                        <Checkbox key={index} id={t.nombre} value={t.id}>
-                          {t.nombre}
-                        </Checkbox>
-                      );
-                    })
-                  ) : (
-                    <></>
-                  )}{" "}
-                </CheckboxGroup>
-              </Stack>
-            </FormControl>
+            <SimpleGrid columns={[1, 2, 2]}>
+              <FormControl>
+                <FormLabel htmlFor="ciudades_cobertura" paddingTop={15}>
+                  Ciudades cobertura
+                </FormLabel>
+                <Stack pl={6} mt={1} spacing={1}>
+                  <CheckboxGroup
+                    value={ciudadesCobertura.map((id) => Number(id))}
+                    onChange={(checks) => {
+                      setCiudadesCobertura(checks as string[]);
+                    }}
+                  >
+                    {ciudadesList.length != 0 ? (
+                      ciudadesList.map((ciudad, index) => {
+                        return (
+                          <Checkbox
+                            key={index}
+                            id={ciudad.nombre}
+                            value={ciudad.id}
+                          >
+                            {ciudad.nombre}
+                          </Checkbox>
+                        );
+                      })
+                    ) : (
+                      <></>
+                    )}{" "}
+                  </CheckboxGroup>
+                </Stack>
+              </FormControl>
+
+              <FormControl>
+                <FormLabel htmlFor="servicios" paddingTop={15}>
+                  Servicios
+                </FormLabel>
+                <Stack pl={6} mt={1} spacing={1}>
+                  <CheckboxGroup
+                    value={serviciosDeTecnico}
+                    onChange={(checks) => {
+                      const arr: number[] = checks.map((check) => {
+                        return Number(check);
+                      });
+                      setServiciosDeTecnico(arr);
+                    }}
+                  >
+                    {listadoServicios.length != 0 ? (
+                      listadoServicios.map((t, index) => {
+                        return (
+                          <Checkbox key={index} id={t.nombre} value={t.id}>
+                            {t.nombre}
+                          </Checkbox>
+                        );
+                      })
+                    ) : (
+                      <></>
+                    )}{" "}
+                  </CheckboxGroup>
+                </Stack>
+              </FormControl>
+            </SimpleGrid>
 
             <HStack>
               <Spacer />
