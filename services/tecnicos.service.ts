@@ -43,13 +43,4 @@ export class TecnicoService {
     );
     return respuesta;
   }
-
-  public async editarServiciosDeTecnico(idTecnico: number, data: number[]) {
-    const respuesta: any = await Actualizar(
-      `${this.url}/${idTecnico}/servicios`,
-      data
-    );
-
-    return respuesta;
-  }
 }

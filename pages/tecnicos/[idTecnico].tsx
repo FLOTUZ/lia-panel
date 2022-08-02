@@ -1,33 +1,29 @@
 import Header from "@/common/Header";
 import DesktopLayout from "@/layouts/DesktopLayout";
-import Router from "next/router";
-import React from "react";
-import { CiudadesService } from "@/services/ciudades.service";
+import { useRouter } from "next/router";
+import { useFormik } from "formik";
+import { useState, useEffect } from "react";
+
 import {
   FormLabel,
   Input,
   FormControl,
   HStack,
-  VStack,
   Button,
   Spacer,
   useToast,
   Box,
-  Center,
-  Divider,
   Select,
   Stack,
-  Text,
   Checkbox,
   CheckboxGroup,
   FormHelperText,
   Heading,
   SimpleGrid,
   Switch,
+  Flex,
 } from "@chakra-ui/react";
-import { useFormik } from "formik";
 
-import { useState, useEffect } from "react";
 import {
   ITecnico,
   IUsuario,
@@ -39,7 +35,7 @@ import { UsuariosService } from "@/services/usuarios.service";
 import { TecnicoService } from "@/services/tecnicos.service";
 import { ServiciosService } from "@/services/servicios.service";
 import { EstadosService } from "@/services/estados.service";
-import { useRouter } from "next/router";
+import { CiudadesService } from "@/services/ciudades.service";
 
 function TecnicoNuevo() {
   // ---- conexion y obtencion de id ---------
@@ -53,7 +49,7 @@ function TecnicoNuevo() {
 
   const [ciudadDeTecnico, setCiudadDeTecnico] = useState<number>();
   const [ciudadesCobertura, setCiudadesCobertura] = useState<string[]>([]);
-  const [serviciosDeTecnico, setServiciosDeTecnico] = useState<number[]>([]);
+  const [serviciosDeTecnico, setServiciosDeTecnico] = useState<string[]>([]);
   const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
 
   const [cargando, setCargando] = useState(false);
@@ -132,7 +128,7 @@ function TecnicoNuevo() {
     const servicios = tecnico?.Servicio;
 
     const arr = servicios?.map((servicio) => {
-      return servicio.id!;
+      return servicio.id!.toString();
     });
 
     if (arr != undefined) setServiciosDeTecnico(arr);
@@ -148,8 +144,6 @@ function TecnicoNuevo() {
     if (arr != undefined) setCiudadesCobertura(arr);
   };
 
-  /*ACTUALIZAR EL ESTADO SELECCIONADO FORMIK */
-
   // --------------------- Tecnico-------------------
 
   const formTecnico = useFormik({
@@ -164,38 +158,41 @@ function TecnicoNuevo() {
     enableReinitialize: true,
 
     onSubmit: async (values) => {
+      setCargando(true);
+      const service = new TecnicoService();
       const data = {
         ...values,
       } as ITecnico;
 
-      const service = new TecnicoService();
       const respuesta = await service.update(data, Number(idTecnico));
 
       const dataUpdate = respuesta.data as ITecnico;
 
       if (respuesta.status == 200) {
         setTecnico(dataUpdate);
+
         //Se actualizan sus servicios
 
-        const respuestaServicios = await service.editarServiciosDeTecnico(
+        await service.addServicesAndCiudadesCoberturaToTecnico(
           Number(idTecnico),
-          serviciosDeTecnico
+          serviciosDeTecnico,
+          ciudadesCobertura
         );
 
         toast({
-          title: "Usuario guardado, con éxito",
+          title: "Tecnico actualizado",
+          description: `Se actualizo tecnico, exitosamente.`,
           position: "bottom-right",
           status: "success",
-          description: `Se guardo usuario, exitosamente.`,
         });
-        router.push("/tecnicos");
+        setCargando(false);
       } else {
         setCargando(false);
         toast({
           title: "Oops... Ocurrio un error.",
+          description: `Error en los datos del tecnico`,
           status: "error",
           position: "bottom-right",
-          description: `Error, verificar los campos.`,
         });
       }
     },
@@ -213,10 +210,10 @@ function TecnicoNuevo() {
     enableReinitialize: true,
 
     onSubmit: async (values) => {
+      setCargando(true);
       const datos = {
         ...values,
       } as IUsuario;
-      console.log(datos);
 
       if (datos.password == "") datos.password = undefined;
 
@@ -229,18 +226,19 @@ function TecnicoNuevo() {
       if (respuesta.status !== 200) {
         toast({
           title: "Oops... Ocurrio un error.",
+          description: `Error al actualizar, posibles errores en los datos de usuario`,
           status: "error",
           position: "bottom-right",
-          description: `Error al actualizar, posibles errrores en los de usuario`,
         });
         setCargando(false);
       } else {
         toast({
-          title: "Se guardo con éxito.",
+          title: "Se actualizado con éxito.",
           status: "success",
           position: "bottom-right",
-          description: `Usuario guardado, exitosamente`,
+          description: `Usuario actualizado, exitosamente`,
         });
+        setCargando(false);
       }
     },
   });
@@ -270,16 +268,15 @@ function TecnicoNuevo() {
       <Header title={"Editar Tecnico"} />
 
       <form onSubmit={formUsuario.handleSubmit}>
-        <VStack
+        <Box
           m={2}
           padding={5}
           borderRadius={10}
-          boxShadow="sm"
+          boxShadow="lg"
           p="6"
           rounded="md"
-          bg="white"
-          spacing={2}
-          alignItems={"start"}
+          bg={"white"}
+          w={"100%"}
         >
           <FormControl isRequired={false}>
             <FormLabel htmlFor="inactivo">Esta inactivo</FormLabel>
@@ -294,7 +291,7 @@ function TecnicoNuevo() {
             />
           </FormControl>
 
-          <SimpleGrid columns={[1, 2, 2]} spacing={2} w={"100%"}>
+          <SimpleGrid columns={[1, 1, 2]} spacing={2} w={"100%"}>
             <FormControl isRequired={true}>
               <FormLabel htmlFor="usuario">Usuario de tecnico</FormLabel>
               <Input
@@ -321,227 +318,24 @@ function TecnicoNuevo() {
                 value={formUsuario.values.email}
               />
             </FormControl>
+
+            <FormControl>
+              <FormLabel htmlFor="password">Contraseña</FormLabel>
+              <Input
+                minLength={8}
+                maxLength={255}
+                variant="filled"
+                id="password"
+                type={"password"}
+                onChange={formUsuario.handleChange}
+                value={formUsuario.values.password}
+              />
+              <FormHelperText>Mínimo 8 carácteres</FormHelperText>
+            </FormControl>
           </SimpleGrid>
-
-          <FormControl isRequired>
-            <FormLabel htmlFor="password">Contraseña</FormLabel>
-            <Input
-              minLength={8}
-              maxLength={255}
-              variant="filled"
-              id="password"
-              type={"password"}
-              onChange={formUsuario.handleChange}
-              value={formUsuario.values.password}
-            />
-            <FormHelperText>Mínimo 8 carácteres</FormHelperText>
-          </FormControl>
-        </VStack>
-      </form>
-
-      {/* terminar el form de usuario y empieza el de tecnico **/}
-
-      <form onSubmit={formTecnico.handleSubmit}>
-        <FormControl>
-          <Box
-            m={2}
-            padding={5}
-            borderRadius={10}
-            boxShadow="lg"
-            p="6"
-            rounded="md"
-            bg={"white"}
-          >
-            <Heading as="h2" fontWeight="bold" paddingBottom={15}>
-              Datos del tecnico
-            </Heading>
-
+          <Flex w={"100%"}>
+            <Spacer />
             <SimpleGrid columns={[1, 1, 2]} spacing={2}>
-              <FormControl isRequired>
-                <FormLabel htmlFor="nombre">Nombre</FormLabel>
-                <Input
-                  minLength={3}
-                  maxLength={50}
-                  variant="filled"
-                  id="nombre"
-                  placeholder="Nombre"
-                  defaultValue={tecnico?.nombre}
-                  onChange={formTecnico.handleChange}
-                />
-              </FormControl>
-
-              <FormControl isRequired>
-                <FormLabel htmlFor="apellido_paterno">
-                  Primer Apellido
-                </FormLabel>
-                <Input
-                  minLength={3}
-                  maxLength={50}
-                  variant="filled"
-                  id="apellido_paterno"
-                  placeholder="Apellido Paterno"
-                  defaultValue={tecnico?.apellido_paterno}
-                  onChange={formTecnico.handleChange}
-                />
-              </FormControl>
-
-              <FormControl isRequired paddingTop={15}>
-                <FormLabel htmlFor="apellido_materno">
-                  Segundo Apellido
-                </FormLabel>
-                <Input
-                  minLength={3}
-                  maxLength={50}
-                  variant="filled"
-                  id="apellido_materno"
-                  placeholder="Apellido Materno"
-                  defaultValue={tecnico?.apellido_materno}
-                  onChange={formTecnico.handleChange}
-                />
-              </FormControl>
-
-              <FormControl isRequired paddingTop={15}>
-                <FormLabel htmlFor="telefono">Teléfono</FormLabel>
-                <Input
-                  maxLength={10}
-                  variant="filled"
-                  id="telefono"
-                  placeholder="Teléfono"
-                  type={"number"}
-                  defaultValue={tecnico?.telefono}
-                  value={formTecnico.values.telefono}
-                  onChange={(e) => {
-                    if (e.target.value.length <= 10) {
-                      formTecnico.setFieldValue(
-                        "telefono",
-                        e.target.value.toString()
-                      );
-                    }
-                  }}
-                />
-              </FormControl>
-
-              <FormControl isRequired>
-                <FormLabel htmlFor="estado" paddingTop={15}>
-                  Estado
-                </FormLabel>
-                <Select
-                  id="estado"
-                  placeholder="Selecciona el Estado"
-                  variant="filled"
-                  value={IdEstado == 0 ? estado?.id : IdEstado}
-                  onClick={() => consultarCiudades()}
-                  onChange={(e) => {
-                    setIdEstado(Number(e.target.value));
-                  }}
-                >
-                  {estadosList?.length !== 0
-                    ? estadosList?.map((estado, index) => {
-                        return (
-                          <option key={index} value={estado.id}>
-                            {estado.nombre}
-                          </option>
-                        );
-                      })
-                    : null}
-                </Select>
-              </FormControl>
-
-              <FormControl isRequired paddingTop={15}>
-                <FormLabel htmlFor="ciudadId">Ciudad</FormLabel>
-                <Select
-                  id="ciudadId"
-                  placeholder="Selecciona la Ciudad"
-                  variant="filled"
-                  value={
-                    ciudadDeTecnico != 0
-                      ? ciudadDeTecnico
-                      : formTecnico.values.ciudadId
-                  }
-                  onChange={(e) => {
-                    formTecnico.setFieldValue(
-                      "ciudadId",
-                      Number(e.target.value)
-                    );
-                    setCiudadDeTecnico(Number(e.target.value));
-                  }}
-                >
-                  {ciudadesList?.length !== 0
-                    ? ciudadesList?.map((ciudad, index) => {
-                        return (
-                          <option key={index} value={ciudad.id}>
-                            {ciudad.nombre}
-                          </option>
-                        );
-                      })
-                    : null}
-                </Select>
-              </FormControl>
-            </SimpleGrid>
-
-            <SimpleGrid columns={[1, 2, 2]}>
-              <FormControl>
-                <FormLabel htmlFor="ciudades_cobertura" paddingTop={15}>
-                  Ciudades cobertura
-                </FormLabel>
-                <Stack pl={6} mt={1} spacing={1}>
-                  <CheckboxGroup
-                    value={ciudadesCobertura.map((id) => Number(id))}
-                    onChange={(checks) => {
-                      setCiudadesCobertura(checks as string[]);
-                    }}
-                  >
-                    {ciudadesList.length != 0 ? (
-                      ciudadesList.map((ciudad, index) => {
-                        return (
-                          <Checkbox
-                            key={index}
-                            id={ciudad.nombre}
-                            value={ciudad.id}
-                          >
-                            {ciudad.nombre}
-                          </Checkbox>
-                        );
-                      })
-                    ) : (
-                      <></>
-                    )}{" "}
-                  </CheckboxGroup>
-                </Stack>
-              </FormControl>
-
-              <FormControl>
-                <FormLabel htmlFor="servicios" paddingTop={15}>
-                  Servicios
-                </FormLabel>
-                <Stack pl={6} mt={1} spacing={1}>
-                  <CheckboxGroup
-                    value={serviciosDeTecnico}
-                    onChange={(checks) => {
-                      const arr: number[] = checks.map((check) => {
-                        return Number(check);
-                      });
-                      setServiciosDeTecnico(arr);
-                    }}
-                  >
-                    {listadoServicios.length != 0 ? (
-                      listadoServicios.map((t, index) => {
-                        return (
-                          <Checkbox key={index} id={t.nombre} value={t.id}>
-                            {t.nombre}
-                          </Checkbox>
-                        );
-                      })
-                    ) : (
-                      <></>
-                    )}{" "}
-                  </CheckboxGroup>
-                </Stack>
-              </FormControl>
-            </SimpleGrid>
-
-            <HStack>
-              <Spacer />
               <Button
                 id="guardar_usuario"
                 colorScheme="whatsapp"
@@ -549,19 +343,232 @@ function TecnicoNuevo() {
                 type="submit"
                 isLoading={cargando}
               >
-                Guardar
+                Guardar datos de usuario
               </Button>
 
               <Button
                 colorScheme="red"
                 variant="outline"
-                onClick={() => Router.back()}
+                onClick={() => router.back()}
               >
                 Cancelar
               </Button>
-            </HStack>
-          </Box>
-        </FormControl>
+            </SimpleGrid>
+          </Flex>
+        </Box>
+      </form>
+
+      {/* terminar el form de usuario y empieza el de tecnico **/}
+
+      <form onSubmit={formTecnico.handleSubmit}>
+        <Box
+          m={2}
+          padding={5}
+          borderRadius={10}
+          boxShadow="lg"
+          p="6"
+          rounded="md"
+          bg={"white"}
+        >
+          <Heading as="h2" fontWeight="bold" paddingBottom={15}>
+            Datos del tecnico
+          </Heading>
+
+          <SimpleGrid columns={[1, 1, 2]} spacing={2}>
+            <FormControl isRequired>
+              <FormLabel htmlFor="nombre">Nombre</FormLabel>
+              <Input
+                minLength={3}
+                maxLength={50}
+                variant="filled"
+                id="nombre"
+                placeholder="Nombre"
+                defaultValue={tecnico?.nombre}
+                onChange={formTecnico.handleChange}
+              />
+            </FormControl>
+
+            <FormControl isRequired>
+              <FormLabel htmlFor="apellido_paterno">Primer Apellido</FormLabel>
+              <Input
+                minLength={3}
+                maxLength={50}
+                variant="filled"
+                id="apellido_paterno"
+                placeholder="Apellido Paterno"
+                defaultValue={tecnico?.apellido_paterno}
+                onChange={formTecnico.handleChange}
+              />
+            </FormControl>
+
+            <FormControl isRequired paddingTop={15}>
+              <FormLabel htmlFor="apellido_materno">Segundo Apellido</FormLabel>
+              <Input
+                minLength={3}
+                maxLength={50}
+                variant="filled"
+                id="apellido_materno"
+                placeholder="Apellido Materno"
+                defaultValue={tecnico?.apellido_materno}
+                onChange={formTecnico.handleChange}
+              />
+            </FormControl>
+
+            <FormControl isRequired paddingTop={15}>
+              <FormLabel htmlFor="telefono">Teléfono</FormLabel>
+              <Input
+                maxLength={10}
+                variant="filled"
+                id="telefono"
+                placeholder="Teléfono"
+                type={"number"}
+                defaultValue={tecnico?.telefono}
+                value={formTecnico.values.telefono}
+                onChange={(e) => {
+                  if (e.target.value.length <= 10) {
+                    formTecnico.setFieldValue(
+                      "telefono",
+                      e.target.value.toString()
+                    );
+                  }
+                }}
+              />
+            </FormControl>
+
+            <FormControl isRequired>
+              <FormLabel htmlFor="estado" paddingTop={15}>
+                Estado
+              </FormLabel>
+              <Select
+                id="estado"
+                placeholder="Selecciona el Estado"
+                variant="filled"
+                value={IdEstado == 0 ? estado?.id : IdEstado}
+                onClick={() => consultarCiudades()}
+                onChange={(e) => {
+                  setIdEstado(Number(e.target.value));
+                }}
+              >
+                {estadosList?.length !== 0
+                  ? estadosList?.map((estado, index) => {
+                      return (
+                        <option key={index} value={estado.id}>
+                          {estado.nombre}
+                        </option>
+                      );
+                    })
+                  : null}
+              </Select>
+            </FormControl>
+
+            <FormControl isRequired paddingTop={15}>
+              <FormLabel htmlFor="ciudadId">Ciudad</FormLabel>
+              <Select
+                id="ciudadId"
+                placeholder="Selecciona la Ciudad"
+                variant="filled"
+                value={
+                  ciudadDeTecnico != 0
+                    ? ciudadDeTecnico
+                    : formTecnico.values.ciudadId
+                }
+                onChange={(e) => {
+                  formTecnico.setFieldValue("ciudadId", Number(e.target.value));
+                  setCiudadDeTecnico(Number(e.target.value));
+                }}
+              >
+                {ciudadesList?.length !== 0
+                  ? ciudadesList?.map((ciudad, index) => {
+                      return (
+                        <option key={index} value={ciudad.id}>
+                          {ciudad.nombre}
+                        </option>
+                      );
+                    })
+                  : null}
+              </Select>
+            </FormControl>
+          </SimpleGrid>
+
+          <SimpleGrid columns={[1, 2, 2]}>
+            <FormControl>
+              <FormLabel htmlFor="ciudades_cobertura" paddingTop={15}>
+                Ciudades cobertura
+              </FormLabel>
+              <Stack pl={6} mt={1} spacing={1}>
+                <CheckboxGroup
+                  value={ciudadesCobertura.map((id) => Number(id))}
+                  onChange={(checks) => {
+                    setCiudadesCobertura(checks as string[]);
+                  }}
+                >
+                  {ciudadesList.length != 0 ? (
+                    ciudadesList.map((ciudad, index) => {
+                      return (
+                        <Checkbox
+                          key={index}
+                          id={ciudad.nombre}
+                          value={ciudad.id}
+                        >
+                          {ciudad.nombre}
+                        </Checkbox>
+                      );
+                    })
+                  ) : (
+                    <></>
+                  )}{" "}
+                </CheckboxGroup>
+              </Stack>
+            </FormControl>
+
+            <FormControl>
+              <FormLabel htmlFor="servicios" paddingTop={15}>
+                Servicios
+              </FormLabel>
+              <Stack pl={6} mt={1} spacing={1}>
+                <CheckboxGroup
+                  value={serviciosDeTecnico.map((id) => Number(id))}
+                  onChange={(checks) => {
+                    setServiciosDeTecnico(checks as string[]);
+                  }}
+                >
+                  {listadoServicios.length != 0 ? (
+                    listadoServicios.map((t, index) => {
+                      return (
+                        <Checkbox key={index} id={t.nombre} value={t.id}>
+                          {t.nombre}
+                        </Checkbox>
+                      );
+                    })
+                  ) : (
+                    <></>
+                  )}{" "}
+                </CheckboxGroup>
+              </Stack>
+            </FormControl>
+          </SimpleGrid>
+
+          <HStack>
+            <Spacer />
+            <Button
+              id="guardar_tecnico"
+              colorScheme="whatsapp"
+              variant="solid"
+              type="submit"
+              isLoading={cargando}
+            >
+              Guardar datos de tecnico
+            </Button>
+
+            <Button
+              colorScheme="red"
+              variant="outline"
+              onClick={() => router.back()}
+            >
+              Cancelar
+            </Button>
+          </HStack>
+        </Box>
       </form>
     </DesktopLayout>
   );
