@@ -34,7 +34,7 @@ export class TecnicoService {
     servicios: string[],
     ciudades_cobertura: string[]
   ) {
-    const respuesta: any = await axios.post(
+    const respuesta: any = await axios.patch(
       `${process.env.NEXT_PUBLIC_APIURL}${this.url}/${idTecnico}/servicios-ciudadescobertura`,
       {
         servicios,

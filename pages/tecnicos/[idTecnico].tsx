@@ -74,7 +74,7 @@ function TecnicoNuevo() {
 
   const consultarCiudades = async () => {
     const servicio = new CiudadesService();
-    const respuesta: any = await servicio.getCiudadesByIdEstado(IdEstado);
+    const respuesta: any = await servicio.getAll();
     const data = respuesta.data as ICiudad[];
 
     setCiudadesList(data);

@@ -349,7 +349,7 @@ function UsuarioNuevo() {
               </FormControl>
             </SimpleGrid>
 
-            <SimpleGrid columns={[1, 2, 2]}>
+            <SimpleGrid columns={[1, 2, 2]} w={"100%"}>
               <FormControl>
                 <FormLabel htmlFor="ciudades">Ciudades de cobertura</FormLabel>
                 <CheckboxGroup
@@ -415,7 +415,7 @@ function UsuarioNuevo() {
                   type="submit"
                   isLoading={cargando}
                 >
-                  Agregar
+                  Guardar Tecnico
                 </Button>
 
                 <Button
