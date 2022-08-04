@@ -1,15 +1,15 @@
-import { ITicket } from "./api.models";
+import { IConcepto } from "./api.models";
 import { Actualizar, Consultar, Crear, Eliminar } from "./ApiCall";
 
-export class TicketsService {
-  private url = "/tickets";
-  constructor() {}
-  public async create(data: ITicket) {
+export class ConceptoService {
+  private url = "/conceptos";
+
+  public async create(data: IConcepto) {
     const respuesta: any = await Crear(this.url, data);
     return respuesta;
   }
 
-  public async update(data: Partial<ITicket>, id: number) {
+  public async update(data: IConcepto, id: number) {
     const respuesta: any = await Actualizar(`${this.url}/${id}`, data);
     return respuesta;
   }
@@ -29,12 +29,11 @@ export class TicketsService {
     return respuesta;
   }
 
-  public async addServiciosForTicket(idTicket: number, servicios: number[]) {
-    const respuesta = await Crear(
-      `${this.url}/${idTicket}/servicios`,
-      servicios
+  public async conceptosByTipoConcepto(tiposConcepto: number[]) {
+    const respuesta: any = await Crear(
+      `${this.url}/tipo-concepto`,
+      tiposConcepto
     );
     return respuesta;
-    
   }
 }

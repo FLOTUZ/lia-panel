@@ -202,3 +202,21 @@ export interface ILogin {
 export interface ILoginResponse {
   access_token: string;
 }
+
+export interface IConcepto {
+  id: number;
+  nombre: string;
+  costo_mano_obra: number | null;
+  tipo_conceptoId: number;
+  createdAt: Date | null;
+  updatedAt: Date | null;
+}
+
+export interface ITipoConcepto {
+  id: number;
+  nombre: string;
+  servicioId: number;
+  Conceptos: IConcepto[];
+  createdAt: Date | null;
+  updatedAt: Date | null;
+}

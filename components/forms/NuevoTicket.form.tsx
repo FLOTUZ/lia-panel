@@ -3,10 +3,12 @@ import {
   IAsesor,
   IAsistencia,
   ICiudad,
+  IConcepto,
   IEstado,
   IServicio,
   ITecnico,
   ITicket,
+  ITipoConcepto,
   IUsuario,
 } from "@/services/api.models";
 import { FaUserShield } from "react-icons/fa";
@@ -45,6 +47,7 @@ import {
   DrawerCloseButton,
   InputGroup,
   InputLeftAddon,
+  Stack,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import React, { useState, useEffect } from "react";
@@ -55,20 +58,11 @@ import { useRouter } from "next/router";
 import { IoFlag, IoSpeedometerOutline } from "react-icons/io5";
 import { EstadosService } from "@/services/estados.service";
 import { UsuariosService } from "@/services/usuarios.service";
+import { TipoConceptoService } from "@/services/tipo-concepto.service";
+import { ConceptoService } from "@/services/concepto.service";
 
 const NuevoTicket = () => {
-  const { isOpen: abierto, onOpen: abrir, onClose: cerrar } = useDisclosure();
-  const btnRef = React.useRef();
-
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const breakpoints = {
-    sm: "30em",
-    md: "48em",
-    lg: "62em",
-    xl: "80em",
-    "2xl": "96em",
-  };
-  const theme = extendTheme({ breakpoints });
 
   const [aseguradorasList, setAseguradorasList] = useState<IAseguradora[]>([]);
   const [asistenciasList, setAsistenciasList] = useState<IAsistencia[]>([]);
@@ -76,14 +70,8 @@ const NuevoTicket = () => {
 
   const [serviciosList, setServiciosList] = useState<IServicio[]>([]);
   const [serviciosSeleccionados, setServiciosSeleccionados] = useState<
-    string[]
+    number[]
   >([]);
-
-  const [costokmAseguradora, setCostoKMAseguradora] = useState<IAseguradora[]>(
-    []
-  );
-
-  const [ServiciosByTipo, setServiciosByTipo] = useState<IServicio>();
 
   const [fecha, setFecha] = useState("");
 
@@ -105,6 +93,18 @@ const NuevoTicket = () => {
   const [IdEstado, setIdEstado] = useState(0);
 
   const [sesion, setSesion] = useState<IUsuario>();
+
+  //===================== CONCEPTOS =====================
+
+  const [tipoConceptoList, setTipoConceptoList] = useState<ITipoConcepto[]>([]);
+  const [conceptosList, setConceptosList] = useState<IConcepto[]>([]);
+
+  const [tipoConceptoSeleccionado, setTipoConceptoSeleccionado] = useState<
+    number[]
+  >([]);
+  const [conceptoSeleccionado, setConceptoSeleccionado] = useState<string[]>(
+    []
+  );
 
   const toast = useToast();
 
@@ -135,7 +135,6 @@ const NuevoTicket = () => {
     const data = respuesta.data as IAseguradora[];
 
     setAseguradorasList(data);
-    setCostoKMAseguradora;
   };
 
   const consultarCiudades = async () => {
@@ -165,48 +164,6 @@ const NuevoTicket = () => {
     const respuesta = await servicio.getAll();
     const data = respuesta.data as ITecnico[];
   };
-
-  useEffect(() => {
-    const calcular = () => {
-      let cober = Number(formTicket.values.cobertura);
-      let costoLias = Number(formTicket.values.costo_gpo_lias);
-
-      let km = Number(formTicket.values.kilometraje);
-      let costoKM = Number(formTicket.values.costo_de_kilometraje);
-      let totalKM = km * costoKM; //Costo de desplazo de tecnico
-
-      let banderazo = Number(formTicket.values.banderazo);
-      let nCasetas = Number(formTicket.values.casetas);
-      let costoPorCasetas = Number(formTicket.values.costo_por_caseta);
-      let totalCasetas = nCasetas * costoPorCasetas; //Costo de casetas
-
-      let anticipo = (costoLias + totalKM + banderazo) * 0.6; //Anticipo del ticket
-      let deducible = cober - costoLias - totalKM; //Costo que no cubre el seguro
-      let totalSalida = totalKM + totalCasetas + banderazo; //Total de salida para tecnico
-
-      let montoTotal = 0;
-      if (deducible < 0) {
-        montoTotal = totalSalida + costoGPOLIAS + banderazo;
-        setCalculoDeducible(deducible);
-      } else {
-        montoTotal = totalSalida + costoGPOLIAS;
-        setCalculoDeducible(0);
-      }
-
-      setCalculoAnticipo(anticipo);
-      setCalculoTotalSalida(totalSalida);
-      setCalculoMontoTotal(montoTotal);
-    };
-
-    calcular();
-  }, [
-    cobertura,
-    costoGPOLIAS,
-    costoPorKilometro,
-    costoBanderazo,
-    calculoDeducible,
-    kilometrosARecorrer,
-  ]);
 
   const asistenciaById = async () => {
     if (Number(formTicket.values.aseguradoraId) !== 0) {
@@ -294,6 +251,37 @@ const NuevoTicket = () => {
       duration: 9000,
       isClosable: true,
     });
+  };
+
+  const consultarTipoConceptosByServicios = async () => {
+    const service = new TipoConceptoService();
+    const respuesta = await service.getAllByServiceId(
+      serviciosSeleccionados as number[]
+    );
+    const data = respuesta.data as ITipoConcepto[];
+
+    if (respuesta.status == 201) {
+      setTipoConceptoList(data);
+    }
+  };
+
+  const mostrarConceptos = async () => {
+    if (tipoConceptoSeleccionado.length == 0) {
+      setConceptosList([]);
+      setConceptoSeleccionado([]);
+      return;
+    }
+
+    const service = new ConceptoService();
+    const respuesta = await service.conceptosByTipoConcepto(
+      tipoConceptoSeleccionado
+    );
+
+    const data = respuesta.data as IConcepto[];
+
+    if (respuesta.status == 201) {
+      setConceptosList(data);
+    }
   };
 
   const formTicket = useFormik({
@@ -386,6 +374,57 @@ const NuevoTicket = () => {
       }
     },
   });
+
+  useEffect(() => {
+    const calcular = () => {
+      let cober = Number(formTicket.values.cobertura);
+      let costoLias = Number(formTicket.values.costo_gpo_lias);
+
+      let km = Number(formTicket.values.kilometraje);
+      let costoKM = Number(formTicket.values.costo_de_kilometraje);
+      let totalKM = km * costoKM; //Costo de desplazo de tecnico
+
+      let banderazo = Number(formTicket.values.banderazo);
+      let nCasetas = Number(formTicket.values.casetas);
+      let costoPorCasetas = Number(formTicket.values.costo_por_caseta);
+      let totalCasetas = nCasetas * costoPorCasetas; //Costo de casetas
+
+      let anticipo = (costoLias + totalKM + banderazo) * 0.6; //Anticipo del ticket
+      let deducible = cober - costoLias - totalKM; //Costo que no cubre el seguro
+      let totalSalida = totalKM + totalCasetas + banderazo; //Total de salida para tecnico
+
+      let montoTotal = 0;
+      if (deducible < 0) {
+        montoTotal = totalSalida + costoGPOLIAS + banderazo;
+        setCalculoDeducible(deducible);
+      } else {
+        montoTotal = totalSalida + costoGPOLIAS;
+        setCalculoDeducible(0);
+      }
+
+      setCalculoAnticipo(anticipo);
+      setCalculoTotalSalida(totalSalida);
+      setCalculoMontoTotal(montoTotal);
+    };
+
+    calcular();
+  }, [
+    cobertura,
+    costoGPOLIAS,
+    costoPorKilometro,
+    costoBanderazo,
+    calculoDeducible,
+    kilometrosARecorrer,
+  ]);
+
+  useEffect(() => {
+    consultarTipoConceptosByServicios();
+  }, [serviciosSeleccionados]);
+
+  useEffect(() => {
+    consultarTipoConceptosByServicios();
+    mostrarConceptos();
+  }, [tipoConceptoSeleccionado]);
 
   return (
     <form onSubmit={formTicket.handleSubmit}>
@@ -696,40 +735,110 @@ const NuevoTicket = () => {
             value={formTicket.values.problematica}
           />
         </FormControl>
-
-        <FormControl id="control_servicios" paddingTop={15}>
-          <FormLabel htmlFor="servicioId">
-            Seleccione Servicios Relacionados:
-          </FormLabel>
-          <CheckboxGroup
-            variant="filled"
-            size={"lg"}
-            value={serviciosSeleccionados}
-            onChange={(e) => {
-              setServiciosSeleccionados(e as string[]);
-            }}
-          >
-            <SimpleGrid
-              columns={[2, null, 3]}
-              minChildWidth="180px"
-              spacing="50px"
+        <SimpleGrid
+          columns={[1, 1, 3]}
+          minChildWidth="180px"
+          spacing="50px"
+          paddingTop={15}
+        >
+          <FormControl id="control_servicios">
+            <FormLabel htmlFor="servicioId">Tipo de tecnico</FormLabel>
+            <CheckboxGroup
+              variant="filled"
+              size={"lg"}
+              value={serviciosSeleccionados}
+              onChange={(e) => {
+                setServiciosSeleccionados(e as number[]);
+              }}
             >
-              {serviciosList?.length !== 0
-                ? serviciosList.map((servicio, index) => {
+              <Stack>
+                {serviciosList?.length !== 0
+                  ? serviciosList.map((servicio, index) => {
+                      return (
+                        <Checkbox
+                          key={index}
+                          id={servicio.nombre}
+                          value={servicio.id?.toString()}
+                        >
+                          {servicio.nombre}
+                        </Checkbox>
+                      );
+                    })
+                  : null}
+              </Stack>
+            </CheckboxGroup>
+          </FormControl>
+
+          {tipoConceptoList.length > 0 ? (
+            <FormControl id="tipo_concepto">
+              <FormLabel htmlFor="conceptoId">Tipo de conceptos</FormLabel>
+              <CheckboxGroup
+                variant="filled"
+                size={"lg"}
+                value={tipoConceptoSeleccionado}
+                onChange={(e) => {
+                  setTipoConceptoSeleccionado(e as number[]);
+                }}
+              >
+                <Stack>
+                  {tipoConceptoList.map((tipoConcepto, index) => {
                     return (
                       <Checkbox
                         key={index}
-                        id={servicio.nombre}
-                        value={servicio.id?.toString()}
+                        id={tipoConcepto.nombre}
+                        value={tipoConcepto.id?.toString()}
                       >
-                        {servicio.nombre}
+                        {tipoConcepto.nombre}
                       </Checkbox>
                     );
-                  })
-                : null}
-            </SimpleGrid>
-          </CheckboxGroup>
-        </FormControl>
+                  })}
+                </Stack>
+              </CheckboxGroup>
+            </FormControl>
+          ) : (
+            <div>
+              <FormLabel htmlFor="comodin-tipos-consepto">
+                Tipo Concepto
+              </FormLabel>
+              <Text id="comodin-tipos-consepto">
+                Seleccione un tipo de tecnico
+              </Text>
+            </div>
+          )}
+
+          {tipoConceptoSeleccionado.length > 0 ? (
+            <FormControl id="concepto">
+              <FormLabel htmlFor="conceptoId">Conceptos</FormLabel>
+              <CheckboxGroup
+                variant="filled"
+                size={"lg"}
+                value={conceptoSeleccionado}
+                onChange={(e) => {
+                  setConceptoSeleccionado(e as string[]);
+                }}
+              >
+                <Stack>
+                  {conceptosList.map((concepto, index) => {
+                    return (
+                      <Checkbox
+                        key={index}
+                        id={concepto.nombre}
+                        value={concepto.id?.toString()}
+                      >
+                        ${concepto.costo_mano_obra} - {concepto.nombre}
+                      </Checkbox>
+                    );
+                  })}
+                </Stack>
+              </CheckboxGroup>
+            </FormControl>
+          ) : (
+            <div>
+              <FormLabel htmlFor="comodin-conceptos">Conceptos</FormLabel>
+              <Text id="comodin-conceptos">Seleccione un tipo de concepto</Text>
+            </div>
+          )}
+        </SimpleGrid>
       </Box>
 
       <Box
