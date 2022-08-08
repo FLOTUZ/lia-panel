@@ -296,7 +296,7 @@ const NuevoTicket = () => {
       //--------------------DATOS BASICOS
       num_expediente: "",
       asistencia_vial: false,
-      fecha_llamada: "",
+      fecha_llamada: new Date().toISOString(),
       nombre_asesor_gpo_lias: "",
       nombre_usuario_final: "",
       titulo_ticket: "",
@@ -465,31 +465,6 @@ const NuevoTicket = () => {
               borderColor="twitter.100"
               onChange={formTicket.handleChange}
               value={formTicket.values.num_expediente}
-            />
-          </FormControl>
-        </SimpleGrid>
-
-        <SimpleGrid columns={[1, 1, 1]} spacing="20px">
-          <FormControl isRequired paddingTop={15}>
-            <FormLabel htmlFor="fecha_llamada">Fecha de la Llamada</FormLabel>
-            <Input
-              isRequired
-              w={"fit-content"}
-              id="fecha_llamada"
-              variant="filled"
-              type="datetime-local"
-              borderColor="twitter.100"
-              value={fecha}
-              onChange={(e) => {
-                const hoy = new Date(e.target.value);
-                if (hoy > new Date()) {
-                  setFecha(e.target.value);
-                  formTicket.setFieldValue(
-                    "fecha_llamada",
-                    new Date(e.target.value).toISOString()
-                  );
-                }
-              }}
             />
           </FormControl>
         </SimpleGrid>
