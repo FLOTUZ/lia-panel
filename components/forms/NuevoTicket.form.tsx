@@ -12,7 +12,7 @@ import {
   IUsuario,
 } from "@/services/api.models";
 import { FaUserShield } from "react-icons/fa";
-import { RiGpsLine } from "react-icons/ri";
+import { RiDeleteBin6Fill, RiGpsLine } from "react-icons/ri";
 import { AseguradoraService } from "@/services/aseguradoras.service";
 import { AsistenciasService } from "@/services/asistencias.service";
 import { CiudadesService } from "@/services/ciudades.service";
@@ -37,7 +37,6 @@ import {
   Flex,
   ModalHeader,
   useDisclosure,
-  extendTheme,
   useToast,
   DrawerBody,
   DrawerFooter,
@@ -48,6 +47,16 @@ import {
   InputGroup,
   InputLeftAddon,
   Stack,
+  Heading,
+  VStack,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  IconButton,
 } from "@chakra-ui/react";
 import { useFormik } from "formik";
 import React, { useState, useEffect } from "react";
@@ -87,8 +96,6 @@ const NuevoTicket = () => {
   const [calculoMontoTotal, setCalculoMontoTotal] = useState(0);
 
   const [ciudadesList, setCiudadesList] = useState<ICiudad[]>([]);
-  const [ciudadId, setCiudadId] = useState<number>(0);
-  const [estadoId, setEstadoId] = useState<number>();
   const [estadosList, setEstadosList] = useState<IEstado[]>([]);
   const [IdEstado, setIdEstado] = useState(0);
 
@@ -474,11 +481,14 @@ const NuevoTicket = () => {
               borderColor="twitter.100"
               value={fecha}
               onChange={(e) => {
-                setFecha(e.target.value);
-                formTicket.setFieldValue(
-                  "fecha_llamada",
-                  new Date(e.target.value).toISOString()
-                );
+                const hoy = new Date(e.target.value);
+                if (hoy > new Date()) {
+                  setFecha(e.target.value);
+                  formTicket.setFieldValue(
+                    "fecha_llamada",
+                    new Date(e.target.value).toISOString()
+                  );
+                }
               }}
             />
           </FormControl>
@@ -825,7 +835,7 @@ const NuevoTicket = () => {
                         id={concepto.nombre}
                         value={concepto.id?.toString()}
                       >
-                        ${concepto.costo_mano_obra} - {concepto.nombre}
+                        {concepto.nombre}
                       </Checkbox>
                     );
                   })}
@@ -839,6 +849,62 @@ const NuevoTicket = () => {
             </div>
           )}
         </SimpleGrid>
+        <VStack>
+          <Heading as="h2" size="lg">
+            Conceptos seleccionados
+          </Heading>
+          <TableContainer w={"100%"}>
+            <Table size="sm">
+              <Thead>
+                <Tr>
+                  <Th>Concepto</Th>
+                  <Th>Precio</Th>
+                </Tr>
+              </Thead>
+              <Tbody>
+                {conceptoSeleccionado.map((concepto, index) => {
+                  //Buscando el id del concepto en el listado de conceptos
+                  const dato = conceptosList.find((item) => {
+                    return item.id === parseInt(concepto);
+                  });
+
+                  return (
+                    <>
+                      <Tr key={index}>
+                        <Td>
+                          <Flex alignItems={"center"}>
+                            <IconButton
+                              colorScheme={"red"}
+                              aria-label="Search database"
+                              icon={
+                                <RiDeleteBin6Fill size={20} color="white" />
+                              }
+                              onClick={() => {
+                                setConceptoSeleccionado(
+                                  conceptoSeleccionado.filter(
+                                    (conceptoSeleccionado) => {
+                                      return conceptoSeleccionado !== concepto;
+                                    }
+                                  )
+                                );
+                              }}
+                            />
+                            <Text marginLeft={2}>
+                              {dato?.nombre.length! > 50
+                                ? dato?.nombre.substring(0, 30) + "..."
+                                : dato?.nombre}
+                            </Text>
+                          </Flex>
+                        </Td>
+                        <Td>$ {dato?.costo_mano_obra} </Td>
+                      </Tr>
+                    </>
+                  );
+                })}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </VStack>
       </Box>
 
       <Box
@@ -984,7 +1050,6 @@ const NuevoTicket = () => {
               variant="filled"
               borderColor="twitter.100"
               onChange={(e) => {
-                setEstadoId(Number(e.target.value));
                 setIdEstado(Number(e.target.value));
               }}
             >
@@ -1009,7 +1074,6 @@ const NuevoTicket = () => {
               variant="filled"
               borderColor="twitter.100"
               onChange={(e) => {
-                setCiudadId(Number(e.target.value));
                 formTicket.setFieldValue("ciudadId", Number(e.target.value));
               }}
               onFocus={(e) => {
