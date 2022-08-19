@@ -205,12 +205,12 @@ export interface ILoginResponse {
 }
 
 export interface IConcepto {
-  id: number;
+  id?: number;
   nombre: string;
   costo_mano_obra: number | null;
   tipo_conceptoId: number;
-  createdAt: Date | null;
-  updatedAt: Date | null;
+  createdAt?: Date | null;
+  updatedAt?: Date | null;
 }
 
 export interface ITipoConcepto {

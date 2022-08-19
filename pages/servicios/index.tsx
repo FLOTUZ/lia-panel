@@ -29,16 +29,16 @@ import {
   Radio,
   useToast,
   HStack,
+  SimpleGrid,
+  Spacer,
 } from "@chakra-ui/react";
-import {
-  AddIcon,
-  EditIcon,
-} from "@chakra-ui/icons";
+import { AddIcon, EditIcon } from "@chakra-ui/icons";
 import { useEffect, useState } from "react";
 import { ServiciosService } from "@/services/servicios.service";
 import { IServicio } from "@/services/api.models";
 import { useRouter } from "next/router";
 import { useFormik } from "formik";
+import { FaBox } from "react-icons/fa";
 
 function ServiciosListado() {
   const toast = useToast();
@@ -48,8 +48,6 @@ function ServiciosListado() {
     isOpen: isOpenedit,
     onOpen: Openedit,
     onClose: onCloseedit,
-
-
   } = useDisclosure();
 
   const [nombreServicio, setNombreServicio] = useState("");
@@ -83,7 +81,6 @@ function ServiciosListado() {
         duration: 9000,
         isClosable: true,
       });
-
     } else {
       toast({
         title: "Oops... Ocurrio un error.",
@@ -110,11 +107,8 @@ function ServiciosListado() {
   };
 
   useEffect(() => {
-
-
     consultarServicios();
   }, []);
-
 
   /* PA EDITAR  */
   const [data, setData] = useState<IServicio>();
@@ -122,7 +116,7 @@ function ServiciosListado() {
 
   const getServicio = async () => {
     const servicio = new ServiciosService();
-    const response = await servicio.getById(Number(idServicio))
+    const response = await servicio.getById(Number(idServicio));
     if (response.status == 200) {
       setData(response.data as IServicio);
     }
@@ -137,8 +131,8 @@ function ServiciosListado() {
     onSubmit: async (values: IServicio) => {
       const actualizaServicio = async () => {
         const data = {
-          ...values
-        }
+          ...values,
+        };
 
         const service = new ServiciosService();
         const respuesta = await service.getById(Number(idServicio));
@@ -162,7 +156,7 @@ function ServiciosListado() {
           });
         }
       };
-      actualizaServicio()
+      actualizaServicio();
     },
   });
 
@@ -213,27 +207,30 @@ function ServiciosListado() {
         rounded="md"
         bg="white"
       >
-        <Box
-          m={2}
-          bgColor="white"
-          padding={5}
-          borderRadius={10}
-          p="6"
-          rounded="md"
-          bg="white"
-        >
-          <HStack spacing={4} w={"50%"}>
-            <Button
-              onClick={onOpen}
-              leftIcon={<AddIcon />}
-              colorScheme="facebook"
-              variant="solid"
-            >
-              Nuevo Servicio
-            </Button>
-          </HStack>
+        <SimpleGrid columns={[1, 1, 2]} gap={5} w={"fit-content"}>
+          <Button
+            mb={3}
+            onClick={onOpen}
+            leftIcon={<AddIcon />}
+            colorScheme="facebook"
+            variant="solid"
+          >
+            Nuevo Servicio
+          </Button>
 
-        </Box>
+          <Link href={"/servicios/conceptos"}>
+            <a>
+              <Button
+                mb={3}
+                leftIcon={<FaBox />}
+                colorScheme="messenger"
+                variant="solid"
+              >
+                Conceptos
+              </Button>
+            </a>
+          </Link>
+        </SimpleGrid>
 
         <Box marginLeft={"1%"}>
           <TableContainer>
@@ -321,21 +318,21 @@ function ServiciosListado() {
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="whatsapp"
-              variant="solid" mr={3} onClick={guardarServicio}>
+            <Button
+              colorScheme="whatsapp"
+              variant="solid"
+              mr={3}
+              onClick={guardarServicio}
+            >
               Guardar
             </Button>
             <Button onClick={onClose}>Cancelar</Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
-      
-      <form onSubmit={formServicio.handleSubmit} >
-        <Modal
 
-          isOpen={isOpenedit}
-          onClose={onCloseedit}
-        >
+      <form onSubmit={formServicio.handleSubmit}>
+        <Modal isOpen={isOpenedit} onClose={onCloseedit}>
           <ModalOverlay />
           <ModalContent>
             {/* MODAL PARA EDITAR SERVICIO */}
@@ -352,27 +349,21 @@ function ServiciosListado() {
                 />
               </FormControl>
 
-              <FormControl >
-                <FormLabel padding={1} >Tipo del servicio</FormLabel>
-                <RadioGroup colorScheme='green'
+              <FormControl>
+                <FormLabel padding={1}>Tipo del servicio</FormLabel>
+                <RadioGroup
+                  colorScheme="green"
                   onChange={(checks) => {
-                    formServicio.setFieldValue(
-                      'tipo',
-                      checks
-                    )
+                    formServicio.setFieldValue("tipo", checks);
                   }}
                 >
-                  <Stack padding={2} spacing={[1, 5]} direction={['column', 'row']}>
-                    <Radio
-                      value={"DOMESTICO"}
-                    >
-                      Domestico
-                    </Radio>
-                    <Radio
-                      value={"VIAL"}
-                    >
-                      Automovilistico
-                    </Radio>
+                  <Stack
+                    padding={2}
+                    spacing={[1, 5]}
+                    direction={["column", "row"]}
+                  >
+                    <Radio value={"DOMESTICO"}>Domestico</Radio>
+                    <Radio value={"VIAL"}>Automovilistico</Radio>
                   </Stack>
                 </RadioGroup>
               </FormControl>
@@ -386,7 +377,6 @@ function ServiciosListado() {
                 variant="solid"
                 isLoading={cargando}
                 mr={3}
-
               >
                 Guardar
               </Button>
@@ -395,7 +385,7 @@ function ServiciosListado() {
           </ModalContent>
         </Modal>
       </form>
-    </DesktopLayout >
+    </DesktopLayout>
   );
 }
 
