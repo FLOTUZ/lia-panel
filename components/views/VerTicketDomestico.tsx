@@ -14,7 +14,7 @@ import {
   InputLeftAddon,
   Badge,
 } from "@chakra-ui/react";
-import { MdOutlineAttachMoney } from "react-icons/md";
+import { MdOutlineAttachMoney, MdPriceChange } from "react-icons/md";
 import { IoSpeedometerOutline } from "react-icons/io5";
 import {
   IAcuerdoConformidad,
@@ -283,6 +283,24 @@ export function VerTicketDomestico({ ticket }: VerTicketDomesticoProps) {
             return <Badge width={"fit-content"}>{servicio.nombre}</Badge>;
           })}
         </SimpleGrid>
+        
+        <FormControl paddingTop={15}>
+          <FormLabel htmlFor="kilometraje">Costo conceptos</FormLabel>
+          <InputGroup>
+            <InputLeftAddon pointerEvents="none" children={<MdPriceChange />} />
+            <Input
+              variant="unstyled"
+              isReadOnly
+              id="kilometraje"
+              min={0}
+              placeholder="0"
+              paddingLeft={5}
+              type="number"
+              borderColor="twitter.100"
+              defaultValue={ticket.costo_conceptos!}
+            />
+          </InputGroup>
+        </FormControl>
       </Box>
 
       <Box

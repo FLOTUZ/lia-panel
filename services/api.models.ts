@@ -23,6 +23,7 @@ export interface ITicket {
   asistenciaId: number;
   aseguradoraId: number;
   problematica: string;
+  costo_conceptos?: number | null;
   ciudadId: number;
   colonia: string;
   calle: string;
